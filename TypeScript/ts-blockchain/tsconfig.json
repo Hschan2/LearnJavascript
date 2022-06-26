@@ -1,0 +1,17 @@
+{
+    "include": [
+        "src"
+    ],
+    "compilerOptions": {
+        "outDir": "build", // 자바스크립트를 출력할 폴더
+        "esModuleInterop": true,
+        "target": "ES6", // ES 버전
+        "lib": [ // 자바스크립트의 어떤 버전이 그 환경에서 사용되는가
+            "ES6",
+            // "DOM" // 브라우저에서 사용
+        ],
+        "strict": true,
+        // "allowJs": true, // 타입스크립트가 자바스크립트 파일을 불러올 수 있음
+        "module": "CommonJS"
+    },
+}
