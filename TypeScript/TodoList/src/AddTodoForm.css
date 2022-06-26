@@ -1,0 +1,16 @@
+form {
+    margin-left: 50px;
+}
+
+input {
+    width: auto;
+    height: auto;
+    border-color: rgb(112, 209, 112);
+}
+
+button {
+    margin-left: 5px;
+    background-color:rgb(112, 209, 112);
+    border-color:rgb(112, 209, 112);
+    color: white;
+}
