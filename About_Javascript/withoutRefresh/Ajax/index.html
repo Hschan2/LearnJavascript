@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실시간 Ajax</title>
+    <style>
+        div.question-box {
+            margin: 10px 0 20px 0;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .blue {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>서울시 미세먼지</h1>
+    <hr />
+    <div class="question-box">
+        <button onclick="q1()">업데이트</button>
+        <ul id="names-q1">
+            <li>중구 : 82</li>
+            <li>종로구 : 87</li>
+            <li>용산구 : 84</li>
+            <li>은평구 : 82</li>
+        </ul>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function q1() {
+            // 업데이트 버튼 클릭 시 중복 append 방지
+            $("#names-q1").empty(); //화면에 출력 전에 지워주는 코드
+
+            $.ajax({
+                type: "GET",
+                url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99",
+                data: {},
+                success: function(response) {
+                    let mise = response["RealtimeCityAir"]["row"]; //url에서 가지고 온 데이터 중 row 리스트 데이터만 뽑아 mise 변수에 넣음
+
+                    //반복문으로 mise 변수에 있는 구 이름, 미세먼지 데이터 값을 변수에 넣고 출력하는 반복문
+                    for(let i = 0; i < mise.length; i++) {
+                        let gu_name = mise[i]["MSRSTE_NM"];
+                        let gu_mise = mise[i]["IDEX_MVL"];
+                        let str_mise = ''; // append를 위한 변수
+
+                        //미세먼지 수치가 70이하인 데이터 값만 화면에 출력
+                        if(gu_mise >= 50) {
+                            str_mise = `<li class="red">${gu_name} : ${gu_mise}</li>`;
+                        } else {
+                            str_mise = `<li class="blue">${gu_name} : ${gu_mise}</li>`;
+                        }
+
+                        console.log(str_mise);
+                        $('#names-q1').append(str_mise); //바로 위에서 저장한 리스트를 #names-q1을 id로 가지고 있는 요소에 추가
+
+                    }
+                    console.log(response);
+                }
+            })
+        }
+    </script>
+</body>
+</html>
