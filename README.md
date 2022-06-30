@@ -63,3 +63,14 @@ Drag and Drop API를 사용한 프로젝트
 ```
 실시간 업데이트 방법 (리프레시 제거 방법)
 ```
+
+## Single Page 자기소개 사이트 [Link](https://github.com/Hschan2/LearnJavascript/tree/main/FrontEnd_Web/First)
+```
+Single Page 개발
+애니메이션 적용
+```
+
+## Graph QL [Link]()
+```
+노마드코더의 Graph QL
+```
