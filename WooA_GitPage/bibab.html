@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<title>비밥의 90년생 HTML 이야기</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		    -webkit-text-size-adjust: 100%;
+		    -moz-text-size-adjust: 100%;
+		    -ms-text-size-adjust: 100%;
+		    --border-color: rgba(0, 0, 0, 0.125);
+		}
+		.header {
+			background-color: black;
+			height: 60px;
+			text-align: center;
+		}
+		.logo img {
+			width: 35px;
+			height: 35px;
+			margin-top: 12px;
+		}
+		.body {
+			padding: 0 10% 0 10%;
+			display: flex;
+			min-width: 500px;
+		}
+		.left {
+			margin-top: 25px;
+			margin-right: 25px;
+			height: 100%;
+			width: 25%;
+			min-width: 260px;
+			max-width: 290px;
+		}
+		.left img {
+			width: auto;
+			min-height: 175px;
+		}
+		.left .profiles {
+			display: flex;
+			flex-direction: column;
+		}
+		.left .left-image {
+			display: flex;
+			flex-direction: column;
+			width: auto;
+			border: 1px solid rgba(0,0,0,0.1);
+			height: 210px;
+			transition: 0.3s;
+		}
+		.left .left-image .html {
+			margin-left: 13px;
+			line-height: 2.2;
+			font-size: 0.9em;
+		}
+		.name {
+			margin-top: 15px;
+		}
+		.name .korean {
+			font-weight: bold;
+			font-size: 1.6em;
+		}
+		.name .english {
+			color: rgba(0,0,0,0.5);
+			font-size: 1.2em;
+			font-family: "돋움", sans-serif;
+			margin-top: 1px;
+		}
+		.follow {
+			margin-top: 20px;
+		}
+		.follow .fbtn {
+			width: 100%;
+			height: 33px;
+			border-radius: 3px;
+			font-weight: bold;
+			border: 1px solid rgba(0,0,0,0.2);
+			background-color: #F9F9F9;
+		}
+		.profile {
+			margin-top: 20px;
+		}
+		.profile ul {
+			list-style: none;
+		}
+		.profile ul li {
+			font-size: 0.85em;
+			margin-top: 7px;
+		}
+		.profile .adress {
+			text-decoration: none;
+			color: #4374D9;
+		}
+		.profile .adress:hover {
+			color: #6799FF;
+		}
+		.area {
+			margin-top: 12px;
+		}
+		.area textarea {
+			width: 200px;
+			height: 20px;
+			padding: 3px 0px 0px 3px;
+			resize: none;
+		}
+		.right {
+			margin-top: 30px;
+			width: 75%;
+			transition: 0.3s;
+		}
+		.right .menu {
+			height: 40px;
+			border-bottom: 0.5px solid rgba(0,0,0,0.5);
+			position: static;
+		}
+		.right .menus {
+			display: flex;
+		}
+		.right .menus > * {
+			box-sizing: border-box;
+		}
+		.right .menu ul li {
+			list-style: none;
+			float: left;
+			text-align: center;
+			margin: 1px;
+			font-size: 0.9em;
+			height: 40px;
+			padding: 5px 0px;
+			line-height: 25px;
+			cursor: pointer;
+			transition: 0.3s;
+		}
+		.right .menu .Overview {
+			width: 84px;
+			border-bottom: 3px solid orange;
+		}
+		.right .menu .Repositories {
+			width: 102px;
+		}
+		.right .menu .Projects {
+			width: 77px;
+		}
+		.right .menu .Stars {
+			width: 57px;
+		}
+		.right .menu .Followers {
+			width: 92px;
+		}
+		.right .menu .Following {
+			width: 92px;
+		}
+		.right .pinned {
+			margin-top: 30px;
+		}
+		.contents {
+			margin-top: -5px;
+			margin-bottom: -250px;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		.content {
+			width: 48%;
+			float: left;
+			border: 1px solid rgba(0,0,0,0.2);
+			border-radius: 5px;
+			margin-top: 20px;
+			padding: 3px 1px;
+			display: flex;
+			flex-direction: column;
+			transition: 0.3s;
+		}
+		.content .c-title {
+			font-size: 1em;
+			padding: 8px 5px;
+			position: relative;
+		}
+		.content .c-title a {
+			color: #4374D9;
+			text-decoration: none;
+		}
+		.content .c-content {
+			font-size: 0.75em;
+			color: rgba(0,0,0,0.7);
+			padding: 3px 5px;
+		}
+		.content .c-lang {
+			font-size: 0.65em;
+			padding: 12px 5px;
+			margin-top: 3px;
+		}
+		.under {
+			margin-top: 280px;
+		}
+		.under_title { 
+			display: flex;
+		}
+		.under_title > * {
+			box-sizing: border-box;
+		}
+		.under_content {
+			margin-top: 10px;
+			border: 1px solid rgba(0,0,0,0.2);
+			word-break: keep-all;
+			padding: 15px 15px
+		}
+		.under_content a {
+			color: #4374D9;
+			text-decoration: none;
+		}
+		.c-lang .round {
+			background-color: #FFCD12;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			float: left;
+			margin-top: 2px;
+			margin-right: 5px;
+		}
+		@media screen and (min-width:1280px) and (max-width: 1920px) {
+   			.content {
+   				width: 49%;
+   				transition: 0.3s;
+   			}
+		}
+		@media screen and (min-width:1380px) {
+   			.left .left-image {
+   				height: 230px;
+   				transition: 0.3s;
+   			}
+		}
+		@media screen and (max-width:720px) {
+			.right .menu ul li {
+				font-size: 0.5em;
+				transition: 0.3s;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<header>
+			<div class="logo">
+				<a href="#"><img src="github-logo.png"></a>
+			</div>
+		</header>
+	</div>
+	<div class="body">
+		<div class="left">
+			<div class="profiles">
+				<div class="left-image">
+					<img src="Sir_Tim_Berners-Lee.jpg">
+					<div class="html">❤️ HTML</div>
+				</div>
+				<div class="name">
+					<div class="korean">팀 버너스리</div>
+					<div class="english">Sir. Tim Berners-Lee</div>
+				</div>
+				<div class="follow">
+					<input type="button" class="fbtn" id="fbtn" value="Unfollow" onclick="return btnClick(this);"></input>
+				</div>
+				<div class="profile">
+					<ul>
+						<li>Father of Web.</li>
+						<li><b>WWW Consortium (W3C)</b></li>
+						<li>London. England</li>
+						<li><a href="https://www.w3.org/" target="_blank" class="adress">https://www.w3.org/</a></li>
+						<li><a href="http://info.cern.ch/" target="_blank" class="adress">http://info.cern.ch/</a></li>
+					</ul>
+				</div>
+				<div class="area">
+					<textarea placeholder="팀 버너스리에게 한마디" onkeydown="resize(this)" onkeyup="resize(this)"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="right">
+			<div class="menu">
+				<ul class="menus">
+					<li class="Overview" id="menu_c1" style="font-weight: 550">Overview</li>
+					<li class="Repositories" id="menu_c2">Repositories</li>
+					<li class="Projects" id="menu_c3">Projects</li>
+					<li class="Stars" id="menu_c4">Stars</li>
+					<li class="Followers" id="menu_c5">Followers</li>
+					<li class="Following" id="menu_c6">Following</li>
+				</ul>
+			</div>
+			<div class="pinned">
+				<div class="title">Pinned</div>
+				<div class="contents">
+					<div class="content" id="one">
+						<div class="c-title"><a href="#">HTML의 탄생</a></div>
+						<div class="c-content">HTML이 어떻게 생겼는지 알아봅시다.</div>
+						<div class="c-lang"><div class="round"></div>HTML</div>
+					</div>
+					<div class="content" id="two" style="margin-left: 10px !important;">
+						<div class="c-title"><a href="#">HTML 이란?</a></div>
+						<div class="c-content">HTML은 무엇일까?</div>
+						<div class="c-lang"><div class="round"></div>HTML</div>
+					</div>
+					<div class="content" id="three">
+						<div class="c-title"><a href="#">웹 3대장 HTML, CSS, JS</a></div>
+						<div class="c-content">웹을 구성하는 3요소!</div>
+						<div class="c-lang"><div class="round"></div>HTML</div>
+					</div>
+					<div class="content" id="four" style="margin-left: 10px !important;">
+						<div class="c-title"><a href="#">HTML 태그</a></div>
+						<div class="c-content">HTML을 구성하는 태그</div>
+						<div class="c-lang"><div class="round"></div>HTML</div>
+					</div>
+				</div>
+			</div>
+			<div class="under">
+				<div class="under_title">Many contributions in the last year</div>
+				<div class="under_content">
+					팀 버너스 리는 1989년 월드 와이드 웹의 하이퍼텍스트 시스템을 고안하여 개발하였으며
+					1989년 그는 CERN의 정보 시스템에서 착안하여
+					세계의 망을 하나로 묶는 거대한 인트라넷, www를 제안하였습니다.
+					HTML은 Hyper Text Markup Language라는 의미의 웹 페이지를 위한 마크업 언어입니다.
+					<br><br>
+					HT : 문서와 문서가 연결되어 있음을 의미합니다.<br>
+					M : 태그로 이루어져 있음을 의미합니다.<br>
+					L : 언어(프로그래밍이 아닌 마크업)입니다.<br>
+					<br>
+					이러한 HTML을 이용하여 구조적인 문서의 작성이 가능합니다.
+					HTML은 웹 문서의 뼈대가 되며 그 내용에 집중되어있습니다.
+					CSS는 웹 문서를 표현하는 방식, 디자인에 집중이 되어있습니다.
+					JS는 웹 문서에서 제공하는 행동들을 다루는데 집중이 되어있습니다.
+					<br><br>
+					HTML에는 여러가지 태그가 존재합니다.
+					이러한 태그들의 세부 사항은 <a href="#">MDN</a>에서 확인 할 수 있습니다.
+					또한 많이 사용되는 태그는 <a href="#">이곳</a>에서 통계를 통해 확인할 수 있습니다.
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<script type="text/javascript">
+		function btnClick() {
+			var fbtnText = document.getElementById("fbtn");
+			if (fbtnText.value == "Unfollow") fbtnText.value = "Follow";
+			else fbtnText.value = "Unfollow";
+		}
+		
+		function resize(obj) {
+		  obj.style.height = "1px";
+		  obj.style.height = (obj.scrollHeight)+"px";
+		}
+
+		$(document).ready(function(){
+			$('ul[class=menus] li').on("click", function(e) { 
+				$('ul[class=menus] li').not('li[class=' + this.innerText + ']').css("font-weight", 400); 
+				$('ul[class=menus] li[class=' + this.innerText + ']').css("font-weight", 600);
+				$('ul[class=menus] li').not('li[class=' + this.innerText + ']').css("border-bottom", "none"); 
+				$('ul[class=menus] li[class=' + this.innerText + ']').css("border-bottom", "solid 3px orange");
+			});
+		});
+	</script>
+</body>
+</html>
