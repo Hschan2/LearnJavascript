@@ -47,6 +47,12 @@ Drag and Drop API를 사용한 프로젝트
     - eventDelegation (이벤트 위임)
     - event Loop (이벤트 루프)
     - JSON (stringify, parse)
+
+자바스크립트 신기능 (2022. 07)
+    - async 함수없이 await
+    - Error Cause
+    - at()
+    - Class Fields
 ```
 
 ```
@@ -78,4 +84,11 @@ Single Page 개발
 ## Graph QL with Apollo [Link]()
 ```
 노마드코더의 Apollo로 만드는 Graph QL
+```
+
+## Test To Voice
+```
+입력한 텍스트를 AI 목소리로 출력하기
+    - 목소리 선택 불가능 버전
+    - 목소리 선택 가능 버전
 ```
