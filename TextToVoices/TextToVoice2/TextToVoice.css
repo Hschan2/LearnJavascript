@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.align {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.select {
+    padding: 5px 10px;
+    font: 1em "Fira Sans", sans-serif;
+    display: none;
+}
+
+#voiceList {
+    width: 300px;
+    padding: .5em .5em;
+    font-family: inherit;
+    background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1px solid #999;
+    border-radius: 5px;
+}
+
+.input {
+    padding: 5px 10px;
+}
+
+#textInput {
+    width: 300px;
+    padding: 8px 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #999;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#btnSpeak {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 9px 9px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+#btnSpeak:hover {
+    transition-duration: 0.35s;
+    background-color: rgb(65, 150, 67);
+}
