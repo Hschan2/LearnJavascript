@@ -86,9 +86,14 @@ Single Page 개발
 노마드코더의 Apollo로 만드는 Graph QL
 ```
 
-## Test To Voice
+## Test To Voice [Link]()
 ```
 입력한 텍스트를 AI 목소리로 출력하기
     - 목소리 선택 불가능 버전
     - 목소리 선택 가능 버전
+```
+
+## Vanilla Javascript [Link]()
+```
+노마드 코더의 바닐라 자바스크립트
 ```
