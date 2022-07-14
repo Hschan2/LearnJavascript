@@ -1,0 +1,26 @@
+.gamebtn button{
+    border: none;
+    width: 1000px;
+    height: 30px;
+    background-color: black;
+    color: white;
+    transition-duration: 0.2s;
+}
+
+.gamebtn button:hover{
+    border: none;
+    width: 1000px;
+    height: 30px;
+    background-color: gray;
+    color: white;
+}
+
+.p1 {
+    float: left;
+    width: 500px;
+}
+
+.p2 {
+    float: left;
+    width: 500px;
+}
