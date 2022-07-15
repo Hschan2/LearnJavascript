@@ -98,7 +98,8 @@ Single Page 개발
 노마드 코더의 바닐라 자바스크립트
 ```
 
-## React JS
+## React JS [Link]()
 ```
-React JS Redux로 빙고게임 만들기
+React JS 기초 이론 및 문법 학습
+React JS Redux로 빙고게임 제작
 ```
