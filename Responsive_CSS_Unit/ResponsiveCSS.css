@@ -1,0 +1,98 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.text {
+    font-size: 10px; /* 고정적으로 브라우저 크기가 변해도 변하지 않음 */
+}
+
+.emParent {
+    /* 8em = 800% */
+    font-size: 8em; /* em => 부모의 폰트 사이즈의 상대적 크기로 계산. 기본적으로 16px. 8em -> 128px */
+}
+
+.emChild {
+    /* 부모의 0.5em = 50% */
+    font-size: 0.5em; /* 부모의 0.5배인 64px */
+}
+
+.remParent {
+    /* root. 즉, HTML에서 지정한 기본 16px 기준으로 16 * 8 */
+    font-size: 8rem; /*  */
+}
+
+.remChild {
+    /* root. 즉, HTML에서 지정한 기본 16px 기준으로 16 * 0.5 */
+    font-size: 0.5rem; /*  */
+}
+
+.vParent {
+    font-size: 50vw; /* 현재 브라우저 넓이의 반을 쓰겠다 */
+    font-size: 50vh; /* 현재 브라우저 높이의 반을 쓰겠다 */
+}
+
+.vChild {
+    font-size: 50vmin; /* 현재 브라우저의 넓이와 높이 중 작은 것에서 반을 쓰겠다 */
+    font-size: 50vmax; /* 현재 브라우저의 넓이와 높이 중 큰 것에서 반을 쓰겠다 */
+}
+
+.percentParent {
+    width: 500px;
+}
+
+.percentChild {
+    width: 50%; /* 부모의 상대적인 크기로. 즉 500px의 50% => 250px */
+}
+
+.level1 {
+    font-size: 2em; /* 부모의 크기에 따라 달라지는 반응형 크기, 32px */
+}
+
+.level2 {
+    font-size: 2em; /* 64px */
+}
+
+.level3 {
+    font-size: 2em; /* 128px */
+}
+
+.level4 {
+    font-size: 2em; /* 256px */
+}
+
+.thisIsh1 {
+    display: inline-block;
+    font-size: 5em; /* 16 * 5 */
+    background-color: mediumaquamarine;
+    padding: 0.1em;
+}
+
+.component {
+    width: 50%;
+    border: 1px solid burlywood;
+    font-size: 2rem; /* rem => root, 즉 body 자체의 크기로 부모와 상관없이 크기 일정 */
+}
+
+.title {
+    padding: 0.5em 0.5rem; /* 위아래 좌우 */
+    background-color: burlywood;
+}
+
+.contents {
+    padding: 0.5em;
+    font-size: 1rem;
+}
+
+.square {
+    width: 25%;
+    height: 25%;
+    /* width: 25em; or 25rem */
+    /* height: 25em; or 25rem */
+    border: 5px solid black;
+    border-radius: 50%;
+}
+
+/* rem => 어떤 컴포넌트와 상관없이 동일함을 유지하고 싶은 것에 사용 */
+/* em => padding과 같은 font-size에 따라 발생하고 싶은 것에 사용  */
+/* 다만 border와 같은 것에는 그려지기는 하지만 화면에 크기와 상관없이 크기가 일정하다. %로 하면 화면에 크기에 따라 달라진다. */
