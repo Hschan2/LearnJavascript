@@ -1,0 +1,52 @@
+NoSQL 이해하기
+
+Not only SQL
+RDBMS 한계를 극복하기 위해 만들어진 새로운 형태의 데이터 저장소
+RDBMS처럼 고정된 스키마 및 JOIN이 존재하지 않음
+ALTER 등이 필요하지 않음
+
+SQL                                     NoSQL
+정해진 규격 (Schema, Table - Column)     정해진 규격 없음
+JOIN  가능                              JOIN 불가능
+트랜잭션 사용                            트랜잭션 사용 X
+분산처리 어려움                          분산처리 쉬움
+
+NoSQL를 사용하는 이유
+RDBMS를 기본으로 사용하지만, 초당 데이터가 많이 쌓이는 서비스가 많아지면서 NoSQL를 사용하는 경향이 많아짐
+
+NoSQL 종류
+Key/Value Store
+Wide Column Store
+Document Store
+Graph Store
+
+자주 사용하는 NoSQL, MongoDB (Document Store)
+JSON 기반의 Document 기반 데이터 관리
+
+사용 예시. NoSQL.json 참조
+
+MongoDB 데이터 구조
+Database - Collection (Table 대신 사용) - Document(Low 대신, Column 개념 없음)
+RDBMS의 Table이 아닌 Collection의 JSON 형태의 Document 사용
+Document 하나가 하나의 레코드
+
+RDBMS
+고객            고객 거주 아파트            아파트
+고객번호(pk)    고객번호(FK)                아파트동번호(PK)
+이름            아파트번호(PK)              세대수
+주소                                       관리주체
+전화번호
+
+NoSQL
+            이름            주소
+고객번호    홍길동          서울시 구로
+           아파트동번호     세대수
+           302동           1123세대
+
+MongoDB 사용 예시
+1. MongoDB 설치하기
+2. Cmd 실행
+3. mongod --dbpath <DB 경로 (MongoDB 설치 경로)>
+4. mongo 입력
+5. Shell Command 창으로 전환
+6. 데이터 베이스 생성, NoSQL.json 참조

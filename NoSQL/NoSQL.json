@@ -1,0 +1,636 @@
+// 예시
+{
+    "_id": ObjectId("5099803df3f42312312391"),
+    "username": "davelee",
+    "name": {first: "Dave", last: "Lee"}
+}
+
+// MongoDB 사용 예시
+// 데이터 베이스 생성, 예시) use <DB 이름>
+use database
+
+// 생성된 데이터 베이스 보기, Collection을 만들고 나서 볼 수 있음
+show dbs
+
+// 현재 사용하고 있는 데이터 베이스 확인
+db
+
+// 컬렉션 생성 및 보기, db.createCollection("[COLLECTION_NAME]")
+db.createCollection("person")
+
+// 컬렉션 확인
+show collection
+
+// Document
+// 데이터 삽입, insert(), Collection을 생성하지 않고 insert()하면 Collection 자동 생성
+db.person.insert({
+    "nickname": "freeKim",
+    "email": "test@google.com"
+})
+
+// 데이터 배열로 삽입
+db.person.insert([
+    {
+        "nickname": "freeKim_1",
+        "email": "test_1@google.com"
+    },
+    {
+        "nickname": "freeKim_2",
+        "email": "test_2@google.com"
+    },
+    {
+        "nickname": "freeKim_3",
+        "email": "test_3@google.com"
+    },
+])
+
+// Collection에 삽입된 값 확인, find()
+db.person.find()
+
+// 1은 보기, 0은 보지 않기
+db.person.find({}, {nickname: 1})
+db.person.find({}, {_id: 0, nickname: 1})
+
+// Document 삭제
+db.person.remove({"nickname": "freeKim"})
+
+// Collection 삭제, db.[Collection 이름].drop()
+db.person.drop()
+
+// 데이터 베이스 삭제
+db.dropDatabase()
+
+// MongoDB 관계
+// One-To-One Relationship (일대일 관계)
+{
+    _id: "joe",
+    name: "Joe Bookreader"
+}
+
+{
+    patron_id: "joe", // 위의 주소와 reference
+    street: "123 Fake Street",
+    city: "Faketon",
+    state: "MA",
+    zip: "12345"
+}
+
+// 이름으로 주소를 검색하는 일이 많아질 때, 주소가 내장되는 구조로 생성
+// 하나의 쿼리를 통해 전체 정보를 검색 가능
+{
+    _id: "joe",
+    name: "Joe Bookreader"
+    address: {
+        street: "123 Fake Street",
+        city: "Faketon",
+        state: "MA",
+        zip: "12345"
+    }
+}
+
+// One-To-Many Relationship (일대다 관계)
+{
+    _id: "joe",
+    name: "Joe Bookreader"
+}
+
+{
+    patron_id: "joe",
+    street: "123 Fake Street",
+    city: "Faketon",
+    state: "MA",
+    zip: "12345"
+}
+
+{
+    patron_id: "joe",
+    street: "123 Fake Street",
+    city: "Faketon",
+    state: "MA",
+    zip: "12345"
+}
+// 이름을 이용한 조회가 많아질 때, 한 번의 쿼리를 통해 데이터를 가져올 수 없다.
+// 주소를 내장시키는 구조로 사용해야 한다.
+{
+    _id: "joe",
+    name: "Joe Bookreader"
+    address: [
+        {
+            street: "123 Fake Street",
+            city: "Faketon",
+            state: "MA",
+            zip: "12345"
+        },
+        {
+            street: "123 Fake Street",
+            city: "Faketon",
+            state: "MA",
+            zip: "12345"
+        }
+    ]
+}
+
+// One-To-Many Relationship with Document References (문서 참조 일대다 관계)
+{
+    title: "MongoDB: The Definitive Guide",
+    author: ["Kristina Chodorow", "Mike Dirolf"],
+    published_date: ISODate("2010-09-24"),
+    pages:: 216,
+    language: "English",
+    publisher: {
+        name: "O'Reilly Media",
+        founded: 1980,
+        location: "CA"
+    }
+}
+
+{
+    title: "50 Tips and Tricks for MongoDB Developer",
+    author: "Kristina Chodorow",
+    published_date: ISODate("2011-05-06"),
+    pages:: 68,
+    language: "English",
+    publisher: {
+        name: "O'Reilly Media",
+        founded: 1980,
+        location: "CA"
+    }
+}
+// 책을 조회할 때, 좋은 모델일 수 있지만 똑같은 데이터(출판사)가 여러번 반복되면 비효율적으로 데이터가 저장되기에 아래처럼 저장하는 것을 추천
+{
+    name: "O'Reilly Media",
+    founded: 1980,
+    location: "CA",
+
+    books: [123456789, 234567890, ...]
+}
+
+{
+    _id: 123456789,
+    title: "MongoDB: The Definitive Guide",
+    author: ["Kristina Chodorow", "Mike Dirolf"],
+    published_date: ISODate("2010-09-24"),
+    pages:: 216,
+    language: "English",
+}
+
+{
+    _id: 234567890,
+    title: "50 Tips and Tricks for MongoDB Developer",
+    author: "Kristina Chodorow",
+    published_date: ISODate("2011-05-06"),
+    pages:: 68,
+    language: "English",
+}
+// 책을 단독으로 조회 가능. 출판사를 중복으로 저장할 필요 없다.
+// 데이터가 추가될 때마다 배열이 늘어날 수 있음. 책 이름으로 출판사를 조회하기 복잡하다.
+// 위의 단점을 보완하여 구상하기
+{
+    _id: "oreilly",
+    name: "O'Reilly Media",
+    founded: 1980,
+    location: "CA",
+}
+
+{
+    _id: 123456789,
+    title: "MongoDB: The Definitive Guide",
+    author: ["Kristina Chodorow", "Mike Dirolf"],
+    published_date: ISODate("2010-09-24"),
+    pages:: 216,
+    language: "English",
+
+    publisher_id: "oreilly"
+}
+
+{
+    _id: 234567890,
+    title: "50 Tips and Tricks for MongoDB Developer",
+    author: "Kristina Chodorow",
+    published_date: ISODate("2011-05-06"),
+    pages:: 68,
+    language: "English",
+
+    publisher_id: "oreilly"
+}
+
+// Model Tree Structures (모델 트리 구조)
+// 대규모, 계층적 구조를 위한 데이터 관계 모델링
+
+// 1. Model Tree Structures with Parent References, 부모 참조가 있는 트리 구조로 데이터를 부모를 명시하여 데이터 추가
+db.categories.insert({ _id: "MongoDB", parent: "Databases" })
+db.categories.insert({ _id: "dbm", parent: "Databases" })
+db.categories.insert({ _id: "Databases", parent: "Programming" })
+db.categories.insert({ _id: "Languages", parent: "Programming" })
+db.categories.insert({ _id: "Programming", parent: "Books" })
+db.categories.insert({ _id: "Books", parent: null })
+
+// 각 노드별로 부모를 구하거나 부모를 통해 노드 구하기
+db.categories.findOne({ _id: "MongoDB" }).parent
+db.categories.find({ parent: "Databases" })
+
+// 2. Model Tree Structures with Child References
+// 자식 참조 트리구조. 부모 참조와 비슷하게 데이터를 자식을 참조하여 insert. 자식은 여러 개 가질 수 있다.
+db.categories.insert({ _id: "MongoDB", children: [] })
+db.categories.insert({ _id: "dbm", children: [] })
+db.categories.insert({ _id: "Databases", children: ["MongoDB", "dbm"] })
+db.categories.insert({ _id: "Languages", children: [] })
+db.categories.insert({ _id: "Programming", children: ["Databases", "Languages"] })
+db.categories.insert({ _id: "Books", children: ["Programming"] })
+
+// 노드 별 자식을 구하거나 자식을 통해 노드(부모) 구하기
+db.categories.findOne({ _id: "Databases" }).children
+db.categories.find({ children: "MongoDB" })
+
+// 부모 참조와 자식 참조는 부모와 자식 필드에 인덱스를 지정하여 빠른 검색 가능
+db.categories.createIndex({ parent: 1 })
+db.categories.createIndex({ children: 1 })
+
+// 3. Model Tree Structures with an Array of Ancestors
+// 조상 배열을 가진 트리 모델은 각 노드에 ancestors 필드를 함께 명시.
+// ancestors 필드는 list로 0번 인덱스부터 상위 조상이 들어가며 각 단계별 조상을 지정
+// parent 필드에서는 부모를 참조
+db.categories.insert({ _id: "MongoDB", ancestors: ["Books", "Programming", "Databases"], parent: "Databases" })
+db.categories.insert({ _id: "dbm", ancestors: ["Books", "Programming", "Databases"], parent: "Databases" })
+db.categories.insert({ _id: "Databases", ancestors: ["Books", "Programming"], parent: "Programming" })
+db.categories.insert({ _id: "Languages", ancestors: ["Books", "Programming"], parent: "Programming" })
+db.categories.insert({ _id: "Programming", ancestors: ["Books"], parent: "Books" })
+db.categories.insert({ _id: "Books", ancestors: [], parent: null })
+// 최하위 노드 MongoDB는 ancestors의 상위 조상들을 포함하지만, 최상위 노드 Books는 ancestors를 갖지 않는다.
+// 각 노드의 조상들을 조회할 수 있으며, 조상을 통해 노드를 찾을 수 있다.
+
+db.categories.findOne({ _id: "MongoDB" }).ancestors
+db.categories.find({ ancestors: "Programming" })
+
+// 4. Model Tree Structures with Materialized Paths
+// 구체적인 경로를 가진 트리 구조로 경로를 작성하여 참조하는 구조. path 필드에 각 노드별 경로를 작성하고 구분자로는 comma(.)를 사용
+db.categories.insert({ _id: "Books", path: null })
+db.categories.insert({ _id: "Programming", path: ",books," })
+db.categories.insert({ _id: "Databases", path: ",books,Programming," })
+db.categories.insert({ _id: "Languages", path: ",books,Programming," })
+db.categories.insert({ _id: "MongoDB", path: ",books,Programming,Databases," })
+db.categories.insert({ _id: "dbm", path: ",books,Programming,Databases," })
+
+// 전체 트리를 검색하여 정렬 후 조회하기
+db.categories.find().sort({ path: 1 })
+
+// 경로 값의 모든 자손 구하기
+db.categories.find({ path: /,Programming,/ })
+
+// 최상위 수준의 모든 자손 구하기
+db.categories.find({ path: /^,Books,/ })
+
+// 5. Model Tree Structures with Nested Sets
+// 전체 노드를 탐색하여 통과할 때, 돌아올 때 총 두 번의 방문을 하고 그 순서를 명시
+// parent 필드와 첫 방문할 때의 순서인 left 필드, 돌아올 때의 순서인 right 필드 세 가지를 참조
+db.categories.insert({ _id: "Books", parent: 0, left: 1, right: 12 })
+db.categories.insert({ _id: "Programming", parent: "Books", left: 2, right: 11 })
+db.categories.insert({ _id: "Databases", parent: "Programming", left: 3, right: 4 })
+db.categories.insert({ _id: "Languages", parent: "Programming", left: 5, right: 10 })
+db.categories.insert({ _id: "MongoDB", parent: "Databases", left: 6, right: 7 })
+db.categories.insert({ _id: "dbm", parent: "Databases", left: 8, right: 9 })
+
+// 하위 항목을 검색하기
+var databaseCategory = db.categories.findOne({ _id: "Databases" });
+db.categories.find({ left: {$gt: databaseCategory.left}, right: {$lt: databaseCategory.right} })
+// 자식 노드는 부모 노드보다 right 값이 작으며 left 값이 크다.
+// 부모가 아닌 노드는 right 값이 자식보다 작다.
+// 부모 자식 탐색을 다른 노드보다 빨리할 수 있지만, 수정 과정이 매우 어렵다.
+
+// MongoDB CRUD
+// 1. Insert
+
+// 하나의 document를 collection에 넣는 명령어, db.collection.insertOne()
+// insert 성공 시 document의 _id를 return
+db.inventory.insertOne(
+    {
+        item: "canvas",
+        qty: 100,
+        tags: ["cotton"],
+        size: {
+            h: 28,
+            w: 35.5,
+            uom: "cm"
+        }
+    }
+)
+
+// 여러 개의 document를 collection에 넣는 명령어, db.collection.insertMany()
+// Array 형태로 입력, return되는 _id 또한 Array 형태
+db.inventory.insertMany([
+    {
+        item: "journal",
+        qty: 25,
+        tags: ["blank", "red"],
+        size: {
+            h: 14,
+            w: 21,
+            uom: "cm"
+        }
+    },
+    {
+        item: "mat",
+        qty: 85,
+        tags: ["gray"],
+        size: {
+            h: 27.9,
+            w: 35.5,
+            uom: "cm"
+        }
+    },
+    {
+        item: "mousepad",
+        qty: 25,
+        tags: ["gel", "blue"],
+        size: {
+            h: 19,
+            w: 22.85,
+            uom: "cm"
+        }
+    },
+])
+
+// 2. Find
+// Collection에 있는 Document를 읽기
+
+// 전체 조회하기
+// 실행 후 id와 document도 함께 Return
+db.inventory.find({})
+db.inventory.find({ size:
+    {
+        h: 14,
+        w: 21,
+        uom: "cm"
+    }
+})
+
+// 쿼리 필터, 조건을 넣어 document를 찾을 때 필드와 내부 필드를 함께 붙여 사용 가능
+db.inventory.find({ "size.uom": "in" })
+
+// 조건에 operator를 사용하여 데이터 검색 가능
+db.inventory.find({
+    "size.h": {$lt: 15},
+    "size.uom": "in",
+    status: "D"
+})
+
+// 필요 데이터만 조회
+db.collection.find({조건}, {가져올 필드 : 1})
+db.inventory.find({ size: { h: 14, w: 21, uom: "cm"}}, { item : 1 })
+
+// _id 없이 item 필드만 조회하기
+db.collection.find({조건}, { _id: 0, 가져올 필드 : 1 })
+db.inventory.find({ size: { h: 14, w: 21, uom: "cm"}}, { _id: 0, item: 1 })
+
+// 특정 필드를 제외한 모든 필드 조회
+db.collection.find({조건}, { _id: 0, 가져올 필드 : 0 })
+db.inventory.find({ size: { h: 14, w: 21, uom: "cm"}}, { _id: 0, item: 0 })
+
+// 배열 조건 조회
+db.collection.find({ <field>: { &all: [<value1>, <value2>] }})
+
+// Null 값과 필드 존재 여부
+// 조건에 Null 값을 입력하면, 필드가 Null 인 값도 조회하고 필드가 존재하지 않은 Document도 조회
+db.inventory.insertMany([
+    { _id: 1, item: null },
+    { _id: 2 }
+])
+
+db.inventory.find({ item: null })
+
+// 필드가 존재하지 않는 Document를 조회하기
+db.inventory.find({ item: {$exists: false} })
+
+// 필드의 Value가 Null인 값을 조회하기 위해 Type 연산자 사용
+db.inventory.find({ item: {$type: 10} })
+
+// 3. Cursor
+// Find 함수를 사용하면 객체 타입은 Cursor 형태의 객체로 반환
+// 기본적으로 Cursor 반복을 최대 20회로 조회
+db.inventory.find({ status: "A" })
+var myCursor = db.inventory.find({ status: "A" }) // Mongo Shell에서 사용하는 방법
+
+// Cursor를 이용하여 데이터를 반복 출력하기
+var myCursor = db.inventory.find({ status: "A" })
+
+// while
+while(myCursor.hasNext()) {
+    print(tojson(myCursor.next()));
+}
+// forEach
+myCursor.forEach(printjson);
+// Array 형태로 변환
+var documentArray = myCursor.toArray();
+var myDocument = documentArray[3];
+
+// Java에서 Cursor 사용
+MongoCollection<Document> collection = sMongoDatabase.getCollection(collectionName);
+FindIterable<Document> findIterable = collection.find(query.getQuery());
+MongoCursor<Document> cursor = findIterable.iterator();
+
+try {
+    if(cursor.hasNext()) {
+        return cursor.next();
+    }
+} finally {
+    cursor.close();
+}
+
+// 4. Update, Replace
+// Collection의 Document를 수정하기
+
+// db.collection.updateOne()
+// 하나의 Document 수정. Update 시 조건을 넣어 수정할 Document를 지정하여 여러 Document가 조회될 경우 가장 처음의 Document를 수정
+db.inventory.updateOne(
+    {
+        item: "paper" // 조건
+    },
+    {
+        $set: { "size.uom": "cm", status: "P" }, // $set을 이용해 필드 값 수정
+        $currentDate: { lastModified: true }
+    }
+)
+
+// 여러 개의 데이터를 한 번에 수정하기, db.collection.updateMany()
+db.inventory.updateMany(
+    {
+        "qty": { $lt: 50 } // 조건
+    },
+    {
+        $set: { "size.uom": "in", status: "P" }, // $set을 이용해 필드 값 수정
+        $currentDate: { lastModified: true }
+    }
+)
+
+// 다르게 들어온 인자 값으로 Document 대체, db.collection.replaceOne()
+db.inventory.replaceOne(
+    {
+        item: "paper",
+    },
+    {
+        item: "paper",
+        instock: [
+            {
+                warehouse: "A",
+                qty: 60
+            },
+            {
+                warehouse: "B",
+                qty: 40
+            }
+        ]
+    }
+)
+
+// 5. Delete
+// Collection의 Document를 삭제
+
+// 여러 개의 Documents를 삭제를 위해 전체 Document 삭제
+db.inventory.deleteMany({})
+
+// 조건을 넣어 해당되는 Document 삭제
+db.inventory.deleteMany({ <field>: <value> })
+
+// 조회된 Documents 중 가장 첫 번째 Document 삭제
+db.inventory.deleteOne({ <field>: <value> })
+
+
+// MongoDB Model 활용
+// MongoDB에서 단일 Document에 대한 쓰기 동작을 유기적으로 수행 가능
+// 여러 개의 필드가 서로 영향을 미친다면, 같은 Document가 그 필드를 포함하면 효율적으로 동작 수행 가능
+
+// 예. 책과 대여가능한 권수, 대여 정보를 유지하는 상황에 대여가능 권수(Available), 대여 정보(Checkout)는서로 연관되어 처리해야 한다.
+{
+    _id: 123456789,
+    title: "MongoDB: The Definitive Guide",
+    author: ["Kristina Chodorow", "Mike Dirolf"],
+    published_date: ISODate("2010-09-24"),
+    pages:: 216,
+    language: "English",
+    publisher_id: "oreilly",
+    available: 3,
+    checkout: [
+        {
+            by: "joe",
+            date: ISODate("2012-10-15")
+        }
+    ]
+}
+
+// 데이터를 업데이트
+db.books.updateOne(
+    {
+        _id: 123456789,
+        available: {
+            $gt: 0
+        }
+    },
+    {
+        $inc: { available: -1 },
+        $push: {
+            checkout: {
+                by: "name",
+                date: new Date()
+            }
+        }
+    }
+)
+
+// Keyword 검색
+// 프로그램에서 텍스트를 저장하는 필드에 대해 쿼리를 수행하는 경우, 일치하는 텍스트를 찾아 조회
+// MongoDB 키워드 검색을 위한 방법 - Document에 배열 필드를 생성 후 키워드를 배열에 문자열로 추가. 배열에 키 인덱스를 생성하여 값 조회
+
+// Key Index 생성
+db.volumes.createIndex(
+    {
+        <field>: "text"
+    }
+)
+db.volumes.createIndex(
+    {
+        topics: "text"
+    }
+)
+
+// Find를 이용해 문자열 조회
+db.volumes.fineOne(
+    {
+        topics: "voyage"
+    },
+    {
+        title: 1
+    }
+)
+
+// 화폐 데이터
+// 프로그램에서 화폐 데이터를 처리할 때, 산술 처리를 한다면 정확한 정밀도로 10진수 반올림 처리를 할 수 있는 기능 필요
+// 이진 기반 소수점 산술은 정확한 소수를 표현할 수 없어 통화 산술에는 적합하지 않다.
+
+// MongoDB에서 화폐 데이터 산술을 위한 기능 제공, 숫자 데이터 | 숫자가 아닌 데이터
+
+// 숫자 데이터
+// 10진수 BSON Type 사용. 이진 기반 부동소수점 형식과 달리 통화 데이터 처리 가능
+// 10진수 값은 NumberDecimal()을 통해 활용 가능
+db.gasprices.insert{
+    "_id": 1,
+    "date": ISODate(),
+    "price": NumberDecimal("2.099"),
+    "station": "Quikstop",
+    "garde": "regular"
+}
+
+// 10진수 데이터 조회
+db.gasprices.find(
+    {
+        price: NumberDecimal("2.099")
+    }
+)
+
+// 숫자가 아닌 데이터
+// 통화 데이터로 사용하기 위해 두 필드에 값을 저장
+// 1. 첫 번째 필드는 숫자가 아닌 데이터 유형(BinData || String)으로 입력(화폐 데이터)
+// 2. 두 번째 필드에는 정확한 값을 부동 소수점으로 입력(최대 근사치값)
+{
+    price: {
+        display: "9.99", approx: 9.990000000000002, currency: "USD"
+    },
+    fee: {
+        display: "0.25", approx: 0.249999999999999, currency: "USD"
+    }
+}
+
+
+// MongoDB에서 DB 참조
+// 1. 수동 참조(Manual Reference), 2. DBRefs 사용
+
+// 수동 참조
+// 다른 Document의 _id 필드를 참조 사용할 Document의 하나의 필드로 저장하는 방식
+// 필드 중 하나인 _id 값을 통해 참조한 Document의 데이터 가져오기
+
+// 첫 번째는 place Collection, 두 번째는 people Collection으로 구성
+// people Collection에서 places_id를 통해 places로 접근하고 데이터를 참조하여 가져올 수 있다.
+original_id = ObjectID()
+
+db.places.insert({
+    "_id": original_id,
+    "name": "Broadway Center",
+    "url": "bc.example.net"
+})
+
+db.people.insert({
+    "name": "Erin",
+    "places_id": original_id,
+    "url": "bc.example.net/Erin"
+})
+
+// DBRefs
+// 특정 참조 유형을 나타내는 것이 아닌 문서 자체를 나타내는 규칙
+// _id 필드 이름 값 외 Collection 이름, 혹은 DB 이름까지도 포함
+
+// DBRefs 총 3개의 인자를 가질 수 있다.
+// 1. $ref (참조할 Document의 Collection 이름), 2. $id (Document 내 _id 필드), 3. $db (참조할 Document의 DB 이름)
+{
+    "$ref": <value>,
+    "$id": <value>,
+    "$db": <value>
+}
