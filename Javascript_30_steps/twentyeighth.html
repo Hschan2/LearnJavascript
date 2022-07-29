@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet" href="twentyeighth.css">
+</head>
+<body>
+
+  <div class="wrapper">
+    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+<script>
+  const speed = document.querySelector('.speed');
+  const bar = speed.querySelector('.speed-bar');
+  const video = document.querySelector('.flex');
+
+  function handleMove(e) {
+    const y = e.pageY - this.offsetTop; // e.pageY는 마우스의 Y축 좌표, offsetTop은 speed의 상단 좌표
+    const percent = y / this.offsetHeight; // offsetHeight는 speed 높이
+    const min = 0.1;
+    const max = 4;
+    const height = Math.round(percent * 100) + '%';
+    const playbackRate = percent * (max - min) + min; // 0.1 ~ 4 사이 속도 구하기
+    bar.textContent = playbackRate.toFixed(1) + 'x';
+    bar.style.height = height;
+    video.playbackRate = playbackRate;
+  }
+
+  speed.addEventListener('mousemove', handleMove);
+</script>
+</body>
+</html>

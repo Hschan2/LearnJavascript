@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+    const pressed = []; // 누른 키값 넣을 배열 값
+    const secretCode = 'wesbos'; // 배열에 들어갈 길이
+
+    window.addEventListener('keyup', (e) => { // 키보드 누를 때
+        console.log(e.key);
+        pressed.push(e.key); // 누른 값을 pressed에 넣어라
+        pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length); // secretCode의 길이만큼 배열에 넣어라
+        if(pressed.join('').includes(secretCode)) { // 배열 값 안에 wesbos가 포함되어 있으면
+            cornify_add(); // 출력
+        }
+        console.log(pressed);
+    });
+</script>
+</body>
+</html>

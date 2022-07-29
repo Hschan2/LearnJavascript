@@ -1,0 +1,129 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>firstDay</title>
+        <style>
+        html {
+            font-size: 10px;
+            background: url(http://i.imgur.com/b9r5sEL.jpg) bottom center;
+            background-size: cover;
+        }
+
+        body,html {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .keys {
+            display: flex;
+            flex: 1;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .key {
+            border: .4rem solid black;
+            border-radius: .5rem;
+            margin: 1rem;
+            font-size: 1.5rem;
+            padding: 1rem .5rem;
+            transition: all .07s ease;
+            width: 10rem;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.4);
+            text-shadow: 0 0 .5rem black;
+        }
+
+        .playing {
+            transform: scale(1.1);
+            border-color: #ffc600;
+            box-shadow: 0 0 1rem #ffc600;
+        }
+
+        kbd {
+            display: block;
+            font-size: 4rem;
+        }
+
+        .sound {
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: .1rem;
+            color: #ffc600;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="keys">
+            <div data-key="65" class="key">
+              <kbd>A</kbd>
+              <span class="sound">clap</span>
+            </div>
+            <div data-key="83" class="key">
+              <kbd>S</kbd>
+              <span class="sound">hihat</span>
+            </div>
+            <div data-key="68" class="key">
+              <kbd>D</kbd>
+              <span class="sound">kick</span>
+            </div>
+            <div data-key="70" class="key">
+              <kbd>F</kbd>
+              <span class="sound">openhat</span>
+            </div>
+            <div data-key="71" class="key">
+              <kbd>G</kbd>
+              <span class="sound">boom</span>
+            </div>
+            <div data-key="72" class="key">
+              <kbd>H</kbd>
+              <span class="sound">ride</span>
+            </div>
+            <div data-key="74" class="key">
+              <kbd>J</kbd>
+              <span class="sound">snare</span>
+            </div>
+            <div data-key="75" class="key">
+              <kbd>K</kbd>
+              <span class="sound">tom</span>
+            </div>
+            <div data-key="76" class="key">
+              <kbd>L</kbd>
+              <span class="sound">tink</span>
+            </div>
+          </div>
+        
+          <audio data-key="65" src="sounds/clap.wav"></audio>
+          <audio data-key="83" src="sounds/hihat.wav"></audio>
+          <audio data-key="68" src="sounds/kick.wav"></audio>
+          <audio data-key="70" src="sounds/openhat.wav"></audio>
+          <audio data-key="71" src="sounds/boom.wav"></audio>
+          <audio data-key="72" src="sounds/ride.wav"></audio>
+          <audio data-key="74" src="sounds/snare.wav"></audio>
+          <audio data-key="75" src="sounds/tom.wav"></audio>
+          <audio data-key="76" src="sounds/tink.wav"></audio>
+        
+        <script>
+            window.addEventListener('keydown', function(e) { // 키를 눌렀을 때 함수 실행
+                const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); // audio의 data-key의 값을 가져와라
+                const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); // key 클래스의 값을 가져와라
+                if(!audio) return; // 오디오가 없으면 정지하라! (오디오 나오지 마라)
+                audio.currentTime = 0; // 시작 시간을 되감기
+                audio.play(); // 오디오 실행
+                key.classList.add('playing'); // key 클래스를 가진 div에 playing(css)를 추가
+            });
+
+            function removeTransition(e) {
+                if(e.propertyName !== 'transform') return; // transform이 없다면 넘겨라
+                this.classList.remove('playing'); // playing(css) 를 없애라, 누르면 실행되는 playing(css)를 다시 비실행으로 전환
+            }
+
+            const keys = document.querySelectorAll('.key'); // key 클래스를 가진 모든 DIV
+
+            keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+        </script>
+    </body>
+</html>
