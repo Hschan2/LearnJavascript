@@ -125,3 +125,9 @@ Prisma
 ```
 30단계의 자바스크립트 지식을 학습
 ```
+
+## Nest JS [Link]()
+```
+노마드 코더의 Nest JS와 Apollo Graph QL
+Movie Data API로 Nest JS 기본 배우기
+```
