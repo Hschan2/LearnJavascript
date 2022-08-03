@@ -7,7 +7,7 @@ const DebounceApp = () => {
     const [results, setResults] = useState([]);
     const [text, setText] = useState("")
 
-    const deb = UseDebounce(text, 500);
+    const deb = UseDebounce(text, 300);
 
     useEffect(() => {
         const data = DATA.filter(el => el.toLowerCase().includes(deb));
