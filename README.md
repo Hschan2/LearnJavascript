@@ -131,3 +131,9 @@ Prisma
 노마드 코더의 Nest JS와 Apollo Graph QL
 Movie Data API로 Nest JS 기본 배우기
 ```
+
+## NomadCoder React Next JS [Link]()
+```
+노마드코더의 React Next JS 강의
+영화 정보 제공 서비스 제작
+```
