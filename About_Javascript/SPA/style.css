@@ -172,7 +172,7 @@ button {
     position: relative;
     display: flex;
     flex-direction: column;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .product .product-item .product-name {

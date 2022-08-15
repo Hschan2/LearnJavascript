@@ -42,14 +42,16 @@
 
             product.forEach(item => {
                 // console.log(item);
-                const productDetailLink = document.createElement('a');
+                const productDetailLink = document.createElement('div');
                 productDetailLink.href = `/detail/${item.id}`;
                 productDetailLink.innerHTML = `
                     <li class="product-item">
-                        <div class="product-img">
-                            <img src="http://test.api.weniv.co.kr/${item.thumbnailImg}">
-                        </div>
-                        <strong class="product-name sl-ellipsis">${item.productName}</strong>
+                        <a href="#">
+                            <div class="product-img">
+                                <img src="http://test.api.weniv.co.kr/${item.thumbnailImg}">
+                            </div>
+                            <strong class="product-name sl-ellipsis">${item.productName}</strong>
+                        </a>
                         <button class="like-btn"></button>
                         <div class="product-price">
                             <strong class="price m-price">${item.price}<span>원</span></strong>
@@ -59,6 +61,22 @@
 
                 productList.append(productDetailLink);
             })
+
+            const likeButton = productList.querySelectorAll('.like-btn');
+            for (let i = 0; i < likeButton.length; i++ ) {
+
+                likeButton[i].addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    if (likeButton[i].classList.contains("on")) {
+                        likeButton[i].classList.remove("on");
+                    } else {
+                        likeButton[i].classList.add("on");
+                    }
+                })
+            }
+            
+            
 
             const cart = document.createElement('a');
             cart.setAttribute('class', 'link-btn cart-link');
