@@ -63,20 +63,30 @@
             })
 
             const likeButton = productList.querySelectorAll('.like-btn');
-            for (let i = 0; i < likeButton.length; i++ ) {
+            // for (let i = 0; i < likeButton.length; i++ ) {
 
-                likeButton[i].addEventListener('click', function(e) {
+            //     likeButton[i].addEventListener('click', function(e) {
+            //         e.preventDefault();
+
+            //         if (likeButton[i].classList.contains("on")) {
+            //             likeButton[i].classList.remove("on");
+            //         } else {
+            //             likeButton[i].classList.add("on");
+            //         }
+            //     })
+            // }
+
+            likeButton.forEach((item, index, arr) => {
+                likeButton[index].addEventListener('click', function(e) {
                     e.preventDefault();
 
-                    if (likeButton[i].classList.contains("on")) {
-                        likeButton[i].classList.remove("on");
+                    if (likeButton[index].classList.contains("on")) {
+                        likeButton[index].classList.remove("on");
                     } else {
-                        likeButton[i].classList.add("on");
+                        likeButton[index].classList.add("on");
                     }
                 })
-            }
-            
-            
+            })
 
             const cart = document.createElement('a');
             cart.setAttribute('class', 'link-btn cart-link');

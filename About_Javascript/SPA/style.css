@@ -11,16 +11,16 @@
     --sub-txt-color: #828282;
     --button-border: #BDBDBD;
 }
-  
+
 div, span, article, section, header, main, footer, p, ul, li, label, a, nav, h1, h2, h3, form, input, button, img, textarea, table, thead, tbody, tr, th, td {
     box-sizing: border-box;
 }
-  
+
 body, html {
     width: 100%;
     height: 100%;
 }
-  
+
 body, button {
     font-family: "Spoqa Han Sans Neo", "sans-serif";
 }
@@ -67,8 +67,8 @@ table, thead, tbody, tr {
 /* 두줄 말줄임 */
 .multi-ellipsis {
   overflow: hidden;
-  display: -webkit-box; 
-  -webkit-line-clamp: 2; 
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -102,23 +102,23 @@ button {
 
 /* 상품 이름 스타일 */
 .product-name {
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 20px;
+    line-height: 20px;
 }
 
 /* 상품 가격 스타일 */
 /* medium 사이즈 */
 .m-price {
     font-weight: 700;
-    font-size: 24px;
+    font-size: 25px;
     line-height: 30px;
 }
 
 .m-price span {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 20px;
-    margin-left: 2px;
+    margin-left: 5px;
 }
 
 .product-price {
@@ -133,7 +133,7 @@ button {
 }
 
 .product-price .price-strikethrough {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 20px;
     color: var(--sub-txt-color);
     text-decoration-line: line-through;
@@ -142,8 +142,8 @@ button {
 
 /* 좋아요 버튼 */
 .like-btn {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border: none;
     background: url(./assets/icon-heart.svg) no-repeat center / contain;
 }
@@ -157,7 +157,7 @@ button {
     display: flex;
     justify-content: center;
     margin-top: 160px;
-    padding-bottom: 156px;
+    padding-bottom: 155px;
 }
 
 .product .product-list {
@@ -176,7 +176,7 @@ button {
 }
 
 .product .product-item .product-name {
-    width: 338px;
+    width: 340px;
     margin: 20px 0 10px;
 }
 
@@ -187,5 +187,5 @@ button {
 }
 
 .product .cart-link {
-    background: var(--main-color) url(./assets/icon-shopping-cart-white.svg) no-repeat center / 40px 40px;
+    background: var(--main-color) url(./assets/icon-shopping-cart-white.svg) no-repeat center / 30px 30px;
 }
