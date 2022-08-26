@@ -68,6 +68,7 @@ Drag and Drop API를 사용한 프로젝트
 
 ```
 실시간 업데이트 방법 (리프레시 제거 방법)
+주석 제대로 사용하는 방법
 ```
 
 ## Single Page 자기소개 사이트 [Link](https://github.com/Hschan2/LearnJavascript/tree/main/FrontEnd_Web/First)
@@ -136,4 +137,10 @@ Movie Data API로 Nest JS 기본 배우기
 ```
 노마드코더의 React Next JS 강의
 영화 정보 제공 서비스 제작
+```
+
+## Next JS [Link]()
+```
+Next JS로 API 호출해 데이터 사용하기
+Image Data, Text Data 호출해 사용하기
 ```
