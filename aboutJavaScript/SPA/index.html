@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page Application</title>
+    <link rel="stylesheet" href="//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        const root = document.getElementById("root");
+
+        async function getProductData() {
+            const res = await fetch('http://test.api.weniv.co.kr/mall');
+            const product = await res.json();
+            return product;
+        }
+
+        getProductData().then((product) => {
+            const mainElement = document.createElement('main');
+            mainElement.classList.add('product');
+
+            mainElement.innerHTML = `
+                <h1 class="ir">상품목록 페이지</h1>
+                <ul class="product-list"></ul>
+            `;
+
+            // const productPageHeader = document.createElement('h1');
+            // productPageHeader.setAttribute('class', 'ir');
+            // productPageHeader.innerHTML = `상품목록 페이지`;
+            // mainElement.appendChild(productPageHeader);
+
+            // const productList = document.createElement('ul');
+            // productList.setAttribute('class', 'product-list');
+            // mainElement.appendChild(productList);
+
+            const productList = mainElement.querySelector('.product-list');
+
+            product.forEach(item => {
+                // console.log(item);
+                const productDetailLink = document.createElement('div');
+                productDetailLink.href = `/detail/${item.id}`;
+                productDetailLink.innerHTML = `
+                    <li class="product-item">
+                        <a href="#">
+                            <div class="product-img">
+                                <img src="http://test.api.weniv.co.kr/${item.thumbnailImg}">
+                            </div>
+                            <strong class="product-name sl-ellipsis">${item.productName}</strong>
+                        </a>
+                        <button class="like-btn"></button>
+                        <div class="product-price">
+                            <strong class="price m-price">${item.price}<span>원</span></strong>
+                        </div>
+                    </li>
+                `;
+
+                productList.append(productDetailLink);
+            })
+
+            const likeButton = productList.querySelectorAll('.like-btn');
+            // for (let i = 0; i < likeButton.length; i++ ) {
+
+            //     likeButton[i].addEventListener('click', function(e) {
+            //         e.preventDefault();
+
+            //         if (likeButton[i].classList.contains("on")) {
+            //             likeButton[i].classList.remove("on");
+            //         } else {
+            //             likeButton[i].classList.add("on");
+            //         }
+            //     })
+            // }
+
+            likeButton.forEach((item, index, arr) => {
+                likeButton[index].addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    if (likeButton[index].classList.contains("on")) {
+                        likeButton[index].classList.remove("on");
+                    } else {
+                        likeButton[index].classList.add("on");
+                    }
+                })
+            })
+
+            const cart = document.createElement('a');
+            cart.setAttribute('class', 'link-btn cart-link');
+            mainElement.append(cart);
+
+            root.append(mainElement);
+        })
+    </script>
+</body>
+</html>
