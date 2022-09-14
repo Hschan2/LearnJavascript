@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Reference VS Copy</title>
+</head>
+<body>
+
+  <script>
+    // start with strings, numbers and booleans
+    let age = 27;
+    let age2 = age;
+    console.log(age, age2);
+    age = 20;
+    console.log(age, age2);
+
+    let name = "Hong";
+    let name2 = name;
+    console.log(name, name2);
+    name = "Chan2";
+    console.log(name, name2);
+    
+    // Let's say we have an array
+    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+
+    // and we want to make a copy of it.
+    const team = players;
+
+    console.log(team);
+    team[3] = "hong";
+
+    // You might think we can just do something like this:
+
+    // however what happens when we update that array?
+
+    // now here is the problem!
+
+    // oh no - we have edited the original array too!
+
+    // Why? It's because that is an array reference, not an array copy. They both point to the same array!
+
+    // So, how do we fix this? We take a copy instead!
+    const team2 = players.slice(); // slice(2,3)은 2번째부터 3번째부분까지 출력(쪼개기)
+    // one way
+
+    // or create a new array and concat the old one in
+    const team3 = [].concat(players); // concat은 문자열을 새롭게 생성
+
+    // or use the new ES6 Spread
+    const team4 = [...players]; // ...(spread)는 배열 혹은 문자열을 가져와서 객체로 확장 가능
+    team4[3] = "Hong";
+    console.log(team4);
+
+    const team5 = Array.from(players); // players로 부터 배열을 새로 생성
+
+    // now when we update it, the original one isn't changed
+
+    // The same thing goes for objects, let's say we have a person object
+
+    // with Objects
+    const person = {
+      name: 'Wes Bos',
+      age: 80
+    };
+
+    // and think we make a copy:
+    const captain = person;
+    captain.number = 99;
+
+    // how do we take a copy instead?
+    const cap2 = Object.assign({}, person, { number:99, age:12 });
+
+    // We will hopefully soon see the object ...spread
+    const cap3 = {...person};
+
+    // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+    const wes = {
+        name: 'Wes',
+        age: 100,
+        social: {
+            twitter: '@wesbos',
+            facebook: 'wesbos.developer'
+        }
+    }
+
+    const dev = Object.assign({}, wes); // dev에 wes 할당, dev의 값이 바뀌면 wes의 값도 바뀐다.
+  
+    const dev2 = JSON.parse(JSON.stringify(wes)); // parse는 JSON문자열에서 값이나 객체를 생성, stringify는 값과 객체를 JSON문자열로 변환
+                                                    // dev2의 값을 바꿔도 wes의 값이 바뀌지 않는다
+
+    
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Synthesis</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="twentythird.css">
+</head>
+<body>
+
+    <div class="voiceinator">
+
+      <h1>The Voiceinator 5000</h1>
+
+      <select name="voice" id="voices">
+        <option value="">Select A Voice</option>
+      </select>
+
+      <label for="rate">voice speed:</label>
+      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+
+      <label for="pitch">voice level:</label>
+
+      <input name="pitch" type="range" min="0" max="2" step="0.1">
+      <textarea name="text">Hello! I love JavaScript 👍</textarea>
+      <button id="stop">Stop!</button>
+      <button id="speak">Speak</button>
+
+    </div>
+
+<script>
+  const msg = new SpeechSynthesisUtterance();
+  let voices = [];
+  const voicesDropdown = document.querySelector('[name="voice"]');
+  const options = document.querySelectorAll('[type="range"], [name="text"]');
+  const speakButton = document.querySelector('#speak');
+  const stopButton = document.querySelector('#stop');
+
+  msg.text = document.querySelector('[name="text"]').value; // name이 text인 값을 가져오기
+
+  function populateVoices() {
+    voices = this.getVoices(); // Voice 가져오기
+    voicesDropdown.innerHTML = voices
+        // .filter(voice => voice.lang.includes('en')) = en이 들어간 언어만 나오기
+        .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`) // 목소리 전체 가져오기(이름, 언어)
+        .join('');
+  }
+
+  function setVoice() { // 목소리 찾기
+      msg.voice = voices.find(voice => voice.name === this.value);
+  }
+
+  function toggle(startOver = true) { // 버튼, 목소리 시작/중지
+      speechSynthesis.cancel();
+
+      if(startOver) {
+        speechSynthesis.speak(msg);
+      }
+  }
+
+  function setOption() { // 목소리 변형 조절 값
+      msg[this.name] = this.value;
+      toggle();
+  }
+
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+  voicesDropdown.addEventListener('change', setVoice); // 목소리 변경할 때
+  options.forEach(option => option.addEventListener('change', setOption)); // 옵션에서 값을 변화할 때
+  speakButton.addEventListener('click', toggle); // toggle(true)
+  stopButton.addEventListener('click', () => toggle(false)); // () =>는 bind()와 같음 다른 함수를 외부에서 사용할 때
+
+</script>
+
+</body>
+</html>

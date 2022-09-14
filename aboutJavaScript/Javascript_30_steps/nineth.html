@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log("Regular");
+    // Interpolated
+    console.log("String Export %s", "Hello"); // %s는 텍스트 출력
+    // Styled
+    console.log("%c Style", "font-size:15px; background:black; color:white;");
+    // warning!
+    console.warn("warning!!!"); // warn은 경고를 출력
+    // Error :|
+    console.error("Error!!!!!"); // error는 에러를 출력
+    // Info
+    console.info("Information"); // 정보를 나타내고 싶을 때
+    // Testing
+    console.assert(1 === 2, "Failed"); // 앞에 인자 계산이 틀릴 때, 경고문 출력
+    
+    const p = document.querySelector("p");
+    console.assert(p.classList.contains("ouch"), "failed");
+    // clearing
+    console.clear();
+    // Viewing DOM Elements
+    console.log(p); // <p onClick="makeGreen()">×BREAK×DOWN×</p>가 출력
+    console.dir(p); // p의 요소들에 대해 출력
+    // Grouping together
+    dogs.forEach(dog => { // dogs의 갯수만큼 반복, dog는 인자
+        console.group(`${dog.name}`); // 이름으로 그룹을 만드는 시작점
+        console.log(`dog name is ${dog.name}`); // 이름 출력
+        console.log(`${dog.name} is ${dog.age} years old`); // 나이 출력
+        console.groupEnd(`${dog.name}`); // 이름으로 그룹을 만드는 종료점
+    });
+    // counting
+    console.count("its me"); // me의 1
+    console.count("its me"); // me의 2
+    console.count("its you"); // you의 1
+    console.count("its me"); // me의 3
+    console.count("its you"); // you의 2
+    // timing
+    console.time('fetching data');
+    fetch('https://api.github.com/users/wesbos')
+        .then(data => data.json)
+        .then(data => {
+            console.timeEnd('fetching data');
+            console.log(data);
+        }); // 데이터를 불러오는 데까지 걸리는 시간
+
+
+    console.table(dogs); // dogs를 테이블 형식으로 출력
+  </script>
+</body>
+</html>
