@@ -13,7 +13,6 @@
 |---|:---:|
 |**자바스크립트에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/About_Javascript)|
 |**타입스크립트에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TypeScript)|
-|**자바스크립트 30일**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/Javascript_30_steps)|
 |**바닐라 자바스크립트에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/VanillaJS)|
 |**React JS에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React)|
 |**Next JS에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/react-nextjs)|
