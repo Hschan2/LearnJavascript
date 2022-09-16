@@ -1,5 +1,5 @@
 
-//action(어떤 변화가 일어나는지, 작업의 정보) 작성
+// action(어떤 변화가 일어나는지, 작업의 정보) 작성
 const START = "START";
 const RESTART = "GAMESTART";
 const P1NUMBER = "P1NUMBER";
