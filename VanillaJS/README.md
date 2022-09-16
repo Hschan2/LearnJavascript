@@ -1,4 +1,6 @@
-# Vanilla JS
-바닐라 자바스크립트 APP 제작
+# Vanilla JavaScript
+바닐라 자바스크립트로 애플리케이션을 개발합니다. 자바스크립트의 가장 기본적인 문법인 바닐라 자바스크립트를 이해하는 것을 목적으로 합니다.   
 
-[보기](https://hschan2.github.io/StudyJS/VanillaJS/index.html)
+바닐라 자바스크립트로 To-Do List를 개발합니다. To-Do, 날씨 정보, 명언, 시간, 배경화면을 사용해 다양한 정보를 담긴 To-Do List를 개발해보며 바닐라 자바스크립트의 기본적인 문법과 API 활용을 동시에 진행합니다. 날씨는 ```openWeatherMap API```를 활용합니다.   
+
+바닐라 자바스크립트를 전체적으로 이해할 수 있습니다.   

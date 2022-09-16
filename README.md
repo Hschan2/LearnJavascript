@@ -1,7 +1,7 @@
 # 자바스크립트 학습
 자바스크립트를 학습합니다. 자바스크립트의 기본적인 문법부터 사용법, 적절한 활용 방법을 학습합니다.   
 
-또한, 좋은 가독성과 효율적으로 재사용할 수 있는 코드를 지향하기 위해 학습하고 노력합니다.   
+또한, 좋은 가독성과 효율적으로 재사용할 수 있는 코드를 지향하기 때문에 이를 적극적으로 학습하려고 노력합니다.   
 
 자바스크립트 뿐만 아니라 React JS, Node JS, TypeScript, Next JS를 학습합니다. 실제 개발 환경에서 자주 사용하는 기술을 학습하며 더욱 효율적으로 개발할 수 있는 능력을 쌓기 위해 노력합니다.   
 
@@ -51,24 +51,6 @@
 ```
 
 ```
-타입스크립트로 만드는 블록체인 (노마드코더)
-```
-
-```
-타입스크립트로 만드는 To Do List
-```
-
-## Firebase으로 만드는 채팅 [Link](https://github.com/Hschan2/LearnJavascript/tree/main/Firebase-Chat)
-
-## Drag Drop API [Link](https://github.com/Hschan2/LearnJavascript/tree/main/DragAndDropAPI_JS)
-
-```
-Drag and Drop API를 사용한 프로젝트
-```
-
-## Javascript (자바스크립트) [Link](https://github.com/Hschan2/LearnJavascript/tree/main/About_Javascript)
-
-```
 자바스크립트 기본 지식
     - Function (함수)
     - Variable (변수)
@@ -92,76 +74,12 @@ Drag and Drop API를 사용한 프로젝트
     - Class Fields
 ```
 
-```
-유튜브 채널 개발바닥 팁
-    - 레이어드 아키텍처 (Layered architecture)
-    - TypeDI
-    - 견고한 Node 프로젝트 아키텍처 설계하기
-```
-
-```
-유튜브 클론 만들기
-```
-
-```
-실시간 업데이트 방법 (리프레시 제거 방법)
-주석 제대로 사용하는 방법
-```
-
-## Single Page 자기소개 사이트 [Link](https://github.com/Hschan2/LearnJavascript/tree/main/FrontEnd_Web/First)
-```
-Single Page 개발
-애니메이션 적용
-```
-
-## Graph QL [Link]()
-```
-노마드코더의 Graph QL
-```
-
-## Graph QL with Apollo [Link]()
-```
-노마드코더의 Apollo로 만드는 Graph QL
-```
-
-## Test To Voice [Link]()
-```
-입력한 텍스트를 AI 목소리로 출력하기
-    - 목소리 선택 불가능 버전
-    - 목소리 선택 가능 버전
-```
-
-## Vanilla Javascript [Link]()
-```
-노마드 코더의 바닐라 자바스크립트
-```
-
-## React JS [Link]()
-```
-React JS 기초 이론 및 문법 학습
-React JS Redux로 빙고게임 제작
-React JS Hook으로 ToDo List 제작
-```
-
-## MoonbucksMenu [Link]()
-```
-커피 메뉴 서비스 페이지 제작
-```
-
-## Zero Cho React JS 강의 [Link]()
-```
-```
 
 ## React Remix [Link]()
 ```
 User
 Post/Get
 Prisma
-```
-
-## 자바스크립트 30일 [Link]()
-```
-30단계의 자바스크립트 지식을 학습
 ```
 
 ## Nest JS [Link]()
