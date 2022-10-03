@@ -22,3 +22,4 @@ React JS에 대해 기본부터 학습하여 이해하려고 노력합니다. �
 |**리액트 렌더링 최적화**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/%EB%A6%AC%EC%95%A1%ED%8A%B8%20%EB%A0%8C%EB%8D%94%EB%A7%81%20%EC%B5%9C%EC%A0%81%ED%99%94.js)|
 |**useState를 잘 사용하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/howToMakeReactState.js)|
 |**useState보다 useRef 활용하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/noStateYesRef.js)|
+|**웹 성능 올리기 - 이미지 조절**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/%EC%9B%B9%EC%84%B1%EB%8A%A5%EC%98%AC%EB%A6%AC%EA%B8%B0-%EC%9D%B4%EB%AF%B8%EC%A7%80.md)|
