@@ -24,3 +24,5 @@ React JS에 대해 기본부터 학습하여 이해하려고 노력합니다. �
 |**useState보다 useRef 활용하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/noStateYesRef.js)|
 |**웹 성능 올리기 - 이미지 조절**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/%EC%9B%B9%EC%84%B1%EB%8A%A5%EC%98%AC%EB%A6%AC%EA%B8%B0-%EC%9D%B4%EB%AF%B8%EC%A7%80.md)|
 |**useEffect 프로처럼 사용하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/useEffect%20%EC%9E%98%20%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0.js)|
+|**React Hook 실수 피하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/React%20Hook%20%EC%8B%A4%EC%88%98%20%ED%94%BC%ED%95%98%EA%B8%B0.js)|
+|**React Filter 실수 피하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/filter%20%EC%8B%A4%EC%88%98%ED%95%98%EC%A7%80%20%EC%95%8A%EA%B8%B0.js)|
