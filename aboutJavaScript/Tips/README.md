@@ -11,3 +11,5 @@
 * [Operator](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/Tips/Operator.js)
 * [Resize Observer](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/Tips/Resize%20Observer.js)
 * [알람(Notification)](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/Tips/Notification)
+* [날짜](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/Tips/%EB%82%A0%EC%A7%9C.js)
+* [Class Function & Factory Function](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/Tips/ClassFuncFactoryFunc.js)
