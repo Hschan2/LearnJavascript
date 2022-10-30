@@ -3,7 +3,8 @@
 
 ## 목록
 |타이틀|파일로 이동|
-|:---:|---|
+|---|:---:|
 |**2022년 7월의 자바스크립트 신기능**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/newJavaScript/%EC%8B%A0%EA%B8%B0%EB%8A%A5%202022%207%EC%9B%94.md)|
 |**최신 자바스크립트**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/newJavaScript/Latest%20Javascript.js)|
 |**Temporal**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/newJavaScript/Temporal.js)|
+|**Next JS 13 Ver 특징**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/newJavaScript/NextJS%2013ver.md)|
