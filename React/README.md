@@ -26,3 +26,4 @@ React JS에 대해 기본부터 학습하여 이해하려고 노력합니다. �
 |**useEffect 프로처럼 사용하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/useEffect%20%EC%9E%98%20%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0.js)|
 |**React Hook 실수 피하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/React%20Hook%20%EC%8B%A4%EC%88%98%20%ED%94%BC%ED%95%98%EA%B8%B0.js)|
 |**React Filter 실수 피하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/filter%20%EC%8B%A4%EC%88%98%ED%95%98%EC%A7%80%20%EC%95%8A%EA%B8%B0.js)|
+|**이미지 최적화**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/Image%20%EC%B5%9C%EC%A0%81%ED%99%94.js)|
