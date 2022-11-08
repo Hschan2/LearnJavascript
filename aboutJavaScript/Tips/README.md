@@ -13,3 +13,4 @@
 * [알람(Notification)](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/Tips/Notification)
 * [날짜](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/Tips/%EB%82%A0%EC%A7%9C.js)
 * [Class Function & Factory Function](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/Tips/ClassFuncFactoryFunc.js)
+* [Next JS에서 SSG, SSR 사용은 이제 그만](https://github.com/Hschan2/LearnJavascript/blob/main/aboutJavaScript/Tips/ByeSSG%26SSRofNextJS.js)
