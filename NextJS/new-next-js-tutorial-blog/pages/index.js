@@ -16,7 +16,7 @@ export default function Home({ blogs }) {
       <h1 className='my-4 text-center'>환영합니다. Next JS 13</h1>
       <div className="Cards row justify-content-center">
         {blogs.blogs.map((blog) => {
-          return <div className="card mx-4 my-3" style={{ width: '16rem', padding: '0' }}>
+          return <div className="card mx-4 my-3 px-0" style={{ width: '16rem'}}>
             <img src="http://t1.daumcdn.net/brunch/service/user/8TE/image/2xXGrL1iffAGXuY3oPKrhmTqma4.png" className="card-img-top" alt="이미지" />
             <div className="card-body">
               <h5 className="card-title">{blog.title}</h5>
