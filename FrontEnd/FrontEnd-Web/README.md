@@ -6,4 +6,4 @@
 ## 목록
 |타이틀|폴더로 이동|
 |---|:---:|
-|**싱글 페이지**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/FrontEnd_Web/First)|
+|**싱글 페이지**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/FrontEnd/FrontEnd-Web/First)|

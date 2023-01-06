@@ -9,13 +9,12 @@
 
 |타이틀|폴더로 이동|
 |---|:---:|
-|**개발바닥 팁**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/%EA%B0%9C%EB%B0%9C%EB%B0%94%EB%8B%A5%20%ED%8C%81)|
-|**자바스크립트 개발 지식**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%20%EA%B0%9C%EB%B0%9C%20%EC%A7%80%EC%8B%9D)|
-|**자바스크립트 30일**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/Javascript_30_steps)|
-|**클론 개발**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/Clone)|
-|**새로운 자바스크립트 지식**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/newJavaScript)|
-|**SPA 예시**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/SPA)|
-|**자바스크립트 팁**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/Tips)|
-|**새로고침 없는 페이지 개발**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/aboutJavaScript/withoutRefresh)|
+|**JavaScript Basic**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript/JavaScript%20Basic)|
+|**JavaScript Tips**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript/JavaScript%20Tips)|
+|**JavaScript New Features**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript/JavaScript%20New%20Features)|
+|**JavaScript 30 Steps**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript/JavaScript%2030%20Steps)|
+|**개발바닥 Tips**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript/%EA%B0%9C%EB%B0%9C%EB%B0%94%EB%8B%A5%20Tips)|
+|**Clone Development**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript/Clone%20Development)|
+|**API Development**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript/API%20Development)|
 
 <br/>

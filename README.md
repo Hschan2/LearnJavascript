@@ -1,4 +1,4 @@
-# 자바스크립트 학습
+# 자바스크립트와 관련된 학습 장소
 자바스크립트를 학습합니다. 자바스크립트의 기본적인 문법부터 사용법, 적절한 활용 방법을 학습합니다.   
 
 또한, 좋은 가독성과 효율적으로 재사용할 수 있는 코드를 지향하기 때문에 이를 적극적으로 학습하려고 노력합니다.   
@@ -7,35 +7,21 @@
 
 <br/>
 
-## 학습
+## 폴더
 
 |타이틀|폴더로 이동|
 |---|:---:|
-|**자바스크립트에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/About_Javascript)|
-|**타입스크립트에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TypeScript)|
-|**바닐라 자바스크립트에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/VanillaJS)|
-|**React JS에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React)|
-|**Next JS에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/react-nextjs)|
-|**노마드코더의 Next JS**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/nomadcoders-nextjs)|
-|**Graph QL에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/graphql)|
-|**새로운 React 기능**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/new-react-function)|
-|**Nest JS API 프레임워크에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/nest-api)|
-|**NoSQL에 대해**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/NoSQL)|
+|**자바스크립트**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/JavaScript)|
+|**타입스크립트**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TypeScript)|
+|**바닐라 자바스크립트**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/VanillaJS)|
+|**React JS**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React)|
+|**Next JS**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/NextJS)|
+|**Nest JS**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/Nest)|
+|**Database**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/Database)|
+|**FrontEnd**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/FrontEnd)|
+|**Network**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/Network)|
 
 <br/>
-
-## 프로젝트
-|타이틀|폴더로 이동|
-|---|:---:|
-|**깃허브 클론 페이지**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/WooA_GitPage)|
-|**문자를 목소리로**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TextToVoices)|
-|**반응형 CSS**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/Responsive_CSS_Unit)|
-|**드래그 앤 드롭 API**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/DragAndDropAPI_JS)|
-|**파이어베이스 채팅 서비스**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/Firebase-Chat)|
-|**프론트엔드 개발 페이지**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/FrontEnd_Web/First)|
-|**React JS 프로젝트**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React_Projects)|
-|**스타벅스 클론 페이지**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/moonbucksMenu)|
-
 
 # 웹 프론트엔드 학습 로드맵
 ## 평생 학습하며 성장하기 위한 가장 중요한 것을 찾자

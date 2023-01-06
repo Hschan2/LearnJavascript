@@ -12,7 +12,10 @@ React JS에 대해 기본부터 학습하여 이해하려고 노력합니다. �
 |---|:---:|
 |**Zero Cho의 React JS**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/ReactLecture)|
 |**React JS Remix**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/React-Remix)|
-
+|**New React Features**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/New%20React%20Features)|
+|**React + Next JS**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/React%20%2B%20Next%20JS)|
+|**React Projects**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/React%20Projects)|
+|**if(kakao)dev2022**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/if(kakao)dev2022)|
 
 <br/>
 
@@ -28,3 +31,4 @@ React JS에 대해 기본부터 학습하여 이해하려고 노력합니다. �
 |**React Filter 실수 피하기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/filter%20%EC%8B%A4%EC%88%98%ED%95%98%EC%A7%80%20%EC%95%8A%EA%B8%B0.js)|
 |**이미지 최적화**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/Image%20%EC%B5%9C%EC%A0%81%ED%99%94.js)|
 |**useEffect 대신 React-Query**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/React-Query.js)|
+|**Code Splitting으로 속도 올리기**|[이동](https://github.com/Hschan2/LearnJavascript/blob/main/React/Code%20Splitting%EC%9C%BC%EB%A1%9C%20%EC%86%8D%EB%8F%84%20%EC%98%AC%EB%A6%AC%EA%B8%B0.js)|

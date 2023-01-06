@@ -6,9 +6,9 @@ React JS를 활용해서 프로젝트를 개발해 봅니다. 초보 개발자�
 ## 목록
 |타이틀|폴더로 이동|
 |---|:---:|
-|**React JS Study**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React_Projects/React_JS_Study/React_JS_Study)|
-|**React JS Hook To-Do List**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React_Projects/React_ToDo_with_Hook/React_ToDo_with_Hook)|
-|**React Redux Bingo Game**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React_Projects/React-Redux-Bingo/React-Redux-Bingo)|
+|**React JS Study**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/React%20Projects/React_JS_Study)|
+|**React JS Hook To-Do List**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/React%20Projects/React_ToDo_with_Hook)|
+|**React Redux Bingo Game**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/React/React%20Projects/React-Redux-Bingo)|
 
 - <b>React_JS_Study</b>
 ```
