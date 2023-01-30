@@ -12,6 +12,7 @@
 ## 목록
 |타이틀|폴더로 이동|
 |---|:---:|
+|**타입스크립트 공식 튜토리얼**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TypeScript/TypeScript-Tutorial)|
 |**타입스크립트 기본**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TypeScript/typescript-basic)|
 |**타입스크립트 To-Do List**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TypeScript/TodoList)|
 |**타입스크립트 블록체인**|[이동](https://github.com/Hschan2/LearnJavascript/tree/main/TypeScript/ts-blockchain)|
