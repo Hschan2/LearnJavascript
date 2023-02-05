@@ -83,6 +83,12 @@ export default function HighRated({results}) {
 export async function getServerSideProps() {
     const {results} = await (await fetch(`http://localhost:3000/api/highRated`)).json();
     
+    if (!results) {
+        return {
+            notFound: true,
+        }
+    }
+
     return {
         props: {
             results,

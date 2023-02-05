@@ -34,7 +34,7 @@ export default function NavBar() {
 
                 img {
                     max-width: 100px;
-                    margin-bottom: 5px;
+                    margin-bottom: 10px;
                 }
 
                 nav a {
