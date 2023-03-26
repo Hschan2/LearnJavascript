@@ -1,4 +1,3 @@
-const API_KEY = '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';
 const { Configuration, OpenAIApi } = require("openai");
 const express = require('express')
 const app = express()
@@ -9,7 +8,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 const corsOptions = {
     origin: 'https://chat-teller.pages.dev/',
-    Credential: true,
+    credentials: true,
 }
 app.use(cors(corsOptions))
 
