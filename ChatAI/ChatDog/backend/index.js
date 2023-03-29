@@ -1,21 +1,25 @@
+const API_KEY = process.env.OPEN_AI_API_KEY;
 const { Configuration, OpenAIApi } = require("openai");
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const openai = new OpenAIApi(configuration);
+const serverless = require('serverless-http');
+
 const configuration = new Configuration({
     apiKey: API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 const corsOptions = {
     origin: 'https://chat-teller.pages.dev/',
     credentials: true,
 }
-app.use(cors(corsOptions))
+
+app.use(cors(corsOptions));
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-app.post('/fortune', async function (req, res) {
+app.post('/fortuneTell', async function (req, res) {
     const { myDateTime, userMessages, assistantMessages} = req.body
     const todayDateTime = new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
 
@@ -49,4 +53,6 @@ app.post('/fortune', async function (req, res) {
     res.json({"assistant": fortune});
 })
 
-app.listen(3000)
+// app.listen(3000)
+
+module.exports.handler = serverless(app);
