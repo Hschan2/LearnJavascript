@@ -10,7 +10,10 @@ const configuration = new Configuration({
     apiKey: API_KEY,
 });
 const corsOptions = {
-    origin: 'https://chat-teller.pages.dev/',
+    origin: [
+        'https://chat-teller.pages.dev',
+        'http://127.0.0.1:5500/frontend/index.html'
+    ],
     credentials: true,
 }
 

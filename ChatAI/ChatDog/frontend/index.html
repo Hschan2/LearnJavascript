@@ -2,6 +2,24 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta
+      name="viewport"
+      content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width"
+    />
+    <meta
+      name="keywords"
+      content="운세, 사주, 타로, 챗봇, chatgpt, gpt, aibot, chatbot, ai, 강아지, 챗독, chatdog, 점성술, 별자리 운세, 띠별 운세, 토정비결, 사주팔자, 신년운세, 띠운세, 연애운, 취업운, 행운, 꿈해몽"
+    />
+    <meta name="description" content="운세 알려주는 ai 챗독입니다" />
+    <meta name="og:description" content="운세 알려주는 ai 강아지 챗독" />
+    <meta name="og:site_name" content="운세 알려주는 ai 강아지 챗독" />
+    <meta name="og:title" content="운세 알려주는 ai 강아지 챗독" />
+    <meta name="og:url" conent="https://chat-teller.pages.dev/" />
+    <meta name="og:image" content="./teller_2.png" />
+    <meta
+      name="naver-site-verification"
+      content="7ab1754f7b510ee780e8af6cb8323e6441291e29"
+    />
     <title>운세도사</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -31,24 +49,25 @@
             margin: 5px 0;
         }
 
-        .date {
-            width: 100px;
+        .dateTimeCommon {
             padding: 5px;
             border-radius: 10px;
-            border-width: 0.5px;
             border-color: #000;
+        }
+
+        .date {
+            width: 150px;
+            border-width: 0.5px;
         }
 
         .time {
-            width: 60px;
-            padding: 5px;
-            border-radius: 10px;
-            border-color: #000;
+            width: 160px;
         }
 
         .button {
-            width: 120px;
+            width: 160px;
             padding: 5px;
+            margin-top: 10px;
             border-radius: 10px;
             border-color: transparent;
             background-color: #fff;
@@ -131,10 +150,10 @@
         <h1>운세를 알려드립니다.</h1>
         <img src="teller_2.png" alt="chatdoge" class="image">
         <label for="date" class="information">생년월일</label>
-        <input id="date" type="date" class="information date">
+        <input id="date" type="date" class="information dateTimeCommon date">
         <label for="hour" class="information">태어난 시간</label>
-        <select id="hour" name="hour" class="information time">
-            <option value="">모름</option>
+        <select id="hour" name="hour" class="information dateTimeCommon time">
+            <option value="">-- --:--</option>
             <option value="00">00</option>
             <option value="01">01</option>
             <option value="02">02</option>
@@ -160,7 +179,7 @@
             <option value="22">22</option>
             <option value="23">23</option>
         </select>
-        <button onclick="start()" class="information button">오늘의 운세보기</button>
+        <button onclick="start()" class="information button">운세보기</button>
     </div>
     <div id="chat" class="chat-container" style="display: none;">
         <div class="chat-box">
