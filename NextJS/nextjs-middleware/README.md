@@ -53,6 +53,8 @@ if (!token && req.nextUrl.pathname.includes('/auth')) {
 
 Conditional statements를 활용하여 Request URL을 판별하였다고 하였으나, 첫 번째의 Config matcher가 존재하는 이유는 Static과 Public 파일들을 구별 해내기 위함이다. 해당 코드는 ```middleware.ts```에서 확인할 수 있다.   
 
+그 외, 현 디바이스를 확인하여 모바일 환경 또는 데스크탑 환경을 설정하거나, Header 설정, 쿠키 설정 등이 있다.
+
 ## 시작하기
 
 ```
