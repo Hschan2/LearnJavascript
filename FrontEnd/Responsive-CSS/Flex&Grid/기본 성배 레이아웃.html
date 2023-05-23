@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>성배레이아웃1</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+    />
+    <style>
+      /* 기본 css 스타일 */
+      :root {
+        --dark: #504975;
+        --white: #ffffff;
+        --background: #fbfbff;
+        --primary: #7661e2;
+        --light: #eceafe;
+      }
+
+      * {
+        font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+          Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+          "Noto Sans KR", "Malgun Gothic", sans-serif;
+      }
+      body {
+        height: 100%;
+        padding: 10%;
+        box-sizing: border-box;
+      }
+      .container {
+        width: 70%;
+        padding: 22px;
+        margin: 0 auto;
+        border: 1px solid var(--dark);
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0px 4px 12px 0px #51459f14;
+      }
+      .item {
+        height: 40px;
+        /* padding: 0px ; 콘텐츠에 따라 조절해주세요 */
+        border: 1px solid var(--dark);
+        border-radius: 20px;
+        background-color: var(--primary);
+        color: var(--white);
+        box-shadow: 0px 4px 15px 0px #51459f14;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 2.5;
+        word-break: keep-all;
+      }
+      .main-content,
+      .left-sidebar,
+      .right-sidebar {
+        background-color: var(--light);
+        color: var(--dark);
+        padding: 80px 0;
+      }
+
+      /* flex 스타일 */
+      /* 실습 장소 */
+      .wrap {
+        display: flex;
+        /* 화면의 크기가 줄어도 wrap 컨테이너 안에 들어가 있도록 */
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .main-content {
+        /* main 크기가 left, right보다 1칸 더 크게 */
+        flex-grow: 2;
+        /* main 요소가 가운데 위치하도록 */
+        order: 2;
+      }
+
+      .left-sidebar {
+        flex-grow: 1;
+        /* left 요소가 왼쪽 위치하도록 */
+        order: 1;
+      }
+
+      .right-sidebar {
+        flex-grow: 1;
+        /* right 요소가 오른쪽 위치하도록 */
+        order: 3;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header class="item header">Header</header>
+      <main class="wrap">
+        <div class="item main-content">Main Content</div>
+        <div class="item left-sidebar">Left Sidebar</div>
+        <div class="item right-sidebar">Right Sidebar</div>
+      </main>
+      <footer class="item footer">Footer</footer>
+    </div>
+  </body>
+</html>
