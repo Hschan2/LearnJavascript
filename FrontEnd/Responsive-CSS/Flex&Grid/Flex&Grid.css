@@ -1,0 +1,283 @@
+/* 
+Flex, 부모 요소 아래의 자식 요소가 메인축 방향으로 이동, 세부 속성의 간격의 변화나 방향을 쉽게 변경 가능, 속성의 영향은 컨테이너의 직계자식까지만 영향
+Grid, 행과 열로 이루어져 2차원 레이아웃 구현에 적합
+*/
+
+.flexContainer {
+    /* 자식 요소들 Flex */
+    display: flex;
+    /* Flex를 수평으로 나열 */
+    flex-direction: row;
+    /* Flex를 수직으로 나열 */
+    flex-direction: column;
+    /* Flex가 Row일 경우의 정렬, 즉, 수평 정렬 */
+    /* 수평 기준으로 가운데에 위치 */
+    justify-content: center;
+    /* 수평 기준으로 왼쪽에 위치 */
+    justify-content: flex-start;
+    /* 수평 기준으로 오른쪽에 위치 */
+    justify-content: flex-end;
+    /* Flex가 column일 경우의 정렬, 즉, 수직 정렬 */
+    /* 수직 기준으로 가운데에 위치 */
+    align-items: center;
+    /* 수직 기준으로 위에 위치 */
+    align-items: flex-start;
+    /* 수직 기준으로 아래에 위치 */
+    align-items: flex-end;
+    /* 구직 기준으로 가장 큰 요소를 기준으로 위에 위치 */
+    align-items: baseline;
+
+    /* Container 크기에 맞게 각 요소들을 감싸는 역할이며, 모든 요소들이 너비 크기에 맞게 조절되면서 라인 유지 */
+    flex-wrap: nowrap;
+    /* 요소들이 너비에 맞게 조절되며, 너비를 넘어가게 될 경우, 줄바꿈 적용 */
+    /* flex-direction: column일 경우, 수직 기준으로 너비에 맞게 적용 */
+    flex-wrap: wrap;
+    /* 요소들이 Column으로 정렬 */
+    flex-direction: column;
+    /* wrap 방식은 위에서 기준으로 적용되지만, 이는 바닥에서 기준으로 적용 */
+    flex-wrap: wrap-reverse;
+
+    /* 최소한의 크기를 지정하며, 그 크기를 넘으면 자동으로 늘어남 */
+    /* width으로 설정하면, 요소의 콘텐츠가 커지면 요소를 빠져나오는 현상 발생 */
+    /* Container를 flex로 설정했을 때, flex-basis가 width보다 우선순위 */
+    flex-basis: 40px;
+    /* width, flex-basis와 상관없이 정해진 너비 크기에 맞게 줄바꿈이 이루어짐 */
+    word-break: break-all;
+    /* 기본값, 지정해 준 width, height 값을 사용하거나, 다른 박스가 늘어날 때 같이 늘어남, 추가 공간이 flex-grow 값에 따라 분배 */
+    flex-basis: auto;
+    /* auto 값과 달리, 내용 주위의 추가 공간이 고려되지 않음 */
+    flex-basis: 0;
+
+    /* 음수 값을 사용하지 않음, 음수 값은 0과 같음 */
+    /* 아이템들 크기 조절, 0일 경우는 아이템들의 본래의 크기를 유지 */
+    flex-grow: 0;
+    /* 1 이상부터는 아이템들이 유연한 크기로 Container의 빈 공간을 채움 */
+    flex-grow: 1;
+
+    /* 기본값, 축소 또는 고정 기능으로 자식 요소에 사용하며 flex 컨테이너 안의 자식 요소인 flex 아이템 요소를 자동으로 줄여 적절한 크기로 배치해 유연한 레이아웃 구현 */
+    /* flex-basis 속성으로 지정된 아이템의 기본 크기를 설정한 숫자 값에 비례해 수축 가능, flex-grow와 반대 개념 */
+    flex-shrink: 1;
+    /* 너비를 500, 각 요소들의 최소 크기를 100으로 잡고 shrink를 0으로 잡으면 각 요소들이 너비를 넘어감 */
+    width: 500px;
+    flex-basis: 100px;
+    flex-shrink: 0;
+    /* 1로 설정하면, 너비에 맞게 flex 내 자식 요소들이 크기를 설정, flex-wrap: wrap을 설정하면 적용이 되지 않으니, no-wrap으로 설정 */
+    /* flex 축약 속성으로, grow -> shrink -> basis 순으로 적용 */
+    flex-shrink: 1;
+
+    /* 클래스의 교차 측(cross-axis)을 기준으로 개별 아이템 요소의 정렬 방법을 결정하는 속성 */
+    /* align-item은 전체 아이템, self는 인접한 flex 아이템에 영향을 주지 않고, 각 Flex 아이템 위치를 자유롭게 변경 가능 */
+    /* auto는 align-items 속성 상속 => stretch */
+    align-self: auto;
+    /* 컨테이너에 맞게 교차 측(예, column 기준)에 맞게 상단부터 모두 채움 */
+    align-self: stretch;
+    /* 교차 측(예, column 기준)에 상단에 위치 */
+    align-self: flex-start;
+    /* 교차 측(예, column 기준)에 하단에 위치 */
+    align-self: flex-end;
+    /* 교차 측(예, column 기준)에 가운데에 위치 */
+    align-self: center;
+    /* 교차 측(예, column 기준)의 기준에 위치 => 상단 */
+    align-self: baseline;
+    
+    flex-direction: column;
+    /* 컨테이너에 맞게 교차 측(예, row 기준)에 맞게 왼쪽부터 모두 채움 */
+    align-self: auto;
+    /* 컨테이너에 맞게 교차 측(예, row 기준)에 맞게 왼쪽부터 모두 채움 */
+    align-self: stretch;
+    /* 교차 측(예, row기준)에 왼쪽에 위치 */
+    align-self: flex-start;
+    /* 교차 측(예, row기준)에 오른쪽에 위치 */
+    align-self: flex-end;
+    /* 교차 측(예, row기준)에 가운데에 위치 */
+    align-self: center;
+    /* 교차 측(예, row기준)의 기준에 위치 => 왼쪽 */
+    align-self: baseline;
+
+    /* 아이템 요소들의 순서를 결정하는 속성, 아이템들의 순서 변경 가능 */
+    /* 기본 값 0, 양수와 음수 사용 가능, 값이 작을수록 우선순위 적용, 음수 -> 0 -> 양수 순서로 표시 */
+    order: 0;
+    /* 
+    .item:nth-child(1) {order: 2;} // 두 번째
+    .item:nth-child(1) {order: 3;} // 세 번째
+    .item:nth-child(1) {order: 1;} // 첫 번째
+    */
+
+    /* 어떤 요소에 z-index의 값이 1이라도 주어진다면 다른 요소를 덮어 씌우는 것과 같은 모습으로 표현 가능 */
+    /* 음수부터 양수까지 표현 가능 */
+    z-index: 0;
+}
+
+.gridContainer {
+    /* Flex는 부모 요소 안에서 한 방향으로만 아이템들을 배치 */
+    /* Grid는 행과 열, 두 가지 방향으로 배치 가능, 더 어렵고 복잡한 레이아웃 작성에 매우 적합 */
+    /* Flex와 마찬가지로, HTML 구조에 컨테이너와 아이템 요소 필수 */
+    /* 컨테이너는 부모 요소로 Grid 레이아웃의 영향을 받는 전체적인 공간, 아이템은 자식 요소로 컨테이너 내부에서 설정된 속성에 따라 배치 */
+    display: grid;
+    /* 열, 세로, ㅡ 부분, 크기 지정 */
+    grid-template-columns: auto;
+    /* 행, 가로, | 부분, 크기 지정 */
+    grid-template-rows: auto;
+
+    /* 예시. 4개의 아이템을 기준으로 세로 350, 가로 200 지정 */
+    grid-template-columns: 350px 350px;
+    grid-template-rows: 200px 200px;
+
+    /* 예시, 두 번째 아이템의 세로 크기를 300으로 변경 */
+    /* 단점, 아이템 개수마다 모두 지정해주어야 하는 문제 */
+    grid-template-columns: 350px 300px;
+    grid-template-rows: 200px 200px;
+
+    /* 위의 문제를 해결하는 방법 */
+    /* 같은 크기로 설정하고 싶을 때 */
+    grid-template-columns: 1fr 1fr 1fr;
+    /* 가운데 아이템만 한 단계 더 크게 만들고 싶을 때 */
+    grid-template-columns: 1fr 2fr 1fr;
+
+    /* 위의 반복적인 행위를 해결하는 방법 */
+    grid-template-columns: repeat(3, 1fr);
+    /* 위의 값과 아래의 값은 같은 결과 */
+    grid-template-columns: 1fr 1fr 1fr;
+
+    grid-template-columns: repeat(3, 1fr 2fr 1fr);
+    /* 위의 값과 아래의 값은 같은 결과 */
+    grid-template-columns: 1fr 2fr 1fr;
+
+    /* 각 아이템마다 크기 다르게 설정 가능 */
+    grid-template-columns: repeat(3, 1fr 2fr 2fr);
+
+    /* 트랙의 크기를 최솟값과 최댓값으로 지정할 수 있는 함수 => min-max */
+    /* 그리드 열, 행의 값으로 minmax(최솟값, 최댓값) 사용 가능 */
+    /* length, 음수의 아닌 길이값 */
+    /* percentage, 그리드 컨테이너의 블록 크기에 상대적인 음이 아닌 백분율 */
+    /* flex, 그리드 트랙을 숫자의 비율대로 나눔 */
+    /* max-content, 그리드 트랙을 차지하는 최대 콘텐츠 범위 */
+    /* min-content, 그리드 트랙을 차지하는 최소 콘텐츠 범위 */
+    /* auto, 그리드 트랙을 차지하는 최대 콘텐츠 범위 (max-content 결과와 동일) */
+    grid-template-columns: repeat(3, minmax(30px, 300px));
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+    grid-template-columns: repeat(3, minmax(200px, 50%));
+    grid-template-columns: repeat(3, minmax(30%, 100px));
+    grid-template-columns: repeat(3, minmax(100px, max-content));
+    grid-template-columns: repeat(3, minmax(min-content, 50%));
+    grid-template-columns: repeat(3, minmax(max-content, auto));
+
+    /* 첫 번째 열의 너비가 최소 50%에서 최대 90%, 나머지는 균등 */
+    grid-template-columns: minmax(max-content, auto) 1fr 1fr;
+    /* max 값을 auto로 입력하면 그리드 영역 범위를 최대 크기의 영역으로 유연하게 설정 가능 */
+    grid-template-columns: repeat(3, minmax(30px, auto));
+    /* minmax(auto, max-content)로 그리드 아이템 콘텐츠 크기에 맞추어 영역 설정 */
+    grid-template-columns: repeat(3, minmax(auto, max-content));
+    /* auto-fill과 사용해 반응형 그리드 영역 생성 가능, 최소 200px 영역 유지하고 1fr의 길이는 전체 너비의 따라 반응, auto-fill은 설정된 너비에서 가능한 많은 영역 생성 */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+    /* grid 행(rows), 열(columns) 트랙 크기를 자동으로 설정 */
+    /* 암시적 행의 크기가 적용, 추가되는 모든 행의 높이를 정해주고 싶다면 적용 */
+    grid-auto-rows: auto;
+    /* 암시적 열의 크기가 적용, 추가되는 모든 열의 높이를 정해주고 싶다면 적용, 음수는 불가하고 양수만 가능 */
+    grid-auto-columns: auto;
+
+    /* 아래처럼 구현할 시, 세 번째 행부터 아이템이 추가된다면 높이를 다시 한 번 수정해야 하는 번거로움 발생 */
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    /* 앞으로 추가될 아이템에 높이 자동으로 지정 */
+    grid-auto-rows: 1fr;
+    /* minmax 사용 가능 */
+    grid-auto-rows: minmax(100px, auto);
+
+    /* 그리드 컨테이너와 아이템 요소들의 간격을 설정하는 속성 => Gap */
+    /* 길이를 나타내는 단위 em, rem, px, vmin, vmax나 % 사용 가능 */
+    /* calc() 함수를 이용해 계산된 값 사용 가능 */
+    /* But, fr 단위 사용 불가 */
+    gap: 10px;
+    gap: 1em;
+    gap: 3vmin;
+
+    gap: 10%;
+
+    gap: 20px 10px;
+    gap: 10% 20%;
+    
+    gap: calc(20px + 10%);
+
+    /* margin과 gap 차이 */
+    /* margin은 인접한 요소의 존재와 상관없이 스타일이 적용되어 불필요한 공간 생성 */
+    /* gap은 인접한 요소가 있을 때만 사이에 공간을 만들어 불필요한 공간 생성하지 않음 */
+    /* 상하좌우 모두 10px 여백 생성 */
+    margin: 10px;
+    /* 각 인접한 요소들 사이에만 10px 여백 생성 */
+    gap: 10px;
+
+    /* Grid 셀의 행 사이의 간격을 설정하는 속성 */
+    row-gap: 0.5rem;
+    /* Grid 셀의 열 사이의 간격을 설정하는 속성 */
+    column-gap: 0.5rem;
+    /* 행과 열 사이의 간격을 한 번에 작성할 수 있는 축약형 */
+    gap: 0.5rem;
+    /* gap의 이중 값, 첫 번째 값은 row-gap, 두 번째 값은 column-gap */
+    gap: 0.5 0rem;
+
+    /* 각 셀 영역 지정, grid-column-start & grid-column-end */
+    /* 그리드 열은 세 개씩 1fr의 크기 설정, 행이 생성되면 자동으로 1fr 크기로 설정, 각 요소간 인접한 여백은 0.5rem */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 1fr;
+    gap: 0.5rem;
+    /* 아이템이 열이 세 개가 있다는 기준으로, 열을 기준으로, 가장 왼쪽을 1, 각 여백 사이마다 +1씩, 가장 오른쪽을 마지막 번호 */
+    /* item1 요소를 두 칸으로 너비를 키우고 싶다면 */
+    grid-column-start: 1;
+    grid-column-end: 3;
+    /* 위의 값의 축약형 */
+    grid-column: 1 / 3;
+    /* span 형식, 크롬의 Grid Overlays 기준으로 1번부터 두 칸을 가지기 위해 */
+    grid-column: 1 / 2 span;
+
+    /* item2 요소를 가장 오른쪽에서 세 칸으로 높이를 키우고 싶다면 */
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    /* 위의 값의 축약형 */
+    grid-column: 3 / 4;
+    grid-row: 1 / 4;
+
+    /* item3 요소를 네 칸을 갖도록 하고 싶다면 */
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 4;
+    /* 위의 값의 축약형 */
+    /* grid-row-start / grid-column-start / grid-row-end / grid-column-end */
+    grid-area: 2 / 1 / 4 / 3;
+
+    /* 열의 2번부터 시작해서 한 칸만 차지, 행의 2번부터 시작해서 2칸 차지 */
+    grid-column: 2 / 1 span;
+    grid-row: 2 / 2 span;
+
+    /* Gird-area의 이름으로 배치하는 법, 각 요소별로 grid-area로 이름 지정 */
+    /* .header 부분 */
+    grid-area: header;
+    /* .main 부분 */
+    grid-area: main;
+    /* .sidebar-left 부분 */
+    grid-area: sidebar-left;
+    /* .sidebar-right 부분 */
+    grid-area: sidebar-right;
+    /* .footer 부분 */
+    grid-area: footer;
+    /* 이름별로 직관적인 배치, 더 크게 하고 싶다면 추가 가능 */
+    /* . 이나 none을 입력하면 빈 칸 */
+    grid-template-areas: 
+        "header header header header"
+        "sidebar-left main main sidebar-right"
+        "sidebar-left main main sidebar-right"
+        "footer footer footer none";
+}
+
+/* 성배 레이아웃 */
+/* 
+"header header header header"
+"sidebar-left main main sidebar-right"
+"footer footer footer footer";
+*/
+
