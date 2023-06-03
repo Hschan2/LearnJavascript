@@ -14,14 +14,16 @@ function App() {
 
   // useEffect를 사용하지 않아도 되지 않을까?
   // const [passcodeState, setPasscodeState] = useState<States>("typing");
-  const [pressedNumbers, setPressedNumbers] = useState("");
-  let passcodeState: States = "typing";
+  let passcodeState: States = "typing"; // 입력 상태
+  const [pressedNumbers, setPressedNumbers] = useState(""); // 입력값 변수
 
+  // 입력한 번호 길이와 정답 비밀번호 길이가 같으면
   if (pressedNumbers.length === correctPassword.length) {
+    // 입력한 비밀번호와 정답 비밀번호가 같으면
     if (pressedNumbers === correctPassword) {
-      passcodeState = "success"
+      passcodeState = "success" // 입력 상태를 성공으로
     } else {
-      passcodeState = "error"
+      passcodeState = "error" // 입력 상태를 실패로
     }
   }
 
@@ -45,6 +47,8 @@ function App() {
     }
      */
 
+    // 입력한 번호를 담는 변수의 길이가 정답 길이가 같으면 number를
+    // 아니면 이전에 입력한 번호와 현재 입력한 번호값을 + (string이기 때문에 뒤에 저장)
     setPressedNumbers((prev) => 
       prev.length === correctPassword.length ? number : prev + number
     )
