@@ -5,10 +5,6 @@ export default function Home() {
 
   return (
     <div>
-      <div className="navbar">
-        <Link href="/">Home</Link>
-        <Link href="/list">List</Link>
-      </div>
       <h4 className="title">상품목록</h4>
       <p className="title-sub">By dev {name}</p>
     </div>
