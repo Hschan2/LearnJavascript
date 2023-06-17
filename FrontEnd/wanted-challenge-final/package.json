@@ -1,14 +1,20 @@
 {
   "name": "wanted-challenge-final",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "라이브러리로 NPM 배포하기",
+  "main": "dist/esm/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
   "keywords": [],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -19,9 +25,12 @@
     "@storybook/react": "^7.0.21",
     "@storybook/react-vite": "^7.0.21",
     "@storybook/testing-library": "^0.0.14-next.2",
+    "esbuild": "^0.18.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rollup": "^3.25.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "storybook": "^7.0.21"
   }
 }
