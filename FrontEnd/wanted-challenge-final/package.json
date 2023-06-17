@@ -1,7 +1,7 @@
 {
   "name": "wanted-challenge-final",
   "version": "1.0.0",
-  "description": "라이브러리로 NPM 배포하기",
+  "description": "라이브러리 설치 후 NPM 로그인하여 배포하기",
   "main": "dist/esm/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
