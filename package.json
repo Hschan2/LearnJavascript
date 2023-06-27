@@ -24,16 +24,16 @@
     "lite-server": "2.5.4",
     "react-hot-loader": "^4.13.0",
     "typescript": "^4.9.5",
-    "webpack": "^4.44.1",
+    "webpack": "^5.87.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^4.15.1"
   },
   "bugs": {
     "url": "https://github.com/Hschan2/StudyJS/issues"
   },
   "homepage": "https://github.com/Hschan2/StudyJS#readme",
   "dependencies": {
-    "create-react-app": "^5.0.1",
+    "create-react-app": "^1.2.1",
     "google-tts-api": "^2.0.2",
     "openai": "^3.2.1",
     "react": "^16.13.1",
@@ -42,6 +42,7 @@
     "react-router-dom": "^5.2.0",
     "redis": "^4.5.1",
     "socket.io": "^4.4.0",
+    "three": "^0.153.0",
     "ws": "^8.4.0"
   }
 }
