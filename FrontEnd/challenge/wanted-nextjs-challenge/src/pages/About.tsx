@@ -1,6 +1,6 @@
 import useRouter from "../hook/useRouter";
 
-const About = () => {
+export default function About() {
   const {push} = useRouter()
 
   const moveRoot = () => {
@@ -13,6 +13,4 @@ const About = () => {
       <button onClick={moveRoot}>go main</button>
     </>
   );
-};
-
-export default About;
+}

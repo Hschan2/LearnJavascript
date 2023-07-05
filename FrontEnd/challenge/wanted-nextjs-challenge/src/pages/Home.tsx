@@ -1,6 +1,6 @@
 import useRouter from "../hook/useRouter";
 
-const Home = () => {
+export default function Home() {
     const {push} = useRouter()
 
     const moveAbout = () => {
@@ -13,6 +13,4 @@ const Home = () => {
             <button onClick={moveAbout}>about</button>
         </>
     )
-};
-
-export default Home;
+}
