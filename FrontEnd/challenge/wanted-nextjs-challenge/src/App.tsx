@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import {
-  BrowserRouter,
   Routes,
   Route,
 } from "../node_modules/react-router-dom/dist/index";

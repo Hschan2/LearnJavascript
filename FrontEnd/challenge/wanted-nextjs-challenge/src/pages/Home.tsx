@@ -13,7 +13,6 @@ const Home = () => {
             <button onClick={moveAbout}>about</button>
         </>
     )
-    
 };
 
 export default Home;
