@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css" />
+    <title>Vending Machine</title>
+</head>
+<body>
+    <div class="container">
+        <div class="item">
+            <h2>사이다</h2>
+            <p>500원</p>
+            <button class="button" onclick="increaseAmount(500)">+</button>
+        </div>
+        <div class="item">
+            <h2>콜라</h2>
+            <p>1000원</p>
+            <button class="button" onclick="increaseAmount(1000)">+</button>
+        </div>
+        <div class="item">
+            <h2>비타민 음료</h2>
+            <p>300원</p>
+            <button class="button" onclick="increaseAmount(300)">+</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="item">
+            <button class="button" onclick="insertAmount(100)">100원</button>
+        </div>
+        <div class="item">
+            <button class="button" onclick="insertAmount(500)">500원</button>
+        </div>
+        <div class="item">
+            <button class="button" onclick="insertAmount(1000)">1000원</button>
+        </div>
+    </div>
+    
+    <div class="result">
+        <p id="selectedMoney"></p>
+        <p id="money"></p>
+    </div>
+
+    <div>
+        <button class="submit" onclick="showResult()">결과 출력</button>
+        <button class="submit" onclick="reset()">초기화</button>
+    </div>
+    
+    
+    <div id="output"></div>
+    
+    <script src="./index.js"></script>
+</body>
+</html>
