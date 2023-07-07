@@ -54,32 +54,16 @@ $> yarn create vite
     - **HMR 및 빌드 속도가 매우 빠름**
 
 ### 구현
-* main.tsx
-
-<b>react-router-dom</b> 라이브러리를 설치하고, router를 사용하기 위해 App 컴포넌트를 <b>BrowserRouter</b>로 감싸주었습니다.   
-
-```
-<BrowserRouter>
-    <App />
-</BrowserRouter>
-```
-
 * App.tsx
 
 뒤로가기 버튼을 클릭하면, 이전 페이지로 이동하도록 useEffect를 구현하였으며, <b>Routes</b>로 '/' 경로와 '/about' 경로를 설정하였습니다.   
 
 ```
 function App() {
-  useEffect(() => {
-    window.onpopstate = () => {
-      window.location.href = window.location.pathname;
-    };
-  }, []);
-
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/" component={<Home />} />
+      <Route path="/about" component={<About />} />
     </Routes>
   );
 }
@@ -140,4 +124,54 @@ const useRouter = () => {
 
   return { push };
 };
+```
+
+* Routes(Router) 컴포넌트
+
+현재 Pathname을 가져와서 history의 state에 변화가 일어날 때마다 그에 해당하는 새로운 값을 넣도록 하였습니다.   
+
+그리고, 현재 Pathname과 Routes 컴포넌트 내에 포함된 Pathname 중 맞는 것을 반환하도록 하였습니다.   
+
+```
+const Routes = ({children}: RoutesProps) => {
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  return (
+    <>
+      {children?.map((router: React.ReactElement<RouteProps>) => {
+        if (router.props.path === currentPath) {
+          return router;
+        }
+      })}
+    </>
+  )
+}
+
+export default Routes
+```
+
+* Route 컴포넌트
+
+Props로 받아온 값들을 그대로 반환하는 것으로 구현하였습니다. 즉, Pathname과 component로 받은 값을 그대로 반환합니다.
+
+```
+import { RouteProps } from '../interface/RouteInterface';
+
+const Route = ({ component }: RouteProps) => {
+  return <>{component}</>
+}
+
+export default Route
 ```
