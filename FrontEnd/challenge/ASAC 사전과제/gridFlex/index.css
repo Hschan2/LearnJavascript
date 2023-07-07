@@ -1,106 +1,84 @@
 * {
-  margin: 0;
-  padding: 0;
-  border: 0;
+    margin: 0;
+    padding: 0;
 }
 
-a {
-  text-decoration: none;
+.warp {
+    width: 1000px;
+    height: 600px;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-content: center;
 }
 
-ul,
-li {
-  list-style: none;
+.border {
+    border: 1px solid black;
 }
 
-.cf:after {
-  content: "";
-  display: block;
-  clear: both;
+.top {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
 }
 
-.fl {
-  float: left;
+.top_yellow {
+    width: 60%;
+    background-color: yellow;
 }
 
-/* 전체 영역 지정 */
-#wrap {
-  width: 600px;
-  height: 600px;
-  margin: 0 auto;
+.top_right {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
 }
 
-/* 상단 부분 영역 지정 */
-#header {
-  width: 100%;
-  height: 200px;
-  margin: 0 auto;
+.top_green {
+    height: 100px;
+    background-color: green;
 }
 
-#header .Grid_Yellow {
-  width: 400px;
-  height: inherit;
-  background: #fefe00;
+.top_blue {
+    height: 100px;
+    background-color: blue;
 }
 
-#header .Grid_Green {
-  width: 200px;
-  height: 100px;
-  background: #25a339;
+.middle {
+    width: 100%;
 }
 
-#header .Grid_blue {
-  width: 200px;
-  height: 100px;
-  background: #1fa0ee;
+.middle_red {
+    height: 200px;
+    background-color: red;
 }
 
-/* 중간 부분 영역 지정 */
-#main {
-  width: 100%;
-  height: 200px;
-  margin: 0 auto;
+.bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
-#main .Grid_Red {
-  width: 600px;
-  height: 200px;
-  background: #f50000;
+.bottom_peace {
+    width: 20%;
+    height: 200px;
 }
 
-/* 푸터 부분 영역 지정 */
-#footer {
-  width: 100%;
-  height: 200px;
-  margin: 0 auto;
+.bottom_yellow {
+    background-color: yellow;
 }
 
-#footer .Grid_Sky_Yellow {
-  width: 120px;
-  height: 200px;
-  background: #fefe00;
+.bottom_blue {
+    background-color: blue;
 }
 
-#footer .Grid_Sky_blue {
-  width: 120px;
-  height: 200px;
-  background: #1fa0ee;
+.bottom_green {
+    background-color: green;
 }
 
-#footer .Grid_Sky_Green {
-  width: 120px;
-  height: 200px;
-  background: #25a339;
+.bottom_black {
+    background-color: black;
 }
 
-#footer .Grid_Sky_Black {
-  width: 120px;
-  height: 200px;
-  background: #000000;
-}
-
-#footer .Grid_Sky1_blue {
-  width: 120px;
-  height: 200px;
-  background: #0f5bb4;
+.bottom_darkblue {
+    background-color: darkblue;
 }
