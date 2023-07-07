@@ -1,23 +1,14 @@
-import { useEffect } from "react";
-import {
-  Routes,
-  Route,
-} from "../node_modules/react-router-dom/dist/index";
 import "./App.css";
 import About from "./pages/About";
 import Home from "./pages/Home";
+import Routes from "./components/Routes";
+import Route from "./components/Route";
 
 function App() {
-  useEffect(() => {
-    window.onpopstate = () => {
-      window.location.href = window.location.pathname;
-    };
-  }, []);
-
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
+      <Route path="/" component={<Home />} />
+      <Route path="/about" component={<About />} />
     </Routes>
   );
 }
