@@ -7,10 +7,15 @@ export default function Home() {
         push('/about')
     }
 
+    const moveCount = () => {
+        push('/count')
+    }
+
     return (
         <>
             <div>Root</div>
             <button onClick={moveAbout}>about</button>
+            <button onClick={moveCount}>count</button>
         </>
     )
 }

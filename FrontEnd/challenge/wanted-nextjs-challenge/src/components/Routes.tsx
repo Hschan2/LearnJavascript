@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import Route from './Route';
-import { RouteProps, RoutesProps } from '../interface/RouteInterface';
+import { ReactNode, useContext } from "react"
+import { RoutesProps } from "../interface/RouteInterface"
+import RouterContext from "../context/RouterContext"
 
-const Routes = ({children}: RoutesProps) => {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+const Routes = ({ children }: RoutesProps) => {
+    const { path } = useContext(RouterContext);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
-    };
-
-    window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, []);
-
-  return (
-    <>
-      {children?.map((router: React.ReactElement<RouteProps>) => {
-        if (router.props.path === currentPath) {
-          return router;
+    let component: ReactNode = <h1>페이지를 찾을 수 없습니다.</h1>
+    
+    for (const route of children) {
+        if (route.props.path === path) {
+            component = route.props.component;
+            break;
         }
-      })}
-    </>
-  )
+    }
+
+    return component
 }
 
 export default Routes
