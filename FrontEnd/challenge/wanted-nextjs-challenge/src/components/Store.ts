@@ -1,6 +1,8 @@
+import { Store } from "redux";
+import { Action, State } from "../type/ReduxType";
 import createStore from "./createStore";
 
-const initialState = {
+const initialState: State = {
     count: 0
 };
 
@@ -15,6 +17,6 @@ function reducer(state: any, action: any) {
     }
 }
 
-const store = createStore(reducer, initialState);
+const store: Store<any, Action> = createStore(reducer, initialState);
 
 export default store;

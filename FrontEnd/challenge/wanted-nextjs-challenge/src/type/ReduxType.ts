@@ -1,4 +1,7 @@
 export type Action = {
     type: string;
-    payload?: any;
+    payload?: number;
+}
+export type State = {
+    count: number;
 }
