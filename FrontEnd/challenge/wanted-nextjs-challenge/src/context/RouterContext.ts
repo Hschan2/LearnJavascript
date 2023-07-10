@@ -1,9 +1,5 @@
-import { createContext } from "react"
-import { Type } from "../type/ContextType"
+import { createContext } from "react";
+import { RouterContextType } from "../interface/RouteInterface";
 
-const RouterContext = createContext<Type>({
-    path: '',
-    changePath: () => {},
- })
-
- export default RouterContext
+// Props Drilling 방지 => pathname 관리
+export const RouterContext = createContext<RouterContextType | null>(null);

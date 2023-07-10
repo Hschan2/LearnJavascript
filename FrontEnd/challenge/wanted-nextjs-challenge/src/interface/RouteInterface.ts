@@ -1,15 +1,22 @@
-import { ReactComponentElement } from "react";
-import Route from "../components/Route";
+export interface RouterProps {
+    children: React.ReactNode;
+}
+
+export interface RoutesProps {
+    children: React.ReactNode[];
+}
 
 export interface RouteProps {
     path: string;
     component: React.ReactNode;
 }
 
-export interface RouterProps {
-    children: React.ReactElement<RouteProps>[];
+export interface RoutingProps {
+    children: React.ReactNode;
+    to: string;
 }
 
-export interface RoutesProps {
-    children: ReactComponentElement<typeof Route>[];
+export interface RouterContextType {
+    currentPath: string;
+    changePath: (to: string) => void;
 }
