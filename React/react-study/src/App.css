@@ -40,3 +40,30 @@
 .read-the-docs {
   color: #888;
 }
+
+/* 스켈레톤 */
+.skeleton-loader {
+  display: flex;
+}
+
+.skeleton-line {
+  background: linear-gradient(0deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 100% 200%;
+  animation: loading 1.5s infinite;
+  width: 100vw; /* 가로 길이 조절 */
+  height: 10vb;
+  margin-right: 10px; /* 각 줄 간의 간격 설정 */
+}
+
+.skeleton-line:last-child {
+  margin-right: 0; /* 마지막 줄의 간격 제거 */
+}
+
+@keyframes loading {
+  0% {
+    background-position: 0 200%;
+  }
+  100% {
+    background-position: 0 -200%;
+  }
+}
