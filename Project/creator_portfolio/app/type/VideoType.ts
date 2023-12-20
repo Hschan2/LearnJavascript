@@ -1,4 +1,4 @@
-export interface Video {
+export interface IVideo {
   title: string;
   url: string;
 }
