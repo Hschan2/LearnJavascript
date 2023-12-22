@@ -2,7 +2,7 @@ import React from "react";
 import VIDEOS from "../constants/Videos";
 import { IVideo } from "../type/VideoType";
 import ProjectTitle from "../ui/ProjectTitle";
-import VideoButton from "../ui/VideoButton";
+import VideoButton from "./VideoButton";
 
 function Motion() {
   return (
