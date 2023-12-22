@@ -7,3 +7,9 @@ export interface IProjectTitle {
 export interface IButtonProps {
     size: string
 }
+
+export interface IModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    children: React.ReactNode;
+}
