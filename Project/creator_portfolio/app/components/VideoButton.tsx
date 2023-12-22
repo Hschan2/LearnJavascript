@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { IButtonProps } from "../type/Types";
@@ -24,14 +24,9 @@ function VideoButton({ size }: IButtonProps) {
         ▶️
       </button>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <iframe
-          width="560"
-          height="315"
-          src="/public/videos/Cinderella.mp4"
-          title="YouTube video player"
-          frameBorder="0"
-          allowFullScreen
-        ></iframe>
+        <video width="100%" height="auto" controls autoPlay>
+          <source src="/videos/Cinderella.mp4" type="video/mp4" />
+        </video>
       </Modal>
     </div>
   );
