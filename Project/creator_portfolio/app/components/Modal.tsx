@@ -26,10 +26,10 @@ function Modal({ isOpen, onClose, children }: IModalProps) {
         isOpen ? "opacity-100 visible" : "opacity-0 invisible"
       } transition-opacity ease-in-out duration-300`}
     >
-      <div ref={modalRef} className="bg-white p-4 rounded-lg shadow-lg relative">
+      <div ref={modalRef} className="bg-white p-4 rounded-lg shadow-lg border relative w-2/3 h-96 max-w-3xl flex flex-col items-center justify-center">
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 w-8 h-8 bg-transparent border rounded hover:border hover:border-gray-500 focus:outline-none"
+          className="absolute top-2 right-2 w-6 h-6 bg-transparent border rounded text-sm hover:border hover:border-gray-500 focus:outline-none"
         >
           X
         </button>
