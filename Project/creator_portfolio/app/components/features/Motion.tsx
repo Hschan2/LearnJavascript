@@ -1,7 +1,7 @@
 import React from "react";
-import { IVideo, IVideoCategory } from "../type/VideoType";
-import ProjectTitle from "../ui/ProjectTitle";
-import VideoButton from "./VideoButton";
+import { IVideo, IVideoCategory } from "../../type/VideoType";
+import ProjectTitle from "../common/ProjectTitle";
+import VideoButton from "../ui/VideoButton";
 
 function Motion({videoCategory, categoryTitle}: IVideoCategory) {
   return (

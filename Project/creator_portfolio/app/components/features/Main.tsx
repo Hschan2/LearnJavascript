@@ -1,6 +1,6 @@
-import VIDEOS from "../constants/Videos";
-import ProjectTitle from "../ui/ProjectTitle";
-import VideoButton from "./VideoButton";
+import VIDEOS from "../../constants/Videos";
+import ProjectTitle from "../common/ProjectTitle";
+import VideoButton from "../ui/VideoButton";
 
 function Main() {
   return (

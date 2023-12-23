@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { IButtonProps } from "../type/Types";
-import Modal from "./Modal";
+import { IButtonProps } from "../../type/Types";
+import Modal from "../common/Modal";
 
 function VideoButton({ size }: IButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);

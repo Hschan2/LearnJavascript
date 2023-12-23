@@ -1,7 +1,7 @@
-import Title from "./components/Title";
-import Main from "./components/Main";
-import Motion from "./components/Motion";
-import Footer from "./components/Footer";
+import Title from "./components/common/Title";
+import Main from "./components/features/Main";
+import Motion from "./components/features/Motion";
+import Footer from "./components/common/Footer";
 import VIDEOS from "./constants/Videos";
 
 export default function Home() {

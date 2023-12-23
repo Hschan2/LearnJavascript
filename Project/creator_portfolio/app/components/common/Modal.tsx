@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { IModalProps } from "../type/Types";
+import { IModalProps } from "../../type/Types";
 
 function Modal({ isOpen, onClose }: IModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
