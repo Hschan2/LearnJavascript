@@ -19,7 +19,12 @@ function VideoButton({ size }: IButtonProps) {
     <div>
       <button
         onClick={openModal}
-        className={`transition ${size} bg-gray-200 rounded-lg flex items-center justify-center text-gray-500 hover:text-black`}
+        className={`transition ${size} rounded-lg flex items-center justify-center text-gray-500 hover:text-black`}
+        style={{
+          backgroundImage: `url('/images/paper-Cut-winter.png')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
         ▶️
       </button>
