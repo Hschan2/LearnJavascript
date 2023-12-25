@@ -27,6 +27,9 @@ function Modal({ isOpen, onClose }: IModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.addEventListener("mousedown", handleCancel);
+      if (videoRef.current) {
+        videoRef.current.focus();
+      }
     }
 
     return () => {
