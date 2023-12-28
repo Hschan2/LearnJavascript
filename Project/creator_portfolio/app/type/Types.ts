@@ -5,7 +5,8 @@ export interface IProjectTitle {
 }
 
 export interface IButtonProps {
-    size: string
+    size: string;
+    image: string;
 }
 
 export interface IModalProps {
