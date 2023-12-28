@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { IModalProps } from "../../type/Types";
-import VideoPlayer from "./VideoPlayer";
+import dynamic from "next/dynamic";
+
+const VideoPlayer = dynamic(() => import("./VideoPlayer"));
 
 function Modal({ isOpen, onClose }: IModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);

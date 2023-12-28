@@ -2,9 +2,11 @@
 
 import React, { useState } from "react";
 import { IButtonProps } from "../../type/Types";
-import Modal from "../common/Modal";
+import dynamic from "next/dynamic";
 
-function VideoButton({ size }: IButtonProps) {
+const Modal = dynamic(() => import("../common/Modal"));
+
+function VideoButton({ size, image }: IButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -21,7 +23,7 @@ function VideoButton({ size }: IButtonProps) {
         onClick={openModal}
         className={`transition ${size} rounded-lg flex items-center justify-center text-gray-500 hover:text-black`}
         style={{
-          backgroundImage: `url('/images/paper-Cut-winter.png')`,
+          backgroundImage: `url(${image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
