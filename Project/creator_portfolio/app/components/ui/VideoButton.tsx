@@ -21,14 +21,15 @@ function VideoButton({ size, image }: IButtonProps) {
     <div>
       <button
         onClick={openModal}
-        className={`transition ${size} rounded-lg flex items-center justify-center text-gray-500 hover:text-black`}
-        style={{
-          backgroundImage: `url(${image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+        className={`transition relative ${size} rounded-lg flex items-center justify-center text-gray-500 hover:text-black`}
       >
-        ▶️
+        <img
+          src={image}
+          alt="동영상 버튼"
+          loading="lazy"
+          className="w-full h-full object-cover rounded-lg z-10"
+        />
+        <span className="absolute z-20">▶️</span>
       </button>
       <Modal isOpen={isModalOpen} onClose={closeModal} />
     </div>
