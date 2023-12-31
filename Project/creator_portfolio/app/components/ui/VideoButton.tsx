@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { IButtonProps } from "../../type/Types";
+import { IButtonProps } from "../types/Types";
 import dynamic from "next/dynamic";
 
 const Modal = dynamic(() => import("../common/Modal"));

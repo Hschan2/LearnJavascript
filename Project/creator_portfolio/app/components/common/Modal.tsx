@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { IModalProps } from "../../type/Types";
+import { IModalProps } from "../types/Types";
 import dynamic from "next/dynamic";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer"));

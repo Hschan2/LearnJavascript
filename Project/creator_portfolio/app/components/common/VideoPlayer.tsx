@@ -1,4 +1,4 @@
-import { IVideoPlayer } from "@/app/type/Types";
+import { IVideoPlayer } from "@/app/components/types/Types";
 import React, { useEffect } from "react";
 
 function VideoPlayer({ videoLink, videoRef, isOpen }: IVideoPlayer) {
