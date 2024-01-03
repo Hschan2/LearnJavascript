@@ -1,4 +1,4 @@
-import { IVideo } from "../type/VideoType";
+import { IVideo } from "../components/types/VideoType";
 
 const VIDEOS = {
   title: {
