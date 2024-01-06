@@ -6,12 +6,16 @@ export interface IProjectTitle {
 
 export interface IButtonProps {
     size: string;
-    image: string;
+    data: {
+        url: string;
+        image: string;
+    };
 }
 
 export interface IModalProps {
     isOpen: boolean;
     onClose: () => void;
+    videoUrl: string;
 }
 
 export interface IVideoPlayer {
