@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 const Modal = dynamic(() => import("../common/Modal"));
 
-function VideoButton({ size, image }: IButtonProps) {
+function VideoButton({ size, data }: IButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -23,14 +23,14 @@ function VideoButton({ size, image }: IButtonProps) {
         onClick={openModal}
         className={`transition ${size} rounded-lg flex items-center justify-center text-gray-500 hover:text-black`}
         style={{
-          backgroundImage: `url(${image})`,
+          backgroundImage: `url(${data.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
         ▶️
       </button>
-      <Modal isOpen={isModalOpen} onClose={closeModal} />
+      <Modal isOpen={isModalOpen} onClose={closeModal} videoUrl={data.url} />
     </div>
   );
 }

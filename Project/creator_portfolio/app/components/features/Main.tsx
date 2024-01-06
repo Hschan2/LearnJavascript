@@ -8,7 +8,7 @@ function Main() {
   return (
     <div>
       <ProjectTitle>{VIDEOS.title.portfolio}</ProjectTitle>
-      <VideoButton size="w-96 h-80 text-7xl" image={VIDEOS.portfolio.image} />
+      <VideoButton size="w-96 h-80 text-7xl" data={VIDEOS.portfolio} />
     </div>
   );
 }

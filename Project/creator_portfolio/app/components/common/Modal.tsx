@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer"));
 
-function Modal({ isOpen, onClose }: IModalProps) {
+function Modal({ isOpen, onClose, videoUrl }: IModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -53,7 +53,7 @@ function Modal({ isOpen, onClose }: IModalProps) {
         </button>
         {isOpen && (
           <VideoPlayer
-            videoLink="/videos/Cinderella.mp4"
+            videoLink={videoUrl}
             videoRef={videoRef}
             isOpen={isOpen}
           />
