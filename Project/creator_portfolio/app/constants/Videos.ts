@@ -5,6 +5,7 @@ const VIDEOS = {
     portfolio: "포트폴리오",
     motionGraphic: "모션그래픽",
     travel: "여행",
+    shortForm: "숏폼",
   },
   portfolio: {
     url: "/videos/Cinderella.mp4",
