@@ -13,6 +13,7 @@ import {
   Wrapper,
 } from "../components/auth-components";
 import GithubButton from "../components/github-button";
+import GoogleButton from "../components/google-button";
 
 function Login() {
   const navigate = useNavigate();
@@ -73,6 +74,7 @@ function Login() {
       <Switcher>
         계정이 없으신가요? <Link to="/create-account">계정 생성</Link>
       </Switcher>
+      <GoogleButton />
       <GithubButton />
     </Wrapper>
   );

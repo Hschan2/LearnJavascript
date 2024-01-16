@@ -13,6 +13,7 @@ import {
   Wrapper,
 } from "../components/auth-components";
 import GithubButton from "../components/github-button";
+import GoogleButton from "../components/google-button";
 
 function CreateAccount() {
   const navigate = useNavigate();
@@ -86,12 +87,13 @@ function CreateAccount() {
           type="password"
           required
         />
-        <Input type="submit" value={isLoading ? "Loading..." : "생성"} />
+        <Input type="submit" value={isLoading ? "Loading..." : "가입"} />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
         계정이 이미 있으신가요? <Link to="/login">로그인</Link>
       </Switcher>
+      <GoogleButton />
       <GithubButton />
     </Wrapper>
   );
