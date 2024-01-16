@@ -1,14 +1,13 @@
 import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import React from "react";
 import { styled } from "styled-components";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router";
 
 const Button = styled.span`
-  margin-top: 50px;
+  margin-top: 10px;
   background-color: white;
   font-weight: 600;
-  width: 100%;
+  width: 80%;
   color: black;
   padding: 10px 20px;
   border-radius: 50px;
