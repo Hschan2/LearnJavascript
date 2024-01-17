@@ -28,12 +28,13 @@ export const Input = styled.input`
   border: none;
   width: 100%;
   font-size: 16px;
+  transition-duration: 0.5s;
   &[type="submit"] {
     background-color: #2563EB;
     color: white;
     cursor: pointer;
     &:hover {
-      opacity: 0.8;
+      opacity: 0.85;
     }
   }
 `;
