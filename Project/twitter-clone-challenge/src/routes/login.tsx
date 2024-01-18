@@ -1,9 +1,10 @@
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { auth } from "../firebase";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import {
   Error,
   Form,
@@ -15,29 +16,27 @@ import {
 import GithubButton from "../components/github-button";
 import GoogleButton from "../components/google-button";
 
+type FormType = {
+  email: string;
+  password: string;
+};
+
 function Login() {
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormType>();
   const [isLoading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value },
-    } = e;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+
+  const onSubmit = async (data: FormType) => {
     setError("");
-    if (isLoading || email === "" || password === "") return;
+    if (isLoading || data.email === "" || data.password === "") return;
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, data.email, data.password);
       navigate("/");
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -51,23 +50,19 @@ function Login() {
   return (
     <Wrapper>
       <Title>로그인 𝕏</Title>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          onChange={onChange}
-          name="email"
-          value={email}
+          {...register("email", { required: "이메일을 입력해주세요." })}
           placeholder="Email"
           type="email"
-          required
         />
+        {errors.email && <Error>{errors.email.message}</Error>}
         <Input
-          onChange={onChange}
-          name="password"
-          value={password}
+          {...register("password", { required: "비밀번호를 입력해주세요." })}
           placeholder="Password"
           type="password"
-          required
         />
+        {errors.password && <Error>{errors.password.message}</Error>}
         <Input type="submit" value={isLoading ? "Loading..." : "로그인"} />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}

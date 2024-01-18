@@ -1,9 +1,10 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import React, { useState } from "react";
+import { useState } from "react";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router";
 import { FirebaseError } from "firebase/app";
 import { Link } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Error,
   Form,
@@ -15,39 +16,41 @@ import {
 import GithubButton from "../components/github-button";
 import GoogleButton from "../components/google-button";
 
+type FormType = {
+  name: string;
+  email: string;
+  password: string;
+};
+
 function CreateAccount() {
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormType>();
   const [isLoading, setLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value },
-    } = e;
-    if (name === "name") {
-      setName(value);
-    } else if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+
+  const onSubmit: SubmitHandler<FormType> = async (data) => {
     setError("");
-    if (isLoading || name === "" || email === "" || password === "") return;
+    if (
+      isLoading ||
+      data.name === "" ||
+      data.email === "" ||
+      data.password === ""
+    )
+      return;
     try {
       setLoading(true);
       const credentials = await createUserWithEmailAndPassword(
         auth,
-        email,
-        password
+        data.email,
+        data.password
       );
       console.log(credentials);
       await updateProfile(credentials.user, {
-        displayName: name,
+        displayName: data.name,
       });
       navigate("/");
     } catch (error) {
@@ -62,31 +65,25 @@ function CreateAccount() {
   return (
     <Wrapper>
       <Title>회원가입 𝕏</Title>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          onChange={onChange}
-          name="name"
-          value={name}
+          {...register("name", { required: "이름을 입력해주세요." })}
           placeholder="Name"
           type="text"
-          required
         />
+        {errors.name && <Error>{errors.name.message}</Error>}
         <Input
-          onChange={onChange}
-          name="email"
-          value={email}
+          {...register("email", { required: "이메일을 입력해주세요." })}
           placeholder="Email"
           type="email"
-          required
         />
+        {errors.email && <Error>{errors.email.message}</Error>}
         <Input
-          onChange={onChange}
-          name="password"
-          value={password}
+          {...register("password", { required: "비밀번호를 입력해주세요." })}
           placeholder="Password"
           type="password"
-          required
         />
+        {errors.password && <Error>{errors.password.message}</Error>}
         <Input type="submit" value={isLoading ? "Loading..." : "가입"} />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
