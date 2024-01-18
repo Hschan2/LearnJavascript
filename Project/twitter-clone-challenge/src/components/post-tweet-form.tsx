@@ -1,7 +1,8 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { styled } from "styled-components";
-import { auth, dateBase } from "../firebase";
+import { auth, dateBase, storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Form = styled.form`
   display: flex;
@@ -72,22 +73,33 @@ function PostTweetForm() {
     }
   };
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (!user || isLoading || tweet === "" || tweet.length > 180) return;
-      try {
-          setLoading(true);
-          await addDoc(collection(dateBase, "tweets"), {
-              tweet,
-              createAt: Date.now(),
-              username: user.displayName || "익명",
-              userId: user.uid,
-          })
-      } catch (error) {
-          console.log(error);
-      } finally {
-          setLoading(false);
+    e.preventDefault();
+    const user = auth.currentUser;
+    if (!user || isLoading || tweet === "" || tweet.length > 180) return;
+    try {
+      setLoading(true);
+      const doc = await addDoc(collection(dateBase, "tweets"), {
+        tweet,
+        createdAt: Date.now(),
+        username: user.displayName || "익명",
+        userId: user.uid,
+      });
+      if (file) {
+        const locationRef = ref(
+          storage,
+          `tweets/${user.uid}/${doc.id}`
+        );
+        const result = await uploadBytes(locationRef, file);
+        const url = await getDownloadURL(result.ref);
+        await updateDoc(doc, {
+          photo: url
+        })
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,6 +109,7 @@ function PostTweetForm() {
         maxLength={180}
         onChange={onTextChange}
         placeholder="당신의 이야기를 전달해 주세요."
+        required
       />
       <AttachFileButton htmlFor="file">
         {file ? "사진 추가완료✔️" : "사진 추가"}
