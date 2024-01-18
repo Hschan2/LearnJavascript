@@ -15,6 +15,7 @@ import {
 } from "../components/auth-components";
 import GithubButton from "../components/github-button";
 import GoogleButton from "../components/google-button";
+import { emailRegex, passwordRegex } from "../constants";
 
 type FormType = {
   name: string;
@@ -67,24 +68,42 @@ function CreateAccount() {
       <Title>회원가입 𝕏</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          {...register("name", { required: "이름을 입력해주세요." })}
+          {...register("name", {
+            required: "이름을 입력해주세요.",
+          })}
           placeholder="Name"
           type="text"
         />
         {errors.name && <Error>{errors.name.message}</Error>}
         <Input
-          {...register("email", { required: "이메일을 입력해주세요." })}
+          {...register("email", {
+            required: "이메일을 입력해주세요.",
+            pattern: emailRegex,
+          })}
           placeholder="Email"
           type="email"
         />
-        {errors.email && <Error>{errors.email.message}</Error>}
+        {errors?.email?.type === "required" && (
+          <Error>이메일을 입력해주세요.</Error>
+        )}
+        {errors?.email?.type === "pattern" && (
+          <Error>이메일 양식에 맞게 입력해주세요.</Error>
+        )}
         <Input
-          {...register("password", { required: "비밀번호를 입력해주세요." })}
+          {...register("password", {
+            required: "비밀번호를 입력해주세요.",
+            pattern: passwordRegex,
+          })}
           placeholder="Password"
           type="password"
         />
-        {errors.password && <Error>{errors.password.message}</Error>}
-        <Input type="submit" value={isLoading ? "Loading..." : "가입"} />
+        {errors?.password?.type === "required" && (
+          <Error>비밀번호를 입력해주세요.</Error>
+        )}
+        {errors?.password?.type === "pattern" && (
+          <Error>비밀번호 양식에 맞게 입력해주세요.</Error>
+        )}
+        <Input type="submit" value={isLoading ? "가입 중..." : "가입"} />
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
