@@ -74,7 +74,9 @@ function CreateAccount() {
           placeholder="Name"
           type="text"
         />
-        {errors.name && <Error>{errors.name.message}</Error>}
+        {errors?.name?.type === "required" && (
+          <Error>이름을 입력해주세요.</Error>
+        )}
         <Input
           {...register("email", {
             required: "이메일을 입력해주세요.",
