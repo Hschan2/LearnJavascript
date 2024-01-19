@@ -18,16 +18,20 @@ const Menu = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  img {
+    margin-bottom: 40px;
+  }
 `;
 
 const MenuItem = styled.div`
+  padding: 5px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 2px solid white;
-  height: 50px;
-  width: 50px;
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
   svg {
     width: 30px;
@@ -54,6 +58,12 @@ function Layout() {
   return (
     <Wrapper>
       <Menu>
+        <img
+          src="https://pngimg.com/d/twitter_PNG15.png"
+          alt="logo"
+          width={80}
+          height={80}
+        />
         <Link to="/">
           <MenuItem>
             <svg
