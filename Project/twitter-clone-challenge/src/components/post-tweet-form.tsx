@@ -85,16 +85,16 @@ function PostTweetForm() {
         userId: user.uid,
       });
       if (file) {
-        const locationRef = ref(
-          storage,
-          `tweets/${user.uid}/${doc.id}`
-        );
+        const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
         const result = await uploadBytes(locationRef, file);
         const url = await getDownloadURL(result.ref);
         await updateDoc(doc, {
-          photo: url
-        })
+          photo: url,
+        });
       }
+
+      setTweet("");
+      setFile(null);
     } catch (error) {
       console.log(error);
     } finally {
@@ -108,6 +108,7 @@ function PostTweetForm() {
         rows={5}
         maxLength={180}
         onChange={onTextChange}
+        value={tweet}
         placeholder="당신의 이야기를 전달해 주세요."
         required
       />
@@ -122,7 +123,7 @@ function PostTweetForm() {
       />
       <SubmitButton
         type="submit"
-        value={isLoading ? "보내는 중..." : "보내기"}
+        value={isLoading ? "작성 중..." : "작성"}
       />
     </Form>
   );
