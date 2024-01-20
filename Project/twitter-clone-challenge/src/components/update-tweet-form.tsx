@@ -72,11 +72,13 @@ const SubmitButton = styled.input`
 const ExistingPhotoContainer = styled.div`
   position: relative;
   margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const ExistingPhoto = styled.img`
   width: 100%;
-  max-width: 300px; /* 조절하고자 하는 최대 크기로 설정하세요 */
+  max-width: 300px;
   height: auto;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -97,6 +99,20 @@ const DeletePhotoButton = styled.button`
 
   &:hover {
     background-color: #d9363e;
+  }
+`;
+
+const CancelButton = styled.button`
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 10px 0px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  &:hover,
+  &:active {
+    opacity: 0.9;
   }
 `;
 
@@ -164,6 +180,10 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     }
   };
 
+  const onCancel = () => {
+    onClose();
+  }
+
   useEffect(() => {
     const fetchTweet = async () => {
       try {
@@ -209,6 +229,9 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
         accept="image/*"
       />
       <SubmitButton type="submit" value={isLoading ? "수정 중..." : "수정"} />
+      <CancelButton type="button" onClick={onCancel}>
+        취소
+      </CancelButton>
     </Form>
   );
 }
