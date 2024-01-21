@@ -45,6 +45,38 @@ const AvatarInput = styled.input`
   display: none;
 `;
 
+const NameContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    width: 50px;
+    margin-top: 10px;
+    font-size: 14px;
+    background-color: #111111;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    cursor: pointer;
+  }
+`;
+
+const EditContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+
+const Input = styled.input`
+  padding: 5px 10px;
+  border-radius: 50px;
+  border: none;
+  width: 100%;
+  font-size: 14px;
+`;
+
 const Name = styled.span`
   font-size: 22px;
 `;
@@ -58,6 +90,8 @@ const Tweets = styled.div`
 
 function Profile() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
+  const [isEditName, setEditName] = useState(false);
+  const [isNewName, setNewName] = useState("");
   const user = auth.currentUser;
   const [avatar, setAvatar] = useState(user?.photoURL);
 
@@ -98,6 +132,28 @@ function Profile() {
     setTweets(tweets);
   };
 
+  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(e.target.value);
+  };
+
+  const onSaveNewName = async () => {
+    if (user) {
+      await updateProfile(user, {
+        displayName: isNewName,
+      });
+      setEditName(false);
+    }
+  };
+
+  const onCancelNewName = () => {
+    setEditName(false);
+  };
+
+  const onEditNewName = () => {
+    setEditName(true);
+    setNewName(user?.displayName || "");
+  };
+
   useEffect(() => {
     fetchTweets();
   }, []);
@@ -124,7 +180,20 @@ function Profile() {
         type="file"
         accept="image/*"
       />
-      <Name>{user?.displayName ?? "익명"}</Name>
+      {isEditName ? (
+        <NameContainer>
+          <Input type="text" value={isNewName} onChange={onNameChange} />
+          <EditContainer>
+            <button onClick={onSaveNewName}>확인</button>
+            <button onClick={onCancelNewName}>취소</button>
+          </EditContainer>
+        </NameContainer>
+      ) : (
+        <NameContainer>
+          <Name>{user?.displayName ?? "익명"}</Name>
+          <button onClick={onEditNewName}>수정</button>
+        </NameContainer>
+      )}
       <Tweets>
         {tweets.map((tweet) => (
           <Tweet key={tweet.id} {...tweet} />
