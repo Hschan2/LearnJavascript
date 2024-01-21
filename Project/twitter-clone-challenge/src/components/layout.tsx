@@ -58,12 +58,14 @@ function Layout() {
   return (
     <Wrapper>
       <Menu>
-        <img
-          src="https://pngimg.com/d/twitter_PNG15.png"
-          alt="logo"
-          width={80}
-          height={80}
-        />
+        <Link to="/">
+          <img
+            src="https://pngimg.com/d/twitter_PNG15.png"
+            alt="logo"
+            width={80}
+            height={80}
+          />
+        </Link>
         <Link to="/">
           <MenuItem>
             <svg
