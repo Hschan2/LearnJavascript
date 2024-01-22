@@ -86,6 +86,7 @@ const Tweets = styled.div`
   width: 100%;
   flex-direction: column;
   gap: 10px;
+  margin: 20px 0;
 `;
 
 function Profile() {
