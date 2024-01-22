@@ -1,4 +1,11 @@
 export interface IButtonProps {
-    size: string;
+  size: string;
+  // image: string;
+  // videoUrl: string;
+  // title?: string;
+  data: {
     image: string;
+    url: string;
+    title?: string;
+  };
 }
