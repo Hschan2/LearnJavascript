@@ -8,10 +8,11 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 `;
 
 const TextArea = styled.textarea`
-  border: 2px solid white;
+  border: none;
   padding: 20px;
   border-radius: 20px;
   font-size: 16px;
@@ -30,8 +31,14 @@ const TextArea = styled.textarea`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const AttachFileButton = styled.label`
-  padding: 10px 0px;
+  align-self: flex-start;
+  padding: 10px;
   color: #1d9bf0;
   text-align: center;
   border-radius: 20px;
@@ -42,16 +49,19 @@ const AttachFileButton = styled.label`
 `;
 
 const AttachFileInput = styled.input`
+  align-self: flex-start;
   display: none;
 `;
 
 const SubmitButton = styled.input`
+  align-self: flex-start;
+  margin-left: auto;
   background-color: #1d9bf0;
   color: white;
   border: none;
-  padding: 10px 0px;
+  padding: 10px;
   border-radius: 20px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   &:hover,
   &:active {
@@ -112,19 +122,18 @@ function PostTweetForm() {
         placeholder="당신의 이야기를 전달해 주세요."
         required
       />
-      <AttachFileButton htmlFor="file">
-        {file ? "사진 추가완료✔️" : "사진 추가"}
-      </AttachFileButton>
-      <AttachFileInput
-        onChange={onFileChange}
-        type="file"
-        id="file"
-        accept="image/*"
-      />
-      <SubmitButton
-        type="submit"
-        value={isLoading ? "작성 중..." : "작성"}
-      />
+      <ButtonContainer>
+        <AttachFileButton htmlFor="file">
+          {file ? "사진 추가완료✔️" : "사진 추가"}
+        </AttachFileButton>
+        <AttachFileInput
+          onChange={onFileChange}
+          type="file"
+          id="file"
+          accept="image/*"
+        />
+        <SubmitButton type="submit" value={isLoading ? "작성 중..." : "작성"} />
+      </ButtonContainer>
     </Form>
   );
 }
