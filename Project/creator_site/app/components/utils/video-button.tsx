@@ -3,6 +3,7 @@
 import { IButtonProps } from "@/app/types/buttonType";
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const Modal = dynamic(() => import("./modal"));
 
@@ -22,15 +23,16 @@ function VideoButton({ size, data }: IButtonProps) {
     <div>
       <button
         onClick={openModal}
-        className={`relative ${size} overflow-hidden rounded-2xl`}
+        className={`transition relative ${size} overflow-hidden rounded-2xl text-slate-300 hover:text-slate-400`}
       >
-        <img
-          className="w-full h-full object-cover"
+        <Image
           src={image}
-          alt="Button Image"
+          alt="Image Button"
           loading="lazy"
+          layout="fill"
+          objectFit="cover"
         />
-        <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-4xl font-bold">
+        <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl font-bold">
           ▶️
         </span>
       </button>
