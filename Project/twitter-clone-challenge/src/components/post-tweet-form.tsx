@@ -3,12 +3,14 @@ import { useState } from "react";
 import { styled } from "styled-components";
 import { auth, dateBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import EmojiPicker from "./emoji-picker";
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 10px 0;
 `;
 
 const TextArea = styled.textarea`
@@ -69,10 +71,25 @@ const SubmitButton = styled.input`
   }
 `;
 
+const EmojiButton = styled.button`
+  align-self: flex-start;
+  padding: 8px;
+  margin-left: 10px;
+  color: #1d9bf0;
+  background-color: transparent;
+  text-align: center;
+  border-radius: 20px;
+  border: 1px solid #1d9bf0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+`;
+
 function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTweet(e.target.value);
   };
@@ -112,6 +129,15 @@ function PostTweetForm() {
     }
   };
 
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker((prev) => !prev);
+  };
+
+  const handleSelectEmoji = (selectedEmoji: string) => {
+    setTweet((prevTweet) => prevTweet + selectedEmoji);
+    setShowEmojiPicker(false);
+  };
+
   return (
     <Form onSubmit={onSubmit}>
       <TextArea
@@ -132,8 +158,10 @@ function PostTweetForm() {
           id="file"
           accept="image/*"
         />
+        <EmojiButton onClick={toggleEmojiPicker}>😀</EmojiButton>
         <SubmitButton type="submit" value={isLoading ? "작성 중..." : "작성"} />
       </ButtonContainer>
+      {showEmojiPicker && <EmojiPicker onSelectEmoji={handleSelectEmoji} />}
     </Form>
   );
 }
