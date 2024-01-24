@@ -95,6 +95,10 @@ function Tweet({ username, photo, tweet, userId, id }: ITweet) {
     }
   };
 
+  const handleMenuToggle = () => {
+    setMenuVisible(!menuVisible);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current?.contains(event.target as Node)) {
@@ -140,7 +144,7 @@ function Tweet({ username, photo, tweet, userId, id }: ITweet) {
           </InfoContents>
           {user?.uid === userId && (
             <>
-              <MenuButton onClick={() => setMenuVisible(!menuVisible)}>
+              <MenuButton onClick={handleMenuToggle}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
