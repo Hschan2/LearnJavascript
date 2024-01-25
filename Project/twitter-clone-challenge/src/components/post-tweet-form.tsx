@@ -129,13 +129,16 @@ function PostTweetForm() {
     }
   };
 
-  const toggleEmojiPicker = () => {
+  const toggleEmojiPicker = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     setShowEmojiPicker((prev) => !prev);
   };
 
   const handleSelectEmoji = (selectedEmoji: string) => {
     setTweet((prevTweet) => prevTweet + selectedEmoji);
-    setShowEmojiPicker(false);
+    if (showEmojiPicker) {
+      setShowEmojiPicker(false);
+    }
   };
 
   return (
