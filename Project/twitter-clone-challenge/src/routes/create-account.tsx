@@ -83,7 +83,7 @@ function CreateAccount() {
             required: "이메일을 입력해주세요.",
             pattern: emailRegex,
           })}
-          placeholder="Email"
+          placeholder="Email (ex. abc@gmail.com)"
           type="email"
         />
         {errors?.email?.type === "required" && (
@@ -97,7 +97,7 @@ function CreateAccount() {
             required: "비밀번호를 입력해주세요.",
             pattern: passwordRegex,
           })}
-          placeholder="Password"
+          placeholder="Password (ex. abc123!@)"
           type="password"
         />
         <PasswordMessage>숫자, 대소문자 알파벳, 특수문자(!,@,#) 중 하나 이상의 총 8글자 이상</PasswordMessage>

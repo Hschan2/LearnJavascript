@@ -57,7 +57,7 @@ function Login() {
             required: "이메일을 입력해주세요.",
             pattern: emailRegex,
           })}
-          placeholder="Email"
+          placeholder="Email (ex. abc@gmail.com)"
           type="email"
         />
         {errors?.email?.type === "required" && (
@@ -71,7 +71,7 @@ function Login() {
             required: "비밀번호를 입력해주세요.",
             pattern: passwordRegex,
           })}
-          placeholder="Password"
+          placeholder="Password (ex. abc123!@)"
           type="password"
         />
         {errors?.password?.type === "required" && (
