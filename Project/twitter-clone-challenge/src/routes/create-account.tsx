@@ -9,6 +9,7 @@ import {
   Error,
   Form,
   Input,
+  PasswordMessage,
   Switcher,
   Title,
   Wrapper,
@@ -99,6 +100,7 @@ function CreateAccount() {
           placeholder="Password"
           type="password"
         />
+        <PasswordMessage>숫자, 대소문자 알파벳, 특수문자(!,@,#) 중 하나 이상의 총 8글자 이상</PasswordMessage>
         {errors?.password?.type === "required" && (
           <Error>비밀번호를 입력해주세요.</Error>
         )}
