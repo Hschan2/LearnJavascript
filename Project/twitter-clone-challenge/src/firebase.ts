@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDnGlijVLHvWsF7VNxIf4mw4X_NHJmm84E",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "twitter-clone-challenge.firebaseapp.com",
   projectId: "twitter-clone-challenge",
   storageBucket: "twitter-clone-challenge.appspot.com",
   messagingSenderId: "1053362560070",
-  appId: "1:1053362560070:web:7d906ef753f1da8c5efe47",
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
