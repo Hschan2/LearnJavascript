@@ -66,17 +66,17 @@ export const CATEGORIES_VIDEOS = {
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fake_mans_intro.png",
     },
     {
-      title: `${COVER_MESSAGE} fromis_9 채널나인`,
+      title: `${COVER_MESSAGE} fromis_9 ③`,
       url: "/videos/Cinderella.mp4",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fromis_nine_channel%20intro.png",
     },
     {
-      title: `${COVER_MESSAGE} fromis_9 memory`,
+      title: `${COVER_MESSAGE} fromis_9 ②`,
       url: "/videos/Cinderella.mp4",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fromis_nine_log_intro.png",
     },
     {
-      title: `${COVER_MESSAGE} fromis_9 Season`,
+      title: `${COVER_MESSAGE} fromis_9 ①`,
       url: "/videos/Cinderella.mp4",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fromis_nine_season_intro.png",
     },
@@ -116,12 +116,12 @@ export const CATEGORIES_VIDEOS = {
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/my_motion_graphic.png",
     },
     {
-      title: `${COVER_MESSAGE} Netflix(Previous)`,
+      title: `${COVER_MESSAGE} Netflix`,
       url: "/videos/Cinderella.mp4",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/netflix_before_intro.png",
     },
     {
-      title: `${COVER_MESSAGE} Netflix(Now)`,
+      title: `${COVER_MESSAGE} Netflix`,
       url: "/videos/Cinderella.mp4",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/netflix_intro.png",
     },
