@@ -24,6 +24,7 @@ const TextArea = styled.textarea`
   resize: none;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  overflow-y: hidden;
   &::placeholder {
     font-size: 16px;
   }
@@ -90,15 +91,18 @@ function PostTweetForm() {
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTweet(e.target.value);
   };
+
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (files && files.length === 1) {
       setFile(files[0]);
     }
   };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const user = auth.currentUser;
@@ -144,7 +148,6 @@ function PostTweetForm() {
   return (
     <Form onSubmit={onSubmit}>
       <TextArea
-        rows={5}
         maxLength={180}
         onChange={onTextChange}
         value={tweet}
