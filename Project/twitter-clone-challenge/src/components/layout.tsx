@@ -27,12 +27,13 @@ const MenuItem = styled.div`
   padding: 5px;
   cursor: pointer;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  border: 2px solid white;
   height: 30px;
-  width: 30px;
-  border-radius: 50%;
+  width: 100px;
+  gap: 10px;
+  opacity: 0.85;
   svg {
     width: 30px;
     fill: white;
@@ -43,6 +44,18 @@ const MenuItem = styled.div`
       fill: tomato;
     }
   }
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const NoneLineLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const MenuName = styled.span`
+  color: white;
+  font-size: 14px;
 `;
 
 function Layout() {
@@ -58,15 +71,15 @@ function Layout() {
   return (
     <Wrapper>
       <Menu>
-        <Link to="/">
+        <NoneLineLink to="/">
           <img
             src="https://pngimg.com/d/twitter_PNG15.png"
             alt="logo"
             width={80}
             height={80}
           />
-        </Link>
-        <Link to="/">
+        </NoneLineLink>
+        <NoneLineLink to="/">
           <MenuItem>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -77,9 +90,10 @@ function Layout() {
               <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
               <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
             </svg>
+            <MenuName>Home</MenuName>
           </MenuItem>
-        </Link>
-        <Link to="/profile">
+        </NoneLineLink>
+        <NoneLineLink to="/profile">
           <MenuItem>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -93,8 +107,9 @@ function Layout() {
                 clipRule="evenodd"
               />
             </svg>
+            <MenuName>Profile</MenuName>
           </MenuItem>
-        </Link>
+        </NoneLineLink>
         <MenuItem onClick={onLogOut} className="log-out">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -108,6 +123,7 @@ function Layout() {
               clipRule="evenodd"
             />
           </svg>
+          <MenuName>Logout</MenuName>
         </MenuItem>
       </Menu>
       <Outlet />
