@@ -30,6 +30,7 @@ export const Input = styled.input`
   font-size: 16px;
   transition-duration: 0.5s;
   &[type="submit"] {
+    margin-top: 10px;
     background-color: #2563eb;
     color: white;
     cursor: pointer;
@@ -52,6 +53,6 @@ export const Switcher = styled.span`
 `;
 
 export const PasswordMessage = styled.span`
-  font-size: 14px;
+  font-size: 12px;
   margin-top: 4px;
 `;
