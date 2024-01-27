@@ -10,7 +10,7 @@ const Form = styled.form`
   flex-direction: column;
   gap: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 10px 0;
+  padding-bottom: 20px;
 `;
 
 const TextArea = styled.textarea`
