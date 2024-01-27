@@ -3,9 +3,9 @@ import PostTweetForm from "../components/post-tweet-form";
 import Timeline from "../components/timeline";
 
 const Wrapper = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 30px;
-  grid-template-rows: 1fr auto;
   padding: 10px 0;
 `;
 
