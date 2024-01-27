@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { auth, dateBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { updateProfile } from "firebase/auth";
+import { deleteUser, updateProfile } from "firebase/auth";
 import { styled } from "styled-components";
 import { ITweet } from "../components/timeline";
 import {
   collection,
+  deleteDoc,
   getDocs,
   limit,
   orderBy,
@@ -13,6 +14,7 @@ import {
   where,
 } from "firebase/firestore";
 import Tweet from "../components/tweet";
+import { useNavigate } from "react-router";
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,23 +52,12 @@ const NameContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  button {
-    width: 50px;
-    margin-top: 10px;
-    font-size: 14px;
-    background-color: #111111;
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 6px;
-    cursor: pointer;
-  }
 `;
 
 const EditContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 8px;
 `;
 
 const Input = styled.input`
@@ -89,12 +80,49 @@ const Tweets = styled.div`
   margin: 20px 0;
 `;
 
+const EditButton = styled.button`
+  width: 50px;
+  height: 25px;
+  margin-top: 10px;
+  font-size: 14px;
+  background-color: #1d9bf0;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+`;
+
+const DeleteButton = styled.button`
+  width: 50px;
+  height: 25px;
+  margin-top: 10px;
+  font-size: 14px;
+  background-color: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+`;
+
+const ConfirmEditButton = styled.button`
+  width: 50px;
+  height: 25px;
+  margin-top: 10px;
+  font-size: 14px;
+  background-color: #111111;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
+  cursor: pointer;
+`;
+
 function Profile() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
   const [isEditName, setEditName] = useState(false);
   const [isNewName, setNewName] = useState("");
   const user = auth.currentUser;
   const [avatar, setAvatar] = useState(user?.photoURL);
+  const navigate = useNavigate();
 
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -155,6 +183,38 @@ function Profile() {
     setNewName(user?.displayName || "");
   };
 
+  const onDeleteUser = async () => {
+    if (!user) return;
+
+    const checkDelete = window.confirm("계정을 삭제하시겠습니까?");
+
+    if (!checkDelete) return;
+
+    try {
+      const tweetQuery = query(
+        collection(dateBase, "tweets"),
+        where("userId", "==", user?.uid)
+      );
+
+      const tweetDocs = await getDocs(tweetQuery);
+
+      tweetDocs.forEach(async (tweetDoc) => {
+        await deleteDoc(tweetDoc.ref);
+      });
+
+      await updateProfile(user, {
+        displayName: null,
+        photoURL: null,
+      });
+
+      await deleteUser(user);
+
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchTweets();
   }, []);
@@ -185,14 +245,19 @@ function Profile() {
         <NameContainer>
           <Input type="text" value={isNewName} onChange={onNameChange} />
           <EditContainer>
-            <button onClick={onSaveNewName}>확인</button>
-            <button onClick={onCancelNewName}>취소</button>
+            <ConfirmEditButton onClick={onSaveNewName}>확인</ConfirmEditButton>
+            <ConfirmEditButton onClick={onCancelNewName}>
+              취소
+            </ConfirmEditButton>
           </EditContainer>
         </NameContainer>
       ) : (
         <NameContainer>
           <Name>{user?.displayName ?? "익명"}</Name>
-          <button onClick={onEditNewName}>수정</button>
+          <EditContainer>
+            <EditButton onClick={onEditNewName}>수정</EditButton>
+            <DeleteButton onClick={onDeleteUser}>삭제</DeleteButton>
+          </EditContainer>
         </NameContainer>
       )}
       <Tweets>
