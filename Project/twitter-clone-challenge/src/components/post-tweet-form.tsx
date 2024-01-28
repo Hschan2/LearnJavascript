@@ -122,6 +122,7 @@ function PostTweetForm() {
         createdAt: Date.now(),
         username: user.displayName || "익명",
         userId: user.uid,
+        likes: 0,
       });
       if (file) {
         const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
