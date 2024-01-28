@@ -2,7 +2,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { auth, dateBase, storage } from "../firebase";
 import { ITweet } from "./timeline";
 import { styled } from "styled-components";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import UpdateTweetForm from "./update-tweet-form";
 import formattedDate from "../hooks/formattedDate";
@@ -42,11 +42,10 @@ const MenuItem = styled.button`
 
 const Photo = styled.img`
   width: 630px;
-  height: 300px;
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   object-fit: cover;
-  margin-top: 20px;
+  margin-top: 12px;
 `;
 
 const Username = styled.span`
@@ -65,13 +64,33 @@ const Payload = styled.p`
 `;
 
 const CreatedAt = styled.span`
-  margin-top: 4px;
+  margin-top: 10px;
   font-size: 12px;
   color: grey;
 `;
 
-function Tweet({ username, photo, tweet, userId, id, createdAt }: ITweet) {
+const LikeButton = styled.button`
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  color: white;
+  width: 80px;
+  height: 40px;
+  margin-top: 20px;
+  cursor: pointer;
+`;
+
+function Tweet({
+  username,
+  photo,
+  tweet,
+  userId,
+  id,
+  createdAt,
+  likes,
+}: ITweet) {
   const [isEdit, setIsEdit] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
   const createdDate = formattedDate({ createdAt });
   const user = auth.currentUser;
 
@@ -86,6 +105,29 @@ function Tweet({ username, photo, tweet, userId, id, createdAt }: ITweet) {
       }
     } catch (e) {
       console.log(e);
+    }
+  };
+
+  const toggleLike = async () => {
+    if (!user || !id) return;
+
+    try {
+      const tweetRef = doc(dateBase, "tweets", id);
+      const tweetDoc = await getDoc(tweetRef);
+
+      if (tweetDoc.exists()) {
+        const currentLikes = tweetDoc.data()?.likes || 0;
+
+        if (isLiked) {
+          await updateDoc(tweetRef, { likes: currentLikes - 1 });
+        } else {
+          await updateDoc(tweetRef, { likes: currentLikes + 1 });
+        }
+
+        setIsLiked((prev) => !prev);
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
     }
   };
 
@@ -116,6 +158,7 @@ function Tweet({ username, photo, tweet, userId, id, createdAt }: ITweet) {
             <Payload>{tweet}</Payload>
             {photo ? <Photo src={photo} /> : null}
             <CreatedAt>{createdDate}</CreatedAt>
+            <LikeButton onClick={toggleLike}>좋아요 {likes}</LikeButton>
           </InfoContents>
           {user?.uid === userId && (
             <>
