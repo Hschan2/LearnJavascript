@@ -5,6 +5,7 @@ import { styled } from "styled-components";
 import { deleteDoc, doc } from "firebase/firestore";
 import { useState } from "react";
 import UpdateTweetForm from "./update-tweet-form";
+import formattedDate from "../hooks/formattedDate";
 
 const Wrapper = styled.div`
   display: grid;
@@ -63,8 +64,15 @@ const Payload = styled.p`
   font-size: 16px;
 `;
 
-function Tweet({ username, photo, tweet, userId, id }: ITweet) {
+const CreatedAt = styled.span`
+  margin-top: 4px;
+  font-size: 12px;
+  color: grey;
+`;
+
+function Tweet({ username, photo, tweet, userId, id, createdAt }: ITweet) {
   const [isEdit, setIsEdit] = useState(false);
+  const createdDate = formattedDate({ createdAt });
   const user = auth.currentUser;
 
   const onDelete = async () => {
@@ -78,8 +86,6 @@ function Tweet({ username, photo, tweet, userId, id }: ITweet) {
       }
     } catch (e) {
       console.log(e);
-    } finally {
-      //
     }
   };
 
@@ -109,6 +115,7 @@ function Tweet({ username, photo, tweet, userId, id }: ITweet) {
             </Username>
             <Payload>{tweet}</Payload>
             {photo ? <Photo src={photo} /> : null}
+            <CreatedAt>{createdDate}</CreatedAt>
           </InfoContents>
           {user?.uid === userId && (
             <>
