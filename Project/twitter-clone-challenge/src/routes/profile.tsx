@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { auth, dateBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { deleteUser, updateProfile } from "firebase/auth";
+import { deleteUser, signOut, updateProfile } from "firebase/auth";
 import { styled } from "styled-components";
 import { ITweet } from "../components/timeline";
 import {
@@ -208,6 +208,7 @@ function Profile() {
       });
 
       await deleteUser(user);
+      await auth.signOut();
 
       navigate("/login");
     } catch (error) {
