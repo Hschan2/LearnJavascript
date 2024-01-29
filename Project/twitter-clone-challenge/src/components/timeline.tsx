@@ -1,4 +1,10 @@
-import { collection, limit, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { dateBase } from "../firebase";
 import { styled } from "styled-components";
@@ -13,6 +19,7 @@ export interface ITweet {
   username: string;
   createdAt: number;
   likes: number;
+  likedBy?: string[];
 }
 
 const Wrapper = styled.div`
@@ -45,7 +52,8 @@ function Timeline() {
         }); */
       unsubscribe = await onSnapshot(tweetsQuery, (snapshot) => {
         const tweets = snapshot.docs.map((doc) => {
-          const { tweet, createdAt, userId, username, photo, likes } = doc.data();
+          const { tweet, createdAt, userId, username, photo, likes } =
+            doc.data();
           return {
             tweet,
             createdAt,
