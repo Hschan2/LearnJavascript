@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { auth, dateBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { deleteUser, signOut, updateProfile } from "firebase/auth";
+import { updateProfile } from "firebase/auth";
 import { styled } from "styled-components";
 import { ITweet } from "../components/timeline";
 import {
   collection,
-  deleteDoc,
   getDocs,
   limit,
   orderBy,
@@ -41,6 +40,8 @@ const AvatarUpload = styled.label`
 
 const AvatarImg = styled.img`
   width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const AvatarInput = styled.input`
@@ -92,18 +93,6 @@ const EditButton = styled.button`
   cursor: pointer;
 `;
 
-const DeleteButton = styled.button`
-  width: 50px;
-  height: 25px;
-  margin-top: 10px;
-  font-size: 14px;
-  background-color: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-`;
-
 const ConfirmEditButton = styled.button`
   width: 50px;
   height: 25px;
@@ -122,7 +111,6 @@ function Profile() {
   const [isNewName, setNewName] = useState("");
   const user = auth.currentUser;
   const [avatar, setAvatar] = useState(user?.photoURL);
-  const navigate = useNavigate();
 
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -148,7 +136,7 @@ function Profile() {
     );
     const snapshot = await getDocs(tweetQuery);
     const tweets = snapshot.docs.map((doc) => {
-      const { tweet, createdAt, userId, username, photo } = doc.data();
+      const { tweet, createdAt, userId, username, photo, likes, likedBy } = doc.data();
       return {
         tweet,
         createdAt,
@@ -156,6 +144,8 @@ function Profile() {
         username,
         photo,
         id: doc.id,
+        likes,
+        likedBy,
       };
     });
     setTweets(tweets);
@@ -181,39 +171,6 @@ function Profile() {
   const onEditNewName = () => {
     setEditName(true);
     setNewName(user?.displayName || "");
-  };
-
-  const onDeleteUser = async () => {
-    if (!user) return;
-
-    const checkDelete = window.confirm("계정을 삭제하시겠습니까?");
-
-    if (!checkDelete) return;
-
-    try {
-      const tweetQuery = query(
-        collection(dateBase, "tweets"),
-        where("userId", "==", user?.uid)
-      );
-
-      const tweetDocs = await getDocs(tweetQuery);
-
-      tweetDocs.forEach(async (tweetDoc) => {
-        await deleteDoc(tweetDoc.ref);
-      });
-
-      await updateProfile(user, {
-        displayName: null,
-        photoURL: null,
-      });
-
-      await deleteUser(user);
-      await auth.signOut();
-
-      navigate("/login");
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   useEffect(() => {
@@ -257,7 +214,6 @@ function Profile() {
           <Name>{user?.displayName ?? "익명"}</Name>
           <EditContainer>
             <EditButton onClick={onEditNewName}>수정</EditButton>
-            <DeleteButton onClick={onDeleteUser}>삭제</DeleteButton>
           </EditContainer>
         </NameContainer>
       )}
