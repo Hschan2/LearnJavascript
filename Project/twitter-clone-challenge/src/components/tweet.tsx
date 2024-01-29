@@ -90,7 +90,6 @@ function Tweet({
   likes,
 }: ITweet) {
   const [isEdit, setIsEdit] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
   const createdDate = formattedDate({ createdAt });
   const user = auth.currentUser;
 
@@ -117,17 +116,24 @@ function Tweet({
 
       if (tweetDoc.exists()) {
         const currentLikes = tweetDoc.data()?.likes || 0;
+        const likedBy = tweetDoc.data()?.likedBy || [];
+        const userAlreadyLiked = likedBy.includes(user?.uid);
 
-        if (isLiked) {
-          await updateDoc(tweetRef, { likes: currentLikes - 1 });
-        } else {
-          await updateDoc(tweetRef, { likes: currentLikes + 1 });
+        if (userAlreadyLiked && currentLikes > 0) {
+          await updateDoc(tweetRef, {
+            likes: currentLikes - 1,
+            likedBy: likedBy.filter((uid: string) => uid !== user?.uid),
+          });
         }
-
-        setIsLiked((prev) => !prev);
+        if (!userAlreadyLiked) {
+          await updateDoc(tweetRef, {
+            likes: currentLikes + 1,
+            likedBy: [...likedBy, user?.uid],
+          });
+        }
       }
     } catch (error) {
-      console.error("Error toggling like:", error);
+      console.error(error);
     }
   };
 
