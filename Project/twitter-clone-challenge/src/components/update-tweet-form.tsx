@@ -8,6 +8,7 @@ import {
   ref,
   uploadBytes,
 } from "firebase/storage";
+import EmojiPicker from "./emoji-picker";
 
 export interface EditTweetFormProps {
   id: string;
@@ -18,10 +19,13 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border: 1px solid white;
+  border-radius: 26px;
+  padding: 14px;
 `;
 
 const TextArea = styled.textarea`
-  border: 2px solid white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   padding: 20px;
   border-radius: 20px;
   font-size: 16px;
@@ -41,7 +45,8 @@ const TextArea = styled.textarea`
 `;
 
 const AttachFileButton = styled.label`
-  padding: 10px 0px;
+  align-self: flex-start;
+  padding: 10px;
   color: #1d9bf0;
   text-align: center;
   border-radius: 20px;
@@ -49,19 +54,26 @@ const AttachFileButton = styled.label`
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  svg {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 const AttachFileInput = styled.input`
+  align-self: flex-start;
   display: none;
 `;
 
 const SubmitButton = styled.input`
+  align-self: flex-start;
+  margin-left: auto;
   background-color: #1d9bf0;
   color: white;
   border: none;
-  padding: 10px 0px;
+  padding: 10px;
   border-radius: 20px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   &:hover,
   &:active {
@@ -98,21 +110,47 @@ const DeletePhotoButton = styled.button`
   outline: none;
 
   &:hover {
-    background-color: #d9363e;
+    background-color: #ff4d4h;
   }
 `;
 
 const CancelButton = styled.button`
-  background-color: #ff4d4f;
-  color: #fff;
-  border: none;
-  padding: 10px 0px;
+  align-self: flex-start;
+  margin-left: 10px;
+  background-color: #111111;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 10px;
   border-radius: 20px;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
   &:hover,
   &:active {
-    opacity: 0.9;
+    background-color: #222222;
+  }
+`;
+
+const ButtonLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 4px;
+`;
+
+const EmojiButton = styled.button`
+  align-self: flex-start;
+  padding: 10px;
+  margin-left: 10px;
+  color: #1d9bf0;
+  background-color: transparent;
+  text-align: center;
+  border-radius: 20px;
+  border: 1px solid #1d9bf0;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  svg {
+    width: 15px;
+    height: 15px;
   }
 `;
 
@@ -121,6 +159,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [existingPhoto, setExistingPhoto] = useState<string | null>(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const user = auth.currentUser;
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -182,7 +221,19 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
 
   const onCancel = () => {
     onClose();
-  }
+  };
+
+  const toggleEmojiPicker = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setShowEmojiPicker((prev) => !prev);
+  };
+
+  const handleSelectEmoji = (selectedEmoji: string) => {
+    setTweet((prevTweet) => prevTweet + selectedEmoji);
+    if (showEmojiPicker) {
+      setShowEmojiPicker(false);
+    }
+  };
 
   useEffect(() => {
     const fetchTweet = async () => {
@@ -204,7 +255,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
   return (
     <Form onSubmit={onSubmit}>
       <TextArea
-        rows={5}
+        rows={3}
         maxLength={180}
         onChange={onTextChange}
         value={tweet}
@@ -219,19 +270,38 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
           </DeletePhotoButton>
         </ExistingPhotoContainer>
       )}
-      <AttachFileButton htmlFor="editFile">
-        {file ? "사진 추가완료✔️" : "사진 추가"}
-      </AttachFileButton>
-      <AttachFileInput
-        onChange={onFileChange}
-        type="file"
-        id="editFile"
-        accept="image/*"
-      />
-      <SubmitButton type="submit" value={isLoading ? "수정 중..." : "수정"} />
-      <CancelButton type="button" onClick={onCancel}>
-        취소
-      </CancelButton>
+      <ButtonLayout>
+        <AttachFileButton htmlFor="editFile">
+          {file ? "사진 추가완료✔️" : "사진 추가"}
+        </AttachFileButton>
+        <AttachFileInput
+          onChange={onFileChange}
+          type="file"
+          id="editFile"
+          accept="image/*"
+        />
+        <EmojiButton onClick={toggleEmojiPicker}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
+            />
+          </svg>
+        </EmojiButton>
+        <SubmitButton type="submit" value={isLoading ? "수정 중..." : "수정"} />
+        <CancelButton type="button" onClick={onCancel}>
+          취소
+        </CancelButton>
+      </ButtonLayout>
+      {showEmojiPicker && <EmojiPicker onSelectEmoji={handleSelectEmoji} />}
     </Form>
   );
 }
