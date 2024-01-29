@@ -123,6 +123,7 @@ function PostTweetForm() {
         username: user.displayName || "익명",
         userId: user.uid,
         likes: 0,
+        likedBy: [],
       });
       if (file) {
         const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
@@ -207,7 +208,7 @@ function PostTweetForm() {
             />
           </svg>
         </EmojiButton>
-        <SubmitButton type="submit" value={isLoading ? "작성 중..." : "작성"} />
+        <SubmitButton type="submit" value={isLoading ? "보내는 중" : "보내기"} />
       </ButtonContainer>
       {showEmojiPicker && <EmojiPicker onSelectEmoji={handleSelectEmoji} />}
     </Form>
