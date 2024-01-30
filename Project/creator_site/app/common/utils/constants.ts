@@ -9,7 +9,7 @@ export const CATEGORIES_TITLE = {
 };
 
 export const PORTFOLIO_VIDEO = {
-  url: "/videos/Cinderella.mp4",
+  url: "https://youtu.be/Xhk9NoWTXkA?si=_qo98tnJcG1696Ic",
   image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/portfolio/png/portfolio.png",
 };
 
