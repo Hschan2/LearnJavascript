@@ -17,7 +17,7 @@ export const CATEGORIES_VIDEOS = {
   motionGraphics: [
     {
       title: "Ball Slant",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/5Mp1_5SpSKc?si=jhSGVcRRbglDlXyE",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/ball_slant.png",
     },
     {
@@ -148,7 +148,7 @@ export const CATEGORIES_VIDEOS = {
     {
       title: `${COVER_MESSAGE} Squid Game`,
       url: "/videos/Cinderella.mp4",
-      image: "/images/motionGraphic/png/squid_game_motion.png",
+      image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/squid_game_motion.png",
     },
     {
       title: `${COVER_MESSAGE} TvN`,
