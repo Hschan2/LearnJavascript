@@ -65,7 +65,7 @@ function Modal({ isOpen, onClose, videoUrl }: IModalProps) {
   return (
     <div
       className={`fixed top-0 left-0 w-full h-full flex items-center justify-center ${
-        isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        isOpen ? "opacity-100 visible z-50" : "opacity-0 invisible"
       } transition-opacity ease-in-out duration-300`}
     >
       {renderModalContent()}
