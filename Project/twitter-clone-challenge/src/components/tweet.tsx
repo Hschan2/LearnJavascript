@@ -6,6 +6,7 @@ import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import UpdateTweetForm from "./update-tweet-form";
 import formattedDate from "../hooks/formattedDate";
+import ImageModal from "./image-modal";
 
 const Wrapper = styled.div`
   display: grid;
@@ -42,6 +43,7 @@ const MenuItem = styled.button`
 
 const Photo = styled.img`
   width: 630px;
+  height: 300px;
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   object-fit: cover;
@@ -90,6 +92,7 @@ function Tweet({
   likes,
 }: ITweet) {
   const [isEdit, setIsEdit] = useState(false);
+  const [isImageModalOpen, setImageModalOpen] = useState(false);
   const createdDate = formattedDate({ createdAt });
   const user = auth.currentUser;
 
@@ -105,6 +108,14 @@ function Tweet({
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const openImageModal = () => {
+    setImageModalOpen(!isImageModalOpen);
+  };
+
+  const closeImageModal = () => {
+    setImageModalOpen(false);
   };
 
   const toggleLike = async () => {
@@ -162,7 +173,7 @@ function Tweet({
               </svg>
             </Username>
             <Payload>{tweet}</Payload>
-            {photo ? <Photo src={photo} /> : null}
+            {photo ? <Photo onClick={openImageModal} src={photo} /> : null}
             <CreatedAt>{createdDate}</CreatedAt>
             <LikeButton onClick={toggleLike}>좋아요 {likes}</LikeButton>
           </InfoContents>
@@ -204,6 +215,9 @@ function Tweet({
               </Menu>
             </>
           )}
+          {isImageModalOpen ? (
+            <ImageModal onClose={closeImageModal} imageUrl={photo} />
+          ) : null}
         </Wrapper>
       )}
     </>
