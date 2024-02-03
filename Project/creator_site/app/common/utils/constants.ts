@@ -9,7 +9,7 @@ export const CATEGORIES_TITLE = {
 };
 
 export const PORTFOLIO_VIDEO = {
-  url: "https://youtu.be/Xhk9NoWTXkA?si=_qo98tnJcG1696Ic",
+  url: "https://youtu.be/U99Ng5P4p94",
   image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/portfolio/png/portfolio.png",
 };
 
@@ -169,44 +169,44 @@ export const CATEGORIES_VIDEOS = {
   travel: [
     {
       title: "유럽",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/WU4QpsGcNP8",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/travel/png/europe.png",
     },
     {
       title: "일본",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/G2vFJloXtSo",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/travel/png/japan.png",
     },
     {
       title: "가오슝",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/OxLCSJdj364",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/travel/png/kaohsiung.png",
     },
     {
       title: "라오스",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/JIXvVaRAef8",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/travel/png/laos.png",
     },
   ] as IVideo[],
   shortForm: [
     {
       title: "강원도 원주",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtube.com/shorts/bO6g9SFzh_0?feature=share",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/shortForm/png/wonju.png",
     },
     {
       title: "일본 비에이",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtube.com/shorts/LjlYtmrsYrc?feature=share",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/shortForm/png/biei.png",
     },
     {
       title: "일본 홋카이도",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtube.com/shorts/yBkNh1IPwIs?feature=share",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/shortForm/png/hokkaido.png",
     },
     {
       title: "강원도 고석정",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtube.com/shorts/1X89ufkfaiE?feature=share",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/shortForm/png/goseokjung.png",
     },
   ] as IVideo[],
