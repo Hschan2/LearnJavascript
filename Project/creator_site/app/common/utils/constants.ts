@@ -17,32 +17,32 @@ export const CATEGORIES_VIDEOS = {
   motionGraphics: [
     {
       title: "Ball Slant",
-      url: "https://youtu.be/5Mp1_5SpSKc?si=jhSGVcRRbglDlXyE",
+      url: "https://youtu.be/pw7BNB2Cd4w",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/ball_slant.png",
     },
     {
       title: `${COVER_MESSAGE} 뽐뽐뽐`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/VIlERhtaIeM",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/bbom_bbom_bbom_intro.png",
     },
     {
       title: `${COVER_MESSAGE} BitHit`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/47El80nOOm0",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/bithit_intro.png",
     },
     {
       title: "Cartoon Typography",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/ppqX2n9uYy8",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/cartoon_typography.png",
     },
     {
       title: "City Animation",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/Z9-ilrzAURo",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/city_animation.png",
     },
     {
       title: `${COVER_MESSAGE} Dorama Korea`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/eVwL3rXArj8",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/dorama_korea.png",
     },
     {
@@ -52,22 +52,22 @@ export const CATEGORIES_VIDEOS = {
     },
     {
       title: "8 Bit Graphic",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/CDDDZBukGbk",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/eight_bit_intro.png",
     },
     {
       title: "Face Animation",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/UrN3Z9hUkt0",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/eyes_motion.png",
     },
     {
       title: `${COVER_MESSAGE} Fake Mans`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/5X3w3_QKWH4",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fake_mans_intro.png",
     },
     {
       title: `${COVER_MESSAGE} fromis_9 ③`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/h5CBbWdRG_o",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fromis_nine_channel%20intro.png",
     },
     {
