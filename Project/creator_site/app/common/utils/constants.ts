@@ -72,52 +72,52 @@ export const CATEGORIES_VIDEOS = {
     },
     {
       title: `${COVER_MESSAGE} fromis_9 ②`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/esaLk979NRA",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fromis_nine_log_intro.png",
     },
     {
       title: `${COVER_MESSAGE} fromis_9 ①`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/_kDIgeRSX0I",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/fromis_nine_season_intro.png",
     },
     {
       title: `${COVER_MESSAGE} Havanana AD`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/tcpWp216Dz8",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/havanana_cover.png",
     },
     {
       title: "Hub Animation",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/sbBRK97SDeo",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/hud_motion.png",
     },
     {
       title: `${COVER_MESSAGE} Ice Cream`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/YmYWfxc9VKs",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/ice_cream_intro.png",
     },
     {
       title: `${COVER_MESSAGE} IZ*ONE`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/82LQFTiUCDE",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/izone%20intro.png",
     },
     {
-      title: `${COVER_MESSAGE} Izone Acade`,
-      url: "/videos/Cinderella.mp4",
+      title: `${COVER_MESSAGE} IZ*ONE Arcade`,
+      url: "https://youtu.be/h9AKS4kDqYs",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/izone_acade_intro.png",
     },
     {
       title: `${COVER_MESSAGE} Line Friends`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/pnVvCM1Xd-U",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/line_friends_cover.png",
     },
     {
       title: "Line MotionGraphic",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/6nc9l8iOWy0",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/my_motion_graphic.png",
     },
     {
       title: `${COVER_MESSAGE} Netflix`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/F30cYdGQ-aY",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/netflix_before_intro.png",
     },
     {
