@@ -1,24 +1,13 @@
-import { GithubAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase";
-import { useNavigate } from "react-router";
-import { Button, Logo } from "../style/button-componenets";
+import { GithubAuthProvider } from "firebase/auth";
+import { Logo } from "../style/button-components";
+import SocialButton from "./social-button";
 
 function GithubButton() {
-  const navigate = useNavigate();
-  const onClick = async () => {
-    try {
-      const provider = new GithubAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-    }
-  };
   return (
-    <Button className="githubBtn" onClick={onClick}>
+    <SocialButton provider={GithubAuthProvider} className="githubBtn">
       <Logo src="github-logo.svg" />
       Github로 로그인
-    </Button>
+    </SocialButton>
   );
 }
 
