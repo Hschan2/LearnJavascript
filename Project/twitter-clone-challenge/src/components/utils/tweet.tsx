@@ -1,87 +1,12 @@
 import { deleteObject, ref } from "firebase/storage";
 import { auth, dateBase, storage } from "../../firebase";
-import { ITweet } from "../screen/timeline";
-import { styled } from "styled-components";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import UpdateTweetForm from "../form/update-tweet-form";
 import formattedDate from "../../hooks/formattedDate";
 import ImageModal from "./image-modal";
-
-const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 15px;
-  background-color: #111111;
-  position: relative;
-`;
-
-const InfoContents = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Menu = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-`;
-
-const MenuItem = styled.button`
-  color: #fff;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-`;
-
-const Photo = styled.img`
-  width: 630px;
-  height: 300px;
-  border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  object-fit: cover;
-  margin-top: 12px;
-  cursor: pointer;
-`;
-
-const Username = styled.span`
-  font-weight: 800;
-  font-size: 18px;
-  svg {
-    width: 15px;
-    height: 15px;
-    color: #1d9bf0;
-  }
-`;
-
-const Payload = styled.p`
-  margin: 10px 0px;
-  font-size: 16px;
-`;
-
-const CreatedAt = styled.span`
-  margin-top: 10px;
-  font-size: 12px;
-  color: grey;
-`;
-
-const LikeButton = styled.button`
-  background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 20px;
-  color: white;
-  width: 80px;
-  height: 40px;
-  margin-top: 20px;
-  cursor: pointer;
-`;
+import { ITweet } from "../types/tweet-type";
+import { CreatedAt, InfoContents, LikeButton, Menu, MenuItem, Payload, Photo, Username, Wrapper } from "../style/tweet-components";
 
 function Tweet({
   username,
@@ -103,7 +28,7 @@ function Tweet({
     try {
       await deleteDoc(doc(dateBase, "tweets", id));
       if (photo) {
-        const photoRef = ref(storage, `tweets/${user.uid}/${id}`);
+        const photoRef = ref(storage, `tweets/${user?.uid}/${id}`);
         await deleteObject(photoRef);
       }
     } catch (e) {
