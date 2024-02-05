@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { auth, dateBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
-import { styled } from "styled-components";
 import { ITweet } from "../components/screen/timeline";
 import {
   collection,
@@ -13,97 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import Tweet from "../components/utils/tweet";
-import { useNavigate } from "react-router";
-
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-const AvatarUpload = styled.label`
-  width: 80px;
-  overflow: hidden;
-  height: 80px;
-  border-radius: 50%;
-  background-color: #1d9bf0;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  svg {
-    width: 50px;
-  }
-`;
-
-const AvatarImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
-
-const AvatarInput = styled.input`
-  display: none;
-`;
-
-const NameContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
-
-const EditContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-`;
-
-const Input = styled.input`
-  padding: 5px 10px;
-  border-radius: 50px;
-  border: none;
-  width: 100%;
-  font-size: 14px;
-`;
-
-const Name = styled.span`
-  font-size: 22px;
-`;
-
-const Tweets = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 10px;
-  margin: 20px 0;
-`;
-
-const EditButton = styled.button`
-  width: 50px;
-  height: 25px;
-  margin-top: 10px;
-  font-size: 14px;
-  background-color: #1d9bf0;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-`;
-
-const ConfirmEditButton = styled.button`
-  width: 50px;
-  height: 25px;
-  margin-top: 10px;
-  font-size: 14px;
-  background-color: #111111;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 6px;
-  cursor: pointer;
-`;
+import { AvatarImg, AvatarInput, AvatarUpload, ConfirmEditButton, EditButton, EditContainer, Input, Name, NameContainer, Tweets, Wrapper } from "./style/profile-components";
 
 function Profile() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
@@ -136,7 +45,8 @@ function Profile() {
     );
     const snapshot = await getDocs(tweetQuery);
     const tweets = snapshot.docs.map((doc) => {
-      const { tweet, createdAt, userId, username, photo, likes, likedBy } = doc.data();
+      const { tweet, createdAt, userId, username, photo, likes, likedBy } =
+        doc.data();
       return {
         tweet,
         createdAt,

@@ -1,35 +1,14 @@
 import { useNavigate } from "react-router";
 import { auth, dateBase } from "../firebase";
-import { styled } from "styled-components";
-import { collection, deleteDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { deleteUser, updateProfile } from "firebase/auth";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-`;
-
-const EventButton = styled.button`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  border: 2px solid rgba(255, 255, 255);
-  border-radius: 14px;
-  color: white;
-  font-size: 14px;
-  padding: 10px 12px;
-  cursor: pointer;
-
-  svg {
-    width: 50px;
-    color: tomato;
-  }
-`;
+import { EventButton, Wrapper } from "./style/settings-components";
 
 function Settings() {
   const user = auth.currentUser;

@@ -1,27 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { styled } from "styled-components";
 import { useNavigate } from "react-router";
 import { auth } from "../../firebase";
-
-const Button = styled.span`
-  margin-top: 50px;
-  background-color: white;
-  font-weight: 600;
-  width: 80%;
-  color: black;
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: 0;
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const Logo = styled.img`
-  height: 25px;
-`;
+import { Button, Logo } from "../style/button-componenets";
 
 function GoogleButton() {
   const navigate = useNavigate();
@@ -35,7 +15,7 @@ function GoogleButton() {
     }
   };
   return (
-    <Button onClick={onClick}>
+    <Button className="googleBtn" onClick={onClick}>
       <Logo src="google-logo.svg" />
       Google로 로그인
     </Button>

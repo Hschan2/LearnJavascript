@@ -10,6 +10,7 @@ import { dateBase } from "../../firebase";
 import { styled } from "styled-components";
 import Tweet from "../utils/tweet";
 import { Unsubscribe } from "firebase/auth";
+import { Wrapper } from "../style/timeline-components";
 
 export interface ITweet {
   id: string;
@@ -22,11 +23,7 @@ export interface ITweet {
   likedBy?: string[];
 }
 
-const Wrapper = styled.div`
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-`;
+
 
 function Timeline() {
   const [tweets, setTweets] = useState<ITweet[]>([]);

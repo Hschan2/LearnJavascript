@@ -9,150 +9,151 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import EmojiPicker from "../utils/emoji-picker";
+import { AttachFileButton, AttachFileInput, ButtonLayout, CancelButton, DeletePhotoButton, EmojiButton, ExistingPhoto, ExistingPhotoContainer, Form, SubmitButton, TextArea } from "../style/form-components";
 
 export interface EditTweetFormProps {
   id: string;
   onClose: () => void;
 }
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid white;
-  border-radius: 26px;
-  padding: 14px;
-`;
+// const Form = styled.form`
+//   display: flex;
+//   flex-direction: column;
+//   gap: 10px;
+//   border: 1px solid white;
+//   border-radius: 26px;
+//   padding: 14px;
+// `;
 
-const TextArea = styled.textarea`
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 20px;
-  border-radius: 20px;
-  font-size: 16px;
-  color: white;
-  background-color: black;
-  width: 100%;
-  resize: none;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  &::placeholder {
-    font-size: 16px;
-  }
-  &:focus {
-    outline: none;
-    border-color: #1d9bf0;
-  }
-`;
+// const TextArea = styled.textarea`
+//   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+//   padding: 20px;
+//   border-radius: 20px;
+//   font-size: 16px;
+//   color: white;
+//   background-color: black;
+//   width: 100%;
+//   resize: none;
+//   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+//     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+//   &::placeholder {
+//     font-size: 16px;
+//   }
+//   &:focus {
+//     outline: none;
+//     border-color: #1d9bf0;
+//   }
+// `;
 
-const AttachFileButton = styled.label`
-  align-self: flex-start;
-  padding: 10px;
-  color: #1d9bf0;
-  text-align: center;
-  border-radius: 20px;
-  border: 1px solid #1d9bf0;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  svg {
-    width: 15px;
-    height: 15px;
-  }
-`;
+// const AttachFileButton = styled.label`
+//   align-self: flex-start;
+//   padding: 10px;
+//   color: #1d9bf0;
+//   text-align: center;
+//   border-radius: 20px;
+//   border: 1px solid #1d9bf0;
+//   font-size: 14px;
+//   font-weight: 600;
+//   cursor: pointer;
+//   svg {
+//     width: 15px;
+//     height: 15px;
+//   }
+// `;
 
-const AttachFileInput = styled.input`
-  align-self: flex-start;
-  display: none;
-`;
+// const AttachFileInput = styled.input`
+//   align-self: flex-start;
+//   display: none;
+// `;
 
-const SubmitButton = styled.input`
-  align-self: flex-start;
-  margin-left: auto;
-  background-color: #1d9bf0;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  &:hover,
-  &:active {
-    opacity: 0.9;
-  }
-`;
+// const SubmitButton = styled.input`
+//   align-self: flex-start;
+//   margin-left: auto;
+//   background-color: #1d9bf0;
+//   color: white;
+//   border: none;
+//   padding: 10px;
+//   border-radius: 20px;
+//   font-size: 14px;
+//   cursor: pointer;
+//   &:hover,
+//   &:active {
+//     opacity: 0.9;
+//   }
+// `;
 
-const ExistingPhotoContainer = styled.div`
-  position: relative;
-  margin-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-`;
+// const ExistingPhotoContainer = styled.div`
+//   position: relative;
+//   margin-top: 20px;
+//   display: flex;
+//   justify-content: flex-end;
+// `;
 
-const ExistingPhoto = styled.img`
-  width: 100%;
-  max-width: 300px;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 10px;
-`;
+// const ExistingPhoto = styled.img`
+//   width: 100%;
+//   max-width: 300px;
+//   height: auto;
+//   border-radius: 10px;
+//   margin-bottom: 10px;
+// `;
 
-const DeletePhotoButton = styled.button`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: #ff4d4f;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 12px;
-  outline: none;
+// const DeletePhotoButton = styled.button`
+//   position: absolute;
+//   top: 5px;
+//   right: 5px;
+//   background-color: #ff4d4f;
+//   color: #fff;
+//   border: none;
+//   padding: 5px 10px;
+//   border-radius: 5px;
+//   cursor: pointer;
+//   font-size: 12px;
+//   outline: none;
 
-  &:hover {
-    background-color: #ff4d4h;
-  }
-`;
+//   &:hover {
+//     background-color: #ff4d4h;
+//   }
+// `;
 
-const CancelButton = styled.button`
-  align-self: flex-start;
-  margin-left: 10px;
-  background-color: #111111;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  &:hover,
-  &:active {
-    background-color: #222222;
-  }
-`;
+// const CancelButton = styled.button`
+//   align-self: flex-start;
+//   margin-left: 10px;
+//   background-color: #111111;
+//   color: white;
+//   border: 1px solid rgba(255, 255, 255, 0.5);
+//   padding: 10px;
+//   border-radius: 20px;
+//   font-size: 14px;
+//   cursor: pointer;
+//   &:hover,
+//   &:active {
+//     background-color: #222222;
+//   }
+// `;
 
-const ButtonLayout = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 4px;
-`;
+// const ButtonLayout = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   margin-top: 4px;
+// `;
 
-const EmojiButton = styled.button`
-  align-self: flex-start;
-  padding: 10px;
-  margin-left: 10px;
-  color: #1d9bf0;
-  background-color: transparent;
-  text-align: center;
-  border-radius: 20px;
-  border: 1px solid #1d9bf0;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  svg {
-    width: 15px;
-    height: 15px;
-  }
-`;
+// const EmojiButton = styled.button`
+//   align-self: flex-start;
+//   padding: 10px;
+//   margin-left: 10px;
+//   color: #1d9bf0;
+//   background-color: transparent;
+//   text-align: center;
+//   border-radius: 20px;
+//   border: 1px solid #1d9bf0;
+//   font-size: 14px;
+//   font-weight: 600;
+//   cursor: pointer;
+//   svg {
+//     width: 15px;
+//     height: 15px;
+//   }
+// `;
 
 function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
   const [isLoading, setLoading] = useState(false);
@@ -253,8 +254,9 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
   }, [id]);
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form className="updateForm" onSubmit={onSubmit}>
       <TextArea
+        className="updateForm"
         rows={3}
         maxLength={180}
         onChange={onTextChange}

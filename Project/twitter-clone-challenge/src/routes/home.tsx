@@ -1,13 +1,6 @@
-import { styled } from "styled-components";
 import PostTweetForm from "../components/form/post-tweet-form";
 import Timeline from "../components/screen/timeline";
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 10px 0;
-`;
+import { Wrapper } from "./style/home-components";
 
 function Home() {
   return (

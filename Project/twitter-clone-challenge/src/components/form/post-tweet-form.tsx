@@ -1,98 +1,9 @@
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { styled } from "styled-components";
 import { auth, dateBase, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import EmojiPicker from "../utils/emoji-picker";
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  padding-bottom: 20px;
-`;
-
-const TextArea = styled.textarea`
-  border: none;
-  padding: 20px;
-  border-radius: 20px;
-  font-size: 16px;
-  color: white;
-  background-color: black;
-  width: 100%;
-  resize: none;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  overflow-y: hidden;
-  &::placeholder {
-    font-size: 16px;
-  }
-  &:focus {
-    outline: none;
-    border-color: #1d9bf0;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const AttachFileButton = styled.label`
-  align-self: flex-start;
-  padding: 10px;
-  color: #1d9bf0;
-  text-align: center;
-  border-radius: 20px;
-  border: 1px solid #1d9bf0;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  svg {
-    width: 15px;
-    height: 15px;
-  }
-`;
-
-const AttachFileInput = styled.input`
-  align-self: flex-start;
-  display: none;
-`;
-
-const SubmitButton = styled.input`
-  align-self: flex-start;
-  margin-left: auto;
-  background-color: #1d9bf0;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  cursor: pointer;
-  &:hover,
-  &:active {
-    opacity: 0.9;
-  }
-`;
-
-const EmojiButton = styled.button`
-  align-self: flex-start;
-  padding: 10px;
-  margin-left: 10px;
-  color: #1d9bf0;
-  background-color: transparent;
-  text-align: center;
-  border-radius: 20px;
-  border: 1px solid #1d9bf0;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  svg {
-    width: 15px;
-    height: 15px;
-  }
-`;
+import { AttachFileButton, AttachFileInput, ButtonContainer, EmojiButton, Form, SubmitButton, TextArea } from "../style/form-components";
 
 function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
@@ -156,8 +67,9 @@ function PostTweetForm() {
   };
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form className="postForm" onSubmit={onSubmit}>
       <TextArea
+        className="postForm"
         rows={3}
         maxLength={180}
         onChange={onTextChange}
