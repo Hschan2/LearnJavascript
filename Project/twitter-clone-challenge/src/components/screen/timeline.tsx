@@ -7,23 +7,10 @@ import {
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { dateBase } from "../../firebase";
-import { styled } from "styled-components";
 import Tweet from "../utils/tweet";
 import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
-
-export interface ITweet {
-  id: string;
-  photo?: string;
-  tweet: string;
-  userId: string;
-  username: string;
-  createdAt: number;
-  likes: number;
-  likedBy?: string[];
-}
-
-
+import { ITweet } from "../types/tweet-type";
 
 function Timeline() {
   const [tweets, setTweets] = useState<ITweet[]>([]);

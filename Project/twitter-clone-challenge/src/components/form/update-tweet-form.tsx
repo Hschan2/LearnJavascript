@@ -21,11 +21,7 @@ import {
   SubmitButton,
   TextArea,
 } from "../style/form-components";
-
-export interface EditTweetFormProps {
-  id: string;
-  onClose: () => void;
-}
+import { EditTweetFormProps } from "../types/form-type";
 
 function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
   const [isLoading, setLoading] = useState(false);
