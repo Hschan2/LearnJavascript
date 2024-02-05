@@ -3,7 +3,7 @@ import { auth, dateBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import { styled } from "styled-components";
-import { ITweet } from "../components/timeline";
+import { ITweet } from "../components/screen/timeline";
 import {
   collection,
   getDocs,
@@ -12,7 +12,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import Tweet from "../components/tweet";
+import Tweet from "../components/utils/tweet";
 import { useNavigate } from "react-router";
 
 const Wrapper = styled.div`

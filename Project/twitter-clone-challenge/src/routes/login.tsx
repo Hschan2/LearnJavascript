@@ -12,9 +12,9 @@ import {
   Switcher,
   Title,
   Wrapper,
-} from "../components/auth-components";
-import GithubButton from "../components/github-button";
-import GoogleButton from "../components/google-button";
+} from "../components/style/auth-components";
+import GithubButton from "../components/btn/github-button";
+import GoogleButton from "../components/btn/google-button";
 import { emailRegex, passwordRegex } from "../constants";
 
 type FormType = {

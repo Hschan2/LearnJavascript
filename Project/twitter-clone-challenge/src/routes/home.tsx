@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
-import PostTweetForm from "../components/post-tweet-form";
-import Timeline from "../components/timeline";
+import PostTweetForm from "../components/form/post-tweet-form";
+import Timeline from "../components/screen/timeline";
 
 const Wrapper = styled.div`
   display: flex;

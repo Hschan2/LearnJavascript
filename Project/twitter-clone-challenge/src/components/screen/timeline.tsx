@@ -6,9 +6,9 @@ import {
   query,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { dateBase } from "../firebase";
+import { dateBase } from "../../firebase";
 import { styled } from "styled-components";
-import Tweet from "./tweet";
+import Tweet from "../utils/tweet";
 import { Unsubscribe } from "firebase/auth";
 
 export interface ITweet {

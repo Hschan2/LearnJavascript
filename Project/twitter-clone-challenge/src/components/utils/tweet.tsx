@@ -1,11 +1,11 @@
 import { deleteObject, ref } from "firebase/storage";
-import { auth, dateBase, storage } from "../firebase";
-import { ITweet } from "./timeline";
+import { auth, dateBase, storage } from "../../firebase";
+import { ITweet } from "../screen/timeline";
 import { styled } from "styled-components";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import UpdateTweetForm from "./update-tweet-form";
-import formattedDate from "../hooks/formattedDate";
+import UpdateTweetForm from "../form/update-tweet-form";
+import formattedDate from "../../hooks/formattedDate";
 import ImageModal from "./image-modal";
 
 const Wrapper = styled.div`
@@ -48,6 +48,7 @@ const Photo = styled.img`
   border: 1px solid rgba(255, 255, 255, 0.3);
   object-fit: cover;
   margin-top: 12px;
+  cursor: pointer;
 `;
 
 const Username = styled.span`

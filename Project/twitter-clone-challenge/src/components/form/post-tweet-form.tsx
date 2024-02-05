@@ -1,9 +1,9 @@
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { styled } from "styled-components";
-import { auth, dateBase, storage } from "../firebase";
+import { auth, dateBase, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import EmojiPicker from "./emoji-picker";
+import EmojiPicker from "../utils/emoji-picker";
 
 const Form = styled.form`
   display: flex;
