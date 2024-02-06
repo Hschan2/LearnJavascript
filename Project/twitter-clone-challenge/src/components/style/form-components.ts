@@ -17,7 +17,7 @@ export const Form = styled.form`
 `;
 
 export const TextArea = styled.textarea`
-  padding: 20px;
+  padding: 20px 10px 10px 10px;
   border-radius: 20px;
   font-size: 16px;
   color: white;
