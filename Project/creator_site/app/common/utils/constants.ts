@@ -47,7 +47,7 @@ export const CATEGORIES_VIDEOS = {
     },
     {
       title: "Dr Strange Portal",
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/JGR3PR9MzII",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/dr_starange_portal.png",
     },
     {
@@ -122,47 +122,47 @@ export const CATEGORIES_VIDEOS = {
     },
     {
       title: `${COVER_MESSAGE} Netflix`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/gVhQf--bQIQ",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/netflix_intro.png",
     },
     {
       title: `${COVER_MESSAGE} Pink Diary`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/3cwopGjyn6c",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/pinkdiary_cover.png",
     },
     {
       title: `${COVER_MESSAGE} RocketPunch`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/Eprjf6rVknc",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/rocket_punch_intro.png",
     },
     {
       title: `${COVER_MESSAGE} NAVER Series`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/zNHYENh9-XI",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/series_cover.png",
     },
     {
       title: `${COVER_MESSAGE} SNOW`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/HoKYF9E11fg",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/snow_cover.png",
     },
     {
       title: `${COVER_MESSAGE} Squid Game`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/XgVA1JbCS-o",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/squid_game_motion.png",
     },
     {
       title: `${COVER_MESSAGE} TvN`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/mx6x4YswVdg",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/tvn_cover.png",
     },
     {
       title: `${COVER_MESSAGE} Valorant`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/XMyRi3uDj3k",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/valorant_cover.png",
     },
     {
       title: `${COVER_MESSAGE} Woolim Ent`,
-      url: "/videos/Cinderella.mp4",
+      url: "https://youtu.be/yHFP0FvxEHs",
       image: "https://raw.githubusercontent.com/Hschan2/LearnJavascript/e10e6863c3b0f02b248178503ba76318c99f540c/Project/creator_portfolio/public/images/motionGraphic/png/woolim_intro.png",
     },
   ] as IVideo[],
