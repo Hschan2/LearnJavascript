@@ -58,3 +58,13 @@ export const Logo = styled.span`
     margin-bottom: 30px;
   }
 `;
+
+export const FooterContainer = styled.div`
+  color: white;
+  padding: 20px 0 20px 0;
+  text-align: center;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+`;
