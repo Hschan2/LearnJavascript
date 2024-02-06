@@ -1,15 +1,24 @@
 import { addDoc, collection, updateDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { auth, dateBase, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import EmojiPicker from "../utils/emoji-picker";
-import { AttachFileButton, AttachFileInput, ButtonContainer, EmojiButton, Form, SubmitButton, TextArea } from "../style/form-components";
+import {
+  AttachFileButton,
+  AttachFileInput,
+  ButtonContainer,
+  EmojiButton,
+  Form,
+  SubmitButton,
+  TextArea,
+} from "../style/form-components";
 
 function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTweet(e.target.value);
@@ -66,11 +75,18 @@ function PostTweetForm() {
     }
   };
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.rows = 1;
+      textareaRef.current.rows = textareaRef.current.scrollHeight / 20;
+    }
+  }, [tweet]);
+
   return (
     <Form className="postForm" onSubmit={onSubmit}>
       <TextArea
         className="postForm"
-        rows={3}
+        ref={textareaRef}
         maxLength={180}
         onChange={onTextChange}
         value={tweet}
@@ -120,7 +136,10 @@ function PostTweetForm() {
             />
           </svg>
         </EmojiButton>
-        <SubmitButton type="submit" value={isLoading ? "보내는 중" : "보내기"} />
+        <SubmitButton
+          type="submit"
+          value={isLoading ? "보내는 중" : "보내기"}
+        />
       </ButtonContainer>
       {showEmojiPicker && <EmojiPicker onSelectEmoji={handleSelectEmoji} />}
     </Form>
