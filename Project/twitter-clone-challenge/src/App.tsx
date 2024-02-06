@@ -11,6 +11,7 @@ import LoadingScreen from "./components/screen/loading-screen";
 import { auth } from "./firebase";
 import ProtectedRoute from "./components/route/protected-route";
 import Settings from "./routes/settings";
+import Footer from "./components/screen/footer";
 
 const router = createBrowserRouter([
   {
@@ -58,9 +59,12 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  justify-content: space-between;
 `;
 
 function App() {
@@ -78,6 +82,7 @@ function App() {
     <Wrapper>
       <GlobalStyles />
       {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+      <Footer />
     </Wrapper>
   );
 }
