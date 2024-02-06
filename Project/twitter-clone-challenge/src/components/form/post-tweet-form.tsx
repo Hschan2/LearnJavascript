@@ -20,8 +20,16 @@ function PostTweetForm() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.rows = 1;
+      textareaRef.current.rows = textareaRef.current.scrollHeight / 20;
+    }
+  };
+
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTweet(e.target.value);
+    adjustTextareaHeight();
   };
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,9 +41,13 @@ function PostTweetForm() {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const user = auth.currentUser;
-    if (!user || isLoading || tweet === "" || tweet.length > 180) return;
+
     try {
+      const user = auth.currentUser;
+      if (!user || isLoading || tweet === "" || tweet.length > 180) {
+        throw new Error("글을 작성할 수 없습니다.");
+      }
+
       setLoading(true);
       const doc = await addDoc(collection(dateBase, "tweets"), {
         tweet,
@@ -45,6 +57,7 @@ function PostTweetForm() {
         likes: 0,
         likedBy: [],
       });
+
       if (file) {
         const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
         const result = await uploadBytes(locationRef, file);
@@ -75,12 +88,7 @@ function PostTweetForm() {
     }
   };
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.rows = 1;
-      textareaRef.current.rows = textareaRef.current.scrollHeight / 20;
-    }
-  }, [tweet]);
+  useEffect(adjustTextareaHeight, [tweet]);
 
   return (
     <Form className="postForm" onSubmit={onSubmit}>
