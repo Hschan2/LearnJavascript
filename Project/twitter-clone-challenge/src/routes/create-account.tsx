@@ -17,6 +17,7 @@ import {
 import GithubButton from "../components/btn/github-button";
 import GoogleButton from "../components/btn/google-button";
 import { emailRegex, passwordRegex } from "../constants";
+import { useAuth } from "../hooks/useAuth";
 
 type FormType = {
   name: string;
@@ -31,36 +32,29 @@ function CreateAccount() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormType>();
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { signUp, isLoading, error, clearError, trueLoading, falseLoading } =
+    useAuth();
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
-    setError("");
+    clearError();
+
     if (
       isLoading ||
       data.name === "" ||
       data.email === "" ||
       data.password === ""
-    )
+    ) {
       return;
+    }
+
     try {
-      setLoading(true);
-      const credentials = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
-      );
-      console.log(credentials);
-      await updateProfile(credentials.user, {
-        displayName: data.name,
-      });
-      navigate("/");
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        setError(error.message);
+      trueLoading();
+      const success = await signUp(data.name, data.email, data.password);
+      if (success) {
+        navigate("/");
       }
     } finally {
-      setLoading(false);
+      falseLoading();
     }
   };
 
@@ -100,7 +94,9 @@ function CreateAccount() {
           placeholder="Password (ex. abc123!@)"
           type="password"
         />
-        <PasswordMessage>숫자, 대소문자 알파벳, 특수문자(!,@,#) 중 하나 이상의 총 8글자 이상</PasswordMessage>
+        <PasswordMessage>
+          숫자, 대소문자 알파벳, 특수문자(!,@,#) 중 하나 이상의 총 8글자 이상
+        </PasswordMessage>
         {errors?.password?.type === "required" && (
           <Error>비밀번호를 입력해주세요.</Error>
         )}

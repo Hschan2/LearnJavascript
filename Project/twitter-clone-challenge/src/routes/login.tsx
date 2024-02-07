@@ -16,6 +16,7 @@ import {
 import GithubButton from "../components/btn/github-button";
 import GoogleButton from "../components/btn/google-button";
 import { emailRegex, passwordRegex } from "../constants";
+import { useAuth } from "../hooks/useAuth";
 
 type FormType = {
   email: string;
@@ -29,22 +30,24 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<FormType>();
-  const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { login, isLoading, error, clearError, trueLoading, falseLoading } =
+    useAuth();
 
-  const onSubmit = async (data: FormType) => {
-    setError("");
-    if (isLoading || data.email === "" || data.password === "") return;
+  const onSubmit = async ({ email, password }: FormType) => {
+    clearError();
+
+    if (isLoading || email === "" || password === "") {
+      return;
+    }
+
     try {
-      setLoading(true);
-      await signInWithEmailAndPassword(auth, data.email, data.password);
-      navigate("/");
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        setError(error.message);
+      trueLoading();
+      const success = await login(email, password);
+      if (success) {
+        navigate("/");
       }
     } finally {
-      setLoading(false);
+      falseLoading();
     }
   };
 
