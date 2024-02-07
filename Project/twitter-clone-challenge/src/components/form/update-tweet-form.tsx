@@ -47,8 +47,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
       try {
         const photoRef = ref(storage, existingPhoto);
         await deleteObject(photoRef);
-        const tweetDocRef = doc(dateBase, "tweets", id);
-        await updateDoc(tweetDocRef, { photo: null });
+        await updateDoc(doc(dateBase, "tweets", id), { photo: null });
         setExistingPhoto(null);
       } catch (error) {
         console.error(error);
@@ -58,8 +57,11 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user || isLoading || tweet === "" || tweet.length > 180) return;
+
     try {
+      if (!user || isLoading || tweet === "" || tweet.length > 180) {
+        throw new Error("수정할 수 없습니다.");
+      }
       setLoading(true);
 
       if (existingPhoto && file) {
@@ -86,10 +88,6 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const onCancel = () => {
-    onClose();
   };
 
   const toggleEmojiPicker = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -167,7 +165,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
           </svg>
         </EmojiButton>
         <SubmitButton type="submit" value={isLoading ? "수정 중..." : "수정"} />
-        <CancelButton type="button" onClick={onCancel}>
+        <CancelButton type="button" onClick={onClose}>
           취소
         </CancelButton>
       </ButtonLayout>

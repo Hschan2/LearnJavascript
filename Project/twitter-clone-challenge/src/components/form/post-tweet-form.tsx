@@ -19,6 +19,7 @@ function PostTweetForm() {
   const [file, setFile] = useState<File | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const user = auth.currentUser;
 
   const adjustTextareaHeight = () => {
     if (textareaRef.current) {
@@ -43,7 +44,6 @@ function PostTweetForm() {
     e.preventDefault();
 
     try {
-      const user = auth.currentUser;
       if (!user || isLoading || tweet === "" || tweet.length > 180) {
         throw new Error("글을 작성할 수 없습니다.");
       }
