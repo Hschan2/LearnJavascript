@@ -17,6 +17,8 @@ export const ModalContent = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
   position: relative;
+  min-width: 600px;
+  mim-height: 600px;
   max-width: 600px;
   max-height: 600px;
   overflow: hidden;
