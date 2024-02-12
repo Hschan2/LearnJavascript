@@ -8,3 +8,7 @@ export interface ITweet {
   likes: number;
   likedBy?: string[];
 }
+
+export interface ITimeline {
+  isHot?: boolean;
+}
