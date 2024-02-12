@@ -12,6 +12,7 @@ import { auth } from "./firebase";
 import ProtectedRoute from "./components/route/protected-route";
 import Settings from "./routes/settings";
 import Footer from "./components/screen/footer";
+import Hot from "./routes/hot";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <Settings />,
+      },
+      {
+        path: "hot",
+        element: <Hot />,
       },
     ],
   },
