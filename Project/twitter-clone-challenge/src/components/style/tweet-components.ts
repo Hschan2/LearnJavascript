@@ -74,3 +74,9 @@ export const LikeButton = styled.button`
   margin-top: 20px;
   cursor: pointer;
 `;
+
+export const ProfileImage = styled.img`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+`
