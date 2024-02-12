@@ -4,22 +4,33 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { dateBase } from "../../firebase";
 import Tweet from "../utils/tweet";
 import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
-import { ITweet } from "../types/tweet-type";
+import { ITimeline, ITweet } from "../types/tweet-type";
 
-function Timeline() {
+function Timeline({ isHot }: ITimeline) {
   const [tweets, setTweets] = useState<ITweet[]>([]);
+  const oneMonth = Date.now() - 30 * 24 * 60 * 60 * 1000;
+
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {
+      const orderBys = isHot
+        ? [orderBy("createdAt"), orderBy("likes", "desc")]
+        : [orderBy("createdAt", "desc")];
+      const whereClause = isHot
+        ? where("createdAt", ">=", oneMonth)
+        : where("createdAt", ">", 0);
+
       const tweetsQuery = query(
         collection(dateBase, "tweets"),
-        orderBy("createdAt", "desc"),
+        ...orderBys,
+        whereClause,
         limit(25)
       );
       /* const spanShot = await getDocs(tweetsQuery);
