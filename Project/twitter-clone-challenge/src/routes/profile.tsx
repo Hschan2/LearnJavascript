@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { auth, dateBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
-import { ITweet } from "../components/screen/timeline";
 import {
   collection,
   getDocs,
@@ -13,6 +12,7 @@ import {
 } from "firebase/firestore";
 import Tweet from "../components/utils/tweet";
 import { AvatarImg, AvatarInput, AvatarUpload, ConfirmEditButton, EditButton, EditContainer, Input, Name, NameContainer, Tweets, Wrapper } from "./style/profile-components";
+import { ITweet } from "../components/types/tweet-type";
 
 function Profile() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
