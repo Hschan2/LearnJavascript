@@ -59,7 +59,15 @@ function Timeline({ isHot }: ITimeline) {
             likes,
           };
         });
-        setTweets(tweets);
+
+        if (isHot) {
+          const sortedTweets = tweets.sort((a, b) =>
+            b.likes !== a.likes ? b.likes - a.likes : b.createdAt - a.createdAt
+          );
+          setTweets(sortedTweets);
+        } else {
+          setTweets(tweets);
+        }
       });
     };
     fetchTweets();
