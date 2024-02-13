@@ -1,7 +1,7 @@
-import { deleteObject, ref } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { auth, dateBase, storage } from "../../firebase";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UpdateTweetForm from "../form/update-tweet-form";
 import formattedDate from "../../hooks/formattedDate";
 import ImageModal from "./image-modal";
@@ -14,6 +14,7 @@ import {
   MenuItem,
   Payload,
   Photo,
+  ProfileImage,
   Username,
   Wrapper,
 } from "../style/tweet-components";
@@ -30,6 +31,7 @@ function Tweet({
   const [isEdit, setIsEdit] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const createdDate = formattedDate({ createdAt });
+  const [profileImage, setProfileImage] = useState<string>("");
   const user = auth.currentUser;
 
   const onDelete = async () => {
@@ -88,6 +90,9 @@ function Tweet({
     <Wrapper>
       <InfoContents>
         <Username>
+          {profileImage && (
+            <ProfileImage src={profileImage} alt="Profile-Image" />
+          )}{" "}
           {username}{" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -152,6 +157,22 @@ function Tweet({
       ) : null}
     </Wrapper>
   );
+
+  useEffect(() => {
+    const getProfileImage = async () => {
+      const imageRef = ref(storage, `avatars/${userId}`);
+
+      try {
+        const url = await getDownloadURL(imageRef);
+        setProfileImage(url);
+      } catch (error) {
+        console.error(error);
+        setProfileImage("");
+      }
+    };
+
+    getProfileImage();
+  }, [userId]);
 
   return isEdit ? (
     <UpdateTweetForm id={id} onClose={() => setIsEdit(false)} />

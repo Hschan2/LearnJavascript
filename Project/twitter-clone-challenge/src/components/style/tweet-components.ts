@@ -44,6 +44,10 @@ export const Photo = styled.img`
 `;
 
 export const Username = styled.span`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
   font-weight: 800;
   font-size: 18px;
   svg {
@@ -79,4 +83,5 @@ export const ProfileImage = styled.img`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-`
+  background-color: #fff;
+`;
