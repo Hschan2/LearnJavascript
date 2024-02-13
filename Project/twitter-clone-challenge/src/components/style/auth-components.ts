@@ -1,11 +1,13 @@
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
-  height: 100%;
+  // height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 420px;
+  min-height: 90vh;
   padding: 50px 0px;
 `;
 

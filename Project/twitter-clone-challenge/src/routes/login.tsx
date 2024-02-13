@@ -1,8 +1,4 @@
-import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
 import { useNavigate } from "react-router";
-import { auth } from "../firebase";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
