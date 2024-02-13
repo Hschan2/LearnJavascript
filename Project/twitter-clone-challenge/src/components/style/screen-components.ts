@@ -21,17 +21,16 @@ export const Menu = styled.div`
   border-right: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
-export const MenuItem = styled.div<{ active?: boolean }>`
+export const MenuItem = styled.div<{ active?: string }>`
   padding: 5px;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
   height: 30px;
   width: 100px;
   gap: 10px;
-  opacity: ${(props) => (props.active ? "1" : "0.85")};
+  opacity: ${(props) => (props.active === "true" ? "1" : "0.85")};
   svg {
     width: 30px;
     fill: white;
