@@ -36,7 +36,7 @@ function VideoButton({ size, data }: IButtonProps) {
           ▶️
         </span>
       </button>
-      {title ? <p className="text-xs my-1.5">{title}</p> : null}
+      {title ? <p className="text-xs my-1.5 ml-1.5">{title}</p> : null}
       <Modal isOpen={isModalOpen} onClose={closeModal} videoUrl={url} />
     </div>
   );
