@@ -1,4 +1,4 @@
-import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { DocumentReference, addDoc, collection, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { auth, dateBase, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -12,6 +12,7 @@ import {
   SubmitButton,
   TextArea,
 } from "../style/form-components";
+import { User } from "firebase/auth";
 
 function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
@@ -40,6 +41,26 @@ function PostTweetForm() {
     }
   };
 
+  const addTweetToData = (user: User) => {
+    return addDoc(collection(dateBase, "tweets"), {
+      tweet,
+      createdAt: Date.now(),
+      username: user.displayName || "익명",
+      userId: user.uid,
+      likes: 0,
+      likedBy: [],
+    });
+  };
+
+  const handleFileUpload = async (user: User, doc: DocumentReference, file: File) => {
+    const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
+    const result = await uploadBytes(locationRef, file);
+    const url = await getDownloadURL(result.ref);
+    await updateDoc(doc, {
+      photo: url,
+    });
+  };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -49,22 +70,10 @@ function PostTweetForm() {
       }
 
       setLoading(true);
-      const doc = await addDoc(collection(dateBase, "tweets"), {
-        tweet,
-        createdAt: Date.now(),
-        username: user.displayName || "익명",
-        userId: user.uid,
-        likes: 0,
-        likedBy: [],
-      });
+      const doc = await addTweetToData(user);
 
       if (file) {
-        const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
-        const result = await uploadBytes(locationRef, file);
-        const url = await getDownloadURL(result.ref);
-        await updateDoc(doc, {
-          photo: url,
-        });
+        await handleFileUpload(user, doc, file);
       }
 
       setTweet("");
