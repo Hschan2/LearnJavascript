@@ -1,6 +1,6 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { auth, dateBase, storage } from "../../firebase";
+import { auth, dataBase, storage } from "../../firebase";
 import {
   deleteObject,
   getDownloadURL,
@@ -42,12 +42,14 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     }
   };
 
+
+
   const onDeletePhoto = async () => {
     if (existingPhoto) {
       try {
         const photoRef = ref(storage, existingPhoto);
         await deleteObject(photoRef);
-        await updateDoc(doc(dateBase, "tweets", id), { photo: null });
+        await updateDoc(doc(dataBase, "tweets", id), { photo: null });
         setExistingPhoto(null);
       } catch (error) {
         console.error(error);
@@ -69,7 +71,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
         await deleteObject(existingPhotoRef);
       }
 
-      await updateDoc(doc(dateBase, "tweets", id), {
+      await updateDoc(doc(dataBase, "tweets", id), {
         tweet,
       });
 
@@ -77,7 +79,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
         const photoRef = ref(storage, `tweets/${user.uid}/${id}`);
         const result = await uploadBytes(photoRef, file);
         const url = await getDownloadURL(result.ref);
-        await updateDoc(doc(dateBase, "tweets", id), {
+        await updateDoc(doc(dataBase, "tweets", id), {
           photo: url,
         });
       }
@@ -102,20 +104,20 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     }
   };
 
-  useEffect(() => {
-    const fetchTweet = async () => {
-      try {
-        const tweetDoc = await getDoc(doc(dateBase, "tweets", id));
-        if (tweetDoc.exists()) {
-          const { tweet, photo } = tweetDoc.data();
-          setTweet(tweet);
-          setExistingPhoto(photo || null);
-        }
-      } catch (error) {
-        console.error(error);
+  const fetchTweet = async () => {
+    try {
+      const tweetDoc = await getDoc(doc(dataBase, "tweets", id));
+      if (tweetDoc.exists()) {
+        const { tweet, photo } = tweetDoc.data();
+        setTweet(tweet);
+        setExistingPhoto(photo || null);
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  useEffect(() => {
     fetchTweet();
   }, [id]);
 

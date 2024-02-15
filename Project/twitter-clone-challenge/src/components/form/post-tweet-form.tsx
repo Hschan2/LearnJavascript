@@ -1,6 +1,6 @@
 import { DocumentReference, addDoc, collection, updateDoc } from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
-import { auth, dateBase, storage } from "../../firebase";
+import { auth, dataBase, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import EmojiPicker from "../utils/emoji-picker";
 import {
@@ -42,7 +42,7 @@ function PostTweetForm() {
   };
 
   const addTweetToData = (user: User) => {
-    return addDoc(collection(dateBase, "tweets"), {
+    return addDoc(collection(dataBase, "tweets"), {
       tweet,
       createdAt: Date.now(),
       username: user.displayName || "익명",

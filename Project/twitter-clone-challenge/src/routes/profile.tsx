@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { auth, dateBase, storage } from "../firebase";
+import { auth, dataBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import {
@@ -38,7 +38,7 @@ function Profile() {
 
   const fetchTweets = async () => {
     const tweetQuery = query(
-      collection(dateBase, "tweets"),
+      collection(dataBase, "tweets"),
       where("userId", "==", user?.uid),
       orderBy("createdAt", "desc"),
       limit(25)

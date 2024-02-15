@@ -1,5 +1,5 @@
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
-import { auth, dateBase, storage } from "../../firebase";
+import { auth, dataBase, storage } from "../../firebase";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import UpdateTweetForm from "../form/update-tweet-form";
@@ -38,7 +38,7 @@ function Tweet({
     const checkDelete = confirm("정말로 삭제하시겠습니까?");
     if (!checkDelete || user?.uid !== userId) return;
     try {
-      await deleteDoc(doc(dateBase, "tweets", id));
+      await deleteDoc(doc(dataBase, "tweets", id));
       if (photo) {
         const photoRef = ref(storage, `tweets/${user?.uid}/${id}`);
         await deleteObject(photoRef);
@@ -60,7 +60,7 @@ function Tweet({
     if (!user || !id) return;
 
     try {
-      const tweetRef = doc(dateBase, "tweets", id);
+      const tweetRef = doc(dataBase, "tweets", id);
       const tweetDoc = await getDoc(tweetRef);
 
       if (tweetDoc.exists()) {

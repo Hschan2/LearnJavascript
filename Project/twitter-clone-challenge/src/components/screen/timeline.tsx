@@ -7,7 +7,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { dateBase } from "../../firebase";
+import { dataBase } from "../../firebase";
 import Tweet from "../utils/tweet";
 import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
@@ -28,7 +28,7 @@ function Timeline({ isHot }: ITimeline) {
         : where("createdAt", ">", 0);
 
       const tweetsQuery = query(
-        collection(dateBase, "tweets"),
+        collection(dataBase, "tweets"),
         ...orderBys,
         whereClause,
         limit(25)

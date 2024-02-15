@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { auth, dateBase } from "../firebase";
+import { auth, dataBase } from "../firebase";
 import {
   collection,
   deleteDoc,
@@ -31,7 +31,7 @@ function Settings() {
 
     try {
       const tweetQuery = query(
-        collection(dateBase, "tweets"),
+        collection(dataBase, "tweets"),
         where("userId", "==", user?.uid)
       );
 
