@@ -16,6 +16,11 @@ export const PORTFOLIO_VIDEO = {
 export const CATEGORIES_VIDEOS = {
   motionGraphics: [
     {
+      title: "Among-Us Man",
+      url: "https://youtu.be/aF6RaEgclQs",
+      image: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbhjODU%2FbtsE2C6LhV0%2FsYnybQQZPS55akBa0DQAtk%2Fimg.png",
+    },
+    {
       title: "Ball Slant",
       url: "https://youtu.be/pw7BNB2Cd4w",
       image: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbdhYoI%2FbtsES4vZnZy%2FdTet2xfwuwjCAOE9T6Ih9K%2Fimg.png",
