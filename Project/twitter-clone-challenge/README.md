@@ -1,6 +1,6 @@
 # Snap Street (노마드코더 코딩 챌린지)
 
-![banner](/public/bird-icon.svg)
+![banner](https://raw.githubusercontent.com/Hschan2/LearnJavascript/9203c4ba26dd6ae6e4af9195ed002bc87ee51780/Project/twitter-clone-challenge/public/bird-icon.svg)
 
 <br/>
 
@@ -41,7 +41,7 @@
 
 #### 라이브러리
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
-![Styled-Components](https://img.shields.io/badge/styled components-DB7093?style=flat-square&logo=styled-components&logoColor=white)
+![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)
 ![Eslint](https://img.shields.io/badge/Eslint-4B0082?style=flat-square&logo=Eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/prettier-FF69B4?style=flat-square&logo=prettier&logoColor=white)
 
