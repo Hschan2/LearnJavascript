@@ -1,6 +1,6 @@
 # Snap Street (노마드코더 코딩 챌린지)
 
-![banner](https://raw.githubusercontent.com/Hschan2/LearnJavascript/9203c4ba26dd6ae6e4af9195ed002bc87ee51780/Project/twitter-clone-challenge/public/bird-icon.svg)
+![banner](https://raw.githubusercontent.com/Hschan2/LearnJavascript/9203c4ba26dd6ae6e4af9195ed002bc87ee51780/Project/twitter-clone-challenge/public/bird-icon.svg){: width="150px" height="150px"}
 
 <br/>
 
@@ -27,7 +27,7 @@
 | [홍성찬](https://github.com/Hschan2) |
 | :---: |
 | <img src="https://avatars.githubusercontent.com/u/39434913?v=4" width="100" height="100"> |
-| 퀵뉴스 전체 개발 <br/> 전체 디자인 |
+| 스냅스트릿 프론트엔드 개발 <br/> 전체 디자인 |
 
 <br/>
 <br/>
