@@ -1,6 +1,6 @@
 # Snap Street (노마드코더 코딩 챌린지)
 
-![banner](https://raw.githubusercontent.com/Hschan2/LearnJavascript/9203c4ba26dd6ae6e4af9195ed002bc87ee51780/Project/twitter-clone-challenge/public/bird-icon.svg){: width="150px" height="150px"}
+<img src="https://raw.githubusercontent.com/Hschan2/LearnJavascript/9203c4ba26dd6ae6e4af9195ed002bc87ee51780/Project/twitter-clone-challenge/public/bird-icon.svg" alt="banner" width="150" height="150">
 
 <br/>
 
