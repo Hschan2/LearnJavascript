@@ -1,10 +1,11 @@
 import {
+  QueryDocumentSnapshot,
+  QuerySnapshot,
   collection,
   limit,
   onSnapshot,
   orderBy,
   query,
-  where,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { dataBase } from "../../firebase";
@@ -15,60 +16,60 @@ import { ITimeline, ITweet } from "../types/tweet-type";
 
 function Timeline({ isHot }: ITimeline) {
   const [tweets, setTweets] = useState<ITweet[]>([]);
-  const oneMonth = Date.now() - 30 * 24 * 60 * 60 * 1000;
+
+  const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
+    const { tweet, createdAt, userId, username, photo, likes } = doc.data();
+    return {
+      tweet,
+      createdAt,
+      userId,
+      username,
+      photo,
+      id: doc.id,
+      likes,
+    };
+  };
+
+  const fetchTweetsData = async (
+    snapshot: QuerySnapshot
+  ): Promise<ITweet[]> => {
+    const tweets = snapshot.docs.map(mapTweetData);
+
+    return tweets;
+  };
+
+  const recentOneMonth = (tweets: ITweet[]) => {
+    const oneMonthAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const recentTweets = tweets.filter(
+      (tweet) => tweet.createdAt > oneMonthAgo
+    );
+
+    return recentTweets;
+  };
 
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {
       const orderBys = isHot
-        ? [orderBy("createdAt"), orderBy("likes", "desc")]
+        ? [orderBy("likes", "desc"), orderBy("createdAt", "desc")]
         : [orderBy("createdAt", "desc")];
-      const whereClause = isHot
-        ? where("createdAt", ">=", oneMonth)
-        : where("createdAt", ">", 0);
 
       const tweetsQuery = query(
         collection(dataBase, "tweets"),
         ...orderBys,
-        whereClause,
         limit(25)
       );
-      /* const spanShot = await getDocs(tweetsQuery);
-        const tweets = spanShot.docs.map((doc) => {
-          const { tweet, createdAt, userId, username, photo } = doc.data();
-          return {
-            tweet,
-            createdAt,
-            userId,
-            username,
-            photo,
-            id: doc.id,
-          };
-        }); */
-      unsubscribe = await onSnapshot(tweetsQuery, (snapshot) => {
-        const tweets = snapshot.docs.map((doc) => {
-          const { tweet, createdAt, userId, username, photo, likes } =
-            doc.data();
-          return {
-            tweet,
-            createdAt,
-            userId,
-            username,
-            photo,
-            id: doc.id,
-            likes,
-          };
-        });
 
-        if (isHot) {
-          const sortedTweets = tweets.sort((a, b) =>
-            b.likes !== a.likes ? b.likes - a.likes : b.createdAt - a.createdAt
-          );
-          setTweets(sortedTweets);
-        } else {
-          setTweets(tweets);
-        }
+      unsubscribe = await onSnapshot(tweetsQuery, async (snapshot) => {
+        const tweets = await fetchTweetsData(snapshot);
+        setTweets(recentOneMonth(tweets));
       });
+
+      // if (isHot) {
+      //   const snapshot = await getDocs(tweetsQuery);
+      //   const tweets = await fetchTweetsData(snapshot, true);
+      //   setTweets(tweets);
+      // }
     };
     fetchTweets();
     return () => {
