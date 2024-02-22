@@ -65,11 +65,9 @@ function Timeline({ isHot }: ITimeline) {
         setTweets(recentOneMonth(tweets));
       });
 
-      // if (isHot) {
-      //   const snapshot = await getDocs(tweetsQuery);
-      //   const tweets = await fetchTweetsData(snapshot, true);
-      //   setTweets(tweets);
-      // }
+      // const snapshot = await getDocs(tweetsQuery);
+      // const tweets = await fetchTweetsData(snapshot);
+      // setTweets(recentOneMonth(tweets));
     };
     fetchTweets();
     return () => {
