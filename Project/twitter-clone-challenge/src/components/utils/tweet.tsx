@@ -44,8 +44,8 @@ function Tweet({
         await deleteObject(photoRef);
       }
     } catch (error) {
-      alert("글 삭제에 실패하였습니다.");
-      throw new Error(error as string);
+      console.error(error);
+      throw new Error(`글 작성 실패: ${error}`);
     }
   };
 
@@ -83,8 +83,8 @@ function Tweet({
         }
       }
     } catch (error) {
-      alert("좋아요 버튼이 동작하지 않습니다.");
-      throw new Error(error as string);
+      console.error(error);
+      throw new Error(`좋아요 버튼 동작 실패: ${error as string}`);
     }
   };
 

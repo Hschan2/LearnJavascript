@@ -42,8 +42,6 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     }
   };
 
-
-
   const onDeletePhoto = async () => {
     if (existingPhoto) {
       try {
@@ -114,8 +112,8 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
         setExistingPhoto(photo || null);
       }
     } catch (error) {
-      alert("데이터를 불러오지 못했습니다.");
-      throw new Error(error as string);
+      console.error(error);
+      throw new Error(`데이터 요청: ${error}`);
     }
   };
 

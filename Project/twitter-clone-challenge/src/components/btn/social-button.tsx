@@ -23,6 +23,7 @@ function SocialButton({ provider, className, children }: SocialButtonProps) {
       navigate("/");
     } catch (error) {
       console.error(error);
+      throw new Error(`소셜미디어 로그인 실패: ${error}`);
     }
   };
 

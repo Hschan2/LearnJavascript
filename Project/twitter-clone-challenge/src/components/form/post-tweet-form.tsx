@@ -88,8 +88,8 @@ function PostTweetForm() {
       setTweet("");
       setFile(null);
     } catch (error) {
-      alert("글 작성에 실패하였습니다.");
-      throw new Error(error as string);
+      console.error(error);
+      throw new Error(`글 작성 실패: ${error}`);
     } finally {
       setLoading(false);
     }

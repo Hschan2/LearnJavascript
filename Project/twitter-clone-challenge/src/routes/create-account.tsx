@@ -1,8 +1,4 @@
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useState } from "react";
-import { auth } from "../firebase";
 import { useNavigate } from "react-router";
-import { FirebaseError } from "firebase/app";
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {

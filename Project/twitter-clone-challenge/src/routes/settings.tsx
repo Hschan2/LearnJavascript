@@ -52,6 +52,7 @@ function Settings() {
       navigate("/login");
     } catch (error) {
       console.error(error);
+      throw new Error(`계정 삭제 실패: ${error}`);
     }
   };
 
