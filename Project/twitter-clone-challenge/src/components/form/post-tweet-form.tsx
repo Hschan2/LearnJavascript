@@ -1,4 +1,9 @@
-import { DocumentReference, addDoc, collection, updateDoc } from "firebase/firestore";
+import {
+  DocumentReference,
+  addDoc,
+  collection,
+  updateDoc,
+} from "firebase/firestore";
 import { useEffect, useRef, useState } from "react";
 import { auth, dataBase, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -52,7 +57,11 @@ function PostTweetForm() {
     });
   };
 
-  const handleFileUpload = async (user: User, doc: DocumentReference, file: File) => {
+  const handleFileUpload = async (
+    user: User,
+    doc: DocumentReference,
+    file: File
+  ) => {
     const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
     const result = await uploadBytes(locationRef, file);
     const url = await getDownloadURL(result.ref);
@@ -79,7 +88,8 @@ function PostTweetForm() {
       setTweet("");
       setFile(null);
     } catch (error) {
-      console.log(error);
+      alert("글 작성에 실패하였습니다.");
+      throw new Error(error as string);
     } finally {
       setLoading(false);
     }

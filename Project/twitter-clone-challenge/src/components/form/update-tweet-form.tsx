@@ -86,7 +86,8 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
 
       onClose();
     } catch (error) {
-      console.log(error);
+      alert("글 수정에 실패하였습니다.");
+      throw new Error(error as string);
     } finally {
       setLoading(false);
     }
@@ -113,7 +114,8 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
         setExistingPhoto(photo || null);
       }
     } catch (error) {
-      console.error(error);
+      alert("데이터를 불러오지 못했습니다.");
+      throw new Error(error as string);
     }
   };
 

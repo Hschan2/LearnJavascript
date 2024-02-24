@@ -43,8 +43,9 @@ function Tweet({
         const photoRef = ref(storage, `tweets/${user?.uid}/${id}`);
         await deleteObject(photoRef);
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      alert("글 삭제에 실패하였습니다.");
+      throw new Error(error as string);
     }
   };
 
@@ -82,7 +83,8 @@ function Tweet({
         }
       }
     } catch (error) {
-      console.error(error);
+      alert("좋아요 버튼이 동작하지 않습니다.");
+      throw new Error(error as string);
     }
   };
 
