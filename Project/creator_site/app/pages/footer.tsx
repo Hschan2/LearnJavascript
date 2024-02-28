@@ -10,8 +10,8 @@ function Footer() {
         Copyrightⓒ 2024 All rights reserved by 홍성찬
       </p>
       <div className="flex flex-row gap-2">
-        {SOCIAL_LINKS.social.map((content) => (
-          <Link href={content.link} target="_blank">
+        {SOCIAL_LINKS.social.map((content, index) => (
+          <Link href={content.link} target="_blank" key={index}>
             <Image
               src={content.image}
               width={25}
