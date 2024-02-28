@@ -12,12 +12,14 @@ function VideoPlayer({ videoLink, videoRef, isOpen }: IVideoPlayer) {
   }, [isOpen, videoRef]);
 
   return (
-    // <video ref={videoRef} width="100%" height="auto" controls autoPlay={isOpen}>
-    //   <source src={videoLink} type="video/webm" />
-    //   <source src={videoLink} type="video/mp4" />
-    // </video>
     <div>
-      <ReactPlayer url={videoLink} controls playing={isOpen} width="720px" height="480px" />
+      <ReactPlayer
+        url={videoLink}
+        controls
+        playing={isOpen}
+        width="720px"
+        height="480px"
+      />
     </div>
   );
 }
