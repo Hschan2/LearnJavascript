@@ -23,14 +23,14 @@ function VideoButton({ size, data }: IButtonProps) {
     <div>
       <button
         onClick={openModal}
-        className={`transition relative ${size} overflow-hidden rounded-2xl text-gray-300 opacity-80 hover:opacity-100`}
+        className={`transition relative ${size} overflow-hidden rounded-2xl text-gray-200 opacity-80 border border-inherit hover:opacity-100`}
       >
         <Image
           src={image}
           alt="Image Button"
           loading="lazy"
-          layout="fill"
-          objectFit="cover"
+          quality={75}
+          fill
         />
         <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl">
           ▶️
