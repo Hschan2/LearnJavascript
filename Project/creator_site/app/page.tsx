@@ -1,3 +1,5 @@
+"use client"
+
 import dynamic from "next/dynamic";
 import { CATEGORIES_TITLE, CATEGORIES_VIDEOS } from "./common/utils/constants";
 import Footer from "./pages/footer";
