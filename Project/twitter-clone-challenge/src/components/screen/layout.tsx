@@ -7,6 +7,7 @@ import {
   NoneLineLink,
   Wrapper,
 } from "../style/screen-components";
+import DarkModeButton from "../btn/darkMode-button";
 
 function Layout() {
   const location = useLocation();
@@ -63,7 +64,9 @@ function Layout() {
           </MenuItem>
         </NoneLineLink>
         <NoneLineLink to="/profile">
-          <MenuItem active={location.pathname === "/profile" ? "true" : "false"}>
+          <MenuItem
+            active={location.pathname === "/profile" ? "true" : "false"}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -80,7 +83,9 @@ function Layout() {
           </MenuItem>
         </NoneLineLink>
         <NoneLineLink to="/settings">
-          <MenuItem active={location.pathname === "/settings" ? "true" : "false"}>
+          <MenuItem
+            active={location.pathname === "/settings" ? "true" : "false"}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -96,6 +101,7 @@ function Layout() {
             <MenuName>Settings</MenuName>
           </MenuItem>
         </NoneLineLink>
+        <DarkModeButton />
       </Menu>
       <Outlet />
     </Wrapper>
