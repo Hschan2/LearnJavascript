@@ -6,11 +6,11 @@ export const Form = styled.form`
   gap: 10px;
 
   &.postForm {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid grey;
     padding-bottom: 20px;
   }
   &.updateForm {
-    border: 1px solid white;
+    border: 1px solid grey;
     border-radius: 26px;
     padding: 14px;
   }
@@ -19,9 +19,8 @@ export const Form = styled.form`
 export const TextArea = styled.textarea`
   padding: 20px 10px 10px 10px;
   border-radius: 20px;
+  border: none;
   font-size: 16px;
-  color: white;
-  background-color: black;
   width: 100%;
   resize: none;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -35,11 +34,8 @@ export const TextArea = styled.textarea`
     outline: none;
     border-color: #1d9bf0;
   }
-  &.postForm {
-    border: none;
-  }
   &.updateForm {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid grey;
   }
 `;
 
@@ -87,7 +83,7 @@ export const SubmitButton = styled.input`
 
 export const EmojiButton = styled.button`
   align-self: flex-start;
-  padding: 10px;
+  padding: 9px 10px;
   margin-left: 10px;
   color: #1d9bf0;
   background-color: transparent;
@@ -114,6 +110,7 @@ export const ExistingPhoto = styled.img`
   width: 100%;
   max-width: 300px;
   height: auto;
+  border: 1px solid grey;
   border-radius: 10px;
   margin-bottom: 10px;
 `;

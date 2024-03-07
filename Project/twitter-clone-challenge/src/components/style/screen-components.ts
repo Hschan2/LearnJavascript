@@ -11,14 +11,19 @@ export const Wrapper = styled.div`
   max-width: 860px;
 `;
 
-export const Menu = styled.div`
+export const Menu = styled.div<{ dark: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
   margin-right: 20px;
   padding: 0 40px;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-right: 1px solid grey;
+
+  svg {
+    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+    fill: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+  }
 `;
 
 export const MenuItem = styled.div<{ active?: string }>`
@@ -33,7 +38,6 @@ export const MenuItem = styled.div<{ active?: string }>`
   opacity: ${(props) => (props.active === "true" ? "1" : "0.85")};
   svg {
     width: 30px;
-    fill: white;
   }
   &:hover {
     opacity: 1;
@@ -44,8 +48,8 @@ export const NoneLineLink = styled(Link)`
   text-decoration: none;
 `;
 
-export const MenuName = styled.span`
-  color: white;
+export const MenuName = styled.span<{ dark: string }>`
+  color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
   font-size: 14px;
 `;
 
@@ -59,11 +63,9 @@ export const Logo = styled.span`
 `;
 
 export const FooterContainer = styled.div`
-  color: white;
   padding: 20px 0 20px 0;
   text-align: center;
   width: 100%;
-  color: rgba(255, 255, 255, 0.3);
   font-size: 12px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid grey;
 `;

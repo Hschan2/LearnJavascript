@@ -1,13 +1,16 @@
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ dark: string }>`
   display: grid;
   grid-template-columns: 1fr 3fr;
   padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid grey;
   border-radius: 15px;
-  background-color: #111111;
   position: relative;
+
+  svg {
+    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+  }
 `;
 
 export const InfoContents = styled.div`
@@ -22,7 +25,6 @@ export const Menu = styled.div`
 `;
 
 export const MenuItem = styled.button`
-  color: #fff;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -37,7 +39,7 @@ export const Photo = styled.img`
   width: 630px;
   height: 300px;
   border-radius: 15px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid grey;
   object-fit: cover;
   margin-top: 12px;
   cursor: pointer;
@@ -68,20 +70,20 @@ export const CreatedAt = styled.span`
   color: grey;
 `;
 
-export const LikeButton = styled.button`
+export const LikeButton = styled.button<{ dark: string }>`
   background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid grey;
   border-radius: 20px;
-  color: white;
   width: 80px;
   height: 40px;
   margin-top: 20px;
   cursor: pointer;
+  color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
 `;
 
 export const ProfileImage = styled.img`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #fff;
+  border: 1px solid grey;
 `;

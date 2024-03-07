@@ -124,7 +124,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
   return (
     <Form className="updateForm" onSubmit={onSubmit}>
       <TextArea
-        className="updateForm"
+        className="updateForm darkMode"
         rows={3}
         maxLength={180}
         onChange={onTextChange}

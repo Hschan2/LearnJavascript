@@ -8,13 +8,15 @@ import {
   Wrapper,
 } from "../style/screen-components";
 import DarkModeButton from "../btn/darkMode-button";
+import useDarkModeStore from "../store/useDarkModeStore";
 
 function Layout() {
   const location = useLocation();
+  const { darkMode } = useDarkModeStore();
 
   return (
     <Wrapper>
-      <Menu>
+      <Menu dark={darkMode.toString()}>
         <NoneLineLink to="/">
           <Logo>
             <svg
@@ -43,7 +45,7 @@ function Layout() {
               <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
               <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
             </svg>
-            <MenuName>Home</MenuName>
+            <MenuName dark={darkMode.toString()}>Home</MenuName>
           </MenuItem>
         </NoneLineLink>
         <NoneLineLink to="/hot">
@@ -60,7 +62,7 @@ function Layout() {
                 clipRule="evenodd"
               />
             </svg>
-            <MenuName>Hot</MenuName>
+            <MenuName dark={darkMode.toString()}>Hot</MenuName>
           </MenuItem>
         </NoneLineLink>
         <NoneLineLink to="/profile">
@@ -79,7 +81,7 @@ function Layout() {
                 clipRule="evenodd"
               />
             </svg>
-            <MenuName>Profile</MenuName>
+            <MenuName dark={darkMode.toString()}>Profile</MenuName>
           </MenuItem>
         </NoneLineLink>
         <NoneLineLink to="/settings">
@@ -98,7 +100,7 @@ function Layout() {
                 clipRule="evenodd"
               />
             </svg>
-            <MenuName>Settings</MenuName>
+            <MenuName dark={darkMode.toString()}>Settings</MenuName>
           </MenuItem>
         </NoneLineLink>
         <DarkModeButton />

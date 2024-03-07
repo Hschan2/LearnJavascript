@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/route/protected-route";
 import Settings from "./routes/settings";
 import Footer from "./components/screen/footer";
 import Hot from "./routes/hot";
+import useDarkModeStore from "./components/store/useDarkModeStore";
 
 const router = createBrowserRouter([
   {
@@ -51,15 +52,21 @@ const router = createBrowserRouter([
   },
 ]);
 
-const GlobalStyles = createGlobalStyle`
+const GlobalStyles = createGlobalStyle<{ dark?: string }>`
   ${reset}
   * {
     box-sizing: border-box;
   }
   body {
-    background-color: black;
-    color: white;
+    background-color: ${(props) => (props.dark === "true" ? "#000" : "#fff")};;
+    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: 0.2s;
+  }
+  &.darkMode {
+    background-color: ${(props) => (props.dark === "true" ? "#000" : "#fff")};;
+    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+    transition: 0.2s;
   }
 `;
 
@@ -74,6 +81,7 @@ const Wrapper = styled.div`
 
 function App() {
   const [isLoading, setLoading] = useState(true);
+  const { darkMode } = useDarkModeStore();
   const init = async () => {
     await auth.authStateReady();
     setLoading(false);
@@ -85,7 +93,7 @@ function App() {
 
   return (
     <Wrapper>
-      <GlobalStyles />
+      <GlobalStyles dark={darkMode.toString()} />
       {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
       <Footer />
     </Wrapper>

@@ -18,6 +18,7 @@ import {
   Username,
   Wrapper,
 } from "../style/tweet-components";
+import useDarkModeStore from "../store/useDarkModeStore";
 
 function Tweet({
   username,
@@ -32,6 +33,7 @@ function Tweet({
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const createdDate = formattedDate({ createdAt });
   const [profileImage, setProfileImage] = useState<string>("");
+  const { darkMode } = useDarkModeStore();
   const user = auth.currentUser;
 
   const onDelete = async () => {
@@ -89,7 +91,7 @@ function Tweet({
   };
 
   const renderTweet = () => (
-    <Wrapper>
+    <Wrapper dark={darkMode.toString()}>
       <InfoContents>
         <Username>
           {profileImage && (
@@ -114,7 +116,7 @@ function Tweet({
         <Payload>{tweet}</Payload>
         {photo ? <Photo onClick={openImageModal} src={photo} /> : null}
         <CreatedAt>{createdDate}</CreatedAt>
-        <LikeButton onClick={toggleLike}>좋아요 {likes}</LikeButton>
+        <LikeButton onClick={toggleLike} dark={darkMode.toString()}>좋아요 {likes}</LikeButton>
       </InfoContents>
       {user?.uid === userId && (
         <>
