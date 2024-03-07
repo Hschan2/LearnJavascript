@@ -27,13 +27,15 @@ export const Logo = styled.img`
 `;
 
 export const ModeButton = styled.button<{ dark?: string }>`
-  width: 80px;
-  height: 30px;
-  font-size: 12px;
-  color: ${(props) => (props.dark === "true" ? "#111111" : "#fff")};
-  border: 1px solid grey;
-  background: ${(props) => (props.dark === "true" ? "#fff" : "#000")};;
-  border-radius: 16px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+  background: transparent;
+  border-radius: 50%;
   margin-top: 50px;
   cursor: pointer;
-`
+
+  svg {
+    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+  }
+`;
