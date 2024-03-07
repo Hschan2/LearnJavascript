@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 type darkModeStore = {
-  darkMode: boolean | undefined;
+  darkMode: boolean;
   setDarkMode: () => void;
 };
 
