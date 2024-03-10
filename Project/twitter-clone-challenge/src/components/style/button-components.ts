@@ -26,16 +26,16 @@ export const Logo = styled.img`
   height: 25px;
 `;
 
-export const ModeButton = styled.button<{ dark?: string }>`
+export const ModeButton = styled.button`
   width: 40px;
   height: 40px;
-  border: 1px solid ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+  border: 1px solid ${(props) => props.theme.border};
   background: transparent;
   border-radius: 50%;
   margin-top: 50px;
   cursor: pointer;
 
   svg {
-    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+    color: ${(props) => props.theme.text};
   }
 `;

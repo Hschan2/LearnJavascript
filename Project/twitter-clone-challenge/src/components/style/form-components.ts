@@ -136,16 +136,16 @@ export const DeletePhotoButton = styled.button`
 export const CancelButton = styled.button`
   align-self: flex-start;
   margin-left: 10px;
-  background-color: #111111;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background-color: transparent;
+  color: ${(props) => props.theme.text};
+  border: 1px solid ${(props) => props.theme.border};
   padding: 10px;
   border-radius: 20px;
   font-size: 14px;
   cursor: pointer;
   &:hover,
   &:active {
-    background-color: #222222;
+    background-color: ${(props) => props.theme.hover};
   }
 `;
 

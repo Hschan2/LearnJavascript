@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   max-width: 860px;
 `;
 
-export const Menu = styled.div<{ dark: string }>`
+export const Menu = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,8 +21,8 @@ export const Menu = styled.div<{ dark: string }>`
   border-right: 1px solid grey;
 
   svg {
-    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
-    fill: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+    color: ${(props) => props.theme.text};
+    fill: ${(props) => props.theme.text};
   }
 `;
 
@@ -48,8 +48,8 @@ export const NoneLineLink = styled(Link)`
   text-decoration: none;
 `;
 
-export const MenuName = styled.span<{ dark: string }>`
-  color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+export const MenuName = styled.span`
+  color: ${(props) => props.theme.text};
   font-size: 14px;
 `;
 

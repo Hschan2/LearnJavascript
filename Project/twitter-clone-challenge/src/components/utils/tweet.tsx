@@ -91,7 +91,7 @@ function Tweet({
   };
 
   const renderTweet = () => (
-    <Wrapper dark={darkMode.toString()}>
+    <Wrapper>
       <InfoContents>
         <Username>
           {profileImage && (
@@ -116,7 +116,7 @@ function Tweet({
         <Payload>{tweet}</Payload>
         {photo ? <Photo onClick={openImageModal} src={photo} /> : null}
         <CreatedAt>{createdDate}</CreatedAt>
-        <LikeButton onClick={toggleLike} dark={darkMode.toString()}>좋아요 {likes}</LikeButton>
+        <LikeButton onClick={toggleLike}>좋아요 {likes}</LikeButton>
       </InfoContents>
       {user?.uid === userId && (
         <>

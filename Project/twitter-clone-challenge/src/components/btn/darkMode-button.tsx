@@ -4,7 +4,7 @@ import { ModeButton } from "../style/button-components";
 function DarkModeButton() {
   const { darkMode, setDarkMode } = useDarkModeStore();
   return (
-    <ModeButton onClick={() => setDarkMode()} dark={darkMode.toString()}>
+    <ModeButton onClick={() => setDarkMode()}>
       {darkMode ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

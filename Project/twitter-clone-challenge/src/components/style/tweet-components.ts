@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div<{ dark: string }>`
+export const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
   padding: 20px;
@@ -9,7 +9,7 @@ export const Wrapper = styled.div<{ dark: string }>`
   position: relative;
 
   svg {
-    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+    color: ${(props) => props.theme.text};
   }
 `;
 
@@ -70,7 +70,7 @@ export const CreatedAt = styled.span`
   color: grey;
 `;
 
-export const LikeButton = styled.button<{ dark: string }>`
+export const LikeButton = styled.button`
   background-color: transparent;
   border: 1px solid grey;
   border-radius: 20px;
@@ -78,7 +78,7 @@ export const LikeButton = styled.button<{ dark: string }>`
   height: 40px;
   margin-top: 20px;
   cursor: pointer;
-  color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+  color: ${(props) => props.theme.text};
 `;
 
 export const ProfileImage = styled.img`
