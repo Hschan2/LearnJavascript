@@ -4,7 +4,7 @@ import Home from "./routes/home";
 import Profile from "./routes/profile";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
-import { createGlobalStyle, styled } from "styled-components";
+import { createGlobalStyle, styled, ThemeProvider } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/screen/loading-screen";
@@ -52,20 +52,20 @@ const router = createBrowserRouter([
   },
 ]);
 
-const GlobalStyles = createGlobalStyle<{ dark?: string }>`
+const GlobalStyles = createGlobalStyle`
   ${reset}
   * {
     box-sizing: border-box;
   }
   body {
-    background-color: ${(props) => (props.dark === "true" ? "#000" : "#fff")};;
-    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+    background-color: ${(props) => props.theme.background};
+    color: ${(props) => props.theme.text};
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     transition: 0.2s;
   }
   &.darkMode {
-    background-color: ${(props) => (props.dark === "true" ? "#000" : "#fff")};;
-    color: ${(props) => (props.dark === "true" ? "#fff" : "#111111")};
+    background-color: ${(props) => props.theme.background};
+    color: ${(props) => props.theme.text};
     transition: 0.2s;
   }
 `;
@@ -78,6 +78,20 @@ const Wrapper = styled.div`
   justify-content: center;
   justify-content: space-between;
 `;
+
+const lightTheme = {
+  background: "#FAF8F6",
+  text: "#111111",
+  border: "#111111",
+  hover: "#FFFCFA",
+};
+
+const darkTheme = {
+  background: "#000",
+  text: "#FAF8F6",
+  border: "#FAF8F6",
+  hover: "#111"
+};
 
 function App() {
   const [isLoading, setLoading] = useState(true);
@@ -92,11 +106,13 @@ function App() {
   }, []);
 
   return (
-    <Wrapper>
-      <GlobalStyles dark={darkMode.toString()} />
-      {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
-      <Footer />
-    </Wrapper>
+    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <Wrapper>
+        <GlobalStyles />
+        {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+        <Footer />
+      </Wrapper>
+    </ThemeProvider>
   );
 }
 
