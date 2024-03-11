@@ -18,5 +18,5 @@ export interface IVideoTitle {
 export interface IVideoPlayer {
   videoLink: string;
   videoRef: RefObject<HTMLVideoElement>;
-  isOpen: boolean;
+  isOpen?: boolean;
 }
