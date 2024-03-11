@@ -6,7 +6,9 @@ import VideosTitle from "../components/utils/videos-title";
 import dynamic from "next/dynamic";
 import useInfiniteScroll from "../hooks/useIinfiniteScroll";
 
-const VideoButton = dynamic(() => import("../components/utils/video-button"));
+const VideoButton = dynamic(() => import("../components/utils/video-button"), {
+  ssr: false,
+});
 
 function Videos({ categories, title }: ICategoriesProps) {
   const [visibleItems, setVisibleItems] = useState<number>(10);
