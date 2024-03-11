@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
-const Modal = dynamic(() => import("./modal"));
+const ModalContainer = dynamic(() => import("./modal-container"), { ssr: false });
 
 function VideoButton({ size, data }: IButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,7 +23,7 @@ function VideoButton({ size, data }: IButtonProps) {
     <div>
       <button
         onClick={openModal}
-        className={`transition relative ${size} overflow-hidden rounded-2xl text-gray-200 opacity-80 border border-inherit hover:opacity-100`}
+        className={`${size} transition relative overflow-hidden rounded-2xl text-gray-200 opacity-80 border border-inherit hover:opacity-100`}
       >
         <Image
           src={image}
@@ -37,7 +37,9 @@ function VideoButton({ size, data }: IButtonProps) {
         </span>
       </button>
       {title ? <p className="text-xs my-1.5 ml-1.5">{title}</p> : null}
-      <Modal isOpen={isModalOpen} onClose={closeModal} videoUrl={url} />
+      {isModalOpen && (
+        <ModalContainer onClose={closeModal} videoUrl={url} isOpen={isModalOpen} />
+      )}
     </div>
   );
 }
