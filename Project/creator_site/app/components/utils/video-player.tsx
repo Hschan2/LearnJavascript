@@ -15,7 +15,6 @@ function VideoPlayer({ videoLink, videoRef, isOpen }: IVideoPlayer) {
     <div>
       <ReactPlayer
         url={videoLink}
-        controls
         playing={isOpen}
         width="720px"
         height="480px"
