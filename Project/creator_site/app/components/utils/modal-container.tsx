@@ -1,7 +1,7 @@
 import { IModalProps } from "@/app/types/modalType";
 import React, { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
-import { createPortal } from "react-dom";
+import Modal from "react-modal";
 
 const VideoPlayer = dynamic(() => import("./video-player"), { ssr: false });
 
@@ -39,11 +39,11 @@ function ModalContainer({ isOpen, onClose, videoUrl }: IModalProps) {
     return (
       <div
         ref={modalRef}
-        className="bg-white rounded-lg shadow-lg border relative"
+        className="bg-white shadow-lg border relative"
       >
         <button
           onClick={closeVideo}
-          className="transition absolute top-2 right-2 w-6 h-6 bg-transparent font-bold text-slate-300 z-50 hover:text-white focus:outline-none"
+          className="transition absolute top-2 right-2 w-6 h-6 bg-transparent font-bold text-slate-700 hover:text-black"
         >
           X
         </button>
@@ -59,16 +59,25 @@ function ModalContainer({ isOpen, onClose, videoUrl }: IModalProps) {
   };
 
   return (
-    <>
-      {createPortal(
-        <div
-          className={`fixed top-0 left-0 w-full h-full flex items-center justify-center transition-opacity ease-in-out duration-300`}
-        >
-          {renderModalContent()}
-        </div>,
-        document.body
-      )}
-    </>
+    <Modal
+      isOpen={isOpen!}
+      onRequestClose={closeVideo}
+      contentLabel="Video"
+      style={{
+        content: {
+          width: "820px",
+          height: "530px",
+          margin: "auto",
+          border: "none",
+          backgroundColor: "transparent",
+        },
+        overlay: {
+          backgroundColor: "rgba(0, 0, 0, 0.5",
+        },
+      }}
+    >
+      {renderModalContent()}
+    </Modal>
   );
 }
 
