@@ -14,10 +14,10 @@ export const EventButton = styled.button`
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  border: 2px solid rgba(255, 255, 255);
+  border: 2px solid ${(props) => props.theme.border};
   border-radius: 14px;
   width: 150px;
-  color: white;
+  color: ${(props) => props.theme.text};
   font-size: 14px;
   padding: 10px 12px;
   cursor: pointer;
