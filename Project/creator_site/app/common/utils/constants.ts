@@ -17,6 +17,12 @@ export const PORTFOLIO_VIDEO = {
 export const CATEGORIES_VIDEOS = {
   motionGraphics: [
     {
+      title: "[Cover] Yogo",
+      url: "https://youtu.be/m4N5snlR3Q4",
+      image:
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcEcdRM%2FbtsHcn67f4S%2FoE4SpDmZDoVrGyfpfttDd0%2Fimg.png",
+    },
+    {
       title: "Rain on Street",
       url: "https://youtu.be/eyXFrDSj39c",
       image:
