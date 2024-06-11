@@ -17,6 +17,12 @@ export const PORTFOLIO_VIDEO = {
 export const CATEGORIES_VIDEOS = {
   motionGraphics: [
     {
+      title: "[Cover] IVE ON",
+      url: "https://youtu.be/k2HzV63YfO0",
+      image:
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdPcHVd%2FbtsHUfIN8iP%2FqP89Nvd8cofkbx8dTmpUlK%2Fimg.png",
+    },
+    {
       title: "[Cover] Yogo",
       url: "https://youtu.be/m4N5snlR3Q4",
       image:
@@ -279,6 +285,6 @@ export const SOCIAL_LINKS = {
       link: "https://hchan2.tistory.com/",
       image: "/tistory.svg",
       description: "Tistory",
-    }
-  ]
-}
+    },
+  ],
+};
