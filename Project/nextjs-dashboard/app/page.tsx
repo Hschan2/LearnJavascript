@@ -26,21 +26,15 @@ export default function Page() {
             <span>Log in</span> <ArrowRightIcon className="w-5 md:w-6" />
           </Link>
         </div>
-        <div className="flex flex-col items-center justify-center p-6 gap-6 md:w-3/5 md:px-28 md:py-12">
+        <div className="flex flex-col items-center justify-center gap-6 p-6 md:w-3/5 md:px-28 md:py-12">
           {/* Add Hero Images Here */}
           <Image
             src="/hero-desktop.png"
             width={1000}
             height={760}
-            className='hidden md:block'
-            alt='Screenshots of the dashborad project showing desktop version'
+            className="hidden md:block"
+            alt="Screenshots of the dashborad project showing desktop version"
           />
-          <Link
-            href="/dashboard"
-            className="flex items-center justify-center gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors w-full hover:bg-blue-400 md:text-base"
-          >
-            <span>DashBoard</span> <ArrowRightIcon className="w-5 md:w-6" />
-          </Link>
         </div>
       </div>
     </main>

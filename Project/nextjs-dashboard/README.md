@@ -1,5 +1,7 @@
-## Next.js App Router Course - Starter
+# 6월 원티드 프리온보딩 프론트엔드 실습 마지막
+```
+pnpm i
+pnpm dev (pnpm run dev)
+```
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
-
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+[실습](https://dashborad-nextjs.vercel.app/)
