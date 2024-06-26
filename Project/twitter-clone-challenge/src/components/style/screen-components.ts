@@ -2,23 +2,23 @@ import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
-  display: grid;
-  gap: 20px;
-  grid-template-columns: 1fr 4fr;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: 100%;
-  padding: 50px 0px;
+  padding: 20px 0px;
   width: 100%;
   max-width: 860px;
 `;
 
 export const Menu = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
-  margin-right: 20px;
-  padding: 0 40px;
-  border-right: 1px solid grey;
+  width: 100%;
+  border-bottom: 1px solid ${(props) => props.theme.light};
+  padding-bottom: 10px;
 
   svg {
     color: ${(props) => props.theme.text};
@@ -26,18 +26,24 @@ export const Menu = styled.div`
   }
 `;
 
+export const MenuItemContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
 export const MenuItem = styled.div<{ active?: string }>`
-  padding: 5px;
+  padding: 5px 10px;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
   height: 30px;
-  width: 100px;
-  gap: 10px;
+  width: auto;
   opacity: ${(props) => (props.active === "true" ? "1" : "0.85")};
+
   svg {
-    width: 30px;
+    width: 25px;
   }
   &:hover {
     opacity: 1;
@@ -50,15 +56,15 @@ export const NoneLineLink = styled(Link)`
 
 export const MenuName = styled.span`
   color: ${(props) => props.theme.text};
-  font-size: 14px;
+  font-size: 16px;
 `;
 
 export const Logo = styled.span`
   svg {
-    width: 100px;
-    height: 100px;
-    color: white;
-    margin-bottom: 30px;
+    width: 50px;
+    height: 50px;
+    fill: none;
+    color: tomato;
   }
 `;
 

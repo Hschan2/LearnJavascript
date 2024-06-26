@@ -80,8 +80,9 @@ const Wrapper = styled.div`
 `;
 
 const lightTheme = {
-  background: "#FAF8F6",
+  background: "#FFF",
   text: "#111111",
+  light: "rgba(0, 0, 0, 0.1)",
   border: "#111111",
   hover: "#FFFCFA",
 };
@@ -89,6 +90,7 @@ const lightTheme = {
 const darkTheme = {
   background: "#000",
   text: "#FAF8F6",
+  light: "rgba(255, 255, 255, 0.2)",
   border: "#FAF8F6",
   hover: "#111"
 };

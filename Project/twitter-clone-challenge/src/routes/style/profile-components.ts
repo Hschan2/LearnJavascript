@@ -5,6 +5,7 @@ export const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 20px;
+  padding: 40px 0;
 `;
 
 export const AvatarUpload = styled.label`

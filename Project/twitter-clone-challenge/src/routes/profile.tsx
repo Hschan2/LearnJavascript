@@ -11,7 +11,19 @@ import {
   where,
 } from "firebase/firestore";
 import Tweet from "../components/utils/tweet";
-import { AvatarImg, AvatarInput, AvatarUpload, ConfirmEditButton, EditButton, EditContainer, Input, Name, NameContainer, Tweets, Wrapper } from "./style/profile-components";
+import {
+  AvatarImg,
+  AvatarInput,
+  AvatarUpload,
+  ConfirmEditButton,
+  EditButton,
+  EditContainer,
+  Input,
+  Name,
+  NameContainer,
+  Tweets,
+  Wrapper,
+} from "./style/profile-components";
 import { ITweet } from "../components/types/tweet-type";
 
 function Profile() {
@@ -91,7 +103,7 @@ function Profile() {
     <Wrapper>
       <AvatarUpload htmlFor="avatar">
         {avatar ? (
-          <AvatarImg src={avatar} />
+          <AvatarImg src={avatar} alt="프로필 이미지" />
         ) : (
           <svg
             fill="currentColor"
@@ -108,13 +120,21 @@ function Profile() {
         id="avatar"
         type="file"
         accept="image/*"
+        title="프로필 이미지 변경"
       />
       {isEditName ? (
         <NameContainer>
-          <Input type="text" value={isNewName} onChange={onNameChange} />
+          <Input
+            type="text"
+            value={isNewName}
+            onChange={onNameChange}
+            placeholder="이름을 입력하세요."
+          />
           <EditContainer>
-            <ConfirmEditButton onClick={onSaveNewName}>확인</ConfirmEditButton>
-            <ConfirmEditButton onClick={onCancelNewName}>
+            <ConfirmEditButton onClick={onSaveNewName} title="수정 완료">
+              확인
+            </ConfirmEditButton>
+            <ConfirmEditButton onClick={onCancelNewName} title="수정 취소">
               취소
             </ConfirmEditButton>
           </EditContainer>
@@ -123,7 +143,9 @@ function Profile() {
         <NameContainer>
           <Name>{user?.displayName ?? "익명"}</Name>
           <EditContainer>
-            <EditButton onClick={onEditNewName}>수정</EditButton>
+            <EditButton onClick={onEditNewName} title="이름 수정">
+              수정
+            </EditButton>
           </EditContainer>
         </NameContainer>
       )}

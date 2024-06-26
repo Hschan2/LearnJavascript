@@ -32,7 +32,7 @@ export const ModeButton = styled.button`
   border: 1px solid ${(props) => props.theme.border};
   background: transparent;
   border-radius: 50%;
-  margin-top: 50px;
+  margin-left: 50px;
   cursor: pointer;
 
   svg {

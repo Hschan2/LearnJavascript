@@ -58,7 +58,7 @@ function Settings() {
 
   return (
     <Wrapper>
-      <EventButton onClick={onLogOut}>
+      <EventButton onClick={onLogOut} title="로그아웃">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -71,9 +71,9 @@ function Settings() {
             clipRule="evenodd"
           />
         </svg>
-        <span>Log-Out</span>
+        <span>로그아웃</span>
       </EventButton>
-      <EventButton onClick={onDeleteUser}>
+      <EventButton onClick={onDeleteUser} title="계정 삭제">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

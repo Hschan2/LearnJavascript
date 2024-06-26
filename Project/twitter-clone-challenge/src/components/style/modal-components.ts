@@ -32,7 +32,7 @@ export const ModalCloseButton = styled.button`
   font-size: 16px;
   font-weight: 600;
   border: none;
-  color: black;
+  color: #FFF;
   cursor: pointer;
   position: absolute;
   top: 10px;
