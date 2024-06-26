@@ -59,8 +59,12 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     e.preventDefault();
 
     try {
-      if (!user || isLoading || tweet === "" || tweet.length > 180) {
+      if (!user || isLoading || tweet.length > 180) {
         throw new Error("수정할 수 없습니다.");
+      }
+      if (tweet === "" || !file) {
+        alert("이야기와 사진은 필수입니다.");
+        throw new Error("내용 또는 사진이 없습니다.");
       }
       setLoading(true);
 
@@ -149,6 +153,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
           type="file"
           id="editFile"
           accept="image/*"
+          required
         />
         <EmojiButton onClick={toggleEmojiPicker}>
           <svg

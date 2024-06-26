@@ -74,8 +74,12 @@ function PostTweetForm() {
     e.preventDefault();
 
     try {
-      if (!user || isLoading || tweet === "" || tweet.length > 180) {
+      if (!user || isLoading || tweet.length > 180) {
         throw new Error("글을 작성할 수 없습니다.");
+      }
+      if (tweet === "" || !file) {
+        alert("이야기와 사진을 필수입니다.");
+        throw new Error("이야기 내용이 없거나 사진이 첨부되지 않았습니다.");
       }
 
       setLoading(true);
@@ -146,6 +150,7 @@ function PostTweetForm() {
           type="file"
           id="file"
           accept="image/*"
+          required
         />
         <EmojiButton onClick={toggleEmojiPicker}>
           <svg
