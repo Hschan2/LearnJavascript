@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   border: 1px solid grey;
   border-radius: 15px;
   position: relative;
-  max-width: 630px;
+  width: 100%;
 
   svg {
     color: ${(props) => props.theme.text};
@@ -21,9 +21,15 @@ export const InfoContents = styled.div`
 
 export const ContentContainer = styled.div`
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 0 20px 12px;
+`
+
+export const Content = styled.div`
+  display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0 0 20px 12px;
 `
 
 export const Menu = styled.div`
@@ -46,12 +52,21 @@ export const MenuItem = styled.button`
 `;
 
 export const Photo = styled.img`
-  width: 630px;
+  width: 350px;
   height: 300px;
   border-radius: 15px;
-  border: 1px solid grey;
   object-fit: cover;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 300px;
+    height: 250px;
+  }
+
+  @media (max-width: 375px) {
+    width: 250px;
+    height: 200px;
+  }
 `;
 
 export const Username = styled.span`
@@ -79,13 +94,23 @@ export const CreatedAt = styled.span`
 `;
 
 export const LikeButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
   background-color: transparent;
-  border: 1px solid grey;
-  border-radius: 20px;
-  width: 80px;
-  height: 40px;
+  border: none;
+  width: 60px;
+  height: 20px;
   cursor: pointer;
   color: ${(props) => props.theme.text};
+  font-size: 14px;
+
+  svg {
+    width: 25px;
+    height: 25px;
+    color: #E73C37;
+  }
 `;
 
 export const ProfileImage = styled.img`

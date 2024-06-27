@@ -7,6 +7,7 @@ import formattedDate from "../../hooks/formattedDate";
 import ImageModal from "./image-modal";
 import { ITweet } from "../types/tweet-type";
 import {
+  Content,
   ContentContainer,
   CreatedAt,
   InfoContents,
@@ -34,7 +35,7 @@ function Tweet({
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const createdDate = formattedDate({ createdAt });
   const [profileImage, setProfileImage] = useState<string>("");
-  const { darkMode } = useDarkModeStore();
+  const [isLike, setIsLike] = useState(false);
   const user = auth.currentUser;
 
   const onDelete = async () => {
@@ -73,12 +74,14 @@ function Tweet({
         const userAlreadyLiked = likedBy.includes(user?.uid);
 
         if (userAlreadyLiked && currentLikes > 0) {
+          setIsLike(false);
           await updateDoc(tweetRef, {
             likes: currentLikes - 1,
             likedBy: likedBy.filter((uid: string) => uid !== user?.uid),
           });
         }
         if (!userAlreadyLiked) {
+          setIsLike(true);
           await updateDoc(tweetRef, {
             likes: currentLikes + 1,
             likedBy: [...likedBy, user?.uid],
@@ -96,29 +99,58 @@ function Tweet({
       <InfoContents>
         {photo ? <Photo onClick={openImageModal} src={photo} /> : null}
         <ContentContainer>
-          <Username>
-            {profileImage && (
-              <ProfileImage src={profileImage} alt="Profile-Image" />
-            )}{" "}
-            {username}{" "}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
-              />
-            </svg>
-          </Username>
-          <Payload>{tweet}</Payload>
-          <CreatedAt>{createdDate}</CreatedAt>
-          <LikeButton onClick={toggleLike}>좋아요 {likes}</LikeButton>
+          <Content>
+            <Username>
+              {profileImage && (
+                <ProfileImage src={profileImage} alt="Profile-Image" />
+              )}{" "}
+              {username}{" "}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"
+                />
+              </svg>
+            </Username>
+            <Payload>{tweet}</Payload>
+            <CreatedAt>{createdDate}</CreatedAt>
+          </Content>
+          <LikeButton onClick={toggleLike}>
+            {isLike ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+              >
+                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+            )}
+            {likes}
+          </LikeButton>
         </ContentContainer>
       </InfoContents>
       {user?.uid === userId && (
