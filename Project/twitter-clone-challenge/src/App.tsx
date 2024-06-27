@@ -71,12 +71,22 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   justify-content: space-between;
+  padding: 0 48px;
+
+  @media (max-width: 768px) {
+    padding: 0 24px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 0 20px;
+  }
 `;
 
 const lightTheme = {

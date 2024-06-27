@@ -1,7 +1,15 @@
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
-  display: flex;
+  display: grid;
   gap: 10px;
-  flex-direction: column;
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 375px) {
+    grid-template-columns: 1fr;
+  }
 `;

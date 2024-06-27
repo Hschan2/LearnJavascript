@@ -6,9 +6,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100%;
-  padding: 20px 0px;
   width: 100%;
-  max-width: 860px;
+  padding: 20px 0px;
 `;
 
 export const Menu = styled.div`
@@ -30,7 +29,24 @@ export const MenuItemContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
+
+export const LeftMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const CenterMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+`;
+
+export const RightMenuItem = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 export const MenuItem = styled.div<{ active?: string }>`
   padding: 5px 10px;
@@ -60,12 +76,24 @@ export const MenuName = styled.span`
 `;
 
 export const Logo = styled.span`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+
   svg {
     width: 50px;
     height: 50px;
     fill: none;
     color: tomato;
   }
+`;
+
+export const LogoTitle = styled.span`
+  text-decoration: none;
+  color: tomato;
+  font-weight: bold;
+  weight: 800;
 `;
 
 export const FooterContainer = styled.div`
