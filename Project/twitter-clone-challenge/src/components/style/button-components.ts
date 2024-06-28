@@ -27,8 +27,8 @@ export const Logo = styled.img`
 `;
 
 export const ModeButton = styled.button`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border: 1px solid ${(props) => props.theme.border};
   background: transparent;
   border-radius: 50%;
