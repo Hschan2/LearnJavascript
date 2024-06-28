@@ -78,15 +78,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   justify-content: space-between;
-  padding: 0 48px;
-
-  @media (max-width: 768px) {
-    padding: 0 24px;
-  }
-
-  @media (max-width: 375px) {
-    padding: 0 20px;
-  }
+  padding: 0 24px;
 `;
 
 const lightTheme = {
