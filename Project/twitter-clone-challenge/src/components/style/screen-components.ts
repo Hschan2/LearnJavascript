@@ -25,12 +25,6 @@ export const Menu = styled.div`
   }
 `;
 
-export const MenuItemContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
 export const LeftMenuItem = styled.div`
   display: flex;
   align-items: center;
@@ -82,19 +76,21 @@ export const Logo = styled.span`
   gap: 8px;
 
   svg {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 40px;
     fill: none;
     color: tomato;
   }
 `;
 
-export const LogoTitle = styled.span`
-  text-decoration: none;
-  color: tomato;
-  font-weight: bold;
-  weight: 800;
-`;
+export const Avatar = styled.img`
+  width: 25px;
+  height: 25px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background-color: ${(props) => props.theme.text};
+  padding: 2px;
+`
 
 export const FooterContainer = styled.div`
   padding: 20px 0 20px 0;
