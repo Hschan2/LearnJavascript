@@ -54,6 +54,8 @@ function PostTweetForm() {
       userId: user.uid,
       likes: 0,
       likedBy: [],
+      exclamation: 0,
+      exclamationBy: [],
     });
   };
 

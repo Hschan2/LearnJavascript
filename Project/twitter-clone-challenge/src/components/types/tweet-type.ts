@@ -7,6 +7,8 @@ export interface ITweet {
   createdAt: number;
   likes: number;
   likedBy?: string[];
+  exclamation: number;
+  exclamationBy?: string[];
 }
 
 export interface ITimeline {
