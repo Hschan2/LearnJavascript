@@ -25,6 +25,27 @@ export const ModalContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 425px) {
+    min-width: 350px;
+    mim-height: 350px;
+    max-width: 350px;
+    max-height: 350px;
+  }
+
+  @media (max-width: 375px) {
+    min-width: 300px;
+    mim-height: 300px;
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  @media (max-width: 320px) {
+    min-width: 250px;
+    mim-height: 250px;
+    max-width: 250px;
+    max-height: 250px;
+  }
 `;
 
 export const ModalCloseButton = styled.button`
