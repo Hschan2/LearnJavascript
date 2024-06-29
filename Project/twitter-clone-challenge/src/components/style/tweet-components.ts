@@ -52,20 +52,20 @@ export const MenuItem = styled.button`
 `;
 
 export const Photo = styled.img`
-  width: 350px;
-  height: 300px;
+  width: 30vw;
+  height: 20vw;
   border-radius: 15px;
   object-fit: cover;
   cursor: pointer;
 
   @media (max-width: 768px) {
-    width: 300px;
-    height: 250px;
+    min-width: 300px;
+    min-height: 250px;
   }
 
   @media (max-width: 375px) {
-    width: 250px;
-    height: 200px;
+    min-width: 240px;
+    min-height: 190px;
   }
 `;
 

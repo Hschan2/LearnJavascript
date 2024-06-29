@@ -43,7 +43,7 @@ function Layout() {
         <CenterMenuItem>
           <NoneLineLink to="/hot">
             <MenuItem active={location.pathname === "/hot" ? "true" : "false"}>
-              <MenuName>Hot</MenuName>
+              <MenuName>HOT</MenuName>
             </MenuItem>
           </NoneLineLink>
         </CenterMenuItem>

@@ -38,4 +38,8 @@ export const ModeButton = styled.button`
   svg {
     color: ${(props) => props.theme.text};
   }
+
+  @media (max-width: 375px) {
+    margin-left: 20px;
+  }
 `;
