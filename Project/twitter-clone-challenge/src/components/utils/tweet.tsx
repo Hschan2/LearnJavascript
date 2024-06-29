@@ -51,7 +51,20 @@ function Tweet({
       }
     } catch (error) {
       console.error(error);
-      throw new Error(`글 작성 실패: ${error}`);
+      throw new Error(`글 삭제 실패: ${error}`);
+    }
+  };
+
+  const AutoDelete = async () => {
+    try {
+      await deleteDoc(doc(dataBase, "tweets", id));
+      if (photo) {
+        const photoRef = ref(storage, `tweets/${user?.uid}/${id}`);
+        await deleteObject(photoRef);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error(`글 자동 삭제 실패: ${error}`);
     }
   };
 
@@ -98,8 +111,6 @@ function Tweet({
 
   const toggleExclamation = async () => {
     if (!user || !id) return;
-    const isConfirm = window.confirm("부적절한 사진으로 신고할까요?");
-    if (!isConfirm) return;
 
     try {
       const tweetRef = doc(dataBase, "tweets", id);
@@ -113,14 +124,22 @@ function Tweet({
         if (userAlreadyExclamation && currentExclamation > 0) {
           await updateDoc(tweetRef, {
             exclamation: currentExclamation - 1,
-            exclamationBy: exclamationBy.filter((uid: string) => uid !== user?.uid),
+            exclamationBy: exclamationBy.filter(
+              (uid: string) => uid !== user?.uid
+            ),
           });
         }
         if (!userAlreadyExclamation) {
+          const isConfirm = window.confirm("부적절한 사진으로 신고할까요?");
+          if (!isConfirm) return;
           await updateDoc(tweetRef, {
             exclamation: currentExclamation + 1,
             exclamationBy: [...exclamationBy, user?.uid],
           });
+
+          if (exclamation >= 5) {
+            await AutoDelete();
+          }
         }
       }
     } catch (error) {
