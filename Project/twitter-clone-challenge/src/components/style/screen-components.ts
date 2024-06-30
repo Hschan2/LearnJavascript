@@ -35,11 +35,19 @@ export const CenterMenuItem = styled.div`
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+
+  @media (max-width: 425px) {
+    visibility: hidden;
+  }
 `;
 
 export const RightMenuItem = styled.div`
   display: flex;
   align-items: center;
+
+  @media (max-width: 425px) {
+    visibility: hidden;
+  }
 `;
 
 export const MenuItem = styled.div<{ active?: string }>`
@@ -90,7 +98,7 @@ export const Avatar = styled.img`
   border-radius: 50%;
   background-color: ${(props) => props.theme.text};
   padding: 2px;
-`
+`;
 
 export const FooterContainer = styled.div`
   padding: 20px 0 20px 0;
@@ -98,4 +106,39 @@ export const FooterContainer = styled.div`
   width: 100%;
   font-size: 12px;
   border-top: 1px solid grey;
+`;
+
+export const BottomMenuWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  background-color: ${(props) => props.theme.background};
+  visibility: hidden;
+
+  @media (max-width: 425px) {
+    visibility: visible;
+  }
+`;
+
+export const BottomMenuLink = styled(Link)<{ active?: string }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  border: none;
+  padding: 12px 0;
+  gap: 4px;
+  font-size: 12px;
+  background-color: transparent;
+  color: ${(props) => (props.active === "true" ? "#111111" : "#999999")};
+  text-decoration: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: ${(props) => (props.active === "true" ? "#111111" : "#999999")};
+  }
 `;
