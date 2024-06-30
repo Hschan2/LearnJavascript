@@ -46,6 +46,11 @@ function Layout() {
               <MenuName>HOT</MenuName>
             </MenuItem>
           </NoneLineLink>
+          <NoneLineLink to="/like">
+            <MenuItem active={location.pathname === "/like" ? "true" : "false"}>
+              <MenuName>LIKE</MenuName>
+            </MenuItem>
+          </NoneLineLink>
         </CenterMenuItem>
         <RightMenuItem>
           <NoneLineLink to="/profile">
@@ -88,8 +93,8 @@ function Layout() {
               </svg>
             </MenuItem>
           </NoneLineLink>
-          <DarkModeButton />
         </RightMenuItem>
+        <DarkModeButton />
       </Menu>
       <Outlet />
     </Wrapper>
