@@ -39,7 +39,7 @@ export const ModeButton = styled.button`
     color: ${(props) => props.theme.text};
   }
 
-  @media (max-width: 375px) {
-    margin-left: 20px;
+  @media (max-width: 425px) {
+    margin-left: 0px;
   }
 `;

@@ -14,38 +14,17 @@ export const ModalOverlay = styled.div`
 
 export const ModalContent = styled.div`
   background-color: white;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid ${(props) => props.theme.light};
   border-radius: 16px;
   position: relative;
-  min-width: 600px;
-  mim-height: 600px;
-  max-width: 600px;
-  max-height: 600px;
+  min-width: clamp(250px, 50vw, 600px);
+  mim-height: clamp(250px, 50vw, 600px);
+  max-width: clamp(250px, 50vw, 600px);
+  max-height: clamp(250px, 50vw, 600px);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  @media (max-width: 425px) {
-    min-width: 350px;
-    mim-height: 350px;
-    max-width: 350px;
-    max-height: 350px;
-  }
-
-  @media (max-width: 375px) {
-    min-width: 300px;
-    mim-height: 300px;
-    max-width: 300px;
-    max-height: 300px;
-  }
-
-  @media (max-width: 320px) {
-    min-width: 250px;
-    mim-height: 250px;
-    max-width: 250px;
-    max-height: 250px;
-  }
 `;
 
 export const ModalCloseButton = styled.button`
