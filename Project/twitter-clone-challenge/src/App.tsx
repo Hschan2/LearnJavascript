@@ -14,6 +14,8 @@ import Settings from "./routes/settings";
 import Footer from "./components/screen/footer";
 import Hot from "./routes/hot";
 import useDarkModeStore from "./components/store/useDarkModeStore";
+import Like from "./routes/like";
+import BottomMenu from "./components/utils/bottom-menu";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +23,7 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <Layout />
+        <BottomMenu />
       </ProtectedRoute>
     ),
     children: [
@@ -39,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "hot",
         element: <Hot />,
+      },
+      {
+        path: "like",
+        element: <Like />,
       },
     ],
   },
@@ -94,7 +101,7 @@ const darkTheme = {
   text: "#FAF8F6",
   light: "rgba(255, 255, 255, 0.2)",
   border: "#FAF8F6",
-  hover: "#111"
+  hover: "#111",
 };
 
 function App() {
