@@ -1,6 +1,16 @@
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { auth, dataBase, storage } from "../../firebase";
-import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import UpdateTweetForm from "../form/update-tweet-form";
 import formattedDate from "../../hooks/formattedDate";
@@ -94,12 +104,26 @@ function Tweet({
             likes: currentLikes - 1,
             likedBy: likedBy.filter((uid: string) => uid !== user?.uid),
           });
+          const likedTweetQuery = query(
+            collection(dataBase, "likedTweets"),
+            where("userId", "==", user.uid),
+            where("tweetId", "==", id)
+          );
+          const likedTweetSnapshot = await getDocs(likedTweetQuery);
+          likedTweetSnapshot.forEach(async (doc) => {
+            await deleteDoc(doc.ref);
+          });
         }
         if (!userAlreadyLiked) {
           setIsLike(true);
           await updateDoc(tweetRef, {
             likes: currentLikes + 1,
             likedBy: [...likedBy, user?.uid],
+          });
+          await setDoc(doc(collection(dataBase, "likedTweets")), {
+            userId: user.uid,
+            tweetId: id,
+            likedAt: new Date().toISOString(),
           });
         }
       }
