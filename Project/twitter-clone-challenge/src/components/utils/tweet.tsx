@@ -41,13 +41,13 @@ function Tweet({
   id,
   createdAt,
   likes,
+  likedBy,
   exclamation,
 }: ITweet) {
   const [isEdit, setIsEdit] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const createdDate = formattedDate({ createdAt });
   const [profileImage, setProfileImage] = useState<string>("");
-  const [isLike, setIsLike] = useState(false);
   const user = auth.currentUser;
 
   const onDelete = async () => {
@@ -99,7 +99,6 @@ function Tweet({
         const userAlreadyLiked = likedBy.includes(user?.uid);
 
         if (userAlreadyLiked && currentLikes > 0) {
-          setIsLike(false);
           await updateDoc(tweetRef, {
             likes: currentLikes - 1,
             likedBy: likedBy.filter((uid: string) => uid !== user?.uid),
@@ -115,7 +114,6 @@ function Tweet({
           });
         }
         if (!userAlreadyLiked) {
-          setIsLike(true);
           await updateDoc(tweetRef, {
             likes: currentLikes + 1,
             likedBy: [...likedBy, user?.uid],
@@ -203,7 +201,7 @@ function Tweet({
           </Content>
           <ButtonContainer>
             <LikeButton onClick={toggleLike}>
-              {isLike ? (
+              {user?.uid && likedBy?.includes(user?.uid) ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
