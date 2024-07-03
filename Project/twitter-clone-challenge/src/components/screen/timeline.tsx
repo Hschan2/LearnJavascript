@@ -18,7 +18,7 @@ function Timeline({ isHot }: ITimeline) {
   const [tweets, setTweets] = useState<ITweet[]>([]);
 
   const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
-    const { tweet, createdAt, userId, username, photo, likes, exclamation } = doc.data();
+    const { tweet, createdAt, userId, username, photo, likes, likedBy, exclamation } = doc.data();
     return {
       tweet,
       createdAt,
@@ -27,6 +27,7 @@ function Timeline({ isHot }: ITimeline) {
       photo,
       id: doc.id,
       likes,
+      likedBy,
       exclamation,
     };
   };
