@@ -142,3 +142,16 @@ export const BottomMenuLink = styled(Link)<{ active?: string }>`
     color: ${(props) => (props.active === "true" ? "#111111" : "#999999")};
   }
 `;
+
+// Slide
+export const SlideWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 10px 0 40px 0;
+`
+
+export const SlidePhoto = styled.img`
+  width: 100%;
+  height: 40vw;
+  object-fit: cover;
+`
