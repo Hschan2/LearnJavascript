@@ -1,9 +1,18 @@
 import { styled } from "styled-components";
 
+export const FormWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 80%;
   gap: 10px;
 
   &.postForm {
@@ -18,7 +27,7 @@ export const Form = styled.form`
 `;
 
 export const TextArea = styled.textarea`
-  padding: 20px 10px 10px 10px;
+  padding: 20px 10px 20px 10px;
   border-radius: 20px;
   border: none;
   font-size: 16px;
@@ -46,18 +55,18 @@ export const ButtonContainer = styled.div`
 `;
 
 export const AttachFileButton = styled.label`
-  align-self: flex-start;
-  padding: 10px;
+  width: 100%;
+  height: 30vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #1d9bf0;
-  text-align: center;
-  border-radius: 20px;
+  border-radius: 8px;
   border: 1px solid #1d9bf0;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
   svg {
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
   }
 `;
 
@@ -68,7 +77,7 @@ export const AttachFileInput = styled.input`
 
 export const SubmitButton = styled.input`
   align-self: flex-start;
-  margin-left: auto;
+  margin: 0 10px 0 auto;
   background-color: #1d9bf0;
   color: white;
   border: none;
@@ -154,4 +163,37 @@ export const ButtonLayout = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 4px;
+`;
+
+// Image Preview
+export const ImagePreview = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+`;
+
+export const RemoveImageButton = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  outline: none;
+
+  &:hover {
+    background-color: #ff4d4f;
+  }
 `;
