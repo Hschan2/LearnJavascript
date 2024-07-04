@@ -16,6 +16,7 @@ import Hot from "./routes/hot";
 import useDarkModeStore from "./components/store/useDarkModeStore";
 import Like from "./routes/like";
 import BottomMenu from "./components/utils/bottom-menu";
+import WriteTweet from "./components/screen/write-tweet";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: "settings",
         element: <Settings />,
+      },
+      {
+        path: "write",
+        element: <WriteTweet />,
       },
       {
         path: "hot",
