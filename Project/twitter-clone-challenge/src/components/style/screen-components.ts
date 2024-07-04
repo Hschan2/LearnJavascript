@@ -35,18 +35,22 @@ export const CenterMenuItem = styled.div`
   align-items: center;
   justify-content: center;
   flex-grow: 1;
+  margin-left: 50px;
 
   @media (max-width: 425px) {
     visibility: hidden;
+    margin-left: 0;
   }
 `;
 
 export const RightMenuItem = styled.div`
   display: flex;
   align-items: center;
+  margin-right: 50px;
 
   @media (max-width: 425px) {
     visibility: hidden;
+    margin-right: 0;
   }
 `;
 

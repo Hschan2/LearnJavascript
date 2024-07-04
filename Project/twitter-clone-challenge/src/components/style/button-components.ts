@@ -32,7 +32,6 @@ export const ModeButton = styled.button`
   border: 1px solid ${(props) => props.theme.border};
   background: transparent;
   border-radius: 50%;
-  margin-left: 50px;
   cursor: pointer;
 
   svg {
@@ -40,6 +39,9 @@ export const ModeButton = styled.button`
   }
 
   @media (max-width: 425px) {
-    margin-left: 0px;
+    svg {
+      width: 15px;
+      height: 15px;
+    }
   }
 `;
