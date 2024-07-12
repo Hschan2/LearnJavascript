@@ -17,6 +17,7 @@ import useDarkModeStore from "./components/store/useDarkModeStore";
 import Like from "./routes/like";
 import BottomMenu from "./components/utils/bottom-menu";
 import WriteTweet from "./components/screen/write-tweet";
+import DetailTweet from "./routes/detail";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "like",
         element: <Like />,
+      },
+      {
+        path: "detail",
+        element: <DetailTweet />,
       },
     ],
   },
