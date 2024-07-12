@@ -157,10 +157,10 @@ function PostTweetForm() {
       <TextArea
         className="postForm darkMode"
         ref={textareaRef}
-        maxLength={180}
+        maxLength={30}
         onChange={onTextChange}
         value={tweet}
-        placeholder="당신의 이야기를 전달해 주세요."
+        placeholder="사진에 담긴 이야기가 무엇인가요? (30자 제한)"
         required
       />
       <ButtonContainer>
