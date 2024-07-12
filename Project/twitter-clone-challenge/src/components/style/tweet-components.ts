@@ -24,13 +24,13 @@ export const ContentContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 0 20px 12px;
-`
+`;
 
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`
+`;
 
 export const Menu = styled.div`
   position: absolute;
@@ -47,7 +47,7 @@ export const MenuItem = styled.button`
   svg {
     width: 18px;
     height: 18px;
-    color: #FFF;
+    color: #fff;
   }
 `;
 
@@ -84,6 +84,7 @@ export const Username = styled.span`
 
 export const Payload = styled.p`
   font-size: 16px;
+  cursor: pointer;
 `;
 
 export const CreatedAt = styled.span`
@@ -97,7 +98,7 @@ export const ButtonContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-`
+`;
 
 export const LikeButton = styled.button`
   display: flex;
@@ -115,7 +116,7 @@ export const LikeButton = styled.button`
   svg {
     width: 25px;
     height: 25px;
-    color: #E73C37;
+    color: #e73c37;
   }
 `;
 
@@ -135,7 +136,7 @@ export const ExclamationButton = styled.button`
   svg {
     width: 25px;
     height: 25px;
-    color: #000;
+    color: ${(props) => props.theme.text};
   }
 `;
 
@@ -144,4 +145,42 @@ export const ProfileImage = styled.img`
   height: 20px;
   border-radius: 50%;
   border: 1px solid grey;
+`;
+
+// Detail
+export const DetailWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 0;
+
+  border-bottom: 1px solid ${(props) => props.theme.light};;
+`;
+
+export const DetailImage = styled.img`
+  width: 100%;
+  border-radius: 16px;
+`;
+
+export const DetailContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 8px;
+`;
+
+export const DetailTweetText = styled.h2`
+  font-size: clamp(16px, 2vw, 32px);
+  font-weight: 800;
+  color: ${(props) => props.theme.text};
+`;
+
+export const DetailProfileWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(12px, 1vw, 16px);
+  color: ${(props) => props.theme.text};
 `;
