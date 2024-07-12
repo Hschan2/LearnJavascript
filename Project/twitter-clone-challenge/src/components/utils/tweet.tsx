@@ -32,6 +32,7 @@ import {
   Username,
   Wrapper,
 } from "../style/tweet-components";
+import { useNavigate } from "react-router";
 
 function Tweet({
   username,
@@ -49,6 +50,7 @@ function Tweet({
   const createdDate = formattedDate({ createdAt });
   const [profileImage, setProfileImage] = useState<string>("");
   const user = auth.currentUser;
+  const navigate = useNavigate();
 
   const onDelete = async () => {
     const checkDelete = confirm("정말로 삭제하시겠습니까?");
@@ -170,10 +172,20 @@ function Tweet({
     }
   };
 
+  const moveDetailPage = () => {
+    const tweetObj = {
+      userId,
+      photo,
+      tweet,
+      username
+    }
+    navigate("/detail", { state: { tweetObj } });
+  };
+
   const renderTweet = () => (
     <Wrapper>
       <InfoContents>
-        {photo ? <Photo onClick={openImageModal} src={photo} /> : null}
+        {photo ? <Photo onClick={moveDetailPage} src={photo} alt="Image" /> : null}
         <ContentContainer>
           <Content>
             <Username>
@@ -196,7 +208,7 @@ function Tweet({
                 />
               </svg>
             </Username>
-            <Payload>{tweet}</Payload>
+            <Payload onClick={moveDetailPage}>{tweet}</Payload>
             <CreatedAt>{createdDate}</CreatedAt>
           </Content>
           <ButtonContainer>
