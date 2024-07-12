@@ -10,10 +10,17 @@ import { useState, useEffect } from "react";
 import { dataBase } from "../../firebase";
 import { Unsubscribe } from "firebase/auth";
 import { ITweet } from "../types/tweet-type";
-import { SlidePhoto, SlideWrapper } from "../style/screen-components";
+import {
+  Overlay,
+  SlideContent,
+  SlideWrapper,
+  TextContent,
+  Tweet,
+} from "../style/screen-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useNavigate } from "react-router";
 
 function MainSlide() {
   const settings = {
@@ -28,6 +35,7 @@ function MainSlide() {
     autoplaySpeed: 10000,
   };
   const [tweets, setTweets] = useState<ITweet[]>([]);
+  const navigate = useNavigate();
 
   const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
     const {
@@ -70,6 +78,11 @@ function MainSlide() {
     return recentTweets;
   };
 
+  const moveDetailPage = (tweet: ITweet) => {
+    const tweetObj = { ...tweet };
+    navigate("/detail", { state: { tweetObj } });
+  };
+
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {
@@ -89,8 +102,17 @@ function MainSlide() {
   return (
     <SlideWrapper>
       <Slider {...settings}>
-        {tweets.map((tweet, index) => (
-          <SlidePhoto src={tweet?.photo} key={index} />
+        {tweets.map((tweetObj) => (
+          <SlideContent
+            key={tweetObj.id}
+            backgroundImage={tweetObj?.photo || ""}
+            onClick={() => moveDetailPage(tweetObj)}
+          >
+            <Overlay />
+            <TextContent>
+              <Tweet>{tweetObj?.tweet}</Tweet>
+            </TextContent>
+          </SlideContent>
         ))}
       </Slider>
     </SlideWrapper>

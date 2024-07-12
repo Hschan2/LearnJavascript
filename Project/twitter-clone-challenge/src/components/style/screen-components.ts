@@ -152,10 +152,42 @@ export const SlideWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 10px 0 40px 0;
-`
+`;
 
-export const SlidePhoto = styled.img`
+export const SlideContent = styled.div<{ backgroundImage: string }>`
+  position: relative;
   width: 100%;
   height: 40vw;
-  object-fit: cover;
-`
+  background-image: url(${(props) => props.backgroundImage});
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+`;
+
+export const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+`;
+
+export const TextContent = styled.div`
+  position: absolute;
+  bottom: 50%;
+  left: clamp(10px, 5vw, 40px);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+export const Tweet = styled.h2`
+  font-size: clamp(16px, 4vw, 32px);
+`;
+
+export const Username = styled.p`
+  font-size: clamp(12px, 1vw, 14px);
+  color: #C7C7C7;
+`;
