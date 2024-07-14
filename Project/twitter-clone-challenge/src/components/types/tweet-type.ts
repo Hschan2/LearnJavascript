@@ -9,6 +9,7 @@ export interface ITweet {
   likedBy?: string[];
   exclamation: number;
   exclamationBy?: string[];
+  tags: string[];
 }
 
 export interface ITimeline {

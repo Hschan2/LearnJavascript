@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   border: 1px solid grey;
-  border-radius: 15px;
+  border-radius: 16px;
   position: relative;
   width: 100%;
 
@@ -29,7 +29,7 @@ export const ContentContainer = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 `;
 
 export const Menu = styled.div`
@@ -54,7 +54,7 @@ export const MenuItem = styled.button`
 export const Photo = styled.img`
   width: 100%;
   height: 20vw;
-  border-radius: 15px;
+  border-radius: 14px;
   object-fit: cover;
   cursor: pointer;
 
@@ -71,25 +71,33 @@ export const Username = styled.span`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
-  font-weight: 800;
-  font-size: 18px;
+  gap: 4px;
+  font-size: 14px;
 
   svg {
-    width: 15px;
-    height: 15px;
+    width: 14px;
+    height: 14px;
     color: #1d9bf0;
   }
 `;
 
+export const ProfileImage = styled.img`
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid grey;
+`;
+
 export const Payload = styled.p`
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 800;
   cursor: pointer;
 `;
 
 export const CreatedAt = styled.span`
   font-size: 12px;
   color: grey;
+  margin-top: 8px;
 `;
 
 export const ButtonContainer = styled.div`
@@ -140,12 +148,21 @@ export const ExclamationButton = styled.button`
   }
 `;
 
-export const ProfileImage = styled.img`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid grey;
-`;
+// Tags
+export const TagWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+`
+
+export const Tag = styled.span`
+  border: 1px solid ${(props) => props.theme.light};
+  border-radius: 8px;
+  font-size: 12px;
+  color: #767676;
+  padding: 4px 8px;
+`
 
 // Detail
 export const DetailWrapper = styled.div`

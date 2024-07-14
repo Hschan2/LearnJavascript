@@ -29,6 +29,8 @@ import {
   Payload,
   Photo,
   ProfileImage,
+  Tag,
+  TagWrapper,
   Username,
   Wrapper,
 } from "../style/tweet-components";
@@ -44,6 +46,7 @@ function Tweet({
   likes,
   likedBy,
   exclamation,
+  tags,
 }: ITweet) {
   const [isEdit, setIsEdit] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
@@ -177,17 +180,20 @@ function Tweet({
       userId,
       photo,
       tweet,
-      username
-    }
+      username,
+    };
     navigate("/detail", { state: { tweetObj } });
   };
 
   const renderTweet = () => (
     <Wrapper>
       <InfoContents>
-        {photo ? <Photo onClick={moveDetailPage} src={photo} alt="Image" /> : null}
+        {photo ? (
+          <Photo onClick={moveDetailPage} src={photo} alt="Image" />
+        ) : null}
         <ContentContainer>
           <Content>
+            <Payload onClick={moveDetailPage}>{tweet}</Payload>
             <Username>
               {profileImage && (
                 <ProfileImage src={profileImage} alt="Profile-Image" />
@@ -208,7 +214,11 @@ function Tweet({
                 />
               </svg>
             </Username>
-            <Payload onClick={moveDetailPage}>{tweet}</Payload>
+            <TagWrapper>
+              {tags?.map((tag: string, index: number) => (
+                <Tag key={index}>{tag}</Tag>
+              ))}
+            </TagWrapper>
             <CreatedAt>{createdDate}</CreatedAt>
           </Content>
           <ButtonContainer>
