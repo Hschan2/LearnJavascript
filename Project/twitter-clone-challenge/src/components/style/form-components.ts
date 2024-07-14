@@ -15,10 +15,6 @@ export const Form = styled.form`
   width: 80%;
   gap: 10px;
 
-  &.postForm {
-    border-bottom: 1px solid grey;
-    padding-bottom: 20px;
-  }
   &.updateForm {
     border: 1px solid grey;
     border-radius: 26px;
@@ -27,31 +23,31 @@ export const Form = styled.form`
 `;
 
 export const TextArea = styled.textarea`
-  padding: 20px 10px 20px 10px;
-  border-radius: 20px;
-  border: none;
+  padding: 12px 10px;
+  border-radius: 10px;
+  border: 1px solid ${(props) => props.theme.light};
   font-size: 16px;
   width: 100%;
   resize: none;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   overflow-y: hidden;
 
   &::placeholder {
-    font-size: 16px;
+    font-size: 14px;
   }
   &:focus {
     outline: none;
-    border-color: #1d9bf0;
+    border-color: ${(props) => props.theme.border};
   }
   &.updateForm {
     border: 1px solid grey;
   }
 `;
 
+// Button
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
+  padding: 12px 0;
 `;
 
 export const AttachFileButton = styled.label`
@@ -176,7 +172,7 @@ export const ImagePreview = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 `;
 
@@ -196,4 +192,50 @@ export const RemoveImageButton = styled.button`
   &:hover {
     background-color: #ff4d4f;
   }
+`;
+
+// Post-Tag
+export const TagsInputWrapper = styled.div`
+  margin-top: 4px;
+`;
+
+export const TagsInput = styled.input`
+  width: 100%;
+  padding: 6px 5px;
+  border: 1px solid ${(props) => props.theme.light};
+  border-radius: 10px;
+  margin-bottom: 5px;
+
+  &::placeholder {
+    font-size: 12px;
+  }
+  &:focus {
+    outline: none;
+    border-color: ${(props) => props.theme.border};
+  }
+`;
+
+export const TagsList = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+`;
+
+export const Tag = styled.span`
+  border: 1px solid #1D9BF0;
+  border-radius: 8px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+`;
+
+export const RemoveTagButton = styled.button`
+  background: none;
+  border: none;
+  margin-left: 4px;
+  cursor: pointer;
+  color: #FF0000;
 `;

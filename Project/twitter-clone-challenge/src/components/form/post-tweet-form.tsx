@@ -16,7 +16,12 @@ import {
   Form,
   ImagePreview,
   RemoveImageButton,
+  RemoveTagButton,
   SubmitButton,
+  Tag,
+  TagsInput,
+  TagsInputWrapper,
+  TagsList,
   TextArea,
 } from "../style/form-components";
 import { User } from "firebase/auth";
@@ -27,6 +32,8 @@ function PostTweetForm() {
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const user = auth.currentUser;
   const navigate = useNavigate();
@@ -50,6 +57,22 @@ function PostTweetForm() {
     }
   };
 
+  const onTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInput(e.target.value);
+  };
+
+  const onTagInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && tagInput.trim() !== "") {
+      e.preventDefault();
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
   const addTweetToData = (user: User) => {
     return addDoc(collection(dataBase, "tweets"), {
       tweet,
@@ -60,6 +83,7 @@ function PostTweetForm() {
       likedBy: [],
       exclamation: 0,
       exclamationBy: [],
+      tags,
     });
   };
 
@@ -97,6 +121,7 @@ function PostTweetForm() {
 
       setTweet("");
       setFile(null);
+      setTags([]);
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -125,7 +150,7 @@ function PostTweetForm() {
       <AttachFileButton htmlFor="file">
         {file ? (
           <ImagePreview>
-            <img src={URL.createObjectURL(file)} alt="preview" />
+            <img src={URL.createObjectURL(file)} alt="preview" loading="lazy" />
             <RemoveImageButton onClick={() => setFile(null)}>
               x
             </RemoveImageButton>
@@ -157,12 +182,31 @@ function PostTweetForm() {
       <TextArea
         className="postForm darkMode"
         ref={textareaRef}
-        maxLength={30}
+        maxLength={50}
         onChange={onTextChange}
         value={tweet}
-        placeholder="사진에 담긴 이야기가 무엇인가요? (30자 제한)"
+        placeholder="사진에 담긴 이야기가 무엇인가요? (50자 제한)"
         required
       />
+      <TagsInputWrapper>
+        <TagsInput
+          type="text"
+          placeholder="태그 입력"
+          value={tagInput}
+          onChange={onTagInputChange}
+          onKeyDown={onTagInputKeyPress}
+        />
+        <TagsList>
+          {tags.map((tag, index) => (
+            <Tag key={index}>
+              {tag}
+              <RemoveTagButton onClick={() => removeTag(index)}>
+                x
+              </RemoveTagButton>
+            </Tag>
+          ))}
+        </TagsList>
+      </TagsInputWrapper>
       <ButtonContainer>
         <EmojiButton onClick={toggleEmojiPicker}>
           <svg
