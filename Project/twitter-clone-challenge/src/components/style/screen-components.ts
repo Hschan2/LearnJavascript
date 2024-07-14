@@ -7,7 +7,6 @@ export const Wrapper = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
-  padding: 20px 0px;
 `;
 
 export const Menu = styled.div`
@@ -17,7 +16,7 @@ export const Menu = styled.div`
   align-items: center;
   width: 100%;
   border-bottom: 1px solid ${(props) => props.theme.light};
-  padding-bottom: 10px;
+  padding: 20px 10px 10px 10px;
 
   svg {
     color: ${(props) => props.theme.text};
@@ -82,11 +81,6 @@ export const MenuName = styled.span`
 `;
 
 export const Logo = styled.span`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-
   svg {
     width: 80px;
     height: 40px;
@@ -98,10 +92,9 @@ export const Logo = styled.span`
 export const Avatar = styled.img`
   width: 25px;
   height: 25px;
-  border: 1px solid transparent;
   border-radius: 50%;
-  background-color: ${(props) => props.theme.text};
-  padding: 2px;
+  border: 1px solid ${(props) => props.theme.border};
+  object-fit: cover;
 `;
 
 export const FooterContainer = styled.div`
