@@ -33,6 +33,7 @@ export const ModeButton = styled.button`
   background: transparent;
   border-radius: 50%;
   cursor: pointer;
+  margin-top: 48px;
 
   svg {
     color: ${(props) => props.theme.text};
@@ -43,5 +44,8 @@ export const ModeButton = styled.button`
       width: 15px;
       height: 15px;
     }
+
+    margin-top: 0;
+    margin-right: 12px;
   }
 `;

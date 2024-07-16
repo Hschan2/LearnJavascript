@@ -3,57 +3,50 @@ import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
   height: 100%;
   width: 100%;
+
+  @media (max-width: 425px) {
+    flex-direction: column;
+  }
 `;
 
 export const Menu = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid ${(props) => props.theme.light};
-  padding: 20px 10px 10px 10px;
+  padding: 24px 0;
 
   svg {
     color: ${(props) => props.theme.text};
-    fill: ${(props) => props.theme.text};
   }
-`;
 
-export const LeftMenuItem = styled.div`
-  display: flex;
-  align-items: center;
+  @media (max-width: 425px) {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0;
+  }
 `;
 
 export const CenterMenuItem = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
-  margin-left: 50px;
+  gap: 24px;
+  margin-top: 48px;
 
   @media (max-width: 425px) {
     visibility: hidden;
-    margin-left: 0;
+    gap: 0;
+    margin-top: 0;
   }
 `;
 
-export const RightMenuItem = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 50px;
 
-  @media (max-width: 425px) {
-    visibility: hidden;
-    margin-right: 0;
-  }
-`;
-
-export const MenuItem = styled.div<{ active?: string }>`
+export const MenuItem = styled.div`
   padding: 5px 10px;
   cursor: pointer;
   display: flex;
@@ -61,23 +54,21 @@ export const MenuItem = styled.div<{ active?: string }>`
   align-items: center;
   height: 30px;
   width: auto;
-  opacity: ${(props) => (props.active === "true" ? "1" : "0.85")};
 
   svg {
-    width: 25px;
+    width: 30px;
   }
   &:hover {
     opacity: 1;
+  }
+
+  @media (max-width: 425px) {
+    height: 15px;
   }
 `;
 
 export const NoneLineLink = styled(Link)`
   text-decoration: none;
-`;
-
-export const MenuName = styled.span`
-  color: ${(props) => props.theme.text};
-  font-size: 16px;
 `;
 
 export const Logo = styled.span`
@@ -182,5 +173,5 @@ export const Tweet = styled.h2`
 
 export const Username = styled.p`
   font-size: clamp(12px, 1vw, 14px);
-  color: #C7C7C7;
+  color: #c7c7c7;
 `;
