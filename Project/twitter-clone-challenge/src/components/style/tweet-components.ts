@@ -21,15 +21,23 @@ export const InfoContents = styled.div`
 
 export const ContentContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 8px;
   padding: 0 0 20px 12px;
 `;
 
-export const Content = styled.div`
+export const TweetLikeWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const TimeExclamationWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const Menu = styled.div`
@@ -100,14 +108,6 @@ export const CreatedAt = styled.span`
   margin-top: 8px;
 `;
 
-export const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-`;
-
 export const LikeButton = styled.button`
   display: flex;
   align-items: center;
@@ -154,7 +154,7 @@ export const TagWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 4px;
-`
+`;
 
 export const Tag = styled.span`
   border: 1px solid ${(props) => props.theme.light};
@@ -162,7 +162,7 @@ export const Tag = styled.span`
   font-size: 12px;
   color: #767676;
   padding: 4px 8px;
-`
+`;
 
 // Detail
 export const DetailWrapper = styled.div`
@@ -172,7 +172,7 @@ export const DetailWrapper = styled.div`
   width: 100%;
   padding: 20px 0;
 
-  border-bottom: 1px solid ${(props) => props.theme.light};;
+  border-bottom: 1px solid ${(props) => props.theme.light};
 `;
 
 export const DetailImage = styled.img`
