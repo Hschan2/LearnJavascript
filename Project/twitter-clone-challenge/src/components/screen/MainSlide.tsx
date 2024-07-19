@@ -47,6 +47,7 @@ function MainSlide() {
       likes,
       likedBy,
       exclamation,
+      item,
     } = doc.data();
     return {
       tweet,
@@ -58,6 +59,7 @@ function MainSlide() {
       likes,
       likedBy,
       exclamation,
+      item,
     };
   };
 
@@ -102,7 +104,7 @@ function MainSlide() {
   return (
     <SlideWrapper>
       <Slider {...settings}>
-        {tweets.map((tweetObj) => (
+        {tweets?.map((tweetObj) => (
           <SlideContent
             key={tweetObj.id}
             backgroundImage={tweetObj?.photo || ""}

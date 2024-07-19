@@ -47,6 +47,7 @@ function Tweet({
   likedBy,
   exclamation,
   tags,
+  item
 }: ITweet) {
   const [isEdit, setIsEdit] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
@@ -83,9 +84,9 @@ function Tweet({
     }
   };
 
-  const openImageModal = () => {
-    setImageModalOpen(!isImageModalOpen);
-  };
+  // const openImageModal = () => {
+  //   setImageModalOpen(!isImageModalOpen);
+  // };
 
   const closeImageModal = () => {
     setImageModalOpen(false);
@@ -193,7 +194,7 @@ function Tweet({
         ) : null}
         <ContentContainer>
           <TweetLikeWrapper>
-            <Payload onClick={moveDetailPage}>{tweet}</Payload>
+            <Payload onClick={moveDetailPage}>[{item}]{tweet}</Payload>
             <LikeButton onClick={toggleLike}>
               {user?.uid && likedBy?.includes(user?.uid) ? (
                 <svg
