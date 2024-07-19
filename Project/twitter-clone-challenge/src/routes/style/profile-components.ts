@@ -1,12 +1,20 @@
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
+`;
+
+export const ContentWrapper = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
   padding: 40px 0;
-`;
+`
 
 export const AvatarUpload = styled.label`
   width: 80px;
