@@ -17,6 +17,7 @@ export const Menu = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  max-width: 80px;
   padding: 24px 0;
 
   svg {
