@@ -161,6 +161,38 @@ export const ButtonLayout = styled.div`
   margin-top: 4px;
 `;
 
+// Select Bar
+export const SelectWrapper = styled.div`
+  width: 80px;
+  padding: 4px;
+  margin-left: 8px;
+`
+
+export const SelectToggleButton = styled.button`
+  width: 100%;
+  padding: 4px;
+  border: 1px solid ${(props) => props.theme.light};
+  border-radius: 4px;
+  background: none;
+`
+
+export const SelectedOptionWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${(props) => props.theme.light};
+  border-radius: 4px;
+`
+
+export const OptionButton = styled.button`
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 8px 0;
+`
+
 // Image Preview
 export const ImagePreview = styled.div`
   position: relative;

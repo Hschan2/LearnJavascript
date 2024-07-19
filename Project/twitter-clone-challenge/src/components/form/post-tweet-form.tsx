@@ -15,8 +15,12 @@ import {
   EmojiButton,
   Form,
   ImagePreview,
+  OptionButton,
   RemoveImageButton,
   RemoveTagButton,
+  SelectToggleButton,
+  SelectWrapper,
+  SelectedOptionWrapper,
   SubmitButton,
   Tag,
   TagsInput,
@@ -26,6 +30,7 @@ import {
 } from "../style/form-components";
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router";
+import { SELECT_OPTION_VALUE } from "../../constants";
 
 function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
@@ -34,6 +39,8 @@ function PostTweetForm() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(SELECT_OPTION_VALUE[0]);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const user = auth.currentUser;
   const navigate = useNavigate();
@@ -84,6 +91,7 @@ function PostTweetForm() {
       exclamation: 0,
       exclamationBy: [],
       tags,
+      item: selectedOption,
     });
   };
 
@@ -141,6 +149,13 @@ function PostTweetForm() {
     if (showEmojiPicker) {
       setShowEmojiPicker(false);
     }
+  };
+
+  const toggleDropdown = () => setIsSelectOpen(!isSelectOpen);
+
+  const handleOptionClick = (option: string) => {
+    setSelectedOption(option);
+    setIsSelectOpen(false);
   };
 
   useEffect(adjustTextareaHeight, [tweet]);
@@ -224,6 +239,24 @@ function PostTweetForm() {
             />
           </svg>
         </EmojiButton>
+        <SelectWrapper>
+          <SelectToggleButton type="button" onClick={toggleDropdown}>
+            {selectedOption || SELECT_OPTION_VALUE[0]}
+          </SelectToggleButton>
+          {isSelectOpen && (
+            <SelectedOptionWrapper>
+              {SELECT_OPTION_VALUE.map((option, index) => (
+                <OptionButton
+                  key={index}
+                  type="button"
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </OptionButton>
+              ))}
+            </SelectedOptionWrapper>
+          )}
+        </SelectWrapper>
         <SubmitButton
           type="submit"
           value={isLoading ? "보내는 중" : "보내기"}
