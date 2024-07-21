@@ -18,6 +18,7 @@ import Like from "./routes/like";
 import BottomMenu from "./components/utils/bottom-menu";
 import WriteTweet from "./components/screen/write-tweet";
 import DetailTweet from "./routes/detail";
+import Update from "./routes/update";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "detail",
         element: <DetailTweet />,
+      },
+      {
+        path: "update",
+        element: <Update />,
       },
     ],
   },
