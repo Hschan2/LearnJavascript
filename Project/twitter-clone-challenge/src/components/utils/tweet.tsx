@@ -47,9 +47,8 @@ function Tweet({
   likedBy,
   exclamation,
   tags,
-  item
+  item,
 }: ITweet) {
-  const [isEdit, setIsEdit] = useState(false);
   const [isImageModalOpen, setImageModalOpen] = useState(false);
   const createdDate = formattedDate({ createdAt });
   const [profileImage, setProfileImage] = useState<string>("");
@@ -194,7 +193,9 @@ function Tweet({
         ) : null}
         <ContentContainer>
           <TweetLikeWrapper>
-            <Payload onClick={moveDetailPage}>[{item}]{tweet}</Payload>
+            <Payload onClick={moveDetailPage}>
+              [{item}]{tweet}
+            </Payload>
             <LikeButton onClick={toggleLike}>
               {user?.uid && likedBy?.includes(user?.uid) ? (
                 <svg
@@ -274,7 +275,7 @@ function Tweet({
       {user?.uid === userId && (
         <>
           <Menu>
-            <MenuItem onClick={() => setIsEdit(!isEdit)}>
+            <MenuItem onClick={() => navigate("/update", { state: { id } })}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -331,9 +332,7 @@ function Tweet({
     getProfileImage();
   }, [userId]);
 
-  return isEdit ? (
-    <UpdateTweetForm id={id} onClose={() => setIsEdit(false)} />
-  ) : (
+  return (
     <>
       {renderTweet()}
       {isImageModalOpen && (
