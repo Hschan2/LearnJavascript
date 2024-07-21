@@ -23,9 +23,11 @@ import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router";
 
 function MainSlide() {
+  const [tweets, setTweets] = useState<ITweet[]>([]);
+  const navigate = useNavigate();
   const settings = {
     dots: true,
-    infinite: true,
+    infinite: tweets?.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -34,8 +36,6 @@ function MainSlide() {
     autoplay: true,
     autoplaySpeed: 10000,
   };
-  const [tweets, setTweets] = useState<ITweet[]>([]);
-  const navigate = useNavigate();
 
   const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
     const {
