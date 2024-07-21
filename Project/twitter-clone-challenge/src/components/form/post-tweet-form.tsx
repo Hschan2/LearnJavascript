@@ -161,7 +161,7 @@ function PostTweetForm() {
   useEffect(adjustTextareaHeight, [tweet]);
 
   return (
-    <Form className="postForm" onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
       <AttachFileButton htmlFor="file">
         {file ? (
           <ImagePreview>

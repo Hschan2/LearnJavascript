@@ -14,12 +14,6 @@ export const Form = styled.form`
   flex-direction: column;
   width: 80%;
   gap: 10px;
-
-  &.updateForm {
-    border: 1px solid grey;
-    border-radius: 26px;
-    padding: 14px;
-  }
 `;
 
 export const TextArea = styled.textarea`
@@ -37,9 +31,6 @@ export const TextArea = styled.textarea`
   &:focus {
     outline: none;
     border-color: ${(props) => props.theme.border};
-  }
-  &.updateForm {
-    border: 1px solid grey;
   }
 `;
 
@@ -166,7 +157,7 @@ export const SelectWrapper = styled.div`
   width: 80px;
   padding: 4px;
   margin-left: 8px;
-`
+`;
 
 export const SelectToggleButton = styled.button`
   width: 100%;
@@ -174,7 +165,7 @@ export const SelectToggleButton = styled.button`
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 4px;
   background: none;
-`
+`;
 
 export const SelectedOptionWrapper = styled.div`
   width: 100%;
@@ -184,14 +175,14 @@ export const SelectedOptionWrapper = styled.div`
   justify-content: center;
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 4px;
-`
+`;
 
 export const OptionButton = styled.button`
   width: 100%;
   border: none;
   background: none;
   padding: 8px 0;
-`
+`;
 
 // Image Preview
 export const ImagePreview = styled.div`
@@ -255,7 +246,7 @@ export const TagsList = styled.div`
 `;
 
 export const Tag = styled.span`
-  border: 1px solid #1D9BF0;
+  border: 1px solid #1d9bf0;
   border-radius: 8px;
   padding: 4px 8px;
   display: flex;
@@ -269,5 +260,5 @@ export const RemoveTagButton = styled.button`
   border: none;
   margin-left: 4px;
   cursor: pointer;
-  color: #FF0000;
+  color: #ff0000;
 `;
