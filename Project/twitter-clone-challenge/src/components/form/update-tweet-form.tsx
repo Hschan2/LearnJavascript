@@ -1,34 +1,41 @@
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { auth, dataBase, storage } from "../../firebase";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import EmojiPicker from "../utils/emoji-picker";
 import {
   AttachFileButton,
   AttachFileInput,
   ButtonLayout,
-  CancelButton,
-  DeletePhotoButton,
   EmojiButton,
-  ExistingPhoto,
-  ExistingPhotoContainer,
   Form,
+  ImagePreview,
+  OptionButton,
+  RemoveImageButton,
+  RemoveTagButton,
+  SelectToggleButton,
+  SelectWrapper,
+  SelectedOptionWrapper,
   SubmitButton,
+  Tag,
+  TagsInput,
+  TagsInputWrapper,
+  TagsList,
   TextArea,
 } from "../style/form-components";
 import { EditTweetFormProps } from "../types/form-type";
+import { SELECT_OPTION_VALUE } from "../../constants";
 
-function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
+function UpdateTweetForm({ id }: EditTweetFormProps) {
   const [isLoading, setLoading] = useState(false);
   const [tweet, setTweet] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [existingPhoto, setExistingPhoto] = useState<string | null>(null);
+  const [file, setFile] = useState<string | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("");
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const user = auth.currentUser;
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -38,20 +45,7 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (files && files.length === 1) {
-      setFile(files[0]);
-    }
-  };
-
-  const onDeletePhoto = async () => {
-    if (existingPhoto) {
-      try {
-        const photoRef = ref(storage, existingPhoto);
-        await deleteObject(photoRef);
-        await updateDoc(doc(dataBase, "tweets", id), { photo: null });
-        setExistingPhoto(null);
-      } catch (error) {
-        console.error(error);
-      }
+      setUploadedFile(files[0]);
     }
   };
 
@@ -62,31 +56,30 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
       if (!user || isLoading || tweet.length > 180) {
         throw new Error("수정할 수 없습니다.");
       }
-      if (tweet === "" || !file) {
-        alert("이야기와 사진은 필수입니다.");
-        throw new Error("내용 또는 사진이 없습니다.");
+      if (tweet === "") {
+        alert("이야기를 작성해주세요.");
+        throw new Error("이야기가 없습니다.");
+      }
+      if (!file && !uploadedFile) {
+        alert("사진을 첨부해 주세요.");
+        throw new Error("사진이 없습니다.");
       }
       setLoading(true);
 
-      if (existingPhoto && file) {
-        const existingPhotoRef = ref(storage, existingPhoto);
-        await deleteObject(existingPhotoRef);
-      }
-
       await updateDoc(doc(dataBase, "tweets", id), {
         tweet,
+        tags,
+        item: selectedOption,
       });
 
-      if (file) {
+      if (uploadedFile) {
         const photoRef = ref(storage, `tweets/${user.uid}/${id}`);
-        const result = await uploadBytes(photoRef, file);
+        const result = await uploadBytes(photoRef, uploadedFile);
         const url = await getDownloadURL(result.ref);
         await updateDoc(doc(dataBase, "tweets", id), {
           photo: url,
         });
       }
-
-      onClose();
     } catch (error) {
       alert("글 수정에 실패하였습니다.");
       throw new Error(error as string);
@@ -111,9 +104,11 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     try {
       const tweetDoc = await getDoc(doc(dataBase, "tweets", id));
       if (tweetDoc.exists()) {
-        const { tweet, photo } = tweetDoc.data();
+        const { tweet, photo, tags, item } = tweetDoc.data();
         setTweet(tweet);
-        setExistingPhoto(photo || null);
+        setFile(photo || null);
+        setTags(tags);
+        setSelectedOption(item);
       }
     } catch (error) {
       console.error(error);
@@ -121,14 +116,78 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
     }
   };
 
+  const onTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTagInput(e.target.value);
+  };
+
+  const onTagInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && tagInput.trim() !== "") {
+      e.preventDefault();
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+    }
+  };
+
+  const removeTag = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  const toggleDropdown = () => setIsSelectOpen(!isSelectOpen);
+
+  const handleOptionClick = (option: string) => {
+    setSelectedOption(option);
+    setIsSelectOpen(false);
+  };
+
   useEffect(() => {
     fetchTweet();
   }, [id]);
 
   return (
-    <Form className="updateForm" onSubmit={onSubmit}>
+    <Form onSubmit={onSubmit}>
+      <AttachFileButton htmlFor="file">
+        {uploadedFile ? (
+          <ImagePreview>
+            <img
+              src={URL.createObjectURL(uploadedFile)}
+              alt="preview"
+              loading="lazy"
+            />
+            <RemoveImageButton onClick={() => setUploadedFile(null)}>
+              x
+            </RemoveImageButton>
+          </ImagePreview>
+        ) : file ? (
+          <ImagePreview>
+            <img src={file} alt="preview" loading="lazy" />
+            <RemoveImageButton onClick={() => setFile(null)}>
+              x
+            </RemoveImageButton>
+          </ImagePreview>
+        ) : (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            />
+          </svg>
+        )}
+      </AttachFileButton>
+      <AttachFileInput
+        onChange={onFileChange}
+        type="file"
+        id="file"
+        accept="image/*"
+      />
       <TextArea
-        className="updateForm darkMode"
         rows={3}
         maxLength={180}
         onChange={onTextChange}
@@ -136,25 +195,26 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
         placeholder="당신의 이야기를 전달해 주세요."
         required
       />
-      {existingPhoto && (
-        <ExistingPhotoContainer>
-          <ExistingPhoto src={existingPhoto} alt="Previous Photo" />
-          <DeletePhotoButton type="button" onClick={onDeletePhoto}>
-            X
-          </DeletePhotoButton>
-        </ExistingPhotoContainer>
-      )}
-      <ButtonLayout>
-        <AttachFileButton htmlFor="editFile">
-          {file ? "사진 추가완료✔️" : "사진 추가"}
-        </AttachFileButton>
-        <AttachFileInput
-          onChange={onFileChange}
-          type="file"
-          id="editFile"
-          accept="image/*"
-          required
+      <TagsInputWrapper>
+        <TagsInput
+          type="text"
+          placeholder="태그 입력"
+          value={tagInput}
+          onChange={onTagInputChange}
+          onKeyDown={onTagInputKeyPress}
         />
+        <TagsList>
+          {tags.map((tag, index) => (
+            <Tag key={index}>
+              {tag}
+              <RemoveTagButton onClick={() => removeTag(index)}>
+                x
+              </RemoveTagButton>
+            </Tag>
+          ))}
+        </TagsList>
+      </TagsInputWrapper>
+      <ButtonLayout>
         <EmojiButton onClick={toggleEmojiPicker}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -171,10 +231,25 @@ function UpdateTweetForm({ id, onClose }: EditTweetFormProps) {
             />
           </svg>
         </EmojiButton>
+        <SelectWrapper>
+          <SelectToggleButton type="button" onClick={toggleDropdown}>
+            {selectedOption || SELECT_OPTION_VALUE[0]}
+          </SelectToggleButton>
+          {isSelectOpen && (
+            <SelectedOptionWrapper>
+              {SELECT_OPTION_VALUE.map((option, index) => (
+                <OptionButton
+                  key={index}
+                  type="button"
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option}
+                </OptionButton>
+              ))}
+            </SelectedOptionWrapper>
+          )}
+        </SelectWrapper>
         <SubmitButton type="submit" value={isLoading ? "수정 중..." : "수정"} />
-        <CancelButton type="button" onClick={onClose}>
-          취소
-        </CancelButton>
       </ButtonLayout>
       {showEmojiPicker && <EmojiPicker onSelectEmoji={handleSelectEmoji} />}
     </Form>
