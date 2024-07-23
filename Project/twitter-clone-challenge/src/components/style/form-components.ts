@@ -14,6 +14,10 @@ export const Form = styled.form`
   flex-direction: column;
   width: 80%;
   gap: 10px;
+
+  &.comment {
+    flex-direction: row;
+  }
 `;
 
 export const TextArea = styled.textarea`
