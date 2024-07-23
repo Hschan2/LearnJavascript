@@ -47,6 +47,7 @@ function MainSlide() {
       likes,
       likedBy,
       exclamation,
+      tags,
       item,
     } = doc.data();
     return {
@@ -59,6 +60,7 @@ function MainSlide() {
       likes,
       likedBy,
       exclamation,
+      tags,
       item,
     };
   };
