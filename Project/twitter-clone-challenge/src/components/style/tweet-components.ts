@@ -201,3 +201,15 @@ export const DetailProfileWrapper = styled.div`
   font-size: clamp(12px, 1vw, 16px);
   color: ${(props) => props.theme.text};
 `;
+
+export const DetailInfo = styled.span`
+  font-size: clamp(12px, 1vw, 16px);
+`
+
+export const DetailCommentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 12px 8px;
+  margin-top: 20px;
+`
