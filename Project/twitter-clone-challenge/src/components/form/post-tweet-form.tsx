@@ -195,7 +195,6 @@ function PostTweetForm() {
         required
       />
       <TextArea
-        className="postForm darkMode"
         ref={textareaRef}
         maxLength={50}
         onChange={onTextChange}
