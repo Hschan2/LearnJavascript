@@ -14,11 +14,23 @@ import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
 import { ITimeline, ITweet } from "../types/tweet-type";
 
-function Timeline({ isHot }: ITimeline) {
+function Timeline({ isHot, option = "전체" }: ITimeline) {
   const [tweets, setTweets] = useState<ITweet[]>([]);
+  const [filteredTweets, setFilteredTweets] = useState<ITweet[]>([]);
 
   const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
-    const { tweet, createdAt, userId, username, photo, likes, likedBy, exclamation, tags, item } = doc.data();
+    const {
+      tweet,
+      createdAt,
+      userId,
+      username,
+      photo,
+      likes,
+      likedBy,
+      exclamation,
+      tags,
+      item,
+    } = doc.data();
     return {
       tweet,
       createdAt,
@@ -51,6 +63,14 @@ function Timeline({ isHot }: ITimeline) {
     return recentTweets;
   };
 
+  const filterTweets = (tweets: ITweet[], option: string) => {
+    if (option === "전체") {
+      return tweets;
+    }
+
+    return tweets.filter((tweet: ITweet) => tweet.item === option);
+  };
+
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {
@@ -66,7 +86,9 @@ function Timeline({ isHot }: ITimeline) {
 
       unsubscribe = await onSnapshot(tweetsQuery, async (snapshot) => {
         const tweets = await fetchTweetsData(snapshot);
-        setTweets(recentOneMonth(tweets));
+        const recentTweets = recentOneMonth(tweets);
+        setTweets(recentTweets);
+        setFilteredTweets(filterTweets(recentTweets, option || "전체"));
       });
 
       // const snapshot = await getDocs(tweetsQuery);
@@ -79,9 +101,13 @@ function Timeline({ isHot }: ITimeline) {
     };
   }, []);
 
+  useEffect(() => {
+    setFilteredTweets(filterTweets(tweets, option || "전체"));
+  }, [option, tweets]);
+
   return (
     <Wrapper>
-      {tweets.map((tweet) => (
+      {filteredTweets.map((tweet) => (
         <Tweet key={tweet.id} {...tweet} />
       ))}
     </Wrapper>

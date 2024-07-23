@@ -15,4 +15,5 @@ export interface ITweet {
 
 export interface ITimeline {
   isHot?: boolean;
+  option?: string | undefined;
 }
