@@ -181,6 +181,9 @@ function Tweet({
       photo,
       tweet,
       username,
+      createdAt,
+      tags,
+      item,
     };
     navigate("/detail", { state: { tweetObj } });
   };
@@ -188,9 +191,7 @@ function Tweet({
   const renderTweet = () => (
     <Wrapper>
       <InfoContents>
-        {photo ? (
-          <Photo onClick={moveDetailPage} src={photo} alt="Image" />
-        ) : null}
+        {photo && <Photo onClick={moveDetailPage} src={photo} alt="Image" />}
         <ContentContainer>
           <TweetLikeWrapper>
             <Payload onClick={moveDetailPage}>
