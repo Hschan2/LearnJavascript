@@ -21,8 +21,8 @@ function Home() {
       <FilterWrapper>
         <FilterSelector onChange={handleOptionChange}>
           <option value="전체">전체</option>
-          {SELECT_OPTION_VALUE.map((item) => (
-            <option value={item}>{item}</option>
+          {SELECT_OPTION_VALUE.map((item, index) => (
+            <option value={item} key={index}>{item}</option>
           ))}
         </FilterSelector>
       </FilterWrapper>
