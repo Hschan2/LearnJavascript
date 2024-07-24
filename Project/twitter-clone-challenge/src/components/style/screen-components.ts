@@ -27,6 +27,7 @@ export const Menu = styled.div`
   @media (max-width: 425px) {
     flex-direction: row;
     justify-content: space-between;
+    max-width: 90%;
     padding: 0;
   }
 `;

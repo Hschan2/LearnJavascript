@@ -46,6 +46,5 @@ export const ModeButton = styled.button`
     }
 
     margin-top: 0;
-    margin-right: 12px;
   }
 `;
