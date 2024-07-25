@@ -2,6 +2,8 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot,
   collection,
+  doc,
+  getDoc,
   onSnapshot,
   query,
   where,
@@ -12,14 +14,25 @@ import Tweet from "../utils/tweet";
 import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
 import { ITweet } from "../types/tweet-type";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 function LikedTimeline() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
   const user = auth.currentUser;
 
   const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
-    const { tweet, createdAt, userId, username, photo, likes, exclamation } =
-      doc.data();
+    const {
+      tweet,
+      createdAt,
+      userId,
+      username,
+      photo,
+      likes,
+      likedBy,
+      exclamation,
+      tags,
+      item,
+    } = doc.data();
     return {
       tweet,
       createdAt,
@@ -28,46 +41,53 @@ function LikedTimeline() {
       photo,
       id: doc.id,
       likes,
+      likedBy,
       exclamation,
+      tags,
+      item,
     };
   };
 
-  const fetchTweetsData = async (
-    snapshot: QuerySnapshot
-  ): Promise<ITweet[]> => {
-    const tweets = snapshot.docs.map(mapTweetData);
+  const fetchTweetById = async (tweetId: string) => {
+    const tweetDoc = await getDoc(doc(dataBase, "tweets", tweetId));
+    if (tweetDoc.exists()) {
+      return mapTweetData(tweetDoc);
+    }
 
-    return tweets;
+    return null;
   };
 
-  const recentOneMonth = (tweets: ITweet[]) => {
-    const oneMonthAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
-    const recentTweets = tweets.filter(
-      (tweet) => tweet.createdAt > oneMonthAgo
-    );
-
-    return recentTweets;
-  };
-
-  useEffect(() => {
+  const fetchMoreData = async () => {
     if (!user) return;
     let unsubscribe: Unsubscribe | null = null;
     const fetchLikedTweets = async () => {
       const likedTweetsQuery = query(
-          collection(dataBase, "likedTweets"),
-          where("userId", "==", user.uid)
+        collection(dataBase, "likedTweets"),
+        where("userId", "==", user.uid)
       );
 
       unsubscribe = await onSnapshot(likedTweetsQuery, async (snapshot) => {
-        const likedTweets = await fetchTweetsData(snapshot);
-        setTweets(recentOneMonth(likedTweets));
+        const tweetIds = snapshot.docs.map((doc) => doc.data().tweetId);
+        const tweetPromises = tweetIds.map(fetchTweetById);
+        const fetchedTweets = await Promise.all(tweetPromises);
+        const recentTweets = fetchedTweets.filter(
+          (tweet) =>
+            tweet && tweet.createdAt > Date.now() - 30 * 24 * 60 * 60 * 1000
+        ) as ITweet[];
+        setTweets(recentTweets);
       });
     };
     fetchLikedTweets();
     return () => {
       unsubscribe && unsubscribe();
     };
-  }, []);
+  };
+
+  // const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreData);
+
+  useEffect(() => {
+    fetchMoreData();
+  }, [user]);
 
   return (
     <Wrapper>
