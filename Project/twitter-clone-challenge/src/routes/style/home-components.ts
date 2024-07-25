@@ -9,6 +9,10 @@ export const Wrapper = styled.div`
   padding: 10px 0;
   margin: 0 auto;
   padding: 20px;
+
+  @media (max-width: 425px) {
+    margin: 0;
+  }
 `;
 
 export const FilterWrapper = styled.div`

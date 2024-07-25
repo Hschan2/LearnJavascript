@@ -27,7 +27,7 @@ export const Menu = styled.div`
   @media (max-width: 425px) {
     flex-direction: row;
     justify-content: space-between;
-    max-width: 90%;
+    max-width: 85%;
     padding: 0;
   }
 `;
@@ -46,7 +46,6 @@ export const CenterMenuItem = styled.div`
     margin-top: 0;
   }
 `;
-
 
 export const MenuItem = styled.div`
   padding: 5px 10px;
@@ -163,17 +162,21 @@ export const TextContent = styled.div`
   position: absolute;
   bottom: 50%;
   left: clamp(10px, 5vw, 40px);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  color: #fff;
+  width: 50%;
+  transform: translateY(50%);
+
+  @media (max-width: 425px) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    text-overflow: ellipsis;
+    height: calc(1em * 3);
+  }
 `;
 
 export const Tweet = styled.h2`
   font-size: clamp(16px, 4vw, 32px);
-`;
-
-export const Username = styled.p`
-  font-size: clamp(12px, 1vw, 14px);
-  color: #c7c7c7;
 `;
