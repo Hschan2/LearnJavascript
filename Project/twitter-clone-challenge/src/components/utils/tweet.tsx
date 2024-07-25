@@ -12,7 +12,6 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import UpdateTweetForm from "../form/update-tweet-form";
 import formattedDate from "../../hooks/formattedDate";
 import ImageModal from "./image-modal";
 import { ITweet } from "../types/tweet-type";
