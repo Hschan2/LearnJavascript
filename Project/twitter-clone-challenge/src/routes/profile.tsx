@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { auth, dataBase, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
@@ -26,6 +26,7 @@ import {
   Wrapper,
 } from "./style/profile-components";
 import { ITweet } from "../components/types/tweet-type";
+import useInfiniteScroll from "../hooks/useInfiniteScroll";
 
 function Profile() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
@@ -49,7 +50,7 @@ function Profile() {
     }
   };
 
-  const fetchTweets = async () => {
+  const fetchTweets = useCallback(async () => {
     const tweetQuery = query(
       collection(dataBase, "tweets"),
       where("userId", "==", user?.uid),
@@ -74,7 +75,9 @@ function Profile() {
       };
     });
     setTweets(tweets);
-  };
+  }, [user]);
+
+  const [isFetching, triggerRef] = useInfiniteScroll(fetchTweets);
 
   const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewName(e.target.value);
@@ -100,7 +103,7 @@ function Profile() {
 
   useEffect(() => {
     fetchTweets();
-  }, []);
+  }, [user, fetchTweets]);
 
   return (
     <Wrapper>
@@ -157,6 +160,7 @@ function Profile() {
           {tweets.map((tweet) => (
             <Tweet key={tweet.id} {...tweet} />
           ))}
+          <div ref={triggerRef}></div>
         </Tweets>
       </ContentWrapper>
     </Wrapper>

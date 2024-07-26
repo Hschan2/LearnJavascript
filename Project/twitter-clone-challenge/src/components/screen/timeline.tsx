@@ -7,16 +7,18 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { dataBase } from "../../firebase";
 import Tweet from "../utils/tweet";
 import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
 import { ITimeline, ITweet } from "../types/tweet-type";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 function Timeline({ isHot, option = "전체" }: ITimeline) {
   const [tweets, setTweets] = useState<ITweet[]>([]);
   const [filteredTweets, setFilteredTweets] = useState<ITweet[]>([]);
+  let unsubscribe: Unsubscribe | null = null;
 
   const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
     const {
@@ -71,30 +73,35 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
     return tweets.filter((tweet: ITweet) => tweet.item === option);
   };
 
+  const fetchTweets = useCallback(async () => {
+    const orderBys = isHot
+      ? [orderBy("likes", "desc"), orderBy("createdAt", "desc")]
+      : [orderBy("createdAt", "desc")];
+
+    const tweetsQuery = query(
+      collection(dataBase, "tweets"),
+      ...orderBys,
+      limit(25)
+    );
+
+    unsubscribe = onSnapshot(tweetsQuery, async (snapshot) => {
+      const tweets = await fetchTweetsData(snapshot);
+      const recentTweets = recentOneMonth(tweets);
+      setTweets(recentTweets);
+      setFilteredTweets(filterTweets(recentTweets, option || "전체"));
+    });
+  }, [isHot, option]);
+
+  const fetchMoreData = async () => {
+    fetchTweets();
+  };
+
+  const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreData);
+
   useEffect(() => {
-    let unsubscribe: Unsubscribe | null = null;
-    const fetchTweets = async () => {
-      const orderBys = isHot
-        ? [orderBy("likes", "desc"), orderBy("createdAt", "desc")]
-        : [orderBy("createdAt", "desc")];
-
-      const tweetsQuery = query(
-        collection(dataBase, "tweets"),
-        ...orderBys,
-        limit(25)
-      );
-
-      unsubscribe = await onSnapshot(tweetsQuery, async (snapshot) => {
-        const tweets = await fetchTweetsData(snapshot);
-        const recentTweets = recentOneMonth(tweets);
-        setTweets(recentTweets);
-        setFilteredTweets(filterTweets(recentTweets, option || "전체"));
-      });
-
-      // const snapshot = await getDocs(tweetsQuery);
-      // const tweets = await fetchTweetsData(snapshot);
-      // setTweets(recentOneMonth(tweets));
-    };
+    // const snapshot = await getDocs(tweetsQuery);
+    // const tweets = await fetchTweetsData(snapshot);
+    // setTweets(recentOneMonth(tweets));
     fetchTweets();
     return () => {
       unsubscribe && unsubscribe();
@@ -110,6 +117,7 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
       {filteredTweets.map((tweet) => (
         <Tweet key={tweet.id} {...tweet} />
       ))}
+      <div ref={triggerRef}></div>
     </Wrapper>
   );
 }
