@@ -178,5 +178,5 @@ export const TextContent = styled.div`
 `;
 
 export const Tweet = styled.h2`
-  font-size: clamp(16px, 4vw, 32px);
+  font-size: clamp(14px, 4vw, 28px);
 `;
