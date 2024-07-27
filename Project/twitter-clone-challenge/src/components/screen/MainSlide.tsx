@@ -34,7 +34,7 @@ function MainSlide() {
     prevArrow: <></>,
     nextArrow: <></>,
     autoplay: true,
-    autoplaySpeed: 10000,
+    autoplaySpeed: 5000,
   };
 
   const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
@@ -73,14 +73,10 @@ function MainSlide() {
     return tweets;
   };
 
-  const recentOneMonth = (tweets: ITweet[]) => {
-    const oneMonthAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
-    const recentTweets = tweets.filter(
-      (tweet) => tweet.createdAt > oneMonthAgo
-    );
-
-    return recentTweets;
-  };
+  const getRandomTweets = (tweets: ITweet[], number: number) => {
+    const shuffled = tweets.sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, number);
+  }
 
   const moveDetailPage = (tweet: ITweet) => {
     const tweetObj = { ...tweet };
@@ -90,11 +86,12 @@ function MainSlide() {
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {
-      const tweetsQuery = query(collection(dataBase, "tweets"), limit(10));
+      const tweetsQuery = query(collection(dataBase, "tweets"));
 
       unsubscribe = await onSnapshot(tweetsQuery, async (snapshot) => {
         const tweets = await fetchTweetsData(snapshot);
-        setTweets(recentOneMonth(tweets));
+        const randomTweets = getRandomTweets(tweets, 10);
+        setTweets(randomTweets);
       });
     };
     fetchTweets();
