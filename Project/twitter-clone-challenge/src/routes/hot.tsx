@@ -1,10 +1,32 @@
+import { useState } from "react";
 import Timeline from "../components/screen/timeline";
-import { Wrapper } from "./style/home-components";
+import { SELECT_OPTION_VALUE } from "../constants";
+import {
+  FilterSelector,
+  FilterWrapper,
+  Wrapper,
+} from "./style/home-components";
 
 function Hot() {
+  const [selectedOption, setSelectedOption] = useState("전체");
+
+  const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedOption(event.target.value);
+  };
+
   return (
     <Wrapper>
-      <Timeline isHot />
+      <FilterWrapper>
+        <FilterSelector onChange={handleOptionChange}>
+          <option value="전체">전체</option>
+          {SELECT_OPTION_VALUE.map((item, index) => (
+            <option value={item} key={index}>
+              {item}
+            </option>
+          ))}
+        </FilterSelector>
+      </FilterWrapper>
+      <Timeline isHot option={selectedOption} />
     </Wrapper>
   );
 }
