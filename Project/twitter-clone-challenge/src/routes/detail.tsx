@@ -11,12 +11,17 @@ import {
   Tag,
   DetailInfo,
   DetailCommentWrapper,
+  DetailRetouch,
 } from "../components/style/tweet-components";
 import { getDownloadURL, ref } from "firebase/storage";
 import { auth, storage } from "../firebase";
 import formattedDate from "../hooks/formattedDate";
 import { Avatar } from "../components/style/screen-components";
-import { Form, SubmitButton, TextArea } from "../components/style/form-components";
+import {
+  Form,
+  SubmitButton,
+  TextArea,
+} from "../components/style/form-components";
 
 function DetailTweet() {
   const [profileImage, setProfileImage] = useState<string>("");
@@ -76,6 +81,11 @@ function DetailTweet() {
         </TagWrapper>
         <DetailInfo>업로드 날짜: {createdDate}</DetailInfo>
         <DetailInfo>카메라 브랜드: {tweet.item}</DetailInfo>
+        {tweet.retouch && (
+          <DetailRetouch href={tweet.retouch} download>
+            보정 파일 다운로드
+          </DetailRetouch>
+        )}
       </DetailContentWrapper>
       <DetailCommentWrapper>
         {avatar ? (
