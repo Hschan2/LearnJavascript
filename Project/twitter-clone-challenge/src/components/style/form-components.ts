@@ -66,6 +66,29 @@ export const AttachFileInput = styled.input`
   display: none;
 `;
 
+export const RetouchWrapper = styled.div`
+  width: 20%;
+`;
+
+export const RetouchLabel = styled.label`
+  width: 100%;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme.text};
+  font-size: 12px;
+  border-radius: 8px;
+  border: 1px solid ${(props) => props.theme.light};
+  cursor: pointer;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    color: #008000;
+  }
+`;
+
 export const SubmitButton = styled.input`
   align-self: flex-start;
   margin: 0 10px 0 auto;

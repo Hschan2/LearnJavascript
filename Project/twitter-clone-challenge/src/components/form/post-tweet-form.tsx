@@ -18,6 +18,8 @@ import {
   OptionButton,
   RemoveImageButton,
   RemoveTagButton,
+  RetouchLabel,
+  RetouchWrapper,
   SelectToggleButton,
   SelectWrapper,
   SelectedOptionWrapper,
@@ -36,6 +38,7 @@ function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [retouch, setRetouch] = useState<File | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
@@ -61,6 +64,13 @@ function PostTweetForm() {
     const { files } = e.target;
     if (files && files.length === 1) {
       setFile(files[0]);
+    }
+  };
+
+  const onRetouchFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length === 1) {
+      setRetouch(files[0]);
     }
   };
 
@@ -108,6 +118,22 @@ function PostTweetForm() {
     });
   };
 
+  const handleRetouchFileUpload = async (
+    user: User,
+    doc: DocumentReference,
+    retouch: File
+  ) => {
+    const retouchRef = ref(
+      storage,
+      `tweets/${user.uid}/${doc.id}/retouch/${retouch.name}`
+    );
+    const retouchResult = await uploadBytes(retouchRef, retouch);
+    const retouchUrl = await getDownloadURL(retouchResult.ref);
+    await updateDoc(doc, {
+      retouch: retouchUrl,
+    });
+  };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -127,8 +153,13 @@ function PostTweetForm() {
         await handleFileUpload(user, doc, file);
       }
 
+      if (retouch) {
+        await handleRetouchFileUpload(user, doc, retouch);
+      }
+
       setTweet("");
       setFile(null);
+      setRetouch(null);
       setTags([]);
       navigate("/");
     } catch (error) {
@@ -221,6 +252,33 @@ function PostTweetForm() {
           ))}
         </TagsList>
       </TagsInputWrapper>
+      <RetouchWrapper>
+        <RetouchLabel htmlFor="retouch">
+          {retouch ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="size-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          ) : (
+            "보정파일 첨부"
+          )}
+        </RetouchLabel>
+        <AttachFileInput
+          onChange={onRetouchFileChange}
+          type="file"
+          id="retouch"
+          name="retouch"
+          accept=".dng, .xmp, .cube"
+        />
+      </RetouchWrapper>
       <ButtonContainer>
         <EmojiButton onClick={toggleEmojiPicker}>
           <svg
