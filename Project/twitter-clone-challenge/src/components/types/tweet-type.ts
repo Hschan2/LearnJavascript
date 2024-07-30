@@ -1,6 +1,7 @@
 export interface ITweet {
   id: string;
   photo?: string;
+  retouch?: string;
   tweet: string;
   userId: string;
   username: string;

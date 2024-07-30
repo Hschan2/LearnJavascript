@@ -2,7 +2,6 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot,
   collection,
-  limit,
   onSnapshot,
   query,
 } from "firebase/firestore";
@@ -44,6 +43,7 @@ function MainSlide() {
       userId,
       username,
       photo,
+      retouch,
       likes,
       likedBy,
       exclamation,
@@ -56,6 +56,7 @@ function MainSlide() {
       userId,
       username,
       photo,
+      retouch,
       id: doc.id,
       likes,
       likedBy,

@@ -38,6 +38,7 @@ import { useNavigate } from "react-router";
 function Tweet({
   username,
   photo,
+  retouch,
   tweet,
   userId,
   id,
@@ -178,6 +179,7 @@ function Tweet({
     const tweetObj = {
       userId,
       photo,
+      retouch,
       tweet,
       username,
       createdAt,

@@ -171,8 +171,6 @@ export const DetailWrapper = styled.div`
   gap: 16px;
   width: 100%;
   padding: 20px 0;
-
-  border-bottom: 1px solid ${(props) => props.theme.light};
 `;
 
 export const DetailImage = styled.img`
@@ -185,6 +183,8 @@ export const DetailContentWrapper = styled.div`
   flex-direction: column;
   gap: 8px;
   margin-left: 8px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid ${(props) => props.theme.light};
 `;
 
 export const DetailTweetText = styled.h2`
@@ -204,7 +204,13 @@ export const DetailProfileWrapper = styled.div`
 
 export const DetailInfo = styled.span`
   font-size: clamp(12px, 1vw, 16px);
-`
+`;
+
+export const DetailRetouch = styled.a`
+  color: ${(props) => props.theme.text};
+  font-size: clamp(12px, 1vw, 16px);
+  padding: 4px 0;
+`;
 
 export const DetailCommentWrapper = styled.div`
   display: flex;
@@ -212,4 +218,4 @@ export const DetailCommentWrapper = styled.div`
   gap: 8px;
   padding: 12px 8px;
   margin-top: 20px;
-`
+`;
