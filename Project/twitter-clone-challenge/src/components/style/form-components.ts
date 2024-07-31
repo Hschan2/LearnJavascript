@@ -68,6 +68,10 @@ export const AttachFileInput = styled.input`
 
 export const RetouchWrapper = styled.div`
   width: 20%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
 `;
 
 export const RetouchLabel = styled.label`
@@ -192,6 +196,8 @@ export const SelectToggleButton = styled.button`
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 4px;
   background: none;
+  cursor: pointer;
+  color: ${(props) => props.theme.text};
 `;
 
 export const SelectedOptionWrapper = styled.div`
@@ -209,6 +215,8 @@ export const OptionButton = styled.button`
   border: none;
   background: none;
   padding: 8px 0;
+  cursor: pointer;
+  color: ${(props) => props.theme.text};
 `;
 
 // Image Preview
@@ -288,4 +296,20 @@ export const RemoveTagButton = styled.button`
   margin-left: 4px;
   cursor: pointer;
   color: #ff0000;
+`;
+
+// Retouch
+export const RemoveRetouchButton = styled.button`
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 4px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  outline: none;
+
+  &:hover {
+    background-color: #ff4d4f;
+  }
 `;

@@ -1,7 +1,16 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteField,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { auth, dataBase, storage } from "../../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import EmojiPicker from "../utils/emoji-picker";
 import {
   AttachFileButton,
@@ -12,7 +21,10 @@ import {
   ImagePreview,
   OptionButton,
   RemoveImageButton,
+  RemoveRetouchButton,
   RemoveTagButton,
+  RetouchLabel,
+  RetouchWrapper,
   SelectToggleButton,
   SelectWrapper,
   SelectedOptionWrapper,
@@ -24,12 +36,14 @@ import {
   TextArea,
 } from "../style/form-components";
 import { EditTweetFormProps } from "../types/form-type";
-import { SELECT_OPTION_VALUE } from "../../constants";
+import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
+import { useNavigate } from "react-router";
 
 function UpdateTweetForm({ id }: EditTweetFormProps) {
   const [isLoading, setLoading] = useState(false);
   const [tweet, setTweet] = useState("");
   const [file, setFile] = useState<string | null>(null);
+  const [retouch, setRetouch] = useState<File | null>(null);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
@@ -37,6 +51,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const user = auth.currentUser;
+  const navigate = useNavigate();
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTweet(e.target.value);
@@ -45,7 +60,18 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (files && files.length === 1) {
+      if (files[0].size > MAX_IMAGE_FILE_SIZE) {
+        alert("파일 첨부는 2MB 이하의 파일만 가능합니다.");
+        return;
+      }
       setUploadedFile(files[0]);
+    }
+  };
+
+  const onRetouchFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length === 1) {
+      setRetouch(files[0]);
     }
   };
 
@@ -80,6 +106,22 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
           photo: url,
         });
       }
+      if (retouch) {
+        const retouchRef = ref(
+          storage,
+          `tweets/${user.uid}/${id}/retouch/${retouch.name}`
+        );
+        const retouchResult = await uploadBytes(retouchRef, retouch);
+        const retouchUrl = await getDownloadURL(retouchResult.ref);
+        await updateDoc(doc(dataBase, "tweets", id), {
+          retouch: retouchUrl,
+        });
+      } else {
+        await updateDoc(doc(dataBase, "tweets", id), {
+          retouch: deleteField(),
+        });
+      }
+      navigate("/");
     } catch (error) {
       alert("글 수정에 실패하였습니다.");
       throw new Error(error as string);
@@ -104,9 +146,10 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
     try {
       const tweetDoc = await getDoc(doc(dataBase, "tweets", id));
       if (tweetDoc.exists()) {
-        const { tweet, photo, tags, item } = tweetDoc.data();
+        const { tweet, photo, tags, item, retouch } = tweetDoc.data();
         setTweet(tweet);
         setFile(photo || null);
+        setRetouch(retouch || null);
         setTags(tags);
         setSelectedOption(item);
       }
@@ -214,6 +257,41 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
           ))}
         </TagsList>
       </TagsInputWrapper>
+      <RetouchWrapper>
+        <RetouchLabel htmlFor="retouch">
+          {retouch ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="size-6"
+            >
+              <path
+                fillRule="evenodd"
+                d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          ) : (
+            "보정파일 첨부"
+          )}
+        </RetouchLabel>
+        <AttachFileInput
+          onChange={onRetouchFileChange}
+          type="file"
+          id="retouch"
+          name="retouch"
+          accept=".dng, .xmp, .cube"
+        />
+        <RemoveRetouchButton
+          onClick={(e) => {
+            e.preventDefault();
+            setRetouch(null);
+          }}
+        >
+          x
+        </RemoveRetouchButton>
+      </RetouchWrapper>
       <ButtonLayout>
         <EmojiButton onClick={toggleEmojiPicker}>
           <svg
