@@ -55,7 +55,8 @@ export const MenuItem = styled.button`
   svg {
     width: 18px;
     height: 18px;
-    color: #fff;
+    color: #000;
+    fill: #fff;
   }
 `;
 
