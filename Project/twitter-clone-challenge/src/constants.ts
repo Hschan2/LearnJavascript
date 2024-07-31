@@ -13,3 +13,5 @@ export const SELECT_OPTION_VALUE = [
   "라이카",
   "기타",
 ];
+
+export const MAX_IMAGE_FILE_SIZE = 2 * 1024 * 1024;
