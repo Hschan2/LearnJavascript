@@ -32,7 +32,7 @@ import {
 } from "../style/form-components";
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router";
-import { SELECT_OPTION_VALUE } from "../../constants";
+import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
 
 function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
@@ -63,6 +63,10 @@ function PostTweetForm() {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (files && files.length === 1) {
+      if (files[0].size > MAX_IMAGE_FILE_SIZE) {
+        alert("파일 첨부는 2MB 이하의 파일만 가능합니다.");
+        return;
+      }
       setFile(files[0]);
     }
   };
