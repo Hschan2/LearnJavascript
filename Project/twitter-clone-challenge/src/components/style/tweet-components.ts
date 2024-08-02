@@ -220,3 +220,66 @@ export const DetailCommentWrapper = styled.div`
   padding: 12px 8px;
   margin-top: 20px;
 `;
+
+export const CommentsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const CommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 4px;
+
+  border-bottom: 1px solid ${(props) => props.theme.light};
+`;
+
+export const CommentProfileWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+`;
+
+export const CommentProfile = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const CommentDeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid red;
+  border-radius: 6px;
+  padding: 2px 6px;
+  cursor: pointer;
+
+  svg {
+    width: 12px;
+    height: 12px;
+    color: ${(props) => props.theme.text};
+  }
+`;
+
+export const CommentContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const CommentText = styled.p`
+  font-size: clamp(12px, 2vw, 16px);
+  color: ${(props) => props.theme.text};
+`;
+
+export const CommentCreatedTime = styled.span`
+  font-size: 12px;
+  color: #757575;
+`;

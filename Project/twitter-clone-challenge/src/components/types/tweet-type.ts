@@ -1,3 +1,12 @@
+export interface IComment {
+  commentId: string;
+  commentText: string;
+  commenterId: string;
+  commenterName: string;
+  commenterProfile: string;
+  createdAt: number;
+}
+
 export interface ITweet {
   id: string;
   photo?: string;
@@ -12,6 +21,7 @@ export interface ITweet {
   exclamationBy?: string[];
   tags?: string[];
   item: string;
+  comments?: IComment[];
 }
 
 export interface ITimeline {
