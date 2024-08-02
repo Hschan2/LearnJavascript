@@ -1,8 +1,4 @@
-interface createAtProps {
-  createdAt: string | number | Date;
-}
-
-function formattedDate({ createdAt }: createAtProps) {
+function formattedDate( createdAt: string | number | Date) {
   const createdDate = new Date(createdAt).toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "2-digit",
