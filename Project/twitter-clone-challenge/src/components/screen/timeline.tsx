@@ -33,6 +33,7 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
       exclamation,
       tags,
       item,
+      comments,
     } = doc.data();
     return {
       tweet,
@@ -47,6 +48,7 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
       exclamation,
       tags,
       item,
+      comments,
     };
   };
 

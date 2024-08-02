@@ -49,6 +49,7 @@ function MainSlide() {
       exclamation,
       tags,
       item,
+      comments,
     } = doc.data();
     return {
       tweet,
@@ -63,6 +64,7 @@ function MainSlide() {
       exclamation,
       tags,
       item,
+      comments,
     };
   };
 

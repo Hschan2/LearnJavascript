@@ -48,9 +48,10 @@ function Tweet({
   exclamation,
   tags,
   item,
+  comments
 }: ITweet) {
   const [isImageModalOpen, setImageModalOpen] = useState(false);
-  const createdDate = formattedDate({ createdAt });
+  const createdDate = formattedDate(createdAt);
   const [profileImage, setProfileImage] = useState<string>("");
   const user = auth.currentUser;
   const navigate = useNavigate();
@@ -177,6 +178,7 @@ function Tweet({
 
   const moveDetailPage = () => {
     const tweetObj = {
+      id,
       userId,
       photo,
       retouch,
@@ -185,6 +187,7 @@ function Tweet({
       createdAt,
       tags,
       item,
+      comments
     };
     navigate("/detail", { state: { tweetObj } });
   };
