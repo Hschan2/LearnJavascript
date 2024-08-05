@@ -4,7 +4,7 @@ import { FormWrapper } from "../components/style/form-components";
 
 function Update() {
   const location = useLocation();
-  const id = location.state?.id;
+  const id = location.state?.tweetIdValue;
 
   return (
     <FormWrapper>
