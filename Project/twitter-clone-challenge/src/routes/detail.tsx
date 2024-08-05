@@ -43,6 +43,7 @@ import { IComment } from "../components/types/tweet-type";
 
 function DetailTweet() {
   const [profileImage, setProfileImage] = useState<string>("");
+  const [comments, setComments] = useState<IComment[]>([]);
   const location = useLocation();
   const tweet = location.state?.tweetObj;
   const createdAt = tweet?.createdAt;
@@ -139,7 +140,19 @@ function DetailTweet() {
     };
 
     getProfileImage();
-  }, [tweet, tweet.userId]);
+  }, [tweet.userId]);
+
+  useEffect(() => {
+    const tweetRef = doc(dataBase, "tweets", tweet.id);
+    const unsubscribe = onSnapshot(tweetRef, (doc) => {
+      const tweetData = doc.data();
+      if (tweetData && tweetData.comments) {
+        setComments(tweetData.comments);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [tweet.id]);
 
   return (
     <DetailWrapper>
@@ -195,8 +208,8 @@ function DetailTweet() {
         </Form>
       </DetailCommentWrapper>
       <CommentsWrapper>
-        {tweet.comments &&
-          tweet.comments.map((comment: IComment) => (
+        {comments &&
+          comments.map((comment: IComment) => (
             <CommentContainer>
               <CommentProfileWrapper>
                 <CommentProfile>
