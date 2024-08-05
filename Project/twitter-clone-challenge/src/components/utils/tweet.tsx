@@ -35,34 +35,21 @@ import {
 } from "../style/tweet-components";
 import { useNavigate } from "react-router";
 
-function Tweet({
-  username,
-  photo,
-  retouch,
-  tweet,
-  userId,
-  id,
-  createdAt,
-  likes,
-  likedBy,
-  exclamation,
-  tags,
-  item,
-  comments
-}: ITweet) {
+function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const [isImageModalOpen, setImageModalOpen] = useState(false);
-  const createdDate = formattedDate(createdAt);
+  const createdDate = formattedDate(tweetObj.createdAt);
   const [profileImage, setProfileImage] = useState<string>("");
+  const tweetIdValue = tweetObj.id;
   const user = auth.currentUser;
   const navigate = useNavigate();
 
   const onDelete = async () => {
     const checkDelete = confirm("정말로 삭제하시겠습니까?");
-    if (!checkDelete || user?.uid !== userId) return;
+    if (!checkDelete || user?.uid !== tweetObj.userId) return;
     try {
-      await deleteDoc(doc(dataBase, "tweets", id));
-      if (photo) {
-        const photoRef = ref(storage, `tweets/${user?.uid}/${id}`);
+      await deleteDoc(doc(dataBase, "tweets", tweetObj.id));
+      if (tweetObj.photo) {
+        const photoRef = ref(storage, `tweets/${user?.uid}/${tweetObj.id}`);
         await deleteObject(photoRef);
       }
     } catch (error) {
@@ -73,9 +60,9 @@ function Tweet({
 
   const AutoDelete = async () => {
     try {
-      await deleteDoc(doc(dataBase, "tweets", id));
-      if (photo) {
-        const photoRef = ref(storage, `tweets/${user?.uid}/${id}`);
+      await deleteDoc(doc(dataBase, "tweets", tweetObj.id));
+      if (tweetObj.photo) {
+        const photoRef = ref(storage, `tweets/${user?.uid}/${tweetObj.id}`);
         await deleteObject(photoRef);
       }
     } catch (error) {
@@ -93,10 +80,10 @@ function Tweet({
   };
 
   const toggleLike = async () => {
-    if (!user || !id) return;
+    if (!user || !tweetObj.id) return;
 
     try {
-      const tweetRef = doc(dataBase, "tweets", id);
+      const tweetRef = doc(dataBase, "tweets", tweetObj.id);
       const tweetDoc = await getDoc(tweetRef);
 
       if (tweetDoc.exists()) {
@@ -112,7 +99,7 @@ function Tweet({
           const likedTweetQuery = query(
             collection(dataBase, "likedTweets"),
             where("userId", "==", user.uid),
-            where("tweetId", "==", id)
+            where("tweetId", "==", tweetObj.id)
           );
           const likedTweetSnapshot = await getDocs(likedTweetQuery);
           likedTweetSnapshot.forEach(async (doc) => {
@@ -126,7 +113,7 @@ function Tweet({
           });
           await setDoc(doc(collection(dataBase, "likedTweets")), {
             userId: user.uid,
-            tweetId: id,
+            tweetId: tweetObj.id,
             likedAt: new Date().toISOString(),
           });
         }
@@ -138,10 +125,10 @@ function Tweet({
   };
 
   const toggleExclamation = async () => {
-    if (!user || !id) return;
+    if (!user || !tweetObj.id) return;
 
     try {
-      const tweetRef = doc(dataBase, "tweets", id);
+      const tweetRef = doc(dataBase, "tweets", tweetObj.id);
       const tweetDoc = await getDoc(tweetRef);
 
       if (tweetDoc.exists()) {
@@ -165,7 +152,7 @@ function Tweet({
             exclamationBy: [...exclamationBy, user?.uid],
           });
 
-          if (exclamation >= 5) {
+          if (tweetObj.exclamation >= 5) {
             await AutoDelete();
           }
         }
@@ -177,32 +164,20 @@ function Tweet({
   };
 
   const moveDetailPage = () => {
-    const tweetObj = {
-      id,
-      userId,
-      photo,
-      retouch,
-      tweet,
-      username,
-      createdAt,
-      tags,
-      item,
-      comments
-    };
     navigate("/detail", { state: { tweetObj } });
   };
 
   const renderTweet = () => (
     <Wrapper>
       <InfoContents>
-        {photo && <Photo onClick={moveDetailPage} src={photo} alt="Image" />}
+        {tweetObj.photo && <Photo onClick={moveDetailPage} src={tweetObj.photo} alt="Image" />}
         <ContentContainer>
           <TweetLikeWrapper>
             <Payload onClick={moveDetailPage}>
-              [{item}]{tweet}
+              [{tweetObj.item}]{tweetObj.tweet}
             </Payload>
             <LikeButton onClick={toggleLike}>
-              {user?.uid && likedBy?.includes(user?.uid) ? (
+              {user?.uid && tweetObj.likedBy?.includes(user?.uid) ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -227,14 +202,14 @@ function Tweet({
                   />
                 </svg>
               )}
-              {likes}
+              {tweetObj.likes}
             </LikeButton>
           </TweetLikeWrapper>
           <Username>
             {profileImage && (
               <ProfileImage src={profileImage} alt="Profile-Image" />
             )}{" "}
-            {username}{" "}
+            {tweetObj.username}{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -251,7 +226,7 @@ function Tweet({
             </svg>
           </Username>
           <TagWrapper>
-            {tags?.map((tag: string, index: number) => (
+            {tweetObj.tags?.map((tag: string, index: number) => (
               <Tag key={index}>{tag}</Tag>
             ))}
           </TagWrapper>
@@ -272,15 +247,15 @@ function Tweet({
                   d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
                 />
               </svg>
-              {exclamation}
+              {tweetObj.exclamation}
             </ExclamationButton>
           </TimeExclamationWrapper>
         </ContentContainer>
       </InfoContents>
-      {user?.uid === userId && (
+      {user?.uid === tweetObj.userId && (
         <>
           <Menu>
-            <MenuItem onClick={() => navigate("/update", { state: { id } })}>
+            <MenuItem onClick={() => navigate("/update", { state: { tweetIdValue } })}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -316,14 +291,14 @@ function Tweet({
         </>
       )}
       {isImageModalOpen ? (
-        <ImageModal onClose={closeImageModal} imageUrl={photo} />
+        <ImageModal onClose={closeImageModal} imageUrl={tweetObj.photo} />
       ) : null}
     </Wrapper>
   );
 
   useEffect(() => {
     const getProfileImage = async () => {
-      const imageRef = ref(storage, `avatars/${userId}`);
+      const imageRef = ref(storage, `avatars/${tweetObj.userId}`);
 
       try {
         const url = await getDownloadURL(imageRef);
@@ -335,13 +310,13 @@ function Tweet({
     };
 
     getProfileImage();
-  }, [userId]);
+  }, [tweetObj.userId]);
 
   return (
     <>
       {renderTweet()}
       {isImageModalOpen && (
-        <ImageModal onClose={closeImageModal} imageUrl={photo} />
+        <ImageModal onClose={closeImageModal} imageUrl={tweetObj.photo} />
       )}
     </>
   );

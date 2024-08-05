@@ -119,7 +119,7 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
   return (
     <Wrapper>
       {filteredTweets.map((tweet) => (
-        <Tweet key={tweet.id} {...tweet} />
+        <Tweet key={tweet.id} tweetObj={tweet} />
       ))}
       <div ref={triggerRef}></div>
     </Wrapper>
