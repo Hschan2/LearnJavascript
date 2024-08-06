@@ -33,6 +33,7 @@ function LikedTimeline() {
       exclamation,
       tags,
       item,
+      comments,
     } = doc.data();
     return {
       tweet,
@@ -46,6 +47,7 @@ function LikedTimeline() {
       exclamation,
       tags,
       item,
+      comments,
     };
   };
 
@@ -93,7 +95,7 @@ function LikedTimeline() {
   return (
     <Wrapper>
       {tweets.map((tweet) => (
-        <Tweet key={tweet.id} {...tweet} />
+        <Tweet key={tweet.id} tweetObj={tweet} />
       ))}
       <div ref={triggerRef}></div>
     </Wrapper>
