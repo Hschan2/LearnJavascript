@@ -164,16 +164,20 @@ src
 ![Update](https://blog.kakaocdn.net/dn/cryxwn/btsIVcqlsuD/cPeqdH47GYyPzqpkogyDW0/img.gif)
 
 - 삭제
-녹화 프로그램 오류로 인해 추후 업로드 예정
+![Delete](https://blog.kakaocdn.net/dn/mMsvs/btsIWdW28p2/dzpXLp6kfBwAF3K2IL8Jv1/img.gif)
 
 - 상세
 ![Detail](https://blog.kakaocdn.net/dn/XCbeS/btsEYYJMxqA/LdUePJvW2ptM44Ekl9nxwk/img.gif)
 
 - 댓글
 ![Comment](https://blog.kakaocdn.net/dn/2uPYn/btsIUM6Bl7S/zF2fQfNKOB865yibbh4Cy1/img.gif)
+![Comment Delete](https://blog.kakaocdn.net/dn/b14OAe/btsIXkAUGNM/PoO2BkHhiw5eedLVA3Kl71/img.gif)
 
 - 프로필
-녹화 프로그램 오류로 인해 추후 업로드 예정
+![Profile Update](https://blog.kakaocdn.net/dn/cSSb9i/btsIV37x2EM/oTkGcb4q3OzIMUwwTmYujk/img.gif)
+
+- 다크모드
+![Dark Mode](https://blog.kakaocdn.net/dn/dQKloa/btsIXmZbuZw/k0RuDCdxXsZqktVkF522K0/img.gif)
 
 ## 기술 선택
 #### 파이어베이스 선택
