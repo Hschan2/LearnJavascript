@@ -158,7 +158,7 @@ function Profile() {
         )}
         <Tweets>
           {tweets.map((tweet) => (
-            <Tweet key={tweet.id} {...tweet} />
+            <Tweet key={tweet.id} tweetObj={tweet} />
           ))}
           <div ref={triggerRef}></div>
         </Tweets>
