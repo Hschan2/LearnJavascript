@@ -2,6 +2,7 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot,
   collection,
+  getDocs,
   onSnapshot,
   query,
 } from "firebase/firestore";
@@ -79,7 +80,7 @@ function MainSlide() {
   const getRandomTweets = (tweets: ITweet[], number: number) => {
     const shuffled = tweets.sort(() => 0.5 - Math.random());
     return shuffled.slice(0, number);
-  }
+  };
 
   const moveDetailPage = (tweet: ITweet) => {
     const tweetObj = { ...tweet };
@@ -87,20 +88,14 @@ function MainSlide() {
   };
 
   useEffect(() => {
-    let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {
       const tweetsQuery = query(collection(dataBase, "tweets"));
-
-      unsubscribe = await onSnapshot(tweetsQuery, async (snapshot) => {
-        const tweets = await fetchTweetsData(snapshot);
-        const randomTweets = getRandomTweets(tweets, 10);
-        setTweets(randomTweets);
-      });
+      const tweetsSnapshot = await getDocs(tweetsQuery);
+      const tweets = await fetchTweetsData(tweetsSnapshot);
+      const randomTweets = getRandomTweets(tweets, 10);
+      setTweets(randomTweets);
     };
     fetchTweets();
-    return () => {
-      unsubscribe && unsubscribe();
-    };
   }, []);
 
   return (
