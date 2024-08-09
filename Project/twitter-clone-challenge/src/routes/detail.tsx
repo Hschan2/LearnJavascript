@@ -20,6 +20,8 @@ import {
   CommentCreatedTime,
   CommentDeleteButton,
   CommentProfileWrapper,
+  DetailTweetWrapper,
+  LikeButton,
 } from "../components/style/tweet-components";
 import { getDownloadURL, ref } from "firebase/storage";
 import { auth, dataBase, storage } from "../firebase";
@@ -33,10 +35,16 @@ import {
 import {
   arrayRemove,
   arrayUnion,
+  collection,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
+  query,
+  setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { IComment } from "../components/types/tweet-type";
@@ -50,8 +58,11 @@ function DetailTweet() {
   const createdDate = formattedDate(createdAt);
   const avatar = auth.currentUser?.photoURL;
   const [comment, setComment] = useState<string>("");
+  const [likes, setLikes] = useState<number>(tweet.likes || 0);
+  const [likedByUser, setLikedByUser] = useState<boolean>(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const uuid = uuidv4();
+  const user = auth.currentUser;
 
   if (!tweet) return <div>데이터를 불러올 수 없습니다.</div>;
 
@@ -126,6 +137,51 @@ function DetailTweet() {
     }
   };
 
+  const toggleLike = async () => {
+    if (!user || !tweet.id) return;
+
+    try {
+      const tweetRef = doc(dataBase, "tweets", tweet.id);
+      const tweetDoc = await getDoc(tweetRef);
+
+      if (tweetDoc.exists()) {
+        const currentLikes = tweetDoc.data()?.likes || 0;
+        const likedBy = tweetDoc.data()?.likedBy || [];
+        const userAlreadyLiked = likedBy.includes(user?.uid);
+
+        if (userAlreadyLiked && currentLikes > 0) {
+          await updateDoc(tweetRef, {
+            likes: currentLikes - 1,
+            likedBy: likedBy.filter((uid: string) => uid !== user?.uid),
+          });
+          const likedTweetQuery = query(
+            collection(dataBase, "likedTweets"),
+            where("userId", "==", user.uid),
+            where("tweetId", "==", tweet.id)
+          );
+          const likedTweetSnapshot = await getDocs(likedTweetQuery);
+          likedTweetSnapshot.forEach(async (doc) => {
+            await deleteDoc(doc.ref);
+          });
+        }
+        if (!userAlreadyLiked) {
+          await updateDoc(tweetRef, {
+            likes: currentLikes + 1,
+            likedBy: [...likedBy, user?.uid],
+          });
+          await setDoc(doc(collection(dataBase, "likedTweets")), {
+            userId: user.uid,
+            tweetId: tweet.id,
+            likedAt: new Date().toISOString(),
+          });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error(`좋아요 버튼 동작 실패: ${error as string}`);
+    }
+  };
+
   useEffect(() => {
     const getProfileImage = async () => {
       const imageRef = ref(storage, `avatars/${tweet.userId}`);
@@ -146,19 +202,53 @@ function DetailTweet() {
     const tweetRef = doc(dataBase, "tweets", tweet.id);
     const unsubscribe = onSnapshot(tweetRef, (doc) => {
       const tweetData = doc.data();
-      if (tweetData && tweetData.comments) {
-        setComments(tweetData.comments);
+      if (tweetData) {
+        setLikes(tweetData.likes || 0);
+        setLikedByUser(tweetData.likedBy?.includes(user?.uid) || false);
+        if (tweetData.comments) {
+          setComments(tweetData.comments);
+        }
       }
     });
 
     return () => unsubscribe();
-  }, [tweet.id]);
+  }, [tweet.id, user?.uid]);
 
   return (
     <DetailWrapper>
       <DetailImage src={tweet.photo} alt="Detail-Image" loading="lazy" />
       <DetailContentWrapper>
-        <DetailTweetText>{tweet.tweet}</DetailTweetText>
+        <DetailTweetWrapper>
+          <DetailTweetText>{tweet.tweet}</DetailTweetText>
+          <LikeButton onClick={toggleLike}>
+            {likedByUser ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-6"
+              >
+                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+            )}
+            {likes}
+          </LikeButton>
+        </DetailTweetWrapper>
         <DetailProfileWrapper>
           {profileImage && (
             <ProfileImage src={profileImage} alt="Profile-Image" />
