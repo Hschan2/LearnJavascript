@@ -19,6 +19,7 @@ import BottomMenu from "./components/utils/bottom-menu";
 import WriteTweet from "./components/screen/write-tweet";
 import DetailTweet from "./routes/detail";
 import Update from "./routes/update";
+import Notification from "./routes/notification";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "update",
         element: <Update />,
+      },
+      {
+        path: "notification",
+        element: <Notification />,
       },
     ],
   },
@@ -109,6 +114,7 @@ const Wrapper = styled.div`
 const lightTheme = {
   background: "#FFF",
   text: "#111111",
+  lightText: "#767676",
   light: "rgba(0, 0, 0, 0.1)",
   border: "#111111",
   hover: "#FFFCFA",
@@ -117,6 +123,7 @@ const lightTheme = {
 const darkTheme = {
   background: "#000",
   text: "#FAF8F6",
+  lightText: "#C1C1C1",
   light: "rgba(255, 255, 255, 0.2)",
   border: "#FAF8F6",
   hover: "#111",
