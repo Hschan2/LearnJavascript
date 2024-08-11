@@ -188,6 +188,14 @@ export const DetailContentWrapper = styled.div`
   border-bottom: 1px solid ${(props) => props.theme.light};
 `;
 
+export const DetailTweetWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const DetailTweetText = styled.h2`
   font-size: clamp(16px, 2vw, 32px);
   font-weight: 800;
