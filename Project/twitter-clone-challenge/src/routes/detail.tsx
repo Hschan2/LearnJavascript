@@ -88,11 +88,24 @@ function DetailTweet() {
       commenterProfile: auth.currentUser?.photoURL,
       createdAt: Date.now(),
     };
+    const notificationRef = doc(collection(dataBase, "notifications"));
 
     try {
       await updateDoc(tweetRef, {
         comments: arrayUnion(newComment),
       });
+      if (user?.uid !== tweet.userId) {
+        await setDoc(notificationRef, {
+          recipientId: tweet.userId,
+          tweetTitle: tweet.tweet,
+          tweetId: tweet.id,
+          senderId: user?.uid,
+          senderName: user?.displayName || "익명",
+          createdAt: new Date().toISOString(),
+          type: "comment",
+          isRead: false,
+        });
+      }
     } catch (error) {
       console.error("댓글 작성 실패", error);
     }
@@ -300,7 +313,7 @@ function DetailTweet() {
       <CommentsWrapper>
         {comments &&
           comments.map((comment: IComment) => (
-            <CommentContainer>
+            <CommentContainer key={comment.commentId}>
               <CommentProfileWrapper>
                 <CommentProfile>
                   <Avatar src={comment.commenterProfile} alt="Profile" />

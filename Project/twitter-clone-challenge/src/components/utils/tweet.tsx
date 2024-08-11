@@ -85,6 +85,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
     try {
       const tweetRef = doc(dataBase, "tweets", tweetObj.id);
       const tweetDoc = await getDoc(tweetRef);
+      const notificationRef = doc(collection(dataBase, "notifications"));
 
       if (tweetDoc.exists()) {
         const currentLikes = tweetDoc.data()?.likes || 0;
@@ -116,6 +117,18 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
             tweetId: tweetObj.id,
             likedAt: new Date().toISOString(),
           });
+          if (user?.uid !== tweetObj.userId) {
+            await setDoc(notificationRef, {
+              recipientId: tweetObj.userId,
+              tweetTitle: tweetObj.tweet,
+              tweetId: tweetObj.id,
+              senderId: user.uid,
+              senderName: user.displayName || "익명",
+              createdAt: new Date().toISOString(),
+              type: "like",
+              isRead: false,
+            });
+          }
         }
       }
     } catch (error) {
@@ -170,7 +183,9 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const renderTweet = () => (
     <Wrapper>
       <InfoContents>
-        {tweetObj.photo && <Photo onClick={moveDetailPage} src={tweetObj.photo} alt="Image" />}
+        {tweetObj.photo && (
+          <Photo onClick={moveDetailPage} src={tweetObj.photo} alt="Image" />
+        )}
         <ContentContainer>
           <TweetLikeWrapper>
             <Payload onClick={moveDetailPage}>
@@ -255,7 +270,9 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
       {user?.uid === tweetObj.userId && (
         <>
           <Menu>
-            <MenuItem onClick={() => navigate("/update", { state: { tweetIdValue } })}>
+            <MenuItem
+              onClick={() => navigate("/update", { state: { tweetIdValue } })}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
