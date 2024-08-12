@@ -36,6 +36,11 @@ export const NotificationButton = styled.button`
   background: none;
   color: ${(props) => props.theme.text};
   cursor: pointer;
+
+  svg {
+    width: clamp(14px, 2vw, 18px);
+    height: clamp(14px, 2vw, 18px);
+  }
 `;
 
 export const NoneNotificationWrapper = styled.div`
