@@ -48,6 +48,7 @@ import {
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { IComment } from "../components/types/tweet-type";
+import useNotificationStore from "../components/store/useNotification";
 
 function DetailTweet() {
   const [profileImage, setProfileImage] = useState<string>("");
@@ -61,7 +62,9 @@ function DetailTweet() {
   const [likes, setLikes] = useState<number>(tweet.likes || 0);
   const [likedByUser, setLikedByUser] = useState<boolean>(false);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const uuid = uuidv4();
+  const commentId = uuidv4();
+  const likedId = uuidv4();
+  const commentedId = uuidv4();
   const user = auth.currentUser;
 
   if (!tweet) return <div>데이터를 불러올 수 없습니다.</div>;
@@ -81,21 +84,22 @@ function DetailTweet() {
   const addCommentToTweet = async (tweetId: string, comment: string) => {
     const tweetRef = doc(dataBase, "tweets", tweetId);
     const newComment = {
-      commentId: uuid,
+      commentId: commentId,
       commentText: comment,
       commenterId: auth.currentUser?.uid,
       commenterName: auth.currentUser?.displayName,
       commenterProfile: auth.currentUser?.photoURL,
       createdAt: Date.now(),
     };
-    const notificationRef = doc(collection(dataBase, "notifications"));
 
     try {
       await updateDoc(tweetRef, {
         comments: arrayUnion(newComment),
       });
       if (user?.uid !== tweet.userId) {
+        const notificationRef = doc(dataBase, "notifications", commentedId);
         await setDoc(notificationRef, {
+          id: commentedId,
           recipientId: tweet.userId,
           tweetTitle: tweet.tweet,
           tweetId: tweet.id,
@@ -106,6 +110,7 @@ function DetailTweet() {
           isRead: false,
         });
       }
+      useNotificationStore.getState().setNotification(true);
     } catch (error) {
       console.error("댓글 작성 실패", error);
     }
@@ -187,8 +192,23 @@ function DetailTweet() {
             tweetId: tweet.id,
             likedAt: new Date().toISOString(),
           });
+          if (user?.uid !== tweet.userId) {
+            const notificationRef = doc(dataBase, "notifications", likedId);
+            await setDoc(notificationRef, {
+              id: likedId,
+              recipientId: tweet.userId,
+              tweetTitle: tweet.tweet,
+              tweetId: tweet.id,
+              senderId: user.uid,
+              senderName: user.displayName || "익명",
+              createdAt: new Date().toISOString(),
+              type: "like",
+              isRead: false,
+            });
+          }
         }
       }
+      useNotificationStore.getState().setNotification(true);
     } catch (error) {
       console.error(error);
       throw new Error(`좋아요 버튼 동작 실패: ${error as string}`);

@@ -33,7 +33,9 @@ import {
   Username,
   Wrapper,
 } from "../style/tweet-components";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router";
+import useNotificationStore from "../store/useNotification";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const [isImageModalOpen, setImageModalOpen] = useState(false);
@@ -41,6 +43,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const [profileImage, setProfileImage] = useState<string>("");
   const tweetIdValue = tweetObj.id;
   const user = auth.currentUser;
+  const likedId = uuidv4();
   const navigate = useNavigate();
 
   const onDelete = async () => {
@@ -85,7 +88,6 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
     try {
       const tweetRef = doc(dataBase, "tweets", tweetObj.id);
       const tweetDoc = await getDoc(tweetRef);
-      const notificationRef = doc(collection(dataBase, "notifications"));
 
       if (tweetDoc.exists()) {
         const currentLikes = tweetDoc.data()?.likes || 0;
@@ -118,7 +120,9 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
             likedAt: new Date().toISOString(),
           });
           if (user?.uid !== tweetObj.userId) {
+            const notificationRef = doc(dataBase, "notifications", likedId);
             await setDoc(notificationRef, {
+              id: likedId,
               recipientId: tweetObj.userId,
               tweetTitle: tweetObj.tweet,
               tweetId: tweetObj.id,
@@ -131,6 +135,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
           }
         }
       }
+      useNotificationStore.getState().setNotification(true);
     } catch (error) {
       console.error(error);
       throw new Error(`좋아요 버튼 동작 실패: ${error as string}`);
