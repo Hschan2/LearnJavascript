@@ -22,8 +22,10 @@ import {
   CommentProfileWrapper,
   DetailTweetWrapper,
   LikeButton,
+  ExclamationButton,
+  DetailButtonWrapper,
 } from "../components/style/tweet-components";
-import { getDownloadURL, ref } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { auth, dataBase, storage } from "../firebase";
 import formattedDate from "../hooks/formattedDate";
 import { Avatar } from "../components/style/screen-components";
@@ -61,6 +63,9 @@ function DetailTweet() {
   const [comment, setComment] = useState<string>("");
   const [likes, setLikes] = useState<number>(tweet.likes || 0);
   const [likedByUser, setLikedByUser] = useState<boolean>(false);
+  const [exclamation, setExclamation] = useState<number>(
+    tweet.exclamation || 0
+  );
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const commentId = uuidv4();
   const likedId = uuidv4();
@@ -215,6 +220,58 @@ function DetailTweet() {
     }
   };
 
+  const toggleExclamation = async () => {
+    if (!user || !tweet.id) return;
+
+    try {
+      const tweetRef = doc(dataBase, "tweets", tweet.id);
+      const tweetDoc = await getDoc(tweetRef);
+
+      if (tweetDoc.exists()) {
+        const currentExclamation = tweetDoc.data()?.exclamation || 0;
+        const exclamationBy = tweetDoc.data()?.exclamationBy || [];
+        const userAlreadyExclamation = exclamationBy.includes(user?.uid);
+
+        if (userAlreadyExclamation && currentExclamation > 0) {
+          await updateDoc(tweetRef, {
+            exclamation: currentExclamation - 1,
+            exclamationBy: exclamationBy.filter(
+              (uid: string) => uid !== user?.uid
+            ),
+          });
+        }
+        if (!userAlreadyExclamation) {
+          const isConfirm = window.confirm("부적절한 사진으로 신고할까요?");
+          if (!isConfirm) return;
+          await updateDoc(tweetRef, {
+            exclamation: currentExclamation + 1,
+            exclamationBy: [...exclamationBy, user?.uid],
+          });
+
+          if (tweet.exclamation >= 5) {
+            await AutoDelete();
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error(`신고 버튼 동작 실패: ${error as string}`);
+    }
+  };
+
+  const AutoDelete = async () => {
+    try {
+      await deleteDoc(doc(dataBase, "tweets", tweet.id));
+      if (tweet.photo) {
+        const photoRef = ref(storage, `tweets/${user?.uid}/${tweet.id}`);
+        await deleteObject(photoRef);
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error(`글 자동 삭제 실패: ${error}`);
+    }
+  };
+
   useEffect(() => {
     const getProfileImage = async () => {
       const imageRef = ref(storage, `avatars/${tweet.userId}`);
@@ -238,6 +295,7 @@ function DetailTweet() {
       if (tweetData) {
         setLikes(tweetData.likes || 0);
         setLikedByUser(tweetData.likedBy?.includes(user?.uid) || false);
+        setExclamation(tweetData.exclamation || 0);
         if (tweetData.comments) {
           setComments(tweetData.comments);
         }
@@ -253,17 +311,36 @@ function DetailTweet() {
       <DetailContentWrapper>
         <DetailTweetWrapper>
           <DetailTweetText>{tweet.tweet}</DetailTweetText>
-          <LikeButton onClick={toggleLike}>
-            {likedByUser ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="size-6"
-              >
-                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-              </svg>
-            ) : (
+          <DetailButtonWrapper>
+            <LikeButton onClick={toggleLike}>
+              {likedByUser ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="size-6"
+                >
+                  <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  />
+                </svg>
+              )}
+              {likes}
+            </LikeButton>
+            <ExclamationButton onClick={toggleExclamation}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -275,12 +352,12 @@ function DetailTweet() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
                 />
               </svg>
-            )}
-            {likes}
-          </LikeButton>
+              {exclamation}
+            </ExclamationButton>
+          </DetailButtonWrapper>
         </DetailTweetWrapper>
         <DetailProfileWrapper>
           {profileImage && (

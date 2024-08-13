@@ -202,6 +202,12 @@ export const DetailTweetText = styled.h2`
   color: ${(props) => props.theme.text};
 `;
 
+export const DetailButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
 export const DetailProfileWrapper = styled.div`
   display: flex;
   flex-direction: row;
