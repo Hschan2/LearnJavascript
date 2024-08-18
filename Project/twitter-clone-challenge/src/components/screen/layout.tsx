@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
 import {
   Logo,
@@ -7,13 +8,37 @@ import {
   Wrapper,
   CenterMenuItem,
   Avatar,
+  NotificationBadge,
 } from "../style/screen-components";
 import DarkModeButton from "../btn/darkMode-button";
-import { auth } from "../../firebase";
+import { auth, dataBase } from "../../firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 function Layout() {
   const location = useLocation();
   const avatar = auth.currentUser?.photoURL;
+  const [hasUnreadNotification, setHasUnreadNotification] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (!auth.currentUser?.uid) return;
+
+    const notificationQuery = query(
+      collection(dataBase, "notifications"),
+      where("recipientId", "==", auth.currentUser?.uid),
+      where("isRead", "==", false)
+    );
+
+    const unsubscribe = onSnapshot(notificationQuery, (snapshot) => {
+      if (!snapshot.empty) {
+        setHasUnreadNotification(true);
+      } else {
+        setHasUnreadNotification(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth.currentUser?.uid]);
 
   return (
     <Wrapper>
@@ -189,6 +214,7 @@ function Layout() {
                 </svg>
               )}
             </MenuItem>
+            {hasUnreadNotification && <NotificationBadge>●</NotificationBadge>}
           </NoneLineLink>
           <NoneLineLink to="/settings">
             <MenuItem>
