@@ -35,7 +35,6 @@ import {
 } from "../style/tweet-components";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router";
-import useNotificationStore from "../store/useNotification";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const [isImageModalOpen, setImageModalOpen] = useState(false);
@@ -135,7 +134,6 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
           }
         }
       }
-      useNotificationStore.getState().setNotification(true);
     } catch (error) {
       console.error(error);
       throw new Error(`좋아요 버튼 동작 실패: ${error as string}`);

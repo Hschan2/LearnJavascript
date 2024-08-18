@@ -50,7 +50,6 @@ import {
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { IComment } from "../components/types/tweet-type";
-import useNotificationStore from "../components/store/useNotification";
 
 function DetailTweet() {
   const [profileImage, setProfileImage] = useState<string>("");
@@ -115,7 +114,6 @@ function DetailTweet() {
           isRead: false,
         });
       }
-      useNotificationStore.getState().setNotification(true);
     } catch (error) {
       console.error("댓글 작성 실패", error);
     }
@@ -213,7 +211,6 @@ function DetailTweet() {
           }
         }
       }
-      useNotificationStore.getState().setNotification(true);
     } catch (error) {
       console.error(error);
       throw new Error(`좋아요 버튼 동작 실패: ${error as string}`);
