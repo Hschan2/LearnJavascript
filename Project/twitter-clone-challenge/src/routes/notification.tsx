@@ -5,9 +5,11 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { useNavigate } from "react-router";
@@ -19,19 +21,34 @@ import {
   NotificationsWrapper,
 } from "../components/style/notifications";
 import { TimeAgo } from "../hooks/useTimeAgo";
-import useNotificationStore from "../components/store/useNotification";
 
 function Notification() {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
-  const setNewNotification = useNotificationStore(
-    (state) => state.setNotification
-  );
   const user = auth.currentUser;
   const navigate = useNavigate();
 
+  const isAllNotificationAsRead = async (userUid: string) => {
+    const isReadNotificationQuery = query(
+      collection(dataBase, "notifications"),
+      where("recipientId", "==", userUid),
+      where("isRead", "==", false)
+    );
+
+    const isFalseReadSnapshot = await getDocs(isReadNotificationQuery);
+
+    const updatePromises = isFalseReadSnapshot.docs.map((docSnapshot) => {
+      return updateDoc(doc(dataBase, "notifications", docSnapshot.id), {
+        isRead: true,
+      });
+    });
+
+    await Promise.all(updatePromises);
+  };
+
   useEffect(() => {
     if (!user) return;
-    setNewNotification(false);
+
+    isAllNotificationAsRead(user.uid);
 
     const notificationQuery = query(
       collection(dataBase, "notifications"),
@@ -48,7 +65,7 @@ function Notification() {
     });
 
     return () => unsubscribe();
-  }, [user, setNewNotification]);
+  }, [user]);
 
   const handleNotificationClick = (notification: NotificationType) => {
     navigate(`/tweets/${notification.tweetId}`);
