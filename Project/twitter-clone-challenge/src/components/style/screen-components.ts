@@ -180,3 +180,16 @@ export const TextContent = styled.div`
 export const Tweet = styled.h2`
   font-size: clamp(14px, 4vw, 28px);
 `;
+
+// notification
+export const NotificationBadge = styled.span`
+  margin: -20px 0 5px 25px;
+  color: red;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+`;
