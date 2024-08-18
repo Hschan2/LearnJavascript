@@ -35,6 +35,7 @@ export const AvatarUpload = styled.label`
 export const AvatarImg = styled.img`
   width: 100%;
   height: 100%;
+  border: 1px solid ${(props) => props.theme.light};
   object-fit: cover;
 `;
 
