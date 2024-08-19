@@ -20,6 +20,7 @@ import WriteTweet from "./components/screen/write-tweet";
 import DetailTweet from "./routes/detail";
 import Update from "./routes/update";
 import Notification from "./routes/notification";
+import Search from "./routes/search";
 
 const router = createBrowserRouter([
   {
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
       {
         path: "notification",
         element: <Notification />,
+      },
+      {
+        path: "search",
+        element: <Search />,
       },
     ],
   },
