@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   InputIcon,
   InputSearch,
@@ -14,10 +14,12 @@ import { Wrapper } from "../components/style/timeline-components";
 function Search() {
   const [searchWord, setSearchWord] = useState<string>("");
   const [searchedTweet, setSearchedTweet] = useState<ITweet[]>([]);
+  const searchInputRef = useRef<string>("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    setSearchWord(e.target.value);
+    searchInputRef.current = e.target.value;
+    setSearchWord(searchInputRef.current);
   };
 
   const handleOnSearch = () => {
