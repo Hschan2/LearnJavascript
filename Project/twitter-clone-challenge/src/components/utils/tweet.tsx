@@ -37,7 +37,6 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
-  const [isImageModalOpen, setImageModalOpen] = useState(false);
   const createdDate = formattedDate(tweetObj.createdAt);
   const [profileImage, setProfileImage] = useState<string>("");
   const tweetIdValue = tweetObj.id;
@@ -71,14 +70,6 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
       console.error(error);
       throw new Error(`글 자동 삭제 실패: ${error}`);
     }
-  };
-
-  // const openImageModal = () => {
-  //   setImageModalOpen(!isImageModalOpen);
-  // };
-
-  const closeImageModal = () => {
-    setImageModalOpen(false);
   };
 
   const toggleLike = async () => {
@@ -310,9 +301,6 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
           </Menu>
         </>
       )}
-      {isImageModalOpen ? (
-        <ImageModal onClose={closeImageModal} imageUrl={tweetObj.photo} />
-      ) : null}
     </Wrapper>
   );
 
@@ -335,9 +323,6 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   return (
     <>
       {renderTweet()}
-      {isImageModalOpen && (
-        <ImageModal onClose={closeImageModal} imageUrl={tweetObj.photo} />
-      )}
     </>
   );
 }
