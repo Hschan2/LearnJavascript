@@ -367,6 +367,7 @@ function DetailTweet() {
             <Tag key={index}>{tag}</Tag>
           ))}
         </TagWrapper>
+        {tweet.location && <DetailInfo>위치: {tweet.location}</DetailInfo>}
         <DetailInfo>업로드 날짜: {createdDate}</DetailInfo>
         <DetailInfo>카메라 브랜드: {tweet.item}</DetailInfo>
         {tweet.retouch && (

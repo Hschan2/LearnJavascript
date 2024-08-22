@@ -35,6 +35,7 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
       tags,
       item,
       comments,
+      location,
     } = doc.data();
     return {
       tweet,
@@ -51,6 +52,7 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
       tags,
       item,
       comments,
+      location,
     };
   };
 

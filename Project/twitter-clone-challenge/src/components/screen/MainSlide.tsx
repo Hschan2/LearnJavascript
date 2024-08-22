@@ -51,6 +51,7 @@ function MainSlide() {
       tags,
       item,
       comments,
+      location,
     } = doc.data();
     return {
       tweet,
@@ -66,6 +67,7 @@ function MainSlide() {
       tags,
       item,
       comments,
+      location,
     };
   };
 

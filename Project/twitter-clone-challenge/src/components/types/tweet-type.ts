@@ -22,6 +22,7 @@ export interface ITweet {
   tags?: string[];
   item: string;
   comments?: IComment[];
+  location?: string;
 }
 
 export interface ITimeline {
