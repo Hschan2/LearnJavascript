@@ -155,6 +155,7 @@ export const TagWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 4px;
+  padding: 4px 0;
 `;
 
 export const Tag = styled.span`
@@ -219,6 +220,7 @@ export const DetailProfileWrapper = styled.div`
 
 export const DetailInfo = styled.span`
   font-size: clamp(12px, 1vw, 16px);
+  color: ${(props) => props.theme.lightText};
 `;
 
 export const DetailRetouch = styled.a`
