@@ -2,7 +2,13 @@ export interface EmojiPickerProps {
   onSelectEmoji: (selectedEmoji: string) => void;
 }
 
-export interface ImageModalProps {
+export interface AddressModalProps {
+  isOpen: boolean;
   onClose: () => void;
-  imageUrl: string | undefined;
+  onSelect: (address: string) => void;
+}
+
+export interface AddressSearchResult {
+  place_id: string;
+  display_name: string;
 }
