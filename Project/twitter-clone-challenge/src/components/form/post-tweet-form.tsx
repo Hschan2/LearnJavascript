@@ -15,6 +15,8 @@ import {
   EmojiButton,
   Form,
   ImagePreview,
+  MapText,
+  MapWrapper,
   OptionButton,
   RemoveImageButton,
   RemoveTagButton,
@@ -33,6 +35,7 @@ import {
 import { User } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
+import AddressModal from "../utils/address-modal";
 
 function PostTweetForm() {
   const [isLoading, setLoading] = useState(false);
@@ -44,6 +47,8 @@ function PostTweetForm() {
   const [tagInput, setTagInput] = useState("");
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(SELECT_OPTION_VALUE[0]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const user = auth.currentUser;
   const navigate = useNavigate();
@@ -56,6 +61,7 @@ function PostTweetForm() {
   };
 
   const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
     setTweet(e.target.value);
     adjustTextareaHeight();
   };
@@ -106,6 +112,7 @@ function PostTweetForm() {
       exclamationBy: [],
       tags,
       item: selectedOption,
+      location: selectedAddress,
     });
   };
 
@@ -145,9 +152,13 @@ function PostTweetForm() {
       if (!user || isLoading || tweet.length > 180) {
         throw new Error("글을 작성할 수 없습니다.");
       }
-      if (tweet === "" || !file) {
-        alert("이야기와 사진을 필수입니다.");
-        throw new Error("이야기 내용이 없거나 사진이 첨부되지 않았습니다.");
+      if (file === null) {
+        alert("사진 첨부는 필수입니다.");
+        throw new Error("사진이 첨부되지 않았습니다.");
+      }
+      if (tweet.trim() === "") {
+        alert("이야기 작성은 필수입니다.");
+        throw new Error("이야기 내용이 작성되지 않았습니다.");
       }
 
       setLoading(true);
@@ -193,6 +204,10 @@ function PostTweetForm() {
     setIsSelectOpen(false);
   };
 
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const handleAddressSelect = (address: string) => setSelectedAddress(address);
+
   useEffect(adjustTextareaHeight, [tweet]);
 
   return (
@@ -229,13 +244,32 @@ function PostTweetForm() {
         accept="image/*"
         required
       />
+      <MapWrapper onClick={openModal}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <MapText>{selectedAddress ? selectedAddress : "위치 검색"}</MapText>
+      </MapWrapper>
+      <AddressModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSelect={handleAddressSelect}
+      />
       <TextArea
         ref={textareaRef}
         maxLength={50}
         onChange={onTextChange}
         value={tweet}
         placeholder="사진에 담긴 이야기가 무엇인가요? (50자 제한)"
-        required
       />
       <TagsInputWrapper>
         <TagsInput

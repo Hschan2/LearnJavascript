@@ -313,3 +313,26 @@ export const RemoveRetouchButton = styled.button`
     background-color: #ff4d4f;
   }
 `;
+
+// map
+export const MapWrapper = styled.button`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: ${(props) => props.theme.lightText};
+  }
+`
+
+export const MapText = styled.span`
+  color: ${(props) => props.theme.lightText};
+`
