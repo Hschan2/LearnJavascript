@@ -13,7 +13,6 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import formattedDate from "../../hooks/formattedDate";
-import ImageModal from "./image-modal";
 import { ITweet } from "../types/tweet-type";
 import {
   ContentContainer,
