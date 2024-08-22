@@ -137,6 +137,10 @@ export const SlideWrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 10px 0 40px 0;
+
+  @media (max-width: 425px) {
+    padding: 0 0 10px 0;
+  }
 `;
 
 export const SlideContent = styled.div<{ backgroundImage: string }>`
