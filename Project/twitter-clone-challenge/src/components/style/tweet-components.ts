@@ -197,6 +197,34 @@ export const DetailTweetWrapper = styled.div`
   width: 100%;
 `;
 
+export const DetailTitleButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const DetailEventButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 8px;
+`;
+
+export const DetailEventButton = styled.button`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: #000;
+    fill: #fff;
+  }
+`;
+
 export const DetailTweetText = styled.h2`
   font-size: clamp(16px, 2vw, 32px);
   font-weight: 800;
@@ -207,7 +235,7 @@ export const DetailButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 export const DetailProfileWrapper = styled.div`
   display: flex;
