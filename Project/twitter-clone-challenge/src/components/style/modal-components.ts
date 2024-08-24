@@ -16,7 +16,7 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background-color: ${(props) => props.theme.background};;
+  background-color: ${(props) => props.theme.background};
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 16px;
   min-width: clamp(250px, 50vw, 600px);
@@ -38,12 +38,34 @@ export const ModalTitle = styled.h2`
   font-weight: 600;
 `;
 
+export const ModalInputBar = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+`;
+
 export const ModalInput = styled.input`
   width: 80%;
-  margin-top: 12px;
   padding: 6px 8px;
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
+`;
+
+export const ModalButton = styled.button`
+  background: none;
+  border: 1px solid ${(props) => props.theme.border};
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  text-align: center;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    color: ${(props) => props.theme.text};
+  }
 `;
 
 export const ModalUl = styled.ul`
