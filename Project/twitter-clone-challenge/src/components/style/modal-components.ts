@@ -16,7 +16,7 @@ export const ModalOverlay = styled.div`
 `;
 
 export const ModalContent = styled.div`
-  background-color: white;
+  background-color: ${(props) => props.theme.background};;
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 16px;
   min-width: clamp(250px, 50vw, 600px);
@@ -40,7 +40,7 @@ export const ModalTitle = styled.h2`
 
 export const ModalInput = styled.input`
   width: 80%;
-  margin-top: 8px;
+  margin-top: 12px;
   padding: 6px 8px;
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
@@ -58,7 +58,7 @@ export const ModalLi = styled.li`
   border-bottom: 1px solid #ddd;
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: ${(props) => props.theme.lightText};
   }
 `;
 
@@ -67,4 +67,5 @@ export const ModalCloseButton = styled.button`
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
   cursor: pointer;
+  color: ${(props) => props.theme.text};
 `;

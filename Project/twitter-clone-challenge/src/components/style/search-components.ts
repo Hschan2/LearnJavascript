@@ -36,5 +36,6 @@ export const InputIcon = styled.button`
   svg {
     width: 20px;
     height: 20px;
+    color: ${(props) => props.theme.text};
   }
 `;
