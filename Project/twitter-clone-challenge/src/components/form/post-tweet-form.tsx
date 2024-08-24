@@ -152,13 +152,9 @@ function PostTweetForm() {
       if (!user || isLoading || tweet.length > 180) {
         throw new Error("글을 작성할 수 없습니다.");
       }
-      if (file === null) {
-        alert("사진 첨부는 필수입니다.");
-        throw new Error("사진이 첨부되지 않았습니다.");
-      }
-      if (tweet.trim() === "") {
-        alert("이야기 작성은 필수입니다.");
-        throw new Error("이야기 내용이 작성되지 않았습니다.");
+      if (!file || tweet.trim() === "") {
+        alert("사진 첨부와 이야기 작성은 필수입니다.");
+        return;
       }
 
       setLoading(true);
@@ -204,7 +200,10 @@ function PostTweetForm() {
     setIsSelectOpen(false);
   };
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
   const closeModal = () => setIsModalOpen(false);
   const handleAddressSelect = (address: string) => setSelectedAddress(address);
 
@@ -244,7 +243,7 @@ function PostTweetForm() {
         accept="image/*"
         required
       />
-      <MapWrapper onClick={openModal}>
+      <MapWrapper onClick={openModal} type="button">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

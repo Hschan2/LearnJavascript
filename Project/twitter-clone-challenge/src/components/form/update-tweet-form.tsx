@@ -1,16 +1,7 @@
-import {
-  deleteField,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { deleteField, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { auth, dataBase, storage } from "../../firebase";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import EmojiPicker from "../utils/emoji-picker";
 import {
   AttachFileButton,
@@ -19,6 +10,8 @@ import {
   EmojiButton,
   Form,
   ImagePreview,
+  MapText,
+  MapWrapper,
   OptionButton,
   RemoveImageButton,
   RemoveRetouchButton,
@@ -38,6 +31,7 @@ import {
 import { EditTweetFormProps } from "../types/form-type";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
 import { useNavigate } from "react-router";
+import AddressModal from "../utils/address-modal";
 
 function UpdateTweetForm({ id }: EditTweetFormProps) {
   const [isLoading, setLoading] = useState(false);
@@ -50,6 +44,8 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
   const [selectedOption, setSelectedOption] = useState("");
   const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState<string[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
   const user = auth.currentUser;
   const navigate = useNavigate();
 
@@ -84,11 +80,11 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       }
       if (tweet === "") {
         alert("이야기를 작성해주세요.");
-        throw new Error("이야기가 없습니다.");
+        return;
       }
       if (!file && !uploadedFile) {
         alert("사진을 첨부해 주세요.");
-        throw new Error("사진이 없습니다.");
+        return;
       }
       setLoading(true);
 
@@ -96,6 +92,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         tweet,
         tags,
         item: selectedOption,
+        location: selectedAddress,
       });
 
       if (uploadedFile) {
@@ -146,12 +143,13 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
     try {
       const tweetDoc = await getDoc(doc(dataBase, "tweets", id));
       if (tweetDoc.exists()) {
-        const { tweet, photo, tags, item, retouch } = tweetDoc.data();
+        const { tweet, photo, tags, item, retouch, location } = tweetDoc.data();
         setTweet(tweet);
         setFile(photo || null);
         setRetouch(retouch || null);
         setTags(tags);
         setSelectedOption(item);
+        setSelectedAddress(location);
       }
     } catch (error) {
       console.error(error);
@@ -181,6 +179,13 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
     setSelectedOption(option);
     setIsSelectOpen(false);
   };
+
+  const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
+  const handleAddressSelect = (address: string) => setSelectedAddress(address);
 
   useEffect(() => {
     fetchTweet();
@@ -229,6 +234,26 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         type="file"
         id="file"
         accept="image/*"
+      />
+      <MapWrapper onClick={openModal}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6"
+        >
+          <path
+            fillRule="evenodd"
+            d="m11.54 22.351.07.04.028.016a.76.76 0 0 0 .723 0l.028-.015.071-.041a16.975 16.975 0 0 0 1.144-.742 19.58 19.58 0 0 0 2.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 0 0-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 0 0 2.682 2.282 16.975 16.975 0 0 0 1.145.742ZM12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+            clipRule="evenodd"
+          />
+        </svg>
+        <MapText>{selectedAddress ? selectedAddress : "위치 검색"}</MapText>
+      </MapWrapper>
+      <AddressModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSelect={handleAddressSelect}
       />
       <TextArea
         rows={3}
