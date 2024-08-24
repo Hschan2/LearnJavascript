@@ -1,9 +1,11 @@
 import { useRef, useState } from "react";
 import { AddressModalProps, AddressSearchResult } from "../types/util-type";
 import {
+  ModalButton,
   ModalCloseButton,
   ModalContent,
   ModalInput,
+  ModalInputBar,
   ModalLi,
   ModalOverlay,
   ModalTitle,
@@ -28,10 +30,27 @@ function AddressModal({ isOpen, onClose, onSelect }: AddressModalProps) {
     e.preventDefault();
     const value = e.target.value;
     setQuery(value);
-    if (value.trim() !== "" && value.length > 1) {
-      searchAddress(value);
+  };
+
+  const handleSearch = (
+    e?:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e) e.preventDefault();
+
+    if (query.trim() !== "" && query.length > 1) {
+      searchAddress(query);
     } else {
+      alert("검색어를 입력해주세요.");
       setResults([]);
+    }
+  };
+
+  const handleKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSearch();
     }
   };
 
@@ -49,12 +68,31 @@ function AddressModal({ isOpen, onClose, onSelect }: AddressModalProps) {
           <ModalTitle>위치 검색</ModalTitle>
           <ModalCloseButton onClick={onClose}>X</ModalCloseButton>
         </ModalTopWrapper>
-        <ModalInput
-          type="text"
-          value={query}
-          onChange={handleInputChange}
-          placeholder="ex. 경복궁, 도쿄 타워"
-        />
+        <ModalInputBar>
+          <ModalInput
+            type="text"
+            value={query}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDownSearch}
+            placeholder="ex. 경복궁, 도쿄 타워"
+          />
+          <ModalButton onClick={handleSearch}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
+            </svg>
+          </ModalButton>
+        </ModalInputBar>
         {results.length > 0 && (
           <ModalUl>
             {results.map((result) => (
