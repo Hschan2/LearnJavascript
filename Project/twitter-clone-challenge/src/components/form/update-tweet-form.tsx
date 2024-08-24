@@ -78,7 +78,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       if (!user || isLoading || tweet.length > 180) {
         throw new Error("수정할 수 없습니다.");
       }
-      if (tweet === "") {
+      if (tweet.trim() === "") {
         alert("이야기를 작성해주세요.");
         return;
       }
@@ -233,6 +233,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         onChange={onFileChange}
         type="file"
         id="file"
+        name="imageFile"
         accept="image/*"
       />
       <MapWrapper onClick={openModal}>

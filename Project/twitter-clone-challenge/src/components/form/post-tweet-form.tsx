@@ -152,8 +152,12 @@ function PostTweetForm() {
       if (!user || isLoading || tweet.length > 180) {
         throw new Error("글을 작성할 수 없습니다.");
       }
-      if (!file || tweet.trim() === "") {
-        alert("사진 첨부와 이야기 작성은 필수입니다.");
+      if (!file || !file.name || file === null) {
+        alert("사진 첨부는 필수입니다.");
+        return;
+      }
+      if (tweet.trim() === "") {
+        alert("이야기 작성은 필수입니다.");
         return;
       }
 
@@ -240,8 +244,8 @@ function PostTweetForm() {
         onChange={onFileChange}
         type="file"
         id="file"
+        name="imageFile"
         accept="image/*"
-        required
       />
       <MapWrapper onClick={openModal} type="button">
         <svg
