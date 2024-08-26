@@ -27,7 +27,7 @@ export const Menu = styled.div`
   @media (max-width: 425px) {
     flex-direction: row;
     justify-content: space-between;
-    max-width: 85%;
+    max-width: 100%;
     padding: 0;
   }
 `;
@@ -97,6 +97,7 @@ export const FooterContainer = styled.div`
   border-top: 1px solid grey;
 `;
 
+// 하단 메뉴(모바일 버전)
 export const BottomMenuWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -118,7 +119,7 @@ export const BottomMenuLink = styled(Link)<{ active?: string }>`
   flex: 1;
   justify-content: center;
   border: none;
-  padding: 12px 0;
+  padding: 18px 0;
   gap: 4px;
   font-size: 12px;
   background-color: transparent;
@@ -126,8 +127,8 @@ export const BottomMenuLink = styled(Link)<{ active?: string }>`
   text-decoration: none;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     color: ${(props) => (props.active === "true" ? "#111111" : "#999999")};
   }
 `;
@@ -140,17 +141,24 @@ export const SlideWrapper = styled.div`
 
   @media (max-width: 425px) {
     padding: 0 0 10px 0;
+
+    .slick-dots li {
+      margin: 0;
+    }
   }
 `;
 
-export const SlideContent = styled.div<{ backgroundImage: string }>`
+export const SlideContent = styled.div<{ $backgroundImage: string }>`
   position: relative;
   width: 100%;
   height: 40vw;
-  background-image: url(${(props) => props.backgroundImage});
+  background-image: url(${(props) => props.$backgroundImage});
   background-size: cover;
   background-position: center;
   cursor: pointer;
+
+  @media (max-width: 425px) {
+    height: 50vw;
 `;
 
 export const Overlay = styled.div`
@@ -178,6 +186,7 @@ export const TextContent = styled.div`
     line-clamp: 3;
     text-overflow: ellipsis;
     height: calc(1em * 3);
+    bottom: 45%;
   }
 `;
 

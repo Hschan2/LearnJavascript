@@ -44,7 +44,6 @@ export const ModeButton = styled.button`
       width: 15px;
       height: 15px;
     }
-
-    margin-top: 0;
+    margin: 0 12px 0 0;
   }
 `;

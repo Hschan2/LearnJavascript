@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   padding: 20px;
 
   @media (max-width: 425px) {
+    width: 100%;
     margin: 0;
   }
 `;
@@ -20,9 +21,10 @@ export const FilterWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 10px 0;
-`
+`;
 
 export const FilterSelector = styled.select`
   padding: 4px 8px;
   border-radius: 8px;
 `;
+

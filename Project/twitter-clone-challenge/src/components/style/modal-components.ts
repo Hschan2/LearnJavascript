@@ -20,11 +20,12 @@ export const ModalContent = styled.div`
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 16px;
   min-width: clamp(250px, 50vw, 600px);
-  mim-height: clamp(250px, 50vw, 600px);
+  mim-height: clamp(250px, 50vw, 300px);
   max-width: clamp(250px, 50vw, 600px);
-  max-height: clamp(250px, 50vw, 600px);
+  max-height: 80vh;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 12px 16px;
+  overflow: hidden;
 `;
 
 export const ModalTopWrapper = styled.div`
@@ -43,7 +44,7 @@ export const ModalInputBar = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 4px;
-  margin-top: 12px;
+  margin-top: 16px;
 `;
 
 export const ModalInput = styled.input`
@@ -72,6 +73,12 @@ export const ModalUl = styled.ul`
   list-style: none;
   padding: 0;
   margin-top: 10px;
+  overflow-y: auto;
+  max-height: 50vh;
+
+  @media (max-width: 425px) {
+    max-height: 40vh;
+  }
 `;
 
 export const ModalLi = styled.li`
@@ -88,6 +95,7 @@ export const ModalCloseButton = styled.button`
   background: none;
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
+  padding: 6px 8px;
   cursor: pointer;
   color: ${(props) => props.theme.text};
 `;

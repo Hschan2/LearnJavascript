@@ -14,7 +14,11 @@ export const ContentWrapper = styled.div`
   align-items: center;
   gap: 20px;
   padding: 40px 0;
-`
+
+  @media (max-width: 425px) {
+    width: 100%;
+  }
+`;
 
 export const AvatarUpload = styled.label`
   width: 80px;
@@ -73,7 +77,6 @@ export const Tweets = styled.div`
   width: 100%;
   flex-direction: column;
   gap: 10px;
-  margin: 20px 0;
 `;
 
 export const EditButton = styled.button`
@@ -98,4 +101,29 @@ export const ConfirmEditButton = styled.button`
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 6px;
   cursor: pointer;
+`;
+
+// 모바일 버전 프로필 메뉴
+export const ProfileMenuWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 12px 0;
+  visibility: hidden;
+
+  @media (max-width: 425px) {
+    visibility: visible;
+  }
+`;
+
+export const ProfileMenu = styled.button<{ isSelected: boolean }>`
+  width: 100%;
+  height: 50px;
+  background: none;
+  border: ${({ isSelected, theme }) =>
+    isSelected ? `1px solid ${theme.border}` : "none"};
+  border-radius: 12px;
+  font-size: 18px;
+  color: ${({ isSelected, theme }) => (isSelected ? theme.text : theme.lightText)};
 `;
