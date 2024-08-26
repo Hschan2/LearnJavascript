@@ -64,15 +64,6 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
     return tweets;
   };
 
-  const recentOneMonth = (tweets: ITweet[]) => {
-    const oneMonthAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
-    const recentTweets = tweets.filter(
-      (tweet) => tweet.createdAt > oneMonthAgo
-    );
-
-    return recentTweets;
-  };
-
   const filterTweets = (tweets: ITweet[], option: string) => {
     if (option === "전체") {
       return tweets;
@@ -89,14 +80,12 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
     const tweetsQuery = query(
       collection(dataBase, "tweets"),
       ...orderBys,
-      limit(25)
     );
 
     unsubscribe = onSnapshot(tweetsQuery, async (snapshot) => {
-      const tweets = await fetchTweetsData(snapshot);
-      const recentTweets = recentOneMonth(tweets);
-      setTweets(recentTweets);
-      setFilteredTweets(filterTweets(recentTweets, option || "전체"));
+      const getTweets = await fetchTweetsData(snapshot);
+      setTweets(getTweets);
+      setFilteredTweets(filterTweets(getTweets, option || "전체"));
     });
   }, [isHot, option]);
 
@@ -107,9 +96,6 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
   const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreData);
 
   useEffect(() => {
-    // const snapshot = await getDocs(tweetsQuery);
-    // const tweets = await fetchTweetsData(snapshot);
-    // setTweets(recentOneMonth(tweets));
     fetchTweets();
     return () => {
       unsubscribe && unsubscribe();
