@@ -3,12 +3,10 @@ import {
   QuerySnapshot,
   collection,
   getDocs,
-  onSnapshot,
   query,
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { dataBase } from "../../firebase";
-import { Unsubscribe } from "firebase/auth";
 import { ITweet } from "../types/tweet-type";
 import {
   Overlay,
@@ -106,7 +104,7 @@ function MainSlide() {
         {tweets?.map((tweetObj) => (
           <SlideContent
             key={tweetObj.id}
-            backgroundImage={tweetObj?.photo || ""}
+            $backgroundImage={tweetObj?.photo || ""}
             onClick={() => moveDetailPage(tweetObj)}
           >
             <Overlay />
