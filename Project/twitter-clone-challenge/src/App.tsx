@@ -21,6 +21,7 @@ import DetailTweet from "./routes/detail";
 import Update from "./routes/update";
 import Notification from "./routes/notification";
 import Search from "./routes/search";
+import { Helmet } from "react-helmet";
 
 const router = createBrowserRouter([
   {
@@ -87,8 +88,6 @@ const router = createBrowserRouter([
 const GlobalStyles = createGlobalStyle`
   ${reset}
 
-  @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap');
-
   * {
     box-sizing: border-box;
   }
@@ -114,6 +113,12 @@ const Wrapper = styled.div`
   justify-content: center;
   justify-content: space-between;
   padding: 0 24px;
+
+border: 1px solid red;
+
+  @media (max-width: 425px) {
+    padding: 0 12px;
+  }
 `;
 
 const lightTheme = {
@@ -148,6 +153,12 @@ function App() {
 
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+      <Helmet>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap"
+        />
+      </Helmet>
       <Wrapper>
         <GlobalStyles />
         {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
