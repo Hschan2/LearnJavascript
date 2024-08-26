@@ -216,8 +216,8 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
           <Username>
             {profileImage && (
               <ProfileImage src={profileImage} alt="Profile-Image" />
-            )}{" "}
-            {tweetObj.username}{" "}
+            )}
+            {tweetObj.username}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -233,11 +233,13 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
               />
             </svg>
           </Username>
-          <TagWrapper>
-            {tweetObj.tags?.map((tag: string, index: number) => (
-              <Tag key={index}>{tag}</Tag>
-            ))}
-          </TagWrapper>
+          {tweetObj.tags && (
+            <TagWrapper>
+              {tweetObj.tags?.map((tag: string, index: number) => (
+                <Tag key={index}>{tag}</Tag>
+              ))}
+            </TagWrapper>
+          )}
           <TimeExclamationWrapper>
             <CreatedAt>{createdDate}</CreatedAt>
             <ExclamationButton onClick={toggleExclamation}>
