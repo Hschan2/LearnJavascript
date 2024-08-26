@@ -22,11 +22,15 @@ import {
   Input,
   Name,
   NameContainer,
+  ProfileMenu,
+  ProfileMenuWrapper,
   Tweets,
   Wrapper,
 } from "./style/profile-components";
 import { ITweet } from "../components/types/tweet-type";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
+import Like from "./like";
+import Settings from "./settings";
 
 function Profile() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
@@ -34,6 +38,7 @@ function Profile() {
   const [isNewName, setNewName] = useState("");
   const user = auth.currentUser;
   const [avatar, setAvatar] = useState(user?.photoURL);
+  const [selectedMenu, setSelectedMenu] = useState<string>("tweet");
 
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -59,8 +64,17 @@ function Profile() {
     );
     const snapshot = await getDocs(tweetQuery);
     const tweets = snapshot.docs.map((doc) => {
-      const { tweet, createdAt, userId, username, photo, likes, likedBy, exclamation, item } =
-        doc.data();
+      const {
+        tweet,
+        createdAt,
+        userId,
+        username,
+        photo,
+        likes,
+        likedBy,
+        exclamation,
+        item,
+      } = doc.data();
       return {
         tweet,
         createdAt,
@@ -99,6 +113,10 @@ function Profile() {
   const onEditNewName = () => {
     setEditName(true);
     setNewName(user?.displayName || "");
+  };
+
+  const handleSelectedMenu = (menu: string) => {
+    setSelectedMenu(menu);
   };
 
   useEffect(() => {
@@ -156,12 +174,38 @@ function Profile() {
             </EditContainer>
           </NameContainer>
         )}
-        <Tweets>
-          {tweets.map((tweet) => (
-            <Tweet key={tweet.id} tweetObj={tweet} />
-          ))}
-          <div ref={triggerRef}></div>
-        </Tweets>
+        <ProfileMenuWrapper>
+          <ProfileMenu
+            isSelected={selectedMenu === "tweet"}
+            onClick={() => handleSelectedMenu("tweet")}
+          >
+            Tweet
+          </ProfileMenu>
+          <ProfileMenu
+            isSelected={selectedMenu === "like"}
+            onClick={() => handleSelectedMenu("like")}
+          >
+            Like
+          </ProfileMenu>
+          <ProfileMenu
+            isSelected={selectedMenu === "setting"}
+            onClick={() => handleSelectedMenu("setting")}
+          >
+            Setting
+          </ProfileMenu>
+        </ProfileMenuWrapper>
+        {selectedMenu === "tweet" ? (
+          <Tweets>
+            {tweets.map((tweet) => (
+              <Tweet key={tweet.id} tweetObj={tweet} />
+            ))}
+            <div ref={triggerRef}></div>
+          </Tweets>
+        ) : selectedMenu === "like" ? (
+          <Like />
+        ) : (
+          <Settings />
+        )}
       </ContentWrapper>
     </Wrapper>
   );
