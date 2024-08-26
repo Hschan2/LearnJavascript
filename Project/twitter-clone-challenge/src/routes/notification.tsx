@@ -19,7 +19,7 @@ import {
   NotificationMessage,
   NotificationTimeAgo,
   NotificationsWrapper,
-} from "../components/style/notifications";
+} from "../components/style/notifications-components";
 import { TimeAgo } from "../hooks/useTimeAgo";
 
 function Notification() {
