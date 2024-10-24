@@ -1,9 +1,10 @@
-"use client"
+"use client";
 
 import dynamic from "next/dynamic";
 import { CATEGORIES_TITLE, CATEGORIES_VIDEOS } from "./common/utils/constants";
 import Footer from "./pages/footer";
 import Title from "./pages/title";
+import InstagramLink from "./pages/insta_link";
 
 const Portfolio = dynamic(() => import("./pages/portfolio"));
 const Videos = dynamic(() => import("./pages/videos"));
@@ -25,6 +26,7 @@ export default function Home() {
         categories={CATEGORIES_VIDEOS.motionGraphics}
         title={CATEGORIES_TITLE.motionGraphic}
       />
+      <InstagramLink />
       <Footer />
     </main>
   );
