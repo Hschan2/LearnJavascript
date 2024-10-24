@@ -243,6 +243,36 @@ export const CATEGORIES_VIDEOS = {
   ] as IVideo[],
   shortForm: [
     {
+      title: "시치리가하마 서핑",
+      url: "https://youtube.com/shorts/f5nT8mE3NXo?feature=share",
+      image:
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FesAzEx%2FbtsKhu30AOG%2FwLJbDz3mNM0G3LHBhVxYr1%2Fimg.png",
+    },
+    {
+      title: "시치리가하마 해변",
+      url: "https://youtube.com/shorts/SWLRObfjQ8E?feature=share",
+      image:
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FxxSNF%2FbtsKiDrSVw2%2FgmCka7TnxJPZliwzLWSSq1%2Fimg.png",
+    },
+    {
+      title: "가마쿠라 횡단보도",
+      url: "https://youtube.com/shorts/G8kI70Vnzsg?feature=share",
+      image:
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F31vJQ%2FbtsKin4a5O8%2FqzAWNS8YK5Vh0as7YctkPK%2Fimg.png",
+    },
+    {
+      title: "시치리가하마",
+      url: "https://youtube.com/shorts/IS12veBsgHU?feature=share",
+      image:
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcbkB3P%2FbtsKixFsqX5%2F37oN92GJGJEzkqTnC7eqpk%2Fimg.png",
+    },
+    {
+      title: "시나가와",
+      url: "https://youtube.com/shorts/GBgbPe2Utyo?feature=share",
+      image:
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbyCcd7%2FbtsKhAiMYAr%2FjJnvuEpumX4hyiRWBEPEuK%2Fimg.png",
+    },
+    {
       title: "강원도 원주",
       url: "https://youtube.com/shorts/bO6g9SFzh_0?feature=share",
       image:
