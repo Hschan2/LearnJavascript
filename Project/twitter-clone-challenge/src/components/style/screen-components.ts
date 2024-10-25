@@ -28,11 +28,12 @@ export const Menu = styled.div`
     flex-direction: row;
     justify-content: space-between;
     max-width: 100%;
+    height: 8vh;
     padding: 0;
   }
 `;
 
-export const CenterMenuItem = styled.div`
+export const WebMenuWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,6 +80,13 @@ export const Logo = styled.span`
     fill: none;
     color: tomato;
   }
+
+  @media (max-width: 425px) {
+    svg {
+      width: 80px;
+      height: 50px;
+    }
+  }
 `;
 
 export const Avatar = styled.img`
@@ -95,6 +103,19 @@ export const FooterContainer = styled.div`
   width: 100%;
   font-size: 12px;
   border-top: 1px solid grey;
+`;
+
+// 상단 메뉴(모바일 버전)
+export const MobileTopMenuWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  visibility: hidden;
+
+  @media (max-width: 425px) {
+    visibility: visible;
+  }
 `;
 
 // 하단 메뉴(모바일 버전)
@@ -205,4 +226,8 @@ export const NotificationBadge = styled.span`
   align-items: center;
   justify-content: center;
   font-size: 10px;
+
+  @media (max-width: 425px) {
+    margin: -12px 0 -3px 25px;
+  }
 `;
