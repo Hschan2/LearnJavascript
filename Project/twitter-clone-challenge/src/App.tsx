@@ -114,8 +114,6 @@ const Wrapper = styled.div`
   justify-content: space-between;
   padding: 0 24px;
 
-border: 1px solid red;
-
   @media (max-width: 425px) {
     padding: 0 12px;
   }
