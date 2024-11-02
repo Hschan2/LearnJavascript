@@ -1,12 +1,6 @@
-import {
-  DocumentReference,
-  addDoc,
-  collection,
-  updateDoc,
-} from "firebase/firestore";
-import { useEffect, useRef, useState } from "react";
-import { auth, dataBase, storage } from "../../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { addDoc, collection } from "firebase/firestore";
+import React, { useEffect, useRef, useState } from "react";
+import { auth, dataBase } from "../../firebase";
 import EmojiPicker from "../utils/emoji-picker";
 import {
   AttachFileButton,
@@ -32,194 +26,133 @@ import {
   TagsList,
   TextArea,
 } from "../style/form-components";
-import { User } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
 import AddressModal from "../utils/address-modal";
+import { useFileUpload } from "../../hooks/useFileUpLoad";
+
+const initialState = {
+  isLoading: false,
+  tweet: "",
+  tags: [] as string[],
+  tagInput: "",
+  file: null as File | null,
+  retouch: null as File | null,
+  showEmojiPicker: false,
+  isSelectOpen: false,
+  selectedOption: SELECT_OPTION_VALUE[0],
+  isModalOpen: false,
+  selectedAddress: "",
+  likes: 0,
+  likedBy: [] as string[],
+  exclamation: 0,
+  exclamationBy: [] as string[],
+};
 
 function PostTweetForm() {
-  const [isLoading, setLoading] = useState(false);
-  const [tweet, setTweet] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [retouch, setRetouch] = useState<File | null>(null);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
-  const [tagInput, setTagInput] = useState("");
-  const [isSelectOpen, setIsSelectOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(SELECT_OPTION_VALUE[0]);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [selectedAddress, setSelectedAddress] = useState<string>("");
+  const [postState, setPostState] = useState(initialState);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const { uploadRetouchFile, uploadTweetPhoto } = useFileUpload();
   const user = auth.currentUser;
   const navigate = useNavigate();
 
-  const adjustTextareaHeight = () => {
+  const updateState = (newState: Partial<typeof postState>) =>
+    setPostState((prev) => ({ ...prev, ...newState }));
+
+  useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.rows = 1;
       textareaRef.current.rows = textareaRef.current.scrollHeight / 20;
     }
-  };
+  }, [postState.tweet]);
 
-  const onTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    e.preventDefault();
-    setTweet(e.target.value);
-    adjustTextareaHeight();
-  };
-
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "file" | "retouch"
+  ) => {
     const { files } = e.target;
-    if (files && files.length === 1) {
-      if (files[0].size > MAX_IMAGE_FILE_SIZE) {
-        alert("파일 첨부는 2MB 이하의 파일만 가능합니다.");
-        return;
-      }
-      setFile(files[0]);
+    if (files && files[0].size > MAX_IMAGE_FILE_SIZE) {
+      alert("파일 사이즈는 2MB 이하만 가능합니다.");
+      return;
     }
+    updateState({ [type]: files ? files[0] : null });
   };
 
-  const onRetouchFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target;
-    if (files && files.length === 1) {
-      setRetouch(files[0]);
-    }
-  };
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    key: keyof typeof postState
+  ) => updateState({ [key]: e.target.value });
 
-  const onTagInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTagInput(e.target.value);
-  };
+  const handleToggle = (key: keyof typeof postState) =>
+    updateState({ [key]: !postState[key] });
 
-  const onTagInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && tagInput.trim() !== "") {
+  const handleTagAddition = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && postState.tagInput.trim() !== "") {
       e.preventDefault();
-      setTags([...tags, tagInput.trim()]);
-      setTagInput("");
+      updateState({
+        tags: [...postState.tags, postState.tagInput.trim()],
+        tagInput: "",
+      });
     }
   };
 
   const removeTag = (index: number) => {
-    setTags(tags.filter((_, i) => i !== index));
+    updateState({ tags: postState.tags.filter((_, i) => i !== index) });
   };
 
-  const addTweetToData = (user: User) => {
-    return addDoc(collection(dataBase, "tweets"), {
-      tweet,
+  const addTweetToData = (userId: string, docData: Record<string, any>) =>
+    addDoc(collection(dataBase, "tweets"), {
+      ...docData,
       createdAt: Date.now(),
-      username: user.displayName || "익명",
-      userId: user.uid,
-      likes: 0,
-      likedBy: [],
-      exclamation: 0,
-      exclamationBy: [],
-      tags,
-      item: selectedOption,
-      location: selectedAddress,
+      username: user?.displayName || "익명",
+      userId,
+      tags: postState.tags,
+      likes: postState.likes,
+      likedBy: postState.likedBy,
+      exclamation: postState.exclamation,
+      exclamationBy: postState.exclamationBy,
     });
-  };
 
-  const handleFileUpload = async (
-    user: User,
-    doc: DocumentReference,
-    file: File
-  ) => {
-    const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
-    const result = await uploadBytes(locationRef, file);
-    const url = await getDownloadURL(result.ref);
-    await updateDoc(doc, {
-      photo: url,
-    });
-  };
-
-  const handleRetouchFileUpload = async (
-    user: User,
-    doc: DocumentReference,
-    retouch: File
-  ) => {
-    const retouchRef = ref(
-      storage,
-      `tweets/${user.uid}/${doc.id}/retouch/${retouch.name}`
-    );
-    const retouchResult = await uploadBytes(retouchRef, retouch);
-    const retouchUrl = await getDownloadURL(retouchResult.ref);
-    await updateDoc(doc, {
-      retouch: retouchUrl,
-    });
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (
+      !user ||
+      postState.isLoading ||
+      !postState.file ||
+      !postState.tweet.trim()
+    )
+      return;
 
     try {
-      if (!user || isLoading || tweet.length > 180) {
-        throw new Error("글을 작성할 수 없습니다.");
-      }
-      if (!file || !file.name || file === null) {
-        alert("사진 첨부는 필수입니다.");
-        return;
-      }
-      if (tweet.trim() === "") {
-        alert("이야기 작성은 필수입니다.");
-        return;
-      }
+      updateState({ isLoading: true });
+      const doc = await addTweetToData(user.uid, {
+        tweet: postState.tweet,
+        item: postState.selectedOption,
+        location: postState.selectedAddress,
+      });
 
-      setLoading(true);
-      const doc = await addTweetToData(user);
+      if (postState.file) await uploadTweetPhoto(user.uid, doc, postState.file);
+      if (postState.retouch)
+        await uploadRetouchFile(user.uid, doc, postState.retouch);
 
-      if (file) {
-        await handleFileUpload(user, doc, file);
-      }
-
-      if (retouch) {
-        await handleRetouchFileUpload(user, doc, retouch);
-      }
-
-      setTweet("");
-      setFile(null);
-      setRetouch(null);
-      setTags([]);
       navigate("/");
+      setPostState({ ...initialState, isLoading: false });
     } catch (error) {
-      console.error(error);
-      throw new Error(`글 작성 실패: ${error}`);
-    } finally {
-      setLoading(false);
+      console.error("트윗 포스팅 에러:", error);
     }
   };
-
-  const toggleEmojiPicker = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setShowEmojiPicker((prev) => !prev);
-  };
-
-  const handleSelectEmoji = (selectedEmoji: string) => {
-    setTweet((prevTweet) => prevTweet + selectedEmoji);
-    if (showEmojiPicker) {
-      setShowEmojiPicker(false);
-    }
-  };
-
-  const toggleDropdown = () => setIsSelectOpen(!isSelectOpen);
-
-  const handleOptionClick = (option: string) => {
-    setSelectedOption(option);
-    setIsSelectOpen(false);
-  };
-
-  const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setIsModalOpen(true);
-  };
-  const closeModal = () => setIsModalOpen(false);
-  const handleAddressSelect = (address: string) => setSelectedAddress(address);
-
-  useEffect(adjustTextareaHeight, [tweet]);
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form onSubmit={handleSubmit}>
       <AttachFileButton htmlFor="file">
-        {file ? (
+        {postState.file ? (
           <ImagePreview>
-            <img src={URL.createObjectURL(file)} alt="preview" loading="lazy" />
-            <RemoveImageButton onClick={() => setFile(null)}>
+            <img
+              src={URL.createObjectURL(postState.file)}
+              alt="preview"
+              loading="lazy"
+            />
+            <RemoveImageButton onClick={() => updateState({ file: null })}>
               x
             </RemoveImageButton>
           </ImagePreview>
@@ -241,13 +174,16 @@ function PostTweetForm() {
         )}
       </AttachFileButton>
       <AttachFileInput
-        onChange={onFileChange}
+        onChange={(e) => handleFileChange(e, "file")}
         type="file"
         id="file"
         name="imageFile"
         accept="image/*"
       />
-      <MapWrapper onClick={openModal} type="button">
+      <MapWrapper
+        onClick={() => updateState({ isModalOpen: true })}
+        type="button"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
@@ -260,30 +196,30 @@ function PostTweetForm() {
             clipRule="evenodd"
           />
         </svg>
-        <MapText>{selectedAddress ? selectedAddress : "위치 검색"}</MapText>
+        <MapText>{postState.selectedAddress || "위치 검색"}</MapText>
       </MapWrapper>
       <AddressModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        onSelect={handleAddressSelect}
+        isOpen={postState.isModalOpen}
+        onClose={() => updateState({ isModalOpen: false })}
+        onSelect={(address) => updateState({ selectedAddress: address })}
       />
       <TextArea
         ref={textareaRef}
         maxLength={50}
-        onChange={onTextChange}
-        value={tweet}
+        onChange={(e) => handleInputChange(e, "tweet")}
+        value={postState.tweet}
         placeholder="사진에 담긴 이야기가 무엇인가요? (50자 제한)"
       />
       <TagsInputWrapper>
         <TagsInput
           type="text"
           placeholder="태그 입력"
-          value={tagInput}
-          onChange={onTagInputChange}
-          onKeyDown={onTagInputKeyPress}
+          value={postState.tagInput}
+          onChange={(e) => handleInputChange(e, "tagInput")}
+          onKeyDown={handleTagAddition}
         />
         <TagsList>
-          {tags.map((tag, index) => (
+          {postState.tags.map((tag, index) => (
             <Tag key={index}>
               {tag}
               <RemoveTagButton onClick={() => removeTag(index)}>
@@ -295,7 +231,7 @@ function PostTweetForm() {
       </TagsInputWrapper>
       <RetouchWrapper>
         <RetouchLabel htmlFor="retouch">
-          {retouch ? (
+          {postState.retouch ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -313,7 +249,7 @@ function PostTweetForm() {
           )}
         </RetouchLabel>
         <AttachFileInput
-          onChange={onRetouchFileChange}
+          onChange={(e) => handleFileChange(e, "retouch")}
           type="file"
           id="retouch"
           name="retouch"
@@ -321,7 +257,12 @@ function PostTweetForm() {
         />
       </RetouchWrapper>
       <ButtonContainer>
-        <EmojiButton onClick={toggleEmojiPicker}>
+        <EmojiButton
+          onClick={(e) => {
+            e.preventDefault();
+            handleToggle("showEmojiPicker");
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -338,16 +279,21 @@ function PostTweetForm() {
           </svg>
         </EmojiButton>
         <SelectWrapper>
-          <SelectToggleButton type="button" onClick={toggleDropdown}>
-            {selectedOption || SELECT_OPTION_VALUE[0]}
+          <SelectToggleButton
+            type="button"
+            onClick={() => handleToggle("isSelectOpen")}
+          >
+            {postState.selectedOption}
           </SelectToggleButton>
-          {isSelectOpen && (
+          {postState.isSelectOpen && (
             <SelectedOptionWrapper>
               {SELECT_OPTION_VALUE.map((option, index) => (
                 <OptionButton
                   key={index}
                   type="button"
-                  onClick={() => handleOptionClick(option)}
+                  onClick={() =>
+                    updateState({ selectedOption: option, isSelectOpen: false })
+                  }
                 >
                   {option}
                 </OptionButton>
@@ -357,10 +303,16 @@ function PostTweetForm() {
         </SelectWrapper>
         <SubmitButton
           type="submit"
-          value={isLoading ? "보내는 중" : "보내기"}
+          value={postState.isLoading ? "보내는 중" : "보내기"}
         />
       </ButtonContainer>
-      {showEmojiPicker && <EmojiPicker onSelectEmoji={handleSelectEmoji} />}
+      {postState.showEmojiPicker && (
+        <EmojiPicker
+          onSelectEmoji={(emoji) =>
+            updateState({ tweet: postState.tweet + emoji })
+          }
+        />
+      )}
     </Form>
   );
 }
