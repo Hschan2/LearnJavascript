@@ -29,7 +29,7 @@ import {
 import { useNavigate } from "react-router";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
 import AddressModal from "../utils/address-modal";
-import { useFileUpload } from "../../hooks/useFileUpLoad";
+import { useFileUpload } from "../../hooks/form/useFileUpLoad";
 
 const initialState = {
   isLoading: false,
@@ -222,7 +222,12 @@ function PostTweetForm() {
           {postState.tags.map((tag, index) => (
             <Tag key={index}>
               {tag}
-              <RemoveTagButton onClick={() => removeTag(index)}>
+              <RemoveTagButton
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeTag(index);
+                }}
+              >
                 x
               </RemoveTagButton>
             </Tag>
