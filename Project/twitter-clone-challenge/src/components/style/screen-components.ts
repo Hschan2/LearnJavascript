@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
+interface MenuItemProps {
+  active?: boolean;
+}
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -48,7 +52,7 @@ export const WebMenuWrapper = styled.div`
   }
 `;
 
-export const MenuItem = styled.div`
+export const MenuItem = styled.div<MenuItemProps>`
   padding: 5px 10px;
   cursor: pointer;
   display: flex;
@@ -56,6 +60,7 @@ export const MenuItem = styled.div`
   align-items: center;
   height: 30px;
   width: auto;
+  opacity: ${({ active }) => (active ? 1 : 0.7)};
 
   svg {
     width: 30px;
@@ -217,7 +222,8 @@ export const Tweet = styled.h2`
 
 // notification
 export const NotificationBadge = styled.span`
-  margin: -20px 0 5px 25px;
+  position: absolute;
+  margin: -15px 0 0 15px;
   color: red;
   width: 15px;
   height: 15px;
@@ -228,6 +234,6 @@ export const NotificationBadge = styled.span`
   font-size: 10px;
 
   @media (max-width: 425px) {
-    margin: -12px 0 -3px 25px;
+    margin: -15px 0 0px 15px;
   }
 `;
