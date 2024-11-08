@@ -1,6 +1,5 @@
 import {
   QueryDocumentSnapshot,
-  QuerySnapshot,
   collection,
   doc,
   getDoc,
@@ -11,86 +10,79 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { auth, dataBase } from "../../firebase";
 import Tweet from "../utils/tweet";
-import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
 import { ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
-function LikedTimeline() {
+const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
+  const data = doc.data();
+  return {
+    tweet: data.tweet,
+    createdAt: data.createdAt,
+    userId: data.userId,
+    username: data.username,
+    photo: data.photo,
+    id: doc.id,
+    likes: data.likes,
+    likedBy: data.likedBy,
+    exclamation: data.exclamation,
+    tags: data.tags,
+    item: data.item,
+    comments: data.comments,
+  };
+};
+
+const fetchTweetById = async (tweetId: string): Promise<ITweet | null> => {
+  const tweetDoc = await getDoc(doc(dataBase, "tweets", tweetId));
+  return tweetDoc.exists() ? createTweetData(tweetDoc) : null;
+};
+
+const useLikedTweets = (userId: string | undefined) => {
   const [tweets, setTweets] = useState<ITweet[]>([]);
-  const user = auth.currentUser;
-  let unsubscribe: Unsubscribe | null = null;
 
-  const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
-    const {
-      tweet,
-      createdAt,
-      userId,
-      username,
-      photo,
-      likes,
-      likedBy,
-      exclamation,
-      tags,
-      item,
-      comments,
-    } = doc.data();
-    return {
-      tweet,
-      createdAt,
-      userId,
-      username,
-      photo,
-      id: doc.id,
-      likes,
-      likedBy,
-      exclamation,
-      tags,
-      item,
-      comments,
-    };
-  };
-
-  const fetchTweetById = async (tweetId: string) => {
-    const tweetDoc = await getDoc(doc(dataBase, "tweets", tweetId));
-    if (tweetDoc.exists()) {
-      return mapTweetData(tweetDoc);
-    }
-
-    return null;
-  };
-
-  const fetchLikedTweets = useCallback(async () => {
-    if (!user) return;
+  const fetchLikedTweets = useCallback(() => {
+    if (!userId) return null;
     const likedTweetsQuery = query(
       collection(dataBase, "likedTweets"),
-      where("userId", "==", user.uid)
+      where("userId", "==", userId)
     );
 
-    unsubscribe = onSnapshot(likedTweetsQuery, async (snapshot) => {
+    return onSnapshot(likedTweetsQuery, async (snapshot) => {
       const tweetIds = snapshot.docs.map((doc) => doc.data().tweetId);
-      const tweetPromises = tweetIds.map(fetchTweetById);
-      const fetchedTweets = await Promise.all(tweetPromises);
+      const fetchedTweets = await Promise.all(tweetIds.map(fetchTweetById));
       const recentTweets = fetchedTweets.filter(
         (tweet) =>
           tweet && tweet.createdAt > Date.now() - 30 * 24 * 60 * 60 * 1000
       ) as ITweet[];
       setTweets(recentTweets);
     });
-  }, [user]);
+  }, [userId]);
 
-  const fetchMoreData = async () => {
-    fetchLikedTweets();
-  };
+  return { tweets, fetchLikedTweets };
+};
+
+function LikedTimeline() {
+  const user = auth.currentUser;
+  const userId = user?.uid;
+  const { tweets, fetchLikedTweets } = useLikedTweets(userId);
+
+  const fetchMoreData = useCallback(async () => {
+    await fetchLikedTweets();
+  }, [fetchLikedTweets]);
 
   const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreData);
 
   useEffect(() => {
-    fetchLikedTweets();
-    return () => {
-      unsubscribe && unsubscribe();
+    const initFetch = async () => {
+      const unsubscribe = await fetchLikedTweets();
+      return () => unsubscribe && unsubscribe();
     };
-  }, [user, fetchLikedTweets]);
+
+    const unsubscribeEffect = initFetch();
+    return () => {
+      unsubscribeEffect.then((cleanUp) => cleanUp && cleanUp());
+    };
+  }, [fetchLikedTweets]);
 
   return (
     <Wrapper>
