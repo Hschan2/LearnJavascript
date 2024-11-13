@@ -2,7 +2,6 @@ import {
   QueryDocumentSnapshot,
   QuerySnapshot,
   collection,
-  limit,
   onSnapshot,
   orderBy,
   query,
@@ -10,100 +9,73 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { dataBase } from "../../firebase";
 import Tweet from "../utils/tweet";
-import { Unsubscribe } from "firebase/auth";
 import { Wrapper } from "../style/timeline-components";
 import { ITimeline, ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
+const getTweetData = (doc: QueryDocumentSnapshot): ITweet => {
+  const data = doc.data();
+  return {
+    tweet: data.tweet,
+    createdAt: data.createdAt,
+    userId: data.userId,
+    username: data.username,
+    photo: data.photo,
+    retouch: data.retouch,
+    id: doc.id,
+    likes: data.likes,
+    likedBy: data.likedBy,
+    exclamation: data.exclamation,
+    exclamationBy: data.exclamationBy,
+    tags: data.tags,
+    item: data.item,
+    comments: data.comments,
+    location: data.location,
+  };
+};
+
+const filterTweetsByOption = (tweets: ITweet[], option: string) =>
+  option === "전체" ? tweets : tweets.filter((tweet) => tweet.item === option);
+
+const fetchTweetData = (snapshot: QuerySnapshot): ITweet[] =>
+  snapshot.docs.map(getTweetData);
+
 function Timeline({ isHot, option = "전체" }: ITimeline) {
   const [tweets, setTweets] = useState<ITweet[]>([]);
   const [filteredTweets, setFilteredTweets] = useState<ITweet[]>([]);
-  let unsubscribe: Unsubscribe | null = null;
+  const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreTweets);
 
-  const mapTweetData = (doc: QueryDocumentSnapshot): ITweet => {
-    const {
-      tweet,
-      createdAt,
-      userId,
-      username,
-      photo,
-      retouch,
-      likes,
-      likedBy,
-      exclamation,
-      exclamationBy,
-      tags,
-      item,
-      comments,
-      location,
-    } = doc.data();
-    return {
-      tweet,
-      createdAt,
-      userId,
-      username,
-      photo,
-      retouch,
-      id: doc.id,
-      likes,
-      likedBy,
-      exclamation,
-      exclamationBy,
-      tags,
-      item,
-      comments,
-      location,
-    };
-  };
-
-  const fetchTweetsData = async (
-    snapshot: QuerySnapshot
-  ): Promise<ITweet[]> => {
-    const tweets = snapshot.docs.map(mapTweetData);
-
-    return tweets;
-  };
-
-  const filterTweets = (tweets: ITweet[], option: string) => {
-    if (option === "전체") {
-      return tweets;
-    }
-
-    return tweets.filter((tweet: ITweet) => tweet.item === option);
-  };
-
-  const fetchTweets = useCallback(async () => {
-    const orderBys = isHot
-      ? [orderBy("likes", "desc"), orderBy("createdAt", "desc")]
-      : [orderBy("createdAt", "desc")];
-
+  const fetchTweets = useCallback(() => {
     const tweetsQuery = query(
       collection(dataBase, "tweets"),
-      ...orderBys,
+      ...getOrderBys(isHot)
     );
 
-    unsubscribe = onSnapshot(tweetsQuery, async (snapshot) => {
-      const getTweets = await fetchTweetsData(snapshot);
-      setTweets(getTweets);
-      setFilteredTweets(filterTweets(getTweets, option || "전체"));
+    return onSnapshot(tweetsQuery, (snapshot) => {
+      const fetchedTweets = fetchTweetData(snapshot);
+      setTweets(fetchedTweets);
+      setFilteredTweets(filterTweetsByOption(fetchedTweets, option));
     });
   }, [isHot, option]);
 
-  const fetchMoreData = async () => {
-    fetchTweets();
+  const getOrderBys = (isHot: boolean | undefined) => {
+    if (isHot) {
+      return [orderBy("likes", "desc"), orderBy("createdAt", "desc")];
+    }
+    return [orderBy("createdAt", "desc")];
   };
 
-  const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreData);
-
-  useEffect(() => {
+  async function fetchMoreTweets(): Promise<void> {
     fetchTweets();
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, []);
+  }
 
   useEffect(() => {
-    setFilteredTweets(filterTweets(tweets, option || "전체"));
+    const unsubscribe = fetchTweets();
+    return unsubscribe;
+  }, [fetchTweets]);
+
+  useEffect(() => {
+    setFilteredTweets(filterTweetsByOption(tweets, option));
   }, [option, tweets]);
 
   return (
