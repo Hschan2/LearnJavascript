@@ -342,9 +342,10 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       </ButtonLayout>
       {updateState.showEmojiPicker && (
         <EmojiPicker
-          onSelectEmoji={(emoji) =>
-            updatePostState("tweet", updateState.tweet + emoji)
-          }
+          onSelectEmoji={(emoji) => {
+            updatePostState("tweet", updateState.tweet + emoji);
+            updatePostState("showEmojiPicker", false);
+          }}
         />
       )}
     </Form>

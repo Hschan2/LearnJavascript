@@ -314,7 +314,10 @@ function PostTweetForm() {
       {postState.showEmojiPicker && (
         <EmojiPicker
           onSelectEmoji={(emoji) =>
-            updateState({ tweet: postState.tweet + emoji })
+            updateState({
+              tweet: postState.tweet + emoji,
+              showEmojiPicker: false,
+            })
           }
         />
       )}
