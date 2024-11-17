@@ -1,49 +1,34 @@
 import { useRef, useState } from "react";
-import { AddressModalProps, AddressSearchResult } from "../types/util-type";
+import { AddressModalProps } from "../types/util-type";
 import {
   ModalButton,
   ModalCloseButton,
   ModalContent,
   ModalInput,
   ModalInputBar,
-  ModalLi,
   ModalOverlay,
   ModalTitle,
   ModalTopWrapper,
-  ModalUl,
 } from "../style/modal-components";
+import { useAddressSearch } from "../../hooks/modal/useAddressSearch";
+import { AddressList } from "./address-list";
 
 function AddressModal({ isOpen, onClose, onSelect }: AddressModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState<string>("");
-  const [results, setResults] = useState<AddressSearchResult[]>([]);
-
-  const searchAddress = async (query: string) => {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?q=${query}&format=json`
-    );
-    const data: AddressSearchResult[] = await response.json();
-    setResults(data);
-  };
+  const { results, isLoading, error, searchAddress } = useAddressSearch(
+    "https://nominatim.openstreetmap.org/search"
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const value = e.target.value;
-    setQuery(value);
+    setQuery(e.target.value);
   };
 
-  const handleSearch = (
-    e?:
-      | React.MouseEvent<HTMLButtonElement>
-      | React.KeyboardEvent<HTMLInputElement>
-  ) => {
-    if (e) e.preventDefault();
-
-    if (query.trim() !== "" && query.length > 1) {
+  const handleSearch = () => {
+    if (query.trim().length > 1) {
       searchAddress(query);
     } else {
-      alert("검색어를 입력해주세요.");
-      setResults([]);
+      alert("검색어를 입력해 주세요.");
     }
   };
 
@@ -54,10 +39,10 @@ function AddressModal({ isOpen, onClose, onSelect }: AddressModalProps) {
     }
   };
 
-  const handleResultClick = (result: AddressSearchResult) => {
-    onSelect(result.display_name);
+  const handleResultSelect = (address: string) => {
+    onSelect(address);
     onClose();
-  };
+  }
 
   if (!isOpen) return null;
 
@@ -93,18 +78,9 @@ function AddressModal({ isOpen, onClose, onSelect }: AddressModalProps) {
             </svg>
           </ModalButton>
         </ModalInputBar>
-        {results.length > 0 && (
-          <ModalUl>
-            {results.map((result) => (
-              <ModalLi
-                key={result?.place_id}
-                onClick={() => handleResultClick(result)}
-              >
-                {result.display_name}
-              </ModalLi>
-            ))}
-          </ModalUl>
-        )}
+        {isLoading && <p>검색중...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <AddressList results={results} onSelect={handleResultSelect} />
       </ModalContent>
     </ModalOverlay>
   );
