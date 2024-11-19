@@ -1,16 +1,4 @@
-import { deleteObject, getDownloadURL, ref } from "firebase/storage";
-import { auth, dataBase, storage } from "../../firebase";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { auth } from "../../firebase";
 import { useEffect, useState } from "react";
 import formattedDate from "../../hooks/formattedDate";
 import { ITweet } from "../types/tweet-type";
@@ -32,148 +20,31 @@ import {
   Username,
   Wrapper,
 } from "../style/tweet-components";
-import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router";
+import { useTweet } from "../../hooks/tweet/useTweet";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
-  const createdDate = formattedDate(tweetObj.createdAt);
-  const [profileImage, setProfileImage] = useState<string>("");
   const tweetIdValue = tweetObj.id;
   const user = auth.currentUser;
-  const likedId = uuidv4();
+  const [profileImage, setProfileImage] = useState<string>("");
   const navigate = useNavigate();
+  const { deleteTweet, toggleLike, toggleExclamation, fetchProfileImage } =
+    useTweet();
 
-  const onDelete = async () => {
-    const checkDelete = confirm("정말로 삭제하시겠습니까?");
-    if (!checkDelete || user?.uid !== tweetObj.userId) return;
-    try {
-      await deleteDoc(doc(dataBase, "tweets", tweetObj.id));
-      if (tweetObj.photo) {
-        const photoRef = ref(storage, `tweets/${user?.uid}/${tweetObj.id}`);
-        await deleteObject(photoRef);
-      }
-    } catch (error) {
-      console.error(error);
-      throw new Error(`글 삭제 실패: ${error}`);
-    }
-  };
+  useEffect(() => {
+    const getProfileImage = async () => {
+      const image = await fetchProfileImage(tweetObj.userId);
+      setProfileImage(image);
+    };
 
-  const AutoDelete = async () => {
-    try {
-      await deleteDoc(doc(dataBase, "tweets", tweetObj.id));
-      if (tweetObj.photo) {
-        const photoRef = ref(storage, `tweets/${user?.uid}/${tweetObj.id}`);
-        await deleteObject(photoRef);
-      }
-    } catch (error) {
-      console.error(error);
-      throw new Error(`글 자동 삭제 실패: ${error}`);
-    }
-  };
-
-  const toggleLike = async () => {
-    if (!user || !tweetObj.id) return;
-
-    try {
-      const tweetRef = doc(dataBase, "tweets", tweetObj.id);
-      const tweetDoc = await getDoc(tweetRef);
-
-      if (tweetDoc.exists()) {
-        const currentLikes = tweetDoc.data()?.likes || 0;
-        const likedBy = tweetDoc.data()?.likedBy || [];
-        const userAlreadyLiked = likedBy.includes(user?.uid);
-
-        if (userAlreadyLiked && currentLikes > 0) {
-          await updateDoc(tweetRef, {
-            likes: currentLikes - 1,
-            likedBy: likedBy.filter((uid: string) => uid !== user?.uid),
-          });
-          const likedTweetQuery = query(
-            collection(dataBase, "likedTweets"),
-            where("userId", "==", user.uid),
-            where("tweetId", "==", tweetObj.id)
-          );
-          const likedTweetSnapshot = await getDocs(likedTweetQuery);
-          likedTweetSnapshot.forEach(async (doc) => {
-            await deleteDoc(doc.ref);
-          });
-        }
-        if (!userAlreadyLiked) {
-          await updateDoc(tweetRef, {
-            likes: currentLikes + 1,
-            likedBy: [...likedBy, user?.uid],
-          });
-          await setDoc(doc(collection(dataBase, "likedTweets")), {
-            userId: user.uid,
-            tweetId: tweetObj.id,
-            likedAt: new Date().toISOString(),
-          });
-          if (user?.uid !== tweetObj.userId) {
-            const notificationRef = doc(dataBase, "notifications", likedId);
-            await setDoc(notificationRef, {
-              id: likedId,
-              recipientId: tweetObj.userId,
-              tweetTitle: tweetObj.tweet,
-              tweetId: tweetObj.id,
-              senderId: user.uid,
-              senderName: user.displayName || "익명",
-              createdAt: new Date().toISOString(),
-              type: "like",
-              isRead: false,
-            });
-          }
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      throw new Error(`좋아요 버튼 동작 실패: ${error as string}`);
-    }
-  };
-
-  const toggleExclamation = async () => {
-    if (!user || !tweetObj.id) return;
-
-    try {
-      const tweetRef = doc(dataBase, "tweets", tweetObj.id);
-      const tweetDoc = await getDoc(tweetRef);
-
-      if (tweetDoc.exists()) {
-        const currentExclamation = tweetDoc.data()?.exclamation || 0;
-        const exclamationBy = tweetDoc.data()?.exclamationBy || [];
-        const userAlreadyExclamation = exclamationBy.includes(user?.uid);
-
-        if (userAlreadyExclamation && currentExclamation > 0) {
-          await updateDoc(tweetRef, {
-            exclamation: currentExclamation - 1,
-            exclamationBy: exclamationBy.filter(
-              (uid: string) => uid !== user?.uid
-            ),
-          });
-        }
-        if (!userAlreadyExclamation) {
-          const isConfirm = window.confirm("부적절한 사진으로 신고할까요?");
-          if (!isConfirm) return;
-          await updateDoc(tweetRef, {
-            exclamation: currentExclamation + 1,
-            exclamationBy: [...exclamationBy, user?.uid],
-          });
-
-          if (tweetObj.exclamation >= 5) {
-            await AutoDelete();
-          }
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      throw new Error(`신고 버튼 동작 실패: ${error as string}`);
-    }
-  };
+    getProfileImage();
+  }, [tweetObj.userId]);
 
   const moveDetailPage = () => {
     navigate("/detail", { state: { tweetObj } });
   };
 
-  const renderTweet = () => (
+  return (
     <Wrapper>
       <InfoContents>
         {tweetObj.photo && (
@@ -184,7 +55,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
             <Payload onClick={moveDetailPage}>
               [{tweetObj.item}]{tweetObj.tweet}
             </Payload>
-            <LikeButton onClick={toggleLike}>
+            <LikeButton onClick={() => toggleLike(tweetObj, user?.uid || "")}>
               {user?.uid && tweetObj.likedBy?.includes(user?.uid) ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -241,8 +112,10 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
             </TagWrapper>
           )}
           <TimeExclamationWrapper>
-            <CreatedAt>{createdDate}</CreatedAt>
-            <ExclamationButton onClick={toggleExclamation}>
+            <CreatedAt>{formattedDate(tweetObj.createdAt)}</CreatedAt>
+            <ExclamationButton
+              onClick={() => toggleExclamation(tweetObj.id, tweetObj.userId)}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -282,7 +155,15 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
               />
             </svg>
           </MenuItem>
-          <MenuItem onClick={onDelete}>
+          <MenuItem
+            onClick={() => {
+              const confirm = window.confirm("정말로 삭제하시겠습니까?");
+              if (confirm)
+                deleteTweet(tweetObj.id, tweetObj.id, tweetObj.photo);
+
+              return;
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -302,24 +183,6 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
       )}
     </Wrapper>
   );
-
-  useEffect(() => {
-    const getProfileImage = async () => {
-      const imageRef = ref(storage, `avatars/${tweetObj.userId}`);
-
-      try {
-        const url = await getDownloadURL(imageRef);
-        setProfileImage(url);
-      } catch (error) {
-        console.error(error);
-        setProfileImage("");
-      }
-    };
-
-    getProfileImage();
-  }, [tweetObj.userId]);
-
-  return <>{renderTweet()}</>;
 }
 
 export default Tweet;
