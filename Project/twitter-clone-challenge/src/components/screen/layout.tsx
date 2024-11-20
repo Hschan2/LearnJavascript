@@ -44,6 +44,33 @@ function Layout() {
   const userId = auth.currentUser?.uid;
   const hasUnreadNotification = useUnreadNotification(userId, dataBase);
 
+  const MENU_LIST = [
+    { link: "/hot", icon: (active: boolean) => <HotIcon active={active} /> },
+    { link: "/search", icon: () => <SearchIcon /> },
+    { link: "/like", icon: (active: boolean) => <LikeIcon active={active} /> },
+    {
+      link: "/write",
+      icon: (active: boolean) => <WriteIcon active={active} />,
+    },
+    {
+      link: "/profile",
+      icon: () => <ProfileIcon avatar={avatar} />,
+    },
+    {
+      link: "/notification",
+      icon: (active: boolean) => (
+        <>
+          <NotificationIcon active={active} />
+          {hasUnreadNotification && <NotificationBadge>●</NotificationBadge>}
+        </>
+      ),
+    },
+    {
+      link: "/settings",
+      icon: (active: boolean) => <SettingIcon active={active} />,
+    },
+  ];
+
   return (
     <Wrapper>
       <Menu>
@@ -51,31 +78,15 @@ function Layout() {
           <LogoComponent />
         </NoneLineLink>
         <WebMenuWrapper>
-          <MenuLink to="/hot" active={location.pathname === "/hot"}>
-            <HotIcon active={location.pathname === "/hot"} />
-          </MenuLink>
-          <MenuLink to="/search">
-            <SearchIcon />
-          </MenuLink>
-          <MenuLink to="/like" active={location.pathname === "/like"}>
-            <LikeIcon active={location.pathname === "/like"} />
-          </MenuLink>
-          <MenuLink to="/write" active={location.pathname === "/write"}>
-            <WriteIcon active={location.pathname === "/write"} />
-          </MenuLink>
-          <MenuLink to="/profile" active={location.pathname === "/profile"}>
-            <ProfileIcon avatar={avatar} />
-          </MenuLink>
-          <MenuLink
-            to="/notification"
-            active={location.pathname === "/notification"}
-          >
-            <NotificationIcon active={location.pathname === "/notification"} />
-            {hasUnreadNotification && <NotificationBadge>●</NotificationBadge>}
-          </MenuLink>
-          <MenuLink to="/settings" active={location.pathname === "/settings"}>
-            <SettingIcon active={location.pathname === "/settings"} />
-          </MenuLink>
+          {MENU_LIST.map((menu) => (
+            <MenuLink
+              key={menu.link}
+              to={menu.link}
+              active={location.pathname === menu.link}
+            >
+              {menu.icon(location.pathname === menu.link)}
+            </MenuLink>
+          ))}
           <DarkModeButton />
         </WebMenuWrapper>
         <MobileTopMenuWrapper>
