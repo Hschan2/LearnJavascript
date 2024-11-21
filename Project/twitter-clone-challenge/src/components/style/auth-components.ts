@@ -27,7 +27,7 @@ export const Form = styled.form`
 export const Input = styled.input`
   padding: 10px 20px;
   border-radius: 50px;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.3);
   width: 100%;
   font-size: 16px;
   transition-duration: 0.5s;
@@ -42,7 +42,23 @@ export const Input = styled.input`
   }
 `;
 
-export const Error = styled.span`
+export const Button = styled.button`
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  transition-duration: 0.5s;
+  margin-top: 10px;
+  background-color: #2563eb;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.85;
+  }
+`;
+
+export const Error = styled.p`
   font-weight: 600;
   color: tomato;
 `;
