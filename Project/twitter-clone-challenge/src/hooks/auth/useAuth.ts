@@ -1,11 +1,4 @@
-import { FirebaseError } from "firebase/app";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-import { useState, useEffect, useCallback } from "react";
-import { auth } from "../../firebase";
+import { useState, useCallback } from "react";
 import { AuthService } from "./authService";
 
 export const useAuth = () => {
@@ -20,7 +13,7 @@ export const useAuth = () => {
         return await action();
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Unknown error occurred."
+          err instanceof Error ? err.message : "알 수 없는 에러 발생"
         );
         return false;
       } finally {

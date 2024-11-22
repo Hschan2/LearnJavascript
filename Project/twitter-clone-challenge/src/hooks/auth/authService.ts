@@ -47,8 +47,10 @@ export const AuthService = (() => {
       return true;
     } catch (error) {
       if (error instanceof FirebaseError) {
+        console.error("파이어베이스 에러: ", error);
         throw handleError(error);
       }
+      console.error("알 수 없는 에러: ", error);
       throw new Error("로그인: 알수 없는 에러 발생");
     }
   };

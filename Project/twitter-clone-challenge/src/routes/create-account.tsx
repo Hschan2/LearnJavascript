@@ -13,6 +13,7 @@ import GithubButton from "../components/btn/github-button";
 import GoogleButton from "../components/btn/google-button";
 import { useAuth } from "../hooks/auth/useAuth";
 import { FormInput } from "../hooks/auth/formInput";
+import { validationRules } from "../constants";
 
 type FormType = {
   name: string;
@@ -46,6 +47,7 @@ function CreateAccount() {
           placeholder="이름"
           type="text"
           error={errors.name}
+          rules={validationRules.name}
         />
         <FormInput
           register={register}
@@ -53,6 +55,7 @@ function CreateAccount() {
           placeholder="이메일"
           type="email"
           error={errors.email}
+          rules={validationRules.email}
         />
         <FormInput
           register={register}
@@ -60,6 +63,7 @@ function CreateAccount() {
           placeholder="비밀번호"
           type="password"
           error={errors.password}
+          rules={validationRules.password}
         />
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "회원가입 중" : "회원가입"}
