@@ -21,7 +21,7 @@ import DetailTweet from "./routes/detail";
 import Update from "./routes/update";
 import Notification from "./routes/notification";
 import Search from "./routes/search";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const router = createBrowserRouter([
   {
