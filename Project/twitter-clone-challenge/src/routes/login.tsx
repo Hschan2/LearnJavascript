@@ -16,7 +16,6 @@ import { FormInput } from "../hooks/auth/formInput";
 import { validationRules } from "../constants";
 
 type FormType = {
-  name: string;
   email: string;
   password: string;
 };
@@ -32,6 +31,7 @@ function Login() {
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
     clearError();
+    console.log("입력 데이터: ", data);
     if (await login(data.email, data.password)) {
       navigate("/");
     }
