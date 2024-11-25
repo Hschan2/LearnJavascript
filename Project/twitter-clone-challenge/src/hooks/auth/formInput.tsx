@@ -25,7 +25,12 @@ export const FormInput = <T extends FieldValues>({
   rules,
 }: FormInputProps<T>) => (
   <div>
-    <Input {...register(name, rules)} placeholder={placeholder} type={type} />
+    <Input
+      {...register(name, rules)}
+      placeholder={placeholder}
+      type={type}
+      autoComplete={name}
+    />
     {error && <Error className="error">{error.message}</Error>}
   </div>
 );
