@@ -109,7 +109,7 @@ export const CreatedAt = styled.span`
   margin-top: 8px;
 `;
 
-export const LikeButton = styled.button`
+export const ButtonBase = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,26 +125,17 @@ export const LikeButton = styled.button`
   svg {
     width: 25px;
     height: 25px;
+  }
+`;
+
+export const LikeButton = styled(ButtonBase)`
+  svg {
     color: #e73c37;
   }
 `;
 
-export const ExclamationButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  background-color: transparent;
-  border: none;
-  width: 60px;
-  height: 20px;
-  cursor: pointer;
-  color: ${(props) => props.theme.text};
-  font-size: 14px;
-
+export const ExclamationButton = styled(ButtonBase)`
   svg {
-    width: 25px;
-    height: 25px;
     color: ${(props) => props.theme.text};
   }
 `;
