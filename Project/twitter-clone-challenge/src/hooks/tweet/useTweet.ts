@@ -77,7 +77,8 @@ export const useTweet = () => {
       }
 
       if (exclamation >= 5) {
-        await deleteTweet(tweetId, userId);
+        const { photo } = tweetDoc.data();
+        await deleteTweet(tweetId, userId, photo);
       }
     }
   };

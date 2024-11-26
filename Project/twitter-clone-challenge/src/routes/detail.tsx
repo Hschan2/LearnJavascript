@@ -98,13 +98,11 @@ function DetailTweet() {
 
   const handleDelete = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
-      try {
-        await tweetService.deleteTweet(tweetData.id, tweetData.photo);
-        console.log("Tweet 삭제 성공");
-      } catch (error) {
-        console.error("Tweet 삭제 실패: ", error);
-        alert("Tweet 삭제 시도에서 문제가 발생했습니다.");
-      }
+      await tweetService.deleteTweet(
+        tweetData.id,
+        tweetData.userId,
+        tweetData.photo
+      );
     }
   };
 

@@ -93,11 +93,15 @@ export const tweetService = {
     await updateDoc(tweetRef, updateData);
   },
 
-  async deleteTweet(tweetId: string, photoPath?: string) {
-    await deleteDoc(doc(dataBase, "tweets", tweetId));
-    if (photoPath) {
-      const photoRef = ref(storage, photoPath);
-      await deleteObject(photoRef);
+  async deleteTweet(tweetId: string, userId: string, photo?: string) {
+    try {
+      await deleteDoc(doc(dataBase, "tweets", tweetId));
+      if (photo) {
+        const photoRef = ref(storage, `tweets/${userId}/${tweetId}`);
+        await deleteObject(photoRef);
+      }
+    } catch (error) {
+      throw new Error(`트윗 삭제 실패: ${error}`);
     }
   },
 };
