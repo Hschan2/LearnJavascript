@@ -22,6 +22,7 @@ export function useDetailTweet(tweetId: string) {
   const [comments, setComments] = useState<IComment[]>([]);
 
   useEffect(() => {
+    if (!tweetId) return;
     const tweetRef = doc(dataBase, "tweets", tweetId);
     const unsubscribe = onSnapshot(tweetRef, (doc) => {
       const tweetData = doc.data() as ITweet | undefined;
@@ -61,16 +62,24 @@ export function useDetailTweet(tweetId: string) {
 export const tweetService = {
   async addComment(tweetId: string, comment: IComment) {
     const tweetRef = doc(dataBase, "tweets", tweetId);
-    await updateDoc(tweetRef, {
-      comments: arrayUnion(comment),
-    });
+    try {
+      await updateDoc(tweetRef, {
+        comments: arrayUnion(comment),
+      });
+    } catch (error) {
+      console.error("댓글 작성 실패: ", error);
+    }
   },
 
   async deleteComment(tweetId: string, comment: IComment) {
     const tweetRef = doc(dataBase, "tweets", tweetId);
-    await updateDoc(tweetRef, {
-      comments: arrayRemove(comment),
-    });
+    try {
+      await updateDoc(tweetRef, {
+        comments: arrayRemove(comment),
+      });
+    } catch (error) {
+      console.error("댓글 삭제 실패: ", error);
+    }
   },
 
   async toggleLike(tweetId: string, userId: string, liked: boolean) {

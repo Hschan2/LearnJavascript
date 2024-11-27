@@ -40,7 +40,8 @@ function DetailTweet() {
   const tweetData = location.state?.tweetObj;
   const tweetIdValue = tweetData.id;
 
-  if (!tweetData) return <div>데이터를 불러올 수 없습니다.</div>;
+  if (!tweetData || !tweetData.id)
+    return <div>데이터를 불러올 수 없습니다.</div>;
 
   const {
     tweet,
@@ -69,7 +70,6 @@ function DetailTweet() {
     };
 
     await tweetService.addComment(tweetData.id, comment);
-    setComments((prev) => [...prev, comment]);
     setNewComment("");
   };
 
@@ -103,13 +103,13 @@ function DetailTweet() {
         tweetData.userId,
         tweetData.photo
       );
+      navigate("/");
     }
   };
 
   useEffect(() => {
     const getProfileImage = async () => {
       const imageRef = ref(storage, `avatars/${tweetData.userId}`);
-
       try {
         const url = await getDownloadURL(imageRef);
         setProfileImage(url);
@@ -118,7 +118,6 @@ function DetailTweet() {
         setProfileImage("");
       }
     };
-
     getProfileImage();
   }, [tweetData.userId]);
 
@@ -199,7 +198,13 @@ function DetailTweet() {
             />
           </svg>
         )}
-        <Form className="comment" onSubmit={handleAddComment}>
+        <Form
+          className="comment"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleAddComment();
+          }}
+        >
           <TextArea
             ref={textareaRef}
             maxLength={150}
