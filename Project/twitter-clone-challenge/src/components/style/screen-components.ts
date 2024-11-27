@@ -52,7 +52,9 @@ export const WebMenuWrapper = styled.div`
   }
 `;
 
-export const MenuItem = styled.div<MenuItemProps>`
+export const MenuItem = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== "active",
+})<MenuItemProps>`
   padding: 5px 10px;
   cursor: pointer;
   display: flex;
