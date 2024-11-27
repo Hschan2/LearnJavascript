@@ -254,6 +254,13 @@ export const DetailCommentWrapper = styled.div`
   gap: 8px;
   padding: 12px 8px;
   margin-top: 20px;
+
+  svg {
+    width: 25px;
+    height: 25px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+  }
 `;
 
 export const CommentsWrapper = styled.div`
