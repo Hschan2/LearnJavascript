@@ -98,12 +98,16 @@ function DetailTweet() {
 
   const handleDelete = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
-      await tweetService.deleteTweet(
-        tweetData.id,
-        tweetData.userId,
-        tweetData.photo
-      );
-      navigate("/");
+      try {
+        await tweetService.deleteTweet(
+          tweetData.id,
+          tweetData.userId,
+          tweetData.photo
+        );
+        navigate("/");
+      } catch (error) {
+        console.error("삭제 중 오류 발생: ", error);
+      }
     }
   };
 

@@ -159,7 +159,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
             onClick={() => {
               const confirm = window.confirm("정말로 삭제하시겠습니까?");
               if (confirm)
-                deleteTweet(tweetObj.id, tweetObj.id, tweetObj.photo);
+                deleteTweet(tweetObj.id, tweetObj.userId, tweetObj.photo);
 
               return;
             }}

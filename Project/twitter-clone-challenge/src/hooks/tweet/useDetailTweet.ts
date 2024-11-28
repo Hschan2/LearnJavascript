@@ -103,6 +103,15 @@ export const tweetService = {
   },
 
   async deleteTweet(tweetId: string, userId: string, photo?: string) {
+    if (!auth.currentUser) {
+      throw new Error("사용자가 인증되지 않았습니다.");
+    }
+
+    if (auth.currentUser.uid !== userId) {
+      console.log(auth.currentUser.uid, "/", userId);
+      throw new Error("사용자가 이 파일을 삭제할 권한이 없습니다.");
+    }
+
     try {
       await deleteDoc(doc(dataBase, "tweets", tweetId));
       if (photo) {
