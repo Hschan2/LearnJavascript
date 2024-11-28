@@ -60,7 +60,7 @@ function CreateAccount() {
         <FormInput
           register={register}
           name="password"
-          placeholder="비밀번호"
+          placeholder="비밀번호 (영어 + 숫자 + 특수문자로 이루어진 8글자 필수)"
           type="password"
           error={errors.password}
           rules={validationRules.password}

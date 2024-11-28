@@ -34,7 +34,12 @@ export const AuthService = (() => {
         email,
         password
       );
-      await updateProfile(credentials.user, { displayName: name });
+      const initialImage =
+        "https://static.vecteezy.com/system/resources/previews/002/318/271/non_2x/user-profile-icon-free-vector.jpg";
+      await updateProfile(credentials.user, {
+        displayName: name,
+        photoURL: initialImage,
+      });
       return true;
     } catch (error) {
       if (error instanceof FirebaseError) {
