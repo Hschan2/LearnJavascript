@@ -5,7 +5,7 @@ import {
   RegisterOptions,
   UseFormRegister,
 } from "react-hook-form";
-import { Error, Input } from "../../components/style/auth-components";
+import { Error, Input, Label } from "../../components/style/auth-components";
 
 type FormInputProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
@@ -25,8 +25,10 @@ export const FormInput = <T extends FieldValues>({
   rules,
 }: FormInputProps<T>) => (
   <div>
+    <Label htmlFor={name}>{placeholder}</Label>
     <Input
       {...register(name, rules)}
+      id={name}
       placeholder={placeholder}
       type={type}
       autoComplete={name}
