@@ -35,7 +35,7 @@ export const AuthService = (() => {
         password
       );
       const initialImage =
-        "https://static.vecteezy.com/system/resources/previews/002/318/271/non_2x/user-profile-icon-free-vector.jpg";
+        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbxwsqs%2FbtsK1ACfsyI%2FyojjVvJwKpX4bdZ0CtZkJ0%2Fimg.png";
       await updateProfile(credentials.user, {
         displayName: name,
         photoURL: initialImage,
