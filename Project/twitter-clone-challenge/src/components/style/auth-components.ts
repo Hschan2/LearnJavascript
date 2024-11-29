@@ -42,6 +42,10 @@ export const Input = styled.input`
   }
 `;
 
+export const Label = styled.label`
+  display: none;
+`;
+
 export const Button = styled.button`
   padding: 10px 20px;
   border-radius: 50px;
@@ -73,4 +77,11 @@ export const Switcher = styled.span`
 export const PasswordMessage = styled.span`
   font-size: 12px;
   margin-top: 4px;
+`;
+
+export const Hint = styled.p`
+  font-size: 12px;
+  color: #888;
+  margin-top: 5px;
+  margin-bottom: 15px;
 `;

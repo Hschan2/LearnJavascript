@@ -5,6 +5,7 @@ import {
   Button,
   Error,
   Form,
+  Hint,
   Switcher,
   Title,
   Wrapper,
@@ -60,11 +61,15 @@ function CreateAccount() {
         <FormInput
           register={register}
           name="password"
-          placeholder="비밀번호 (영어 + 숫자 + 특수문자로 이루어진 8글자 필수)"
+          placeholder="비밀번호"
           type="password"
           error={errors.password}
           rules={validationRules.password}
         />
+        <Hint>
+          비밀번호는 8자 이상, 숫자, 소문자, 특수문자(!, @, #)를 포함해야
+          합니다.
+        </Hint>
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "회원가입 중" : "회원가입"}
         </Button>
