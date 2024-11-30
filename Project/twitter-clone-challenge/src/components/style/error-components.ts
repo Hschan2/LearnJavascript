@@ -5,7 +5,8 @@ export const ErrorBoundaryWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  width: 100%;
+  height: 90vh;
   text-align: center;
 
   svg {
@@ -19,9 +20,8 @@ export const ButtonGroup = styled.div`
 `;
 
 export const ErrorBoundaryButton = styled.button`
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
-  font-weight: bold;
   color: #fff;
   background-color: #007bff;
   border: none;
@@ -45,4 +45,28 @@ export const ErrorBoundaryButton = styled.button`
       background-color: ${(props) => props.theme.hover};
     }
   }
+`;
+
+// 404
+export const NotFoundPageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 90vh;
+  gap: 16px;
+
+  svg {
+    color: red;
+  }
+`;
+
+export const NotFoundTitle = styled.h2`
+  font-weight: 600;
+  font-size: 24px;
+`;
+
+export const NotFoundDescription = styled.p`
+  color: #797979;
 `;

@@ -22,7 +22,8 @@ import Update from "./routes/update";
 import Notification from "./routes/notification";
 import Search from "./routes/search";
 import { Helmet } from "react-helmet-async";
-import ErrorBoundary from "./components/route/ErrorBoundary";
+import ErrorBoundary from "./components/route/error-boundary";
+import NotFoundPage from "./components/route/not-found-page";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
         path: "search",
         element: <Search />,
       },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
     ],
   },
   {
@@ -101,6 +106,10 @@ const router = createBrowserRouter([
         <CreateAccount />
       </ErrorBoundary>
     ),
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 
