@@ -30,7 +30,7 @@ class ErrorBoundaryWWrapper extends React.Component<
     if (this.state.hasError) {
       return (
         <ErrorBoundaryWrapper>
-          <h1>
+          <h2>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -43,7 +43,7 @@ class ErrorBoundaryWWrapper extends React.Component<
                 clipRule="evenodd"
               />
             </svg>
-          </h1>
+          </h2>
           <p>페이지 에러가 발생하였습니다.</p>
           <ButtonGroup>
             <ErrorBoundaryButton
