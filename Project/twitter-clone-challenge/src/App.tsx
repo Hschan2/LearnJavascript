@@ -22,14 +22,17 @@ import Update from "./routes/update";
 import Notification from "./routes/notification";
 import Search from "./routes/search";
 import { Helmet } from "react-helmet-async";
+import ErrorBoundary from "./components/route/ErrorBoundary";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <ProtectedRoute>
-        <Layout />
-        <BottomMenu />
+        <ErrorBoundary>
+          <Layout />
+          <BottomMenu />
+        </ErrorBoundary>
       </ProtectedRoute>
     ),
     children: [
@@ -59,11 +62,19 @@ const router = createBrowserRouter([
       },
       {
         path: "detail",
-        element: <DetailTweet />,
+        element: (
+          <ErrorBoundary>
+            <DetailTweet />
+          </ErrorBoundary>
+        ),
       },
       {
         path: "update",
-        element: <Update />,
+        element: (
+          <ErrorBoundary>
+            <Update />
+          </ErrorBoundary>
+        ),
       },
       {
         path: "notification",
@@ -77,11 +88,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <ErrorBoundary>
+        <Login />
+      </ErrorBoundary>
+    ),
   },
   {
     path: "/create-account",
-    element: <CreateAccount />,
+    element: (
+      <ErrorBoundary>
+        <CreateAccount />
+      </ErrorBoundary>
+    ),
   },
 ]);
 
