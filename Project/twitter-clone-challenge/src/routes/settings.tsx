@@ -9,50 +9,41 @@ import {
 } from "firebase/firestore";
 import { deleteUser, updateProfile } from "firebase/auth";
 import { EventButton, Wrapper } from "./style/settings-components";
+import { deleteUserAccount, logoutUser } from "../hooks/auth/userService";
 
 function Settings() {
-  const user = auth.currentUser;
   const navigate = useNavigate();
 
   const onLogOut = async () => {
     const checkLogOut = confirm("로그아웃을 하실 건가요?");
-    if (checkLogOut) {
-      await auth.signOut();
+    if (!checkLogOut) return;
+
+    try {
+      await logoutUser();
       navigate("/login");
+    } catch (error) {
+      console.error("로그아웃 실패: ", error);
     }
   };
 
   const onDeleteUser = async () => {
-    if (!user) return;
-
     const checkDelete = window.confirm("계정을 삭제하시겠습니까?");
-
     if (!checkDelete) return;
 
     try {
-      const tweetQuery = query(
-        collection(dataBase, "tweets"),
-        where("userId", "==", user?.uid)
-      );
+      const userId = auth.currentUser?.uid;
+      if (!userId) throw new Error("유저 아이디가 없습니다.");
 
-      const tweetDocs = await getDocs(tweetQuery);
-
-      tweetDocs.forEach(async (tweetDoc) => {
-        await deleteDoc(tweetDoc.ref);
-      });
-
-      await updateProfile(user, {
-        displayName: null,
-        photoURL: null,
-      });
-
-      await deleteUser(user);
-      await auth.signOut();
-
+      await deleteUserAccount(userId);
       navigate("/login");
     } catch (error) {
-      console.error(error);
-      throw new Error(`계정 삭제 실패: ${error}`);
+      if (error instanceof Error) {
+        console.error("계정 삭제 실패: ", error);
+        alert(`계정 삭제 실패: ${error.message}`);
+      } else {
+        console.error("알 수 없는 에러 발생: ", error);
+        alert("계정 삭제 실패: 알 수 없는 오류가 발생했습니다.");
+      }
     }
   };
 
