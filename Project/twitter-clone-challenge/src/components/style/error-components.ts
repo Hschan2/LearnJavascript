@@ -10,6 +10,8 @@ export const ErrorBoundaryWrapper = styled.div`
   text-align: center;
 
   svg {
+    width: 50px;
+    height: 50px;
     color: red;
   }
 `;
@@ -58,6 +60,8 @@ export const NotFoundPageWrapper = styled.div`
   gap: 16px;
 
   svg {
+    width: 50px;
+    height: 50px;
     color: red;
   }
 `;
