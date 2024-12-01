@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   InputIcon,
   InputSearch,
@@ -6,65 +6,53 @@ import {
   SearchWrapper,
 } from "../components/style/search-components";
 import { ITweet } from "../components/types/tweet-type";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { dataBase } from "../firebase";
 import Tweet from "../components/utils/tweet";
 import { Wrapper } from "../components/style/timeline-components";
+import { subscribeToTweet } from "../hooks/tweet/searchService";
 
 function Search() {
   const [searchWord, setSearchWord] = useState<string>("");
   const [searchedTweet, setSearchedTweet] = useState<ITweet[]>([]);
-  const searchInputRef = useRef<string>("");
+  const [unsubscribe, setUnsubscribe] = useState<(() => void) | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    searchInputRef.current = e.target.value;
-    setSearchWord(searchInputRef.current);
+    setSearchWord(e.target.value);
   };
 
-  const handleOnSearch = () => {
+  const handleOnSearch = useCallback(() => {
+    if (unsubscribe) unsubscribe();
+
     if (searchWord.trim() === "") {
       alert("검색어를 입력하세요.");
       setSearchedTweet([]);
       return;
     }
 
-    const tweetsQuery = query(
-      collection(dataBase, "tweets"),
-      orderBy("createdAt", "desc")
-    );
-
-    const unsubscribe = onSnapshot(tweetsQuery, (snapshot) => {
-      const tweets = snapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          ...data,
-        } as ITweet;
-      });
-
-      const FilteredSearch = tweets.filter(
-        (tweet) =>
-          tweet.tweet.includes(searchWord) ||
-          tweet.tags?.some((tag: string) => tag.includes(searchWord))
-      );
-
-      setSearchedTweet(FilteredSearch);
-    });
-
-    return () => unsubscribe();
-  };
+    const newUnsubscribe = subscribeToTweet(searchWord, setSearchedTweet);
+    setUnsubscribe(() => newUnsubscribe);
+  }, [searchWord, unsubscribe]);
 
   const handleKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleOnSearch();
-    }
+    if (e.key === "Enter") handleOnSearch();
   };
+
+  useEffect(() => {
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, [unsubscribe]);
 
   return (
     <SearchWrapper>
       <InputWrapper>
         <InputSearch
+          ref={inputRef}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDownSearch}
           type="text"
