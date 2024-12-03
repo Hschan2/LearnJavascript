@@ -107,7 +107,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
           {tweetObj.tags && (
             <TagWrapper>
               {tweetObj.tags?.map((tag: string, index: number) => (
-                <Tag key={index}>{tag}</Tag>
+                <Tag key={`${tag}-${index}`}>{tag}</Tag>
               ))}
             </TagWrapper>
           )}
