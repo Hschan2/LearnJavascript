@@ -63,7 +63,7 @@ export const EditContainer = styled.div`
 export const Input = styled.input`
   padding: 5px 10px;
   border-radius: 50px;
-  border: none;
+  border: 1px solid #797979;
   width: 100%;
   font-size: 14px;
 `;
@@ -80,8 +80,8 @@ export const Tweets = styled.div`
 `;
 
 export const EditButton = styled.button`
-  width: 50px;
-  height: 25px;
+  width: 70px;
+  height: 30px;
   margin-top: 10px;
   font-size: 14px;
   background-color: #1d9bf0;
@@ -117,13 +117,14 @@ export const ProfileMenuWrapper = styled.div`
   }
 `;
 
-export const ProfileMenu = styled.button<{ isSelected: boolean }>`
+export const ProfileMenu = styled.button<{ $isSelected: boolean }>`
   width: 100%;
   height: 50px;
   background: none;
-  border: ${({ isSelected, theme }) =>
-    isSelected ? `1px solid ${theme.border}` : "none"};
+  border: ${({ $isSelected, theme }) =>
+    $isSelected ? `1px solid ${theme.border}` : "none"};
   border-radius: 12px;
   font-size: 18px;
-  color: ${({ isSelected, theme }) => (isSelected ? theme.text : theme.lightText)};
+  color: ${({ $isSelected, theme }) =>
+    $isSelected ? theme.text : theme.lightText};
 `;

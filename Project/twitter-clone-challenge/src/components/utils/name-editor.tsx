@@ -37,7 +37,7 @@ const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
           />
           <EditContainer>
             <ConfirmEditButton onClick={handleSave} title="수정 완료">
-              확인
+              변경
             </ConfirmEditButton>
             <ConfirmEditButton onClick={toggleEditor} title="수정 취소">
               취소
@@ -48,7 +48,7 @@ const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
         <>
           <Name>{user?.displayName ?? "익명"}</Name>
           <EditButton onClick={toggleEditor} title="이름 수정">
-            수정
+            이름 변경
           </EditButton>
         </>
       )}
