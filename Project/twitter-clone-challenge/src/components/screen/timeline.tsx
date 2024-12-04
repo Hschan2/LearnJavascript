@@ -14,23 +14,10 @@ import { ITimeline, ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../hooks/useInfiniteScroll";
 
 const getTweetData = (doc: QueryDocumentSnapshot): ITweet => {
-  const data = doc.data();
+  const data = doc.data() as ITweet;
   return {
-    tweet: data.tweet,
-    createdAt: data.createdAt,
-    userId: data.userId,
-    username: data.username,
-    photo: data.photo,
-    retouch: data.retouch,
+    ...data,
     id: doc.id,
-    likes: data.likes,
-    likedBy: data.likedBy,
-    exclamation: data.exclamation,
-    exclamationBy: data.exclamationBy,
-    tags: data.tags,
-    item: data.item,
-    comments: data.comments,
-    location: data.location,
   };
 };
 
