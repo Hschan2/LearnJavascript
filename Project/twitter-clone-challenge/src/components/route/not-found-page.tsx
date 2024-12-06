@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router";
 import {
   ErrorBoundaryButton,
+  ErrorWrapper,
   NotFoundDescription,
-  NotFoundPageWrapper,
   NotFoundTitle,
 } from "../style/error-components";
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
   return (
-    <NotFoundPageWrapper>
+    <ErrorWrapper>
       <p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +29,7 @@ const NotFoundPage = () => {
       <ErrorBoundaryButton onClick={() => navigate("/")}>
         홈으로 이동
       </ErrorBoundaryButton>
-    </NotFoundPageWrapper>
+    </ErrorWrapper>
   );
 };
 

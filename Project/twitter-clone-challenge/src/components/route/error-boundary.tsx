@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import {
   ButtonGroup,
   ErrorBoundaryButton,
-  ErrorBoundaryWrapper,
+  ErrorWrapper,
 } from "../style/error-components";
 import { useNavigate } from "react-router";
 
@@ -29,7 +29,7 @@ class ErrorBoundaryWWrapper extends React.Component<
   render(): React.ReactNode {
     if (this.state.hasError) {
       return (
-        <ErrorBoundaryWrapper>
+        <ErrorWrapper>
           <h2>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +58,7 @@ class ErrorBoundaryWWrapper extends React.Component<
               홈으로 이동
             </ErrorBoundaryButton>
           </ButtonGroup>
-        </ErrorBoundaryWrapper>
+        </ErrorWrapper>
       );
     }
     return this.props.children;
