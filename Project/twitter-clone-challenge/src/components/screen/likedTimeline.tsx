@@ -40,11 +40,18 @@ const useLikedTweets = (userId: string | undefined) => {
     return onSnapshot(likedTweetsQuery, async (snapshot) => {
       const tweetIds = snapshot.docs.map((doc) => doc.data().tweetId);
       const fetchedTweets = await Promise.all(tweetIds.map(fetchTweetById));
-      const recentTweets = fetchedTweets.filter(
-        (tweet) =>
-          tweet && tweet.createdAt > Date.now() - 30 * 24 * 60 * 60 * 1000
-      ) as ITweet[];
-      setTweets(recentTweets);
+
+      setTweets((prevTweets) => {
+        const allTweets = [
+          ...prevTweets,
+          ...fetchedTweets.filter((tweet) => tweet !== null),
+        ] as ITweet[];
+        const uniqueTweets = allTweets.filter(
+          (tweet, index, self) =>
+            tweet !== null && self.findIndex((t) => t.id === tweet.id) === index
+        );
+        return uniqueTweets;
+      });
     });
   }, [userId]);
 
