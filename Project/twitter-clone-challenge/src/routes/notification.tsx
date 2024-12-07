@@ -1,17 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { NotificationType } from "../components/types/notifications";
-import { auth, dataBase } from "../firebase";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-  where,
-} from "firebase/firestore";
 import { useNavigate } from "react-router";
 import {
   NotificationButton,
@@ -21,76 +9,30 @@ import {
   NotificationsWrapper,
 } from "../components/style/notifications-components";
 import { TimeAgo } from "../hooks/useTimeAgo";
+import { useNotification } from "../hooks/useNotification";
+import { formatNotificationMessage } from "../components/utils/format-notification-message";
 
 function Notification() {
-  const [notifications, setNotifications] = useState<NotificationType[]>([]);
-  const user = auth.currentUser;
+  const { notifications, markAllAsRead, deleteNotification } =
+    useNotification();
   const navigate = useNavigate();
 
-  const isAllNotificationAsRead = async (userUid: string) => {
-    const isReadNotificationQuery = query(
-      collection(dataBase, "notifications"),
-      where("recipientId", "==", userUid),
-      where("isRead", "==", false)
-    );
-
-    const isFalseReadSnapshot = await getDocs(isReadNotificationQuery);
-
-    const updatePromises = isFalseReadSnapshot.docs.map((docSnapshot) => {
-      return updateDoc(doc(dataBase, "notifications", docSnapshot.id), {
-        isRead: true,
-      });
-    });
-
-    await Promise.all(updatePromises);
-  };
-
   useEffect(() => {
-    if (!user) return;
-
-    isAllNotificationAsRead(user.uid);
-
-    const notificationQuery = query(
-      collection(dataBase, "notifications"),
-      where("recipientId", "==", user.uid),
-      orderBy("createdAt", "desc")
-    );
-
-    const unsubscribe = onSnapshot(notificationQuery, (snapshot) => {
-      const newNotifications = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as NotificationType[];
-      setNotifications(newNotifications);
-    });
-
-    return () => unsubscribe();
-  }, [user]);
+    markAllAsRead();
+  }, [markAllAsRead]);
 
   const handleNotificationClick = (notification: NotificationType) => {
     navigate(`/tweets/${notification.tweetId}`);
-  };
-
-  const deleteNotification = async (notificationId: string) => {
-    try {
-      const notificationRef = doc(dataBase, "notifications", notificationId);
-      await deleteDoc(notificationRef);
-      console.log("알람 삭제 완료");
-    } catch (error) {
-      console.error(`알람 삭제 에러 발생: ${error}`);
-    }
   };
 
   return (
     <NotificationsWrapper>
       {notifications.map((notification) => (
         <NotificationContainer key={notification.id}>
-          <NotificationMessage>
-            {`${notification.senderName}님이 ${notification.tweetTitle}에 ${
-              notification.type === "like"
-                ? "좋아요를 눌렀습니다."
-                : "댓글을 작성했습니다."
-            }`}
+          <NotificationMessage
+            onClick={() => handleNotificationClick(notification)}
+          >
+            {formatNotificationMessage(notification)}
             <NotificationTimeAgo>
               {TimeAgo(new Date(notification.createdAt))}
             </NotificationTimeAgo>
