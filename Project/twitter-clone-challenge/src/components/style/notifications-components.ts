@@ -23,6 +23,7 @@ export const NotificationMessage = styled.span`
   width: 90%;
   font-size: clamp(12px, 2vw, 16px);
   color: ${(props) => props.theme.text};
+  cursor: pointer;
 `;
 
 export const NotificationTimeAgo = styled.span`
