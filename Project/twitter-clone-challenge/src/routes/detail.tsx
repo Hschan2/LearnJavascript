@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import {
   DetailTweetText,
   DetailImage,
@@ -36,12 +36,9 @@ import ExclamationBtn from "../components/screen/detail/exclamation-button";
 import EventBtn from "../components/screen/detail/event-button";
 
 function DetailTweet() {
-  const location = useLocation();
-  const tweetData = location.state?.tweetObj;
-  const tweetIdValue = tweetData.id;
+  const { tweetId } = useParams();
 
-  if (!tweetData || !tweetData.id)
-    return <div>데이터를 불러올 수 없습니다.</div>;
+  if (!tweetId) return <div>데이터를 불러올 수 없습니다.</div>;
 
   const {
     tweet,
@@ -51,7 +48,7 @@ function DetailTweet() {
     exclamationByUser,
     comments,
     setComments,
-  } = useDetailTweet(tweetData.id);
+  } = useDetailTweet(tweetId);
   const [newComment, setNewComment] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
@@ -69,12 +66,12 @@ function DetailTweet() {
       createdAt: Date.now(),
     };
 
-    await tweetService.addComment(tweetData.id, comment);
+    await tweetService.addComment(tweetId, comment);
     setNewComment("");
   };
 
   const handleDeleteComment = async (comment: IComment) => {
-    await tweetService.deleteComment(tweetData.id, comment);
+    await tweetService.deleteComment(tweetId, comment);
     setComments((prev) =>
       prev.filter((c) => c.commentId !== comment.commentId)
     );
@@ -82,7 +79,7 @@ function DetailTweet() {
 
   const handleToggleExclamation = async () => {
     await tweetService.toggleExclamation(
-      tweetData.id,
+      tweetId,
       auth.currentUser?.uid || "",
       exclamationByUser
     );
@@ -90,7 +87,7 @@ function DetailTweet() {
 
   const handleToggleLike = async () => {
     await tweetService.toggleLike(
-      tweetData.id,
+      tweetId,
       auth.currentUser?.uid || "",
       likedByUser
     );
@@ -99,21 +96,18 @@ function DetailTweet() {
   const handleDelete = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
       try {
-        await tweetService.deleteTweet(
-          tweetData.id,
-          tweetData.userId,
-          tweetData.photo
-        );
+        await tweetService.deleteTweet(tweetId, tweet?.userId, tweet?.photo);
         navigate("/");
       } catch (error) {
-        console.error("삭제 중 오류 발생: ", error);
+        console.error("삭제 중 오류 F발생: ", error);
       }
     }
   };
 
   useEffect(() => {
+    if (!tweet?.userId) return;
     const getProfileImage = async () => {
-      const imageRef = ref(storage, `avatars/${tweetData.userId}`);
+      const imageRef = ref(storage, `avatars/${tweet?.userId}`);
       try {
         const url = await getDownloadURL(imageRef);
         setProfileImage(url);
@@ -123,22 +117,20 @@ function DetailTweet() {
       }
     };
     getProfileImage();
-  }, [tweetData.userId]);
+  }, [tweet?.userId]);
 
   return (
     <DetailWrapper>
-      <DetailImage src={tweetData.photo} alt="Detail-Image" loading="lazy" />
+      <DetailImage src={tweet?.photo} alt="Detail-Image" loading="lazy" />
       <DetailContentWrapper>
         <DetailTweetWrapper>
           <DetailTitleButton>
-            <DetailTweetText>{tweetData.tweet}</DetailTweetText>
-            {auth?.currentUser?.uid === tweetData.userId && (
+            <DetailTweetText>{tweet?.tweet}</DetailTweetText>
+            {auth?.currentUser?.uid === tweet?.userId && (
               <DetailEventButtonWrapper>
                 <EventBtn
                   use="update"
-                  onClick={() =>
-                    navigate("/update", { state: { tweetIdValue } })
-                  }
+                  onClick={() => navigate(`/update/${tweetId}`)}
                 />
                 <EventBtn use="delete" onClick={handleDelete} />
               </DetailEventButtonWrapper>
@@ -160,22 +152,18 @@ function DetailTweet() {
           {profileImage && (
             <ProfileImage src={profileImage} alt="Profile-Image" />
           )}{" "}
-          {tweetData.username}
+          {tweet?.username}
         </DetailProfileWrapper>
         <TagWrapper>
           {tweet?.tags?.map((tag: string, index: number) => (
             <Tag key={index}>{tag}</Tag>
           ))}
         </TagWrapper>
-        {tweetData.location && (
-          <DetailInfo>위치: {tweetData.location}</DetailInfo>
-        )}
-        <DetailInfo>
-          업로드 날짜: {formattedDate(tweetData.createdAt)}
-        </DetailInfo>
-        <DetailInfo>카메라 브랜드: {tweetData.item}</DetailInfo>
-        {tweetData.retouch && (
-          <DetailRetouch href={tweetData.retouch} download>
+        {tweet?.location && <DetailInfo>위치: {tweet.location}</DetailInfo>}
+        <DetailInfo>업로드 날짜: {formattedDate(tweet?.createdAt)}</DetailInfo>
+        <DetailInfo>카메라 브랜드: {tweet?.item}</DetailInfo>
+        {tweet?.retouch && (
+          <DetailRetouch href={tweet.retouch} download>
             보정 파일 다운로드
           </DetailRetouch>
         )}

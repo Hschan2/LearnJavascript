@@ -102,7 +102,11 @@ export const tweetService = {
     await updateDoc(tweetRef, updateData);
   },
 
-  async deleteTweet(tweetId: string, userId: string, photo?: string) {
+  async deleteTweet(
+    tweetId: string,
+    userId: string | undefined,
+    photo?: string
+  ) {
     if (!auth.currentUser) {
       throw new Error("사용자가 인증되지 않았습니다.");
     }

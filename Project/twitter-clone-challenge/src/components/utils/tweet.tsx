@@ -41,7 +41,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   }, [tweetObj.userId]);
 
   const moveDetailPage = () => {
-    navigate("/detail", { state: { tweetObj } });
+    navigate(`/detail/${tweetIdValue}`);
   };
 
   return (
@@ -137,9 +137,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
       </InfoContents>
       {user?.uid === tweetObj.userId && (
         <Menu>
-          <MenuItem
-            onClick={() => navigate("/update", { state: { tweetIdValue } })}
-          >
+          <MenuItem onClick={() => navigate(`/update/${tweetIdValue}`)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

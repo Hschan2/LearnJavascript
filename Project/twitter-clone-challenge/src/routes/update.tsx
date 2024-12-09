@@ -1,14 +1,15 @@
-import { useLocation } from "react-router";
+import { useParams } from "react-router";
 import UpdateTweetForm from "../components/form/update-tweet-form";
 import { FormWrapper } from "../components/style/form-components";
 
 function Update() {
-  const location = useLocation();
-  const id = location.state?.tweetIdValue;
+  const { tweetId } = useParams();
+
+  if (!tweetId) return <div>잘못된 요청입니다.</div>;
 
   return (
     <FormWrapper>
-      <UpdateTweetForm id={id} />;
+      <UpdateTweetForm id={tweetId} />;
     </FormWrapper>
   );
 }

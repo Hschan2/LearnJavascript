@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         element: <Like />,
       },
       {
-        path: "detail",
+        path: "detail/:tweetId",
         element: (
           <ErrorBoundary>
             <DetailTweet />
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "update",
+        path: "update/:tweetId",
         element: (
           <ErrorBoundary>
             <Update />

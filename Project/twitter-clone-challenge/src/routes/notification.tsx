@@ -22,7 +22,7 @@ function Notification() {
   }, [markAllAsRead]);
 
   const handleNotificationClick = (notification: NotificationType) => {
-    navigate(`/tweets/${notification.tweetId}`);
+    navigate(`/detail/${notification.tweetId}`);
   };
 
   return (

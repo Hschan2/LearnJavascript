@@ -68,7 +68,7 @@ function MainSlide() {
 
   const handleTweetClick = useCallback(
     (tweetObj: ITweet) => {
-      navigate("/detail", { state: { tweetObj } });
+      navigate(`/detail/${tweetObj.id}`);
     },
     [navigate]
   );

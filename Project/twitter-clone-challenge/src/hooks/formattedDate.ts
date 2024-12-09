@@ -1,4 +1,8 @@
-function formattedDate( createdAt: string | number | Date) {
+function formattedDate(createdAt?: string | number | Date) {
+  if (!createdAt) {
+    return "날짜 없음";
+  }
+
   const createdDate = new Date(createdAt).toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "2-digit",
