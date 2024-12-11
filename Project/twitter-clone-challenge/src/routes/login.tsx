@@ -12,7 +12,7 @@ import {
 import GithubButton from "../components/btn/github-button";
 import GoogleButton from "../components/btn/google-button";
 import { useAuth } from "../hooks/auth/useAuth";
-import { FormInput } from "../hooks/auth/formInput";
+import { FormInput } from "../components/utils/formInput";
 import { validationRules } from "../constants";
 
 type FormType = {
