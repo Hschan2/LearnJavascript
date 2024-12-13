@@ -22,14 +22,14 @@ import {
 } from "../style/tweet-components";
 import { useNavigate } from "react-router";
 import { useTweet } from "../../hooks/tweet/useTweet";
+import { tweetService } from "../../hooks/tweet/useDetailTweet";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const tweetIdValue = tweetObj.id;
   const user = auth.currentUser;
   const [profileImage, setProfileImage] = useState<string>("");
   const navigate = useNavigate();
-  const { deleteTweet, toggleLike, toggleExclamation, fetchProfileImage } =
-    useTweet();
+  const { fetchProfileImage } = useTweet();
 
   useEffect(() => {
     const getProfileImage = async () => {
@@ -55,7 +55,18 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
             <Payload onClick={moveDetailPage}>
               [{tweetObj.item}]{tweetObj.tweet}
             </Payload>
-            <LikeButton onClick={() => toggleLike(tweetObj, user?.uid || "")}>
+            <LikeButton
+              onClick={() => {
+                if (user?.uid) {
+                  tweetService.toggleLike(
+                    tweetObj.id,
+                    user?.uid,
+                    (tweetObj.likedBy ?? []).includes(user?.uid),
+                    tweetObj
+                  );
+                }
+              }}
+            >
               {user?.uid && tweetObj.likedBy?.includes(user?.uid) ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +125,15 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
           <TimeExclamationWrapper>
             <CreatedAt>{formattedDate(tweetObj.createdAt)}</CreatedAt>
             <ExclamationButton
-              onClick={() => toggleExclamation(tweetObj.id, tweetObj.userId)}
+              onClick={() => {
+                if (user?.uid) {
+                  tweetService.toggleExclamation(
+                    tweetObj.id,
+                    user?.uid,
+                    (tweetObj.exclamationBy ?? []).includes(user?.uid)
+                  );
+                }
+              }}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +176,11 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
             onClick={() => {
               const confirm = window.confirm("정말로 삭제하시겠습니까?");
               if (confirm)
-                deleteTweet(tweetObj.id, tweetObj.userId, tweetObj.photo);
+                tweetService.deleteTweet(
+                  tweetObj.id,
+                  tweetObj.userId,
+                  tweetObj.photo
+                );
 
               return;
             }}

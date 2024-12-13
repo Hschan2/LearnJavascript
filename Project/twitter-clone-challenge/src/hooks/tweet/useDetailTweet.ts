@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 import {
   doc,
   updateDoc,
-  getDoc,
   onSnapshot,
   deleteDoc,
   arrayUnion,
   arrayRemove,
   increment,
+  collection,
+  setDoc,
+  getDoc,
 } from "firebase/firestore";
 import { auth, dataBase, storage } from "../../firebase";
 import { IComment, ITweet } from "../../components/types/tweet-type";
 import { deleteObject, ref } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 export function useDetailTweet(tweetId: string) {
   const [tweet, setTweet] = useState<ITweet | null>(null);
@@ -25,7 +28,7 @@ export function useDetailTweet(tweetId: string) {
     if (!tweetId) return;
     const tweetRef = doc(dataBase, "tweets", tweetId);
     const unsubscribe = onSnapshot(tweetRef, (doc) => {
-      const tweetData = doc.data() as ITweet | undefined;
+      const tweetData = { ...doc.data(), id: doc.id } as ITweet | undefined;
       if (tweetData) {
         setTweet(tweetData);
         setLikes(tweetData.likes || 0);
@@ -82,24 +85,44 @@ export const tweetService = {
     }
   },
 
-  async toggleLike(tweetId: string, userId: string, liked: boolean) {
+  async toggleLike(
+    tweetId: string,
+    userId: string,
+    liked: boolean,
+    tweet?: ITweet
+  ) {
     const tweetRef = doc(dataBase, "tweets", tweetId);
     const updateData = liked
       ? { likes: increment(-1), likedBy: arrayRemove(userId) }
       : { likes: increment(1), likedBy: arrayUnion(userId) };
     await updateDoc(tweetRef, updateData);
+
+    if (liked) {
+      await tweetService.deletedLikedTweet(userId, tweetId);
+    } else {
+      if (tweet) {
+        await tweetService.storeLikedTweet(userId, tweet);
+
+        if (userId !== tweet.userId)
+          await tweetService.createNotification(userId, tweet, "like");
+      }
+    }
   },
 
-  async toggleExclamation(
-    tweetId: string,
-    userId: string,
-    exclamation: boolean
-  ) {
+  async toggleExclamation(tweetId: string, userId: string, reported: boolean) {
+    console.log(reported);
     const tweetRef = doc(dataBase, "tweets", tweetId);
-    const updateData = exclamation
+    const updateData = reported
       ? { exclamation: increment(-1), exclamationBy: arrayRemove(userId) }
       : { exclamation: increment(1), exclamationBy: arrayUnion(userId) };
     await updateDoc(tweetRef, updateData);
+
+    const tweetDoc = await getDoc(tweetRef);
+    if (tweetDoc.exists()) {
+      const { exclamation = 0, photo } = tweetDoc.data();
+      if (exclamation >= 5)
+        await tweetService.deleteTweet(tweetId, userId, photo);
+    }
   },
 
   async deleteTweet(
@@ -125,5 +148,42 @@ export const tweetService = {
     } catch (error) {
       throw new Error(`트윗 삭제 실패: ${error}`);
     }
+  },
+
+  async storeLikedTweet(userId: string, tweetObj: ITweet) {
+    const likedTweetRef = doc(collection(dataBase, "likedTweets"));
+    await setDoc(likedTweetRef, {
+      userId,
+      tweetId: tweetObj.id,
+      likedAt: new Date().toISOString(),
+    });
+  },
+
+  async deletedLikedTweet(userId: string, tweetId: string) {
+    const likedTweetQuery = doc(
+      dataBase,
+      "likedTweets",
+      `${userId}_${tweetId}`
+    );
+    await deleteDoc(likedTweetQuery);
+  },
+
+  async createNotification(
+    senderId: string,
+    tweetObj: ITweet,
+    type: "like" | "other"
+  ) {
+    const notificationRef = doc(dataBase, "notifications", uuidv4());
+    await setDoc(notificationRef, {
+      id: notificationRef.id,
+      recipientId: tweetObj.userId,
+      tweetTitle: tweetObj.tweet,
+      tweetId: tweetObj.id,
+      senderId,
+      senderName: auth.currentUser?.displayName || "익명",
+      createdAt: new Date().toISOString(),
+      type,
+      isRead: false,
+    });
   },
 };

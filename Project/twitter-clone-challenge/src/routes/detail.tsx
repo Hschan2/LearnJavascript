@@ -34,6 +34,7 @@ import LikeBtn from "../components/screen/detail/like-button";
 import CommentList from "../components/screen/detail/comment-list";
 import ExclamationBtn from "../components/screen/detail/exclamation-button";
 import EventBtn from "../components/screen/detail/event-button";
+import { useTweet } from "../hooks/tweet/useTweet";
 
 function DetailTweet() {
   const { tweetId } = useParams();
@@ -49,6 +50,7 @@ function DetailTweet() {
     comments,
     setComments,
   } = useDetailTweet(tweetId);
+  const { fetchProfileImage } = useTweet();
   const [newComment, setNewComment] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
@@ -86,10 +88,13 @@ function DetailTweet() {
   };
 
   const handleToggleLike = async () => {
+    if (!tweet) return;
+
     await tweetService.toggleLike(
       tweetId,
       auth.currentUser?.uid || "",
-      likedByUser
+      likedByUser,
+      tweet
     );
   };
 
@@ -106,16 +111,12 @@ function DetailTweet() {
 
   useEffect(() => {
     if (!tweet?.userId) return;
+
     const getProfileImage = async () => {
-      const imageRef = ref(storage, `avatars/${tweet?.userId}`);
-      try {
-        const url = await getDownloadURL(imageRef);
-        setProfileImage(url);
-      } catch (error) {
-        console.error(error);
-        setProfileImage("");
-      }
+      const image = await fetchProfileImage(tweet.userId);
+      setProfileImage(image);
     };
+
     getProfileImage();
   }, [tweet?.userId]);
 
