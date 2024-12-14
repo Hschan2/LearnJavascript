@@ -21,19 +21,17 @@ import {
   Wrapper,
 } from "../style/tweet-components";
 import { useNavigate } from "react-router";
-import { useTweet } from "../../hooks/tweet/useTweet";
-import { tweetService } from "../../hooks/tweet/useDetailTweet";
+import { tweetService } from "../../hooks/tweet/useTweet";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const tweetIdValue = tweetObj.id;
   const user = auth.currentUser;
   const [profileImage, setProfileImage] = useState<string>("");
   const navigate = useNavigate();
-  const { fetchProfileImage } = useTweet();
 
   useEffect(() => {
     const getProfileImage = async () => {
-      const image = await fetchProfileImage(tweetObj.userId);
+      const image = await tweetService.fetchProfileImage(tweetObj.userId);
       setProfileImage(image);
     };
 

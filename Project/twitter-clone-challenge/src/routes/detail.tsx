@@ -29,12 +29,11 @@ import {
 } from "../components/style/form-components";
 import { v4 as uuidv4 } from "uuid";
 import { IComment } from "../components/types/tweet-type";
-import { tweetService, useDetailTweet } from "../hooks/tweet/useDetailTweet";
+import { tweetService, useDetailTweet } from "../hooks/tweet/useTweet";
 import LikeBtn from "../components/screen/detail/like-button";
 import CommentList from "../components/screen/detail/comment-list";
 import ExclamationBtn from "../components/screen/detail/exclamation-button";
 import EventBtn from "../components/screen/detail/event-button";
-import { useTweet } from "../hooks/tweet/useTweet";
 
 function DetailTweet() {
   const { tweetId } = useParams();
@@ -50,7 +49,6 @@ function DetailTweet() {
     comments,
     setComments,
   } = useDetailTweet(tweetId);
-  const { fetchProfileImage } = useTweet();
   const [newComment, setNewComment] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
@@ -113,7 +111,7 @@ function DetailTweet() {
     if (!tweet?.userId) return;
 
     const getProfileImage = async () => {
-      const image = await fetchProfileImage(tweet.userId);
+      const image = await tweetService.fetchProfileImage(tweet.userId);
       setProfileImage(image);
     };
 
