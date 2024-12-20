@@ -51,7 +51,8 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
         <ContentContainer>
           <TweetLikeWrapper>
             <Payload onClick={moveDetailPage}>
-              [{tweetObj.item}]{tweetObj.tweet}
+              {tweetObj.item && [tweetObj.item]}
+              {tweetObj.tweet}
             </Payload>
             <LikeButton
               onClick={() => {
