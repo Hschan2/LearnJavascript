@@ -1,39 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import {
-  DetailTweetText,
-  DetailImage,
-  DetailProfileWrapper,
-  DetailWrapper,
-  ProfileImage,
-  DetailContentWrapper,
-  TagWrapper,
-  Tag,
-  DetailInfo,
-  DetailCommentWrapper,
-  DetailRetouch,
-  CommentsWrapper,
-  DetailTweetWrapper,
-  DetailButtonWrapper,
-  DetailTitleButton,
-  DetailEventButtonWrapper,
-} from "../components/style/tweet-components";
-import { getDownloadURL, ref } from "firebase/storage";
-import { auth, storage } from "../firebase";
-import formattedDate from "../hooks/formattedDate";
-import { Avatar } from "../components/style/screen-components";
-import {
-  Form,
-  SubmitButton,
-  TextArea,
-} from "../components/style/form-components";
+import { useNavigate, useParams } from "react-router";
+import { auth } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { IComment } from "../components/types/tweet-type";
 import { tweetService, useDetailTweet } from "../hooks/tweet/useTweet";
-import LikeBtn from "../components/screen/detail/like-button";
-import CommentList from "../components/screen/detail/comment-list";
-import ExclamationBtn from "../components/screen/detail/exclamation-button";
-import EventBtn from "../components/screen/detail/event-button";
 import DetailUI from "./components/DetailUI";
 
 function DetailTweet() {
@@ -44,9 +14,7 @@ function DetailTweet() {
 
   const {
     tweet,
-    likes,
     likedByUser,
-    exclamation,
     exclamationByUser,
     comments,
     setComments,

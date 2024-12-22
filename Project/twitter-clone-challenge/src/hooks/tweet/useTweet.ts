@@ -18,9 +18,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export function useDetailTweet(tweetId: string) {
   const [tweet, setTweet] = useState<ITweet | null>(null);
-  const [likes, setLikes] = useState<number>(0);
   const [likedByUser, setLikedByUser] = useState<boolean>(false);
-  const [exclamation, setExclamation] = useState<number>(0);
   const [exclamationByUser, setExclamationByUser] = useState<boolean>(false);
   const [comments, setComments] = useState<IComment[]>([]);
 
@@ -31,13 +29,11 @@ export function useDetailTweet(tweetId: string) {
       const tweetData = { ...doc.data(), id: doc.id } as ITweet | undefined;
       if (tweetData) {
         setTweet(tweetData);
-        setLikes(tweetData.likes || 0);
         setLikedByUser(
           (auth.currentUser?.uid &&
             tweetData.likedBy?.includes(auth.currentUser.uid)) ||
             false
         );
-        setExclamation(tweetData.exclamation || 0);
         setExclamationByUser(
           (auth.currentUser?.uid &&
             tweetData.exclamationBy?.includes(auth.currentUser.uid)) ||
@@ -52,12 +48,9 @@ export function useDetailTweet(tweetId: string) {
 
   return {
     tweet,
-    likes,
     likedByUser,
-    exclamation,
     exclamationByUser,
     comments,
-    setLikes,
     setComments,
   };
 }
