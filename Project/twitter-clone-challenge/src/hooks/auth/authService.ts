@@ -4,7 +4,15 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth, dataBase } from "../../firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 
 export const AuthService = (() => {
   const handleError = (error: FirebaseError): string => {
@@ -40,6 +48,13 @@ export const AuthService = (() => {
         displayName: name,
         photoURL: initialImage,
       });
+      await setDoc(doc(dataBase, "users", credentials.user.uid), {
+        name,
+        email,
+        photoURL: initialImage,
+        createdAt: new Date().toISOString(),
+      });
+
       return true;
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -61,8 +76,24 @@ export const AuthService = (() => {
     }
   };
 
+  const checkDuplicateName = async (name: string) => {
+    const usersRef = collection(dataBase, "users");
+    const q = query(usersRef, where("displayName", "==", name));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  };
+
+  const checkDuplicateEmail = async (email: string) => {
+    const usersRef = collection(dataBase, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
+  };
+
   return {
     signUp,
     login,
+    checkDuplicateName,
+    checkDuplicateEmail,
   };
 })();
