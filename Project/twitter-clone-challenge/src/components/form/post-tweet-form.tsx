@@ -179,6 +179,7 @@ function PostTweetForm() {
         id="file"
         name="imageFile"
         accept="image/*"
+        required
       />
       <MapWrapper
         onClick={() => updateState({ isModalOpen: true })}
