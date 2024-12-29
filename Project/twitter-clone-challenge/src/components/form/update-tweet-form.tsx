@@ -64,6 +64,10 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!updateState.uploadedFile && !updateState.file) {
+      alert("사진을 첨부해 주세요!");
+      return;
+    }
     if (
       !user ||
       updateState.isLoading ||

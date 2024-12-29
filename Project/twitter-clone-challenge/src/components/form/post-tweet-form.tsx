@@ -115,13 +115,11 @@ function PostTweetForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      !user ||
-      postState.isLoading ||
-      !postState.file ||
-      !postState.tweet.trim()
-    )
+    if (!postState.file) {
+      alert("사진을 추가해 주세요!");
       return;
+    }
+    if (!user || postState.isLoading || !postState.tweet.trim()) return;
 
     try {
       updateState({ isLoading: true });
@@ -179,7 +177,6 @@ function PostTweetForm() {
         id="file"
         name="imageFile"
         accept="image/*"
-        required
       />
       <MapWrapper
         onClick={() => updateState({ isModalOpen: true })}
