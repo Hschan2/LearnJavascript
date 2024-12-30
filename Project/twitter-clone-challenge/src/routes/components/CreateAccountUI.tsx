@@ -19,11 +19,6 @@ type LoginUIProps = {
   errors: any;
   isLoading: boolean;
   error: string | null;
-  validateName: (name: string) => void;
-  validateEmail: (email: string) => void;
-  nameMessage: string | null;
-  emailMessage: string | null;
-  isNameValidating: boolean;
 };
 
 export const CreateAccountUI = ({
@@ -32,11 +27,6 @@ export const CreateAccountUI = ({
   errors,
   isLoading,
   error,
-  validateName,
-  validateEmail,
-  nameMessage,
-  emailMessage,
-  isNameValidating
 }: LoginUIProps) => {
   return (
     <Wrapper>
@@ -49,10 +39,7 @@ export const CreateAccountUI = ({
           type="text"
           error={errors.name}
           rules={validationRules.name}
-          onBlur={(e) => validateName(e.target.value)}
         />
-        {isNameValidating &&  <Hint>이름 중복 확인중</Hint>}
-        {nameMessage && <Hint>{nameMessage}</Hint>}
         <FormInput
           register={register}
           name="email"
@@ -60,9 +47,7 @@ export const CreateAccountUI = ({
           type="email"
           error={errors.email}
           rules={validationRules.email}
-          onBlur={(e) => validateEmail(e.target.value)}
         />
-        {emailMessage && <Hint>{emailMessage}</Hint>}
         <FormInput
           register={register}
           name="password"

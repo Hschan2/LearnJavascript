@@ -9,11 +9,6 @@ function CreateAccount() {
     errors,
     isLoading,
     error,
-    nameMessage,
-    validateName,
-    emailMessage,
-    validateEmail,
-    isNameValidating,
   } = useAccount();
 
   return (
@@ -23,11 +18,6 @@ function CreateAccount() {
       errors={errors}
       isLoading={isLoading}
       error={error}
-      validateName={validateName}
-      nameMessage={nameMessage}
-      validateEmail={validateEmail}
-      emailMessage={emailMessage}
-      isNameValidating={isNameValidating}
     />
   );
 }

@@ -6,11 +6,10 @@ import {
 } from "firebase/auth";
 import { auth, dataBase } from "../../firebase";
 import {
+  addDoc,
   collection,
-  doc,
   getDocs,
   query,
-  setDoc,
   where,
 } from "firebase/firestore";
 
@@ -37,6 +36,21 @@ export const AuthService = (() => {
 
   const signUp = async (name: string, email: string, password: string) => {
     try {
+      const usersRef = collection(dataBase, "users");
+      const nameQuery = query(usersRef, where("name", "==", name));
+      const emailQuery = query(usersRef, where("email", "==", email));
+      const [nameSnapshot, emailSnapshot] = await Promise.all([
+        getDocs(nameQuery),
+        getDocs(emailQuery),
+      ]);
+
+      if (!nameSnapshot.empty) {
+        throw new Error("이미 등록된 이름이 있습니다.");
+      }
+      if (!emailSnapshot.empty) {
+        throw new Error("이미 등록된 이메일이 있습니다.");
+      }
+
       const credentials = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -48,19 +62,22 @@ export const AuthService = (() => {
         displayName: name,
         photoURL: initialImage,
       });
-      await setDoc(doc(dataBase, "users", credentials.user.uid), {
+      await addDoc(usersRef, {
         name,
         email,
-        photoURL: initialImage,
-        createdAt: new Date().toISOString(),
       });
 
       return true;
     } catch (error) {
       if (error instanceof FirebaseError) {
+        console.error("파이이베이스 쓰기 오류:", error.message);
         throw new Error(handleError(error));
+      } else if (error instanceof Error) {
+        console.error("회원가입 에러:", error.message);
+        throw error;
+      } else {
+        throw new Error("회원가입: 알수 없는 에러 발생");
       }
-      throw new Error("회원가입: 알수 없는 에러 발생");
     }
   };
 
@@ -76,24 +93,8 @@ export const AuthService = (() => {
     }
   };
 
-  const checkDuplicateName = async (name: string) => {
-    const usersRef = collection(dataBase, "users");
-    const q = query(usersRef, where("displayName", "==", name));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
-  };
-
-  const checkDuplicateEmail = async (email: string) => {
-    const usersRef = collection(dataBase, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-    return !querySnapshot.empty;
-  };
-
   return {
     signUp,
     login,
-    checkDuplicateName,
-    checkDuplicateEmail,
   };
 })();
