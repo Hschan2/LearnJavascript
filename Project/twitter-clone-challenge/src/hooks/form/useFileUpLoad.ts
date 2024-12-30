@@ -3,7 +3,7 @@ import { storage } from "../../firebase";
 import { DocumentReference, updateDoc } from "firebase/firestore";
 import { useCallback } from "react";
 
-export const useFileUpload = (user?: any, id?: string) => {
+export const useFileUpload = (user?: any) => {
   const uploadFile = async (path: string, file: File) => {
     const fileRef = ref(storage, path);
     const result = await uploadBytes(fileRef, file);

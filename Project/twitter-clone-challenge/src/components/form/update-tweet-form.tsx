@@ -60,7 +60,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
     setUpdateState((prev) => ({ ...prev, [key]: value }));
   };
 
-  const { handleFileUpload, handleRetouchUpload } = useFileUpload(user, id);
+  const { handleFileUpload, handleRetouchUpload } = useFileUpload(user);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,7 +84,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         tweet: updateState.tweet,
         tags: updateState.tags,
         item: updateState.selectedOption,
-        location: updateState.selectedAddress,
+        location: updateState.selectedAddress || null,
       });
 
       if (updateState.uploadedFile) {
