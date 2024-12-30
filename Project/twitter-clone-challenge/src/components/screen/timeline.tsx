@@ -30,7 +30,7 @@ const fetchTweetData = (snapshot: QuerySnapshot): ITweet[] =>
 function Timeline({ isHot, option = "전체" }: ITimeline) {
   const [tweets, setTweets] = useState<ITweet[]>([]);
   const [filteredTweets, setFilteredTweets] = useState<ITweet[]>([]);
-  const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreTweets);
+  const [_, triggerRef] = useInfiniteScroll(fetchMoreTweets);
 
   const fetchTweets = useCallback(() => {
     const tweetsQuery = query(

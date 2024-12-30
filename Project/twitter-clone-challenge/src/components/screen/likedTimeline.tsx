@@ -67,7 +67,7 @@ function LikedTimeline() {
     await fetchLikedTweets();
   }, [fetchLikedTweets]);
 
-  const [isFetching, triggerRef] = useInfiniteScroll(fetchMoreData);
+  const [_, triggerRef] = useInfiniteScroll(fetchMoreData);
 
   useEffect(() => {
     const initFetch = async () => {

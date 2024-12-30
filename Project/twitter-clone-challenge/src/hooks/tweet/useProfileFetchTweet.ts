@@ -45,7 +45,7 @@ const useProfileFetchTweet = (userId?: string) => {
     setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
   }, [userId, lastDoc, hasMore]);
 
-  const [isFetching, triggerRef] = useInfiniteScroll(fetchTweets);
+  const [_, triggerRef] = useInfiniteScroll(fetchTweets);
 
   useEffect(() => {
     fetchTweets();
