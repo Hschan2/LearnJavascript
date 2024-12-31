@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "twitter-clone-challenge.web.app",
+    "site": "twitter-clone-challenge",
     "public": "dist",
     "ignore": [
       "firebase.json",
