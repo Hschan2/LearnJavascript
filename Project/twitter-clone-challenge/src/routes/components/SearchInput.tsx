@@ -7,7 +7,7 @@ import {
 interface SearchInputProps {
   searchWord: string;
   inputRef: React.RefObject<HTMLInputElement>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onSearch: () => void;
 }
@@ -22,7 +22,7 @@ export const SearchInput = ({
   <InputWrapper>
     <InputSearch
       ref={inputRef}
-      onChange={onChange}
+      onChange={(e) => onChange(e.target.value)}
       onKeyDown={onKeyDown}
       type="text"
       placeholder="검색 단어"

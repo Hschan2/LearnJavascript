@@ -2,8 +2,12 @@ import { SearchWrapper } from "../components/style/search-components";
 import { useSearch } from "../hooks/useSearch";
 import { SearchInput } from "./components/SearchInput";
 import { SearchResults } from "./components/SearchResults";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function Search() {
+  const [searchParams] = useSearchParams();
+  const tag = searchParams.get("tag");
   const {
     searchWord,
     searchedTweet,
@@ -12,6 +16,18 @@ function Search() {
     keyDownSearch,
     onSearch,
   } = useSearch();
+
+  useEffect(() => {
+    if (tag) {
+      changeSearchWord(tag);
+    }
+  }, [tag]);
+
+  useEffect(() => {
+    if (searchWord) {
+      onSearch();
+    }
+  }, [searchWord]);
 
   return (
     <SearchWrapper>

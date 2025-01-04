@@ -46,6 +46,7 @@ export interface DetailUIProps {
     onNavigateUpdate: () => void;
     onDeleteTweet: () => void;
     onAddComment: () => void;
+    onTagClick: (tag: string) => void;
   };
   commentsData: {
     comments: IComment[];
@@ -97,11 +98,21 @@ const DetailUI = ({
       </DetailProfileWrapper>
       <TagWrapper>
         {tweet.tweet?.tags?.map((tag: string, index: number) => (
-          <Tag key={index}>{tag}</Tag>
+          <Tag
+            key={index}
+            className="detailTag"
+            onClick={() => actions.onTagClick(tag)}
+          >
+            {tag}
+          </Tag>
         ))}
       </TagWrapper>
-      {tweet.tweet?.location && <DetailInfo>위치: {tweet.tweet.location}</DetailInfo>}
-      <DetailInfo>업로드 날짜: {formattedDate(tweet.tweet?.createdAt)}</DetailInfo>
+      {tweet.tweet?.location && (
+        <DetailInfo>위치: {tweet.tweet.location}</DetailInfo>
+      )}
+      <DetailInfo>
+        업로드 날짜: {formattedDate(tweet.tweet?.createdAt)}
+      </DetailInfo>
       <DetailInfo>카메라 브랜드: {tweet.tweet?.item}</DetailInfo>
       {tweet.tweet?.retouch && (
         <DetailRetouch href={tweet.tweet.retouch} download>

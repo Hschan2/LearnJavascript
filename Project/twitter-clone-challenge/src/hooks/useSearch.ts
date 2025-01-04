@@ -12,8 +12,8 @@ export const useSearch = () => {
     inputRef.current?.focus();
   }, []);
 
-  const changeSearchWord = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchWord(e.target.value);
+  const changeSearchWord = (value: string) => {
+    setSearchWord(value);
   };
 
   const onSearch = useCallback(() => {

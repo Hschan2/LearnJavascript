@@ -74,6 +74,10 @@ function DetailTweet() {
     }
   };
 
+  const handleTagClick = (tag: string) => {
+    navigate(`/search?tag=${encodeURIComponent(tag)}`);
+  }
+
   useEffect(() => {
     if (!tweet?.userId) return;
     tweetService.fetchProfileImage(tweet.userId).then(setProfileImage);
@@ -94,6 +98,7 @@ function DetailTweet() {
         onNavigateUpdate: () => navigate(`/update/${tweetId}`),
         onDeleteTweet: handleDelete,
         onAddComment: handleAddComment,
+        onTagClick: handleTagClick,
       }}
       commentsData={{
         comments,
