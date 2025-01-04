@@ -16,28 +16,14 @@ export const Wrapper = styled.div`
 export const InfoContents = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 0 0 20px 12px;
-`;
-
-export const TweetLikeWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const TimeExclamationWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+  gap: 10px;
+  padding: 0 0 8px 12px;
 `;
 
 export const Menu = styled.div`
@@ -63,6 +49,7 @@ export const MenuItem = styled.button`
 export const Photo = styled.img`
   width: 100%;
   height: 20vw;
+  border-bottom: 1px solid #f1f1f7;
   border-radius: 14px;
   object-fit: cover;
   cursor: pointer;
@@ -105,26 +92,31 @@ export const Payload = styled.p`
 
 export const CreatedAt = styled.span`
   font-size: 12px;
-  color: grey;
-  margin-top: 8px;
+  color: #767676;
+`;
+
+export const TweetButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 0 -8px;
 `;
 
 export const ButtonBase = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
   background-color: transparent;
   border: none;
-  width: 60px;
-  height: 20px;
+  gap: 3px;
   cursor: pointer;
   color: ${(props) => props.theme.text};
   font-size: 14px;
 
   svg {
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -155,6 +147,10 @@ export const Tag = styled.span`
   font-size: 12px;
   color: #767676;
   padding: 4px 8px;
+
+  &.detailTag {
+    cursor: pointer;
+  }
 `;
 
 // Detail
