@@ -112,7 +112,7 @@ export const tweetService = {
     const tweetDoc = await getDoc(tweetRef);
     if (tweetDoc.exists()) {
       const { exclamation = 0, photo } = tweetDoc.data();
-      if (exclamation >= 5)
+      if (exclamation >= 7)
         await tweetService.deleteTweet(tweetId, userId, photo);
     }
   },
