@@ -109,7 +109,8 @@ export const FooterContainer = styled.div`
   text-align: center;
   width: 100%;
   font-size: 12px;
-  border-top: 1px solid grey;
+  border-top: 1px solid #D3D3D3;
+  color: #767676;
 `;
 
 // 상단 메뉴(모바일 버전)
