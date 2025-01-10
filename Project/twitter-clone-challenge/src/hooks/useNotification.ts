@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NotificationType } from "../components/types/notifications";
 import { auth, dataBase } from "../firebase";
 import {
@@ -12,10 +12,13 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { useNotificationMessage } from "../components/utils/notificationMessageContext";
 
 export const useNotification = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const user = auth.currentUser;
+  const { setMessage } = useNotificationMessage();
+  const lastNotificationId = useRef<string | null>(null);
 
   const markAllAsRead = useCallback(async () => {
     if (!user) return;
@@ -61,11 +64,23 @@ export const useNotification = () => {
         id: doc.id,
         ...doc.data(),
       })) as NotificationType[];
+
+      if (
+        newNotifications.length > 0 &&
+        newNotifications[0].id !== lastNotificationId.current
+      ) {
+        const latestNotification = newNotifications[0];
+        setMessage(
+          `${latestNotification.senderName}님이 ${latestNotification.tweetTitle}에 좋아요를 눌렀습니다.`
+        );
+        lastNotificationId.current = latestNotification.id;
+      }
+
       setNotifications(newNotifications);
     });
 
     return () => unsubscribe();
-  }, [user]);
+  }, [user, notifications, setMessage]);
 
   return { notifications, markAllAsRead, deleteNotification };
 };

@@ -24,6 +24,9 @@ import Search from "./routes/search";
 import { Helmet } from "react-helmet-async";
 import ErrorBoundary from "./components/route/error-boundary";
 import NotFoundPage from "./components/route/not-found-page";
+import InputEmail from "./routes/input-email";
+import { NotificationMessageProvider } from "./components/utils/notificationMessageContext";
+import NotificationPopup from "./components/utils/notificationPopup";
 
 const router = createBrowserRouter([
   {
@@ -108,6 +111,22 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/input-email",
+    element: (
+      <ErrorBoundary>
+        <InputEmail />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/reset-password",
+    element: (
+      <ErrorBoundary>
+        <CreateAccount />
+      </ErrorBoundary>
+    ),
+  },
+  {
     path: "*",
     element: <NotFoundPage />,
   },
@@ -185,11 +204,20 @@ function App() {
           href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap"
         />
       </Helmet>
-      <Wrapper>
-        <GlobalStyles />
-        {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
-        <Footer />
-      </Wrapper>
+      <NotificationMessageProvider>
+        <Wrapper>
+          <GlobalStyles />
+          {isLoading ? (
+            <LoadingScreen />
+          ) : (
+            <>
+              <NotificationPopup />
+              <RouterProvider router={router} />
+            </>
+          )}
+          <Footer />
+        </Wrapper>
+      </NotificationMessageProvider>
     </ThemeProvider>
   );
 }
