@@ -1,4 +1,7 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 import Layout from "./components/screen/layout";
 import Home from "./routes/home";
 import Profile from "./routes/profile";
@@ -187,6 +190,7 @@ const darkTheme = {
 function App() {
   const [isLoading, setLoading] = useState(true);
   const { darkMode } = useDarkModeStore();
+
   const init = async () => {
     await auth.authStateReady();
     setLoading(false);

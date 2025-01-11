@@ -1,18 +1,17 @@
 import styled from "styled-components";
 import { useNotificationMessage } from "./notificationMessageContext";
-import { useNavigate } from "react-router";
 
 const NotificationPopup = () => {
-  const { message } = useNotificationMessage();
-  const navigate = useNavigate();
+  const { message, clearMessage } = useNotificationMessage();
 
   if (!message) return null;
 
-  return (
-    <PopupWrapper onClick={() => navigate("/notification")}>
-      {message}
-    </PopupWrapper>
-  );
+  const handleClick = () => {
+    clearMessage();
+    window.location.href = "/notification";
+  };
+
+  return <PopupWrapper onClick={handleClick}>{message}</PopupWrapper>;
 };
 
 export default NotificationPopup;
@@ -28,4 +27,10 @@ const PopupWrapper = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   font-size: 14px;
   z-index: 1000;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.9;
+  }
 `;

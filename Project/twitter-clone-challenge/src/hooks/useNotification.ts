@@ -17,7 +17,7 @@ import { useNotificationMessage } from "../components/utils/notificationMessageC
 export const useNotification = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const user = auth.currentUser;
-  const { setMessage } = useNotificationMessage();
+  const { setMessage, dismissedMessages } = useNotificationMessage();
   const lastNotificationId = useRef<string | null>(null);
 
   const markAllAsRead = useCallback(async () => {
@@ -65,22 +65,25 @@ export const useNotification = () => {
         ...doc.data(),
       })) as NotificationType[];
 
+      const latestNotification = newNotifications[0];
+
       if (
-        newNotifications.length > 0 &&
-        newNotifications[0].id !== lastNotificationId.current
+        latestNotification &&
+        latestNotification.id !== lastNotificationId.current &&
+        !dismissedMessages.has(latestNotification.id)
       ) {
-        const latestNotification = newNotifications[0];
         setMessage(
           `${latestNotification.senderName}님이 ${latestNotification.tweetTitle}에 좋아요를 눌렀습니다.`
         );
         lastNotificationId.current = latestNotification.id;
+        dismissedMessages.add(latestNotification.id);
       }
 
       setNotifications(newNotifications);
     });
 
     return () => unsubscribe();
-  }, [user, notifications, setMessage]);
+  }, [user, dismissedMessages, setMessage]);
 
   return { notifications, markAllAsRead, deleteNotification };
 };

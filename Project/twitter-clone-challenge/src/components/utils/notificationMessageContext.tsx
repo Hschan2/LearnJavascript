@@ -1,8 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 interface NotificationMessageContextType {
   message: string | null;
   setMessage: (msg: string | null) => void;
+  clearMessage: () => void;
+  dismissedMessages: Set<string>;
 }
 
 const NotificationMessageContext = createContext<
@@ -13,16 +15,28 @@ export const NotificationMessageProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [message, setMessage] = useState<string | null>(null);
+  const dismissedMessages = useRef<Set<string>>(new Set());
+
+  const clearMessage = () => {
+    setMessage(null);
+  };
 
   useEffect(() => {
     if (message) {
-      const timeout = setTimeout(() => setMessage(null), 3000);
+      const timeout = setTimeout(() => clearMessage(), 3000);
       return () => clearTimeout(timeout);
     }
   }, [message]);
 
   return (
-    <NotificationMessageContext.Provider value={{ message, setMessage }}>
+    <NotificationMessageContext.Provider
+      value={{
+        message,
+        setMessage,
+        clearMessage,
+        dismissedMessages: dismissedMessages.current,
+      }}
+    >
       {children}
     </NotificationMessageContext.Provider>
   );
