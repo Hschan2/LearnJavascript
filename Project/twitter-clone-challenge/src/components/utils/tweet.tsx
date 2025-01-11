@@ -13,8 +13,6 @@ import {
   Payload,
   Photo,
   ProfileImage,
-  Tag,
-  TagWrapper,
   TweetButtonWrapper,
   Username,
   Wrapper,
