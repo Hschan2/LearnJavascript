@@ -78,6 +78,16 @@ function DetailTweet() {
     navigate(`/search?tag=${encodeURIComponent(tag)}`);
   }
 
+  const handleURLCopy = async () => {
+    try {
+      const currentURL = window.location.href;
+      await navigator.clipboard.writeText(currentURL);
+      alert("URL 복사가 완료되었습니다.");
+    } catch (error) {
+      console.error("URL 복사 실패");
+    }
+  }
+
   useEffect(() => {
     if (!tweet?.userId) return;
     tweetService.fetchProfileImage(tweet.userId).then(setProfileImage);
@@ -99,6 +109,7 @@ function DetailTweet() {
         onDeleteTweet: handleDelete,
         onAddComment: handleAddComment,
         onTagClick: handleTagClick,
+        onURLCopy: handleURLCopy,
       }}
       commentsData={{
         comments,

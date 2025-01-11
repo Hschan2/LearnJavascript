@@ -213,9 +213,18 @@ export const DetailEventButton = styled.button`
 `;
 
 export const DetailTweetText = styled.h2`
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: clamp(16px, 2vw, 32px);
   font-weight: 800;
   color: ${(props) => props.theme.text};
+
+  svg {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
 `;
 
 export const DetailButtonWrapper = styled.div`
