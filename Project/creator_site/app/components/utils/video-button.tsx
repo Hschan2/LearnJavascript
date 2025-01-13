@@ -33,7 +33,7 @@ function VideoButton({ size, data }: IButtonProps) {
           fill
         />
         <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl">
-          ▶️
+          ▶
         </span>
       </button>
       {title ? <p className="text-xs my-1.5 ml-1.5">{title}</p> : null}
