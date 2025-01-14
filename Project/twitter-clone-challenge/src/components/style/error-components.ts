@@ -57,3 +57,12 @@ export const NotFoundTitle = styled.h2`
 export const NotFoundDescription = styled.p`
   color: #797979;
 `;
+
+// 잘못된 요청 및 경로 에러 레이아웃
+export const WrongMessage = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 90vh;
+`

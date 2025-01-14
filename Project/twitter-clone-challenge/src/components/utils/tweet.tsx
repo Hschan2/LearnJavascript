@@ -140,7 +140,13 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
       </InfoContents>
       {user?.uid === tweetObj.userId && (
         <Menu>
-          <MenuItem onClick={() => navigate(`/update/${tweetIdValue}`)}>
+          <MenuItem
+            onClick={() =>
+              navigate(`/update/${tweetIdValue}`, {
+                state: { uid: tweetObj.userId },
+              })
+            }
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

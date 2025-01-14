@@ -12,13 +12,8 @@ function DetailTweet() {
 
   if (!tweetId) return <div>데이터를 불러올 수 없습니다.</div>;
 
-  const {
-    tweet,
-    likedByUser,
-    exclamationByUser,
-    comments,
-    setComments,
-  } = useDetailTweet(tweetId);
+  const { tweet, likedByUser, exclamationByUser, comments, setComments } =
+    useDetailTweet(tweetId);
   const [newComment, setNewComment] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
@@ -76,7 +71,7 @@ function DetailTweet() {
 
   const handleTagClick = (tag: string) => {
     navigate(`/search?tag=${encodeURIComponent(tag)}`);
-  }
+  };
 
   const handleURLCopy = async () => {
     try {
@@ -86,7 +81,7 @@ function DetailTweet() {
     } catch (error) {
       console.error("URL 복사 실패");
     }
-  }
+  };
 
   useEffect(() => {
     if (!tweet?.userId) return;
@@ -105,7 +100,10 @@ function DetailTweet() {
         onLike: handleToggleLike,
         onExclamation: handleToggleExclamation,
         onDeleteComment: handleDeleteComment,
-        onNavigateUpdate: () => navigate(`/update/${tweetId}`),
+        onNavigateUpdate: () =>
+          navigate(`/update/${tweetId}`, {
+            state: { uid: tweet?.userId },
+          }),
         onDeleteTweet: handleDelete,
         onAddComment: handleAddComment,
         onTagClick: handleTagClick,
