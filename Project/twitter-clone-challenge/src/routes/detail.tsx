@@ -100,10 +100,7 @@ function DetailTweet() {
         onLike: handleToggleLike,
         onExclamation: handleToggleExclamation,
         onDeleteComment: handleDeleteComment,
-        onNavigateUpdate: () =>
-          navigate(`/update/${tweetId}`, {
-            state: { uid: tweet?.userId },
-          }),
+        onNavigateUpdate: () => navigate(`/update/${tweetId}`),
         onDeleteTweet: handleDelete,
         onAddComment: handleAddComment,
         onTagClick: handleTagClick,
