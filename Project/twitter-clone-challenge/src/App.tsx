@@ -1,7 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/screen/layout";
 import Home from "./routes/home";
 import Profile from "./routes/profile";
@@ -28,8 +25,6 @@ import { Helmet } from "react-helmet-async";
 import ErrorBoundary from "./components/route/error-boundary";
 import NotFoundPage from "./components/route/not-found-page";
 import InputEmail from "./routes/input-email";
-import { NotificationMessageProvider } from "./components/utils/notificationMessageContext";
-import NotificationPopup from "./components/utils/notificationPopup";
 
 const router = createBrowserRouter([
   {
@@ -191,12 +186,11 @@ function App() {
   const [isLoading, setLoading] = useState(true);
   const { darkMode } = useDarkModeStore();
 
-  const init = async () => {
-    await auth.authStateReady();
-    setLoading(false);
-  };
-
   useEffect(() => {
+    const init = async () => {
+      await auth.authStateReady();
+      setLoading(false);
+    };
     init();
   }, []);
 
@@ -208,20 +202,11 @@ function App() {
           href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap"
         />
       </Helmet>
-      <NotificationMessageProvider>
-        <Wrapper>
-          <GlobalStyles />
-          {isLoading ? (
-            <LoadingScreen />
-          ) : (
-            <>
-              <NotificationPopup />
-              <RouterProvider router={router} />
-            </>
-          )}
-          <Footer />
-        </Wrapper>
-      </NotificationMessageProvider>
+      <Wrapper>
+        <GlobalStyles />
+        {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+        <Footer />
+      </Wrapper>
     </ThemeProvider>
   );
 }
