@@ -8,6 +8,7 @@ import { useState, useEffect, useCallback } from "react";
 import { dataBase } from "../../firebase";
 import { ITweet } from "../types/tweet-type";
 import {
+  Image,
   Overlay,
   SlideContent,
   SlideWrapper,
@@ -88,9 +89,11 @@ function MainSlide() {
         {tweets?.map((tweetObj) => (
           <SlideContent
             key={tweetObj.id}
-            $backgroundImage={tweetObj?.photo || ""}
             onClick={() => handleTweetClick(tweetObj)}
           >
+            {tweetObj.photo && (
+              <Image src={tweetObj.photo} alt="Tweet Image" loading="lazy" />
+            )}
             <Overlay />
             <TextContent>
               <Tweet>{tweetObj?.tweet}</Tweet>

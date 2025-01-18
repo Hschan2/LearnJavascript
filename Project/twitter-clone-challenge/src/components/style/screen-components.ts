@@ -177,17 +177,24 @@ export const SlideWrapper = styled.div`
   }
 `;
 
-export const SlideContent = styled.div<{ $backgroundImage: string }>`
+export const SlideContent = styled.div`
   position: relative;
   width: 100%;
   height: 40vw;
-  background-image: url(${(props) => props.$backgroundImage});
-  background-size: cover;
-  background-position: center;
   cursor: pointer;
 
   @media (max-width: 425px) {
     height: 50vw;
+`;
+
+export const Image = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
 `;
 
 export const Overlay = styled.div`
