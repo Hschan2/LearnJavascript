@@ -43,7 +43,12 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
     <Wrapper>
       <InfoContents>
         {tweetObj.photo && (
-          <Photo onClick={moveDetailPage} src={tweetObj.photo} alt="Image" />
+          <Photo
+            onClick={moveDetailPage}
+            src={tweetObj.photo}
+            alt="Image"
+            loading="lazy"
+          />
         )}
         <ContentContainer>
           <Payload onClick={moveDetailPage}>{tweetObj.tweet}</Payload>
