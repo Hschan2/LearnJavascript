@@ -104,8 +104,8 @@ export const Avatar = styled.img`
   object-fit: cover;
 `;
 
-export const FooterContainer = styled.div`
-  padding: 20px 0 20px 0;
+export const FooterContainer = styled.footer`
+  padding: 16px 0 16px 0;
   text-align: center;
   width: 100%;
   font-size: 12px;
