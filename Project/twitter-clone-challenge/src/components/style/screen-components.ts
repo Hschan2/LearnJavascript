@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Menu = styled.div`
+export const Menu = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
