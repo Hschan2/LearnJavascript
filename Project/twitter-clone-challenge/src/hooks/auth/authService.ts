@@ -36,7 +36,7 @@ export const AuthService = (() => {
 
   const signUp = async (name: string, email: string, password: string) => {
     try {
-      const usersRef = collection(dataBase, "users");
+      const usersRef = collection(dataBase, "signedUsers");
       const nameQuery = query(usersRef, where("name", "==", name));
       const emailQuery = query(usersRef, where("email", "==", email));
       const [nameSnapshot, emailSnapshot] = await Promise.all([
@@ -63,6 +63,7 @@ export const AuthService = (() => {
         photoURL: initialImage,
       });
       await addDoc(usersRef, {
+        uid: credentials.user.uid,
         name,
         email,
       });

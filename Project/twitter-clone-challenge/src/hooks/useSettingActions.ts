@@ -1,6 +1,13 @@
 import { useNavigate } from "react-router";
 import { deleteUserAccount, logoutUser } from "./auth/userService";
-import { auth } from "../firebase";
+import { auth, dataBase } from "../firebase";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 
 export function useSettingActions() {
   const navigate = useNavigate();
@@ -24,6 +31,24 @@ export function useSettingActions() {
     try {
       const userId = auth.currentUser?.uid;
       if (!userId) throw new Error("유저 아이디가 없습니다.");
+
+      const usersRef = collection(dataBase, "signedUsers");
+      const querySnapshot = await getDocs(
+        query(usersRef, where("uid", "==", userId))
+      );
+      if (querySnapshot.empty)
+        throw new Error("해당 유저 정보를 찾을 수 없습니다.");
+
+      const batch = writeBatch(dataBase);
+      querySnapshot.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+
+      try {
+        await batch.commit();
+      } catch (error) {
+        console.error("회원 데이터 삭제 에러 ", error);
+      }
 
       await deleteUserAccount(userId);
       navigate("/login");

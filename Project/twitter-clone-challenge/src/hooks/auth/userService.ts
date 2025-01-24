@@ -20,10 +20,13 @@ export const deleteUserAccount = async (userId: string) => {
     collection(dataBase, "tweets"),
     where("userId", "==", userId)
   );
-  const tweetDocs = await getDocs(tweetQuery);
-
-  for (const tweetDoc of tweetDocs.docs) {
-    await deleteDoc(tweetDoc.ref);
+  try {
+    const tweetDocs = await getDocs(tweetQuery);
+    for (const tweetDoc of tweetDocs.docs) {
+      await deleteDoc(tweetDoc.ref);
+    }
+  } catch (error) {
+    console.error("탈퇴회원 Tweet 삭제 에러", error);
   }
 
   const user = auth.currentUser;
