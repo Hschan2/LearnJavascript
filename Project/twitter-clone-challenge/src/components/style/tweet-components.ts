@@ -237,9 +237,15 @@ export const DetailProfileWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   font-size: clamp(12px, 1vw, 16px);
   color: ${(props) => props.theme.text};
+
+  svg {
+    width: 14px;
+    height: 14px;
+    color: #1d9bf0;
+  }
 `;
 
 export const DetailInfo = styled.span`
