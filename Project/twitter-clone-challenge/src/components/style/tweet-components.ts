@@ -336,3 +336,12 @@ export const CommentCreatedTime = styled.span`
   font-size: 12px;
   color: #757575;
 `;
+
+export const FollowButton = styled.button`
+  background-color: #ff6347;
+  border: none;
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+  color: #fff;
+`;
