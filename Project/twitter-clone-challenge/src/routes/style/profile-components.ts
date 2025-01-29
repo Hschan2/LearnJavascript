@@ -74,6 +74,7 @@ export const Name = styled.span`
 
 export const Tweets = styled.div`
   display: flex;
+  align-items: center;
   width: 100%;
   flex-direction: column;
   gap: 10px;
@@ -107,8 +108,8 @@ export const FollowContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 160px;
-  height: 35px;
+  width: 200px;
+  height: 40px;
   border: 1px solid #767676;
   border-radius: 6px;
   overflow: hidden;
@@ -120,6 +121,7 @@ export const FollowInformation = styled.span`
   align-items: center;
   justify-content: center;
   height: 100%;
+  cursor: pointer;
 
   &:first-child {
     border-right: 1px solid #D3D3D3;
