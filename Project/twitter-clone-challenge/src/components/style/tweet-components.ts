@@ -69,12 +69,6 @@ export const Username = styled.span`
   align-items: center;
   gap: 4px;
   font-size: 14px;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    color: #1d9bf0;
-  }
 `;
 
 export const ProfileImage = styled.img`
@@ -240,12 +234,6 @@ export const DetailProfileWrapper = styled.div`
   gap: 4px;
   font-size: clamp(12px, 1vw, 16px);
   color: ${(props) => props.theme.text};
-
-  svg {
-    width: 14px;
-    height: 14px;
-    color: #1d9bf0;
-  }
 `;
 
 export const DetailInfo = styled.span`
@@ -338,10 +326,12 @@ export const CommentCreatedTime = styled.span`
 `;
 
 export const FollowButton = styled.button`
-  background-color: #ff6347;
+  background-color: #1d9bf0;
   border: none;
   border-radius: 4px;
   padding: 3px 6px;
+  margin-left: 6px;
   font-size: 12px;
   color: #fff;
+  cursor: pointer;
 `;
