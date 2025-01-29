@@ -1,12 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
-import { auth, dataBase } from "../firebase";
+import { auth } from "../firebase";
 import { v4 as uuidv4 } from "uuid";
-import { IComment, ITweet } from "../components/types/tweet-type";
+import { IComment } from "../components/types/tweet-type";
 import { tweetService, useDetailTweet } from "../hooks/tweet/useTweet";
 import DetailUI from "./components/DetailUI";
-import { User } from "firebase/auth";
-import { deleteDoc, doc, getDoc, onSnapshot, setDoc } from "firebase/firestore";
+import useFollow from "../hooks/useFollow";
 
 function DetailTweet() {
   const { tweetId } = useParams();
@@ -16,10 +15,15 @@ function DetailTweet() {
 
   const { tweet, likedByUser, exclamationByUser, comments, setComments } =
     useDetailTweet(tweetId);
+  const {
+    followDataUserById,
+    handleFollow,
+    handleUnFollow,
+    fetchFollowingUserById,
+  } = useFollow();
   const [newComment, setNewComment] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
-  const [followDataUserById, setFollowDataUserById] = useState<boolean>(false);
 
   const handleAddComment = async () => {
     if (!newComment.trim()) return;
@@ -83,64 +87,6 @@ function DetailTweet() {
       alert("URL 복사가 완료되었습니다.");
     } catch (error) {
       console.error("URL 복사 실패");
-    }
-  };
-
-  const handleFollow = async (tweet: ITweet, user: User) => {
-    await setDoc(
-      doc(dataBase, `follow/${user.uid}/following/${tweet.userId}`),
-      {
-        followingName: tweet.username,
-        followingPhoto: tweet.photo,
-        isFollowing: true,
-        createdAt: new Date().toISOString(),
-      }
-    );
-    await setDoc(
-      doc(dataBase, `follow/${tweet.userId}/followers/${user.uid}`),
-      {
-        followerName: user.displayName,
-        followerPhoto: user.photoURL,
-        createdAt: new Date().toISOString(),
-      }
-    );
-  };
-
-  const handleUnFollow = async (tweet: ITweet, user: User) => {
-    await deleteDoc(
-      doc(dataBase, `follow/${user.uid}/following/${tweet.userId}`)
-    );
-    await deleteDoc(
-      doc(dataBase, `follow/${tweet.userId}/followers/${user.uid}`)
-    );
-  };
-
-  const fetchFollowingUserById = (
-    userId: string | undefined,
-    followingUserId: string
-  ) => {
-    if (!userId || !followingUserId) return;
-
-    try {
-      const followingDocRef = doc(
-        dataBase,
-        `follow/${userId}/following`,
-        followingUserId
-      );
-
-      const unsubscribe = onSnapshot(followingDocRef, (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const { isFollowing } = docSnapshot.data();
-          setFollowDataUserById(!!isFollowing);
-        } else {
-          setFollowDataUserById(false);
-        }
-      });
-
-      return unsubscribe;
-    } catch (error) {
-      console.error(error);
-      setFollowDataUserById(false);
     }
   };
 
