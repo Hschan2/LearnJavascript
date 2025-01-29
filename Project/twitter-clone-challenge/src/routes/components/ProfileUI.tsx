@@ -6,7 +6,13 @@ import ProfileMenus from "../../components/utils/profile-menu";
 import Tweet from "../../components/utils/tweet";
 import Like from "../like";
 import Settings from "../settings";
-import { ContentWrapper, Tweets, Wrapper } from "../style/profile-components";
+import {
+  ContentWrapper,
+  FollowContainer,
+  FollowInformation,
+  Tweets,
+  Wrapper,
+} from "../style/profile-components";
 
 interface ProfileUIProps {
   user: User | null;
@@ -18,6 +24,8 @@ interface ProfileUIProps {
   toggleNameEditor: () => void;
   selectedMenu: string;
   setSelectedMenu: (menu: string) => void;
+  followingCount: number;
+  followerCount: number;
 }
 
 export function ProfileUI({
@@ -30,6 +38,8 @@ export function ProfileUI({
   toggleNameEditor,
   selectedMenu,
   setSelectedMenu,
+  followingCount,
+  followerCount,
 }: ProfileUIProps) {
   return (
     <Wrapper>
@@ -40,6 +50,10 @@ export function ProfileUI({
           user={user}
           toggleEditor={toggleNameEditor}
         />
+        <FollowContainer>
+          <FollowInformation>팔로잉 {followingCount}</FollowInformation>
+          <FollowInformation>팔로워 {followerCount}</FollowInformation>
+        </FollowContainer>
         <ProfileMenus
           selectedMenu={selectedMenu}
           setSelectedMenu={setSelectedMenu}

@@ -103,6 +103,29 @@ export const ConfirmEditButton = styled.button`
   cursor: pointer;
 `;
 
+export const FollowContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 35px;
+  border: 1px solid #767676;
+  border-radius: 6px;
+  overflow: hidden;
+`;
+
+export const FollowInformation = styled.span`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  &:first-child {
+    border-right: 1px solid #D3D3D3;
+  }
+`;
+
 // 모바일 버전 프로필 메뉴
 export const ProfileMenuWrapper = styled.div`
   display: flex;

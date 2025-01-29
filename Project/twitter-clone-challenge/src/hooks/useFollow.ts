@@ -82,7 +82,7 @@ function useFollow() {
     }
   };
 
-  const fetchFollowingCount = async (userId: string) => {
+  const fetchFollowingCount = async (userId: string | undefined) => {
     try {
       const followingSnapshot = await getDocs(
         collection(dataBase, `follow/${userId}/following`)
@@ -93,7 +93,7 @@ function useFollow() {
     }
   };
 
-  const fetchFollowerCount = async (userId: string) => {
+  const fetchFollowerCount = async (userId: string | undefined) => {
     try {
       const followerSnapshot = await getDocs(
         collection(dataBase, `follow/${userId}/followers`)
