@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { User } from "firebase/auth";
-import { ITweet } from "../components/types/tweet-type";
+import { FollowerProps, FollowingProps, ITweet } from "../components/types/tweet-type";
 import {
   collection,
   deleteDoc,
@@ -9,12 +10,11 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { dataBase } from "../firebase";
-import { useState } from "react";
 
 function useFollow() {
   const [followDataUserById, setFollowDataUserById] = useState<boolean>(false);
-  const [followingCount, setFollowingCount] = useState<number>(0);
-  const [followerCount, setFollowerCount] = useState<number>(0);
+  const [followingData, setFollowingData] = useState<FollowingProps[]>([]);
+  const [followerData, setFollowerData] = useState<FollowerProps[]>([]);
 
   const handleFollow = async (tweet: ITweet, user: User) => {
     try {
@@ -66,7 +66,7 @@ function useFollow() {
         followingUserId
       );
 
-      const unsubscribe = onSnapshot(followingDocRef, (docSnapshot) => {
+      const unsubscribe: () => void = onSnapshot(followingDocRef, (docSnapshot) => {
         if (docSnapshot.exists()) {
           const { isFollowing } = docSnapshot.data();
           setFollowDataUserById(!!isFollowing);
@@ -82,23 +82,46 @@ function useFollow() {
     }
   };
 
-  const fetchFollowingCount = async (userId: string | undefined) => {
+  const fetchFollowingData = async (userId: string | undefined) => {
+    if (!userId) return;
     try {
       const followingSnapshot = await getDocs(
         collection(dataBase, `follow/${userId}/following`)
       );
-      setFollowingCount(followingSnapshot.size);
+      const followingList: FollowingProps[] = followingSnapshot.docs.map(
+        (doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            followingName: data.followingName || "",
+            followingPhoto: data.followingPhoto || "",
+            isFollowing: data.isFollowing ?? false,
+            createdAt: data.createdAt || Date.now(),
+          };
+        }
+      );
+      setFollowingData(followingList);
     } catch (error) {
       console.error("팔로잉 수 가져오기 실패: ", error);
     }
   };
 
-  const fetchFollowerCount = async (userId: string | undefined) => {
+  const fetchFollowerData = async (userId: string | undefined) => {
+    if (!userId) return;
     try {
       const followerSnapshot = await getDocs(
         collection(dataBase, `follow/${userId}/followers`)
       );
-      setFollowerCount(followerSnapshot.size);
+      const followerList: FollowerProps[] = followerSnapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          followerName: data.followerName || "",
+          followerPhoto: data.followerPhoto || "",
+          createdAt: data.createdAt || Date.now(),
+        };
+      });
+      setFollowerData(followerList);
     } catch (error) {
       console.error("팔로잉 수 가져오기 실패: ", error);
     }
@@ -106,13 +129,13 @@ function useFollow() {
 
   return {
     followDataUserById,
-    followingCount,
-    followerCount,
+    followingData,
+    followerData,
     handleFollow,
     handleUnFollow,
     fetchFollowingUserById,
-    fetchFollowingCount,
-    fetchFollowerCount,
+    fetchFollowingData,
+    fetchFollowerData,
   };
 }
 

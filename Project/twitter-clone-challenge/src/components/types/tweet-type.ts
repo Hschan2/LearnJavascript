@@ -29,3 +29,19 @@ export interface ITimeline {
   isHot?: boolean;
   option?: string | undefined;
 }
+
+// Follow
+export interface FollowingProps {
+  id: string;
+  followingName: string;
+  followingPhoto: string;
+  isFollowing: boolean;
+  createdAt: number;
+}
+
+export interface FollowerProps {
+  id: string;
+  followerName: string;
+  followerPhoto: string;
+  createdAt: number;
+}
