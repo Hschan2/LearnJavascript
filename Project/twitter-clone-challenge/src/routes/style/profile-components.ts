@@ -124,7 +124,7 @@ export const FollowInformation = styled.span`
   cursor: pointer;
 
   &:first-child {
-    border-right: 1px solid #D3D3D3;
+    border-right: 1px solid #d3d3d3;
   }
 `;
 
@@ -152,4 +152,76 @@ export const ProfileMenu = styled.button<{ $isSelected: boolean }>`
   font-size: 18px;
   color: ${({ $isSelected, theme }) =>
     $isSelected ? theme.text : theme.lightText};
+`;
+
+// Modal
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
+export const ModalContainer = styled.div`
+  background: white;
+  width: 320px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  position: relative;
+`;
+
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+`;
+
+export const Title = styled.h2`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+export const CloseButton = styled.button`
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+`;
+
+export const FollowList = styled.ul`
+  list-style: none;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+`;
+
+export const FollowItem = styled.li`
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+`;
+
+export const Avatar = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+`;
+
+export const EmptyMessage = styled.p`
+  text-align: center;
+  color: #999;
+  padding: 20px;
 `;
