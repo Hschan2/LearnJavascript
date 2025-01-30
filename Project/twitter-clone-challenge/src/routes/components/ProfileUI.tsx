@@ -1,5 +1,9 @@
 import { User } from "firebase/auth";
-import { ITweet } from "../../components/types/tweet-type";
+import {
+  FollowerProps,
+  FollowingProps,
+  ITweet,
+} from "../../components/types/tweet-type";
 import NameEditor from "../../components/utils/name-editor";
 import ProfileAvatar from "../../components/utils/profile-avatar";
 import ProfileMenus from "../../components/utils/profile-menu";
@@ -13,6 +17,7 @@ import {
   Tweets,
   Wrapper,
 } from "../style/profile-components";
+import Modal from "./Modal";
 
 interface ProfileUIProps {
   user: User | null;
@@ -24,8 +29,12 @@ interface ProfileUIProps {
   toggleNameEditor: () => void;
   selectedMenu: string;
   setSelectedMenu: (menu: string) => void;
-  followingCount: number;
-  followerCount: number;
+  followingData: FollowingProps[];
+  followerData: FollowerProps[];
+  isModalOpen: boolean;
+  modalType: "following" | "follower" | null;
+  openModal: (type: "following" | "follower") => void;
+  closeModal: () => void;
 }
 
 export function ProfileUI({
@@ -38,8 +47,12 @@ export function ProfileUI({
   toggleNameEditor,
   selectedMenu,
   setSelectedMenu,
-  followingCount,
-  followerCount,
+  followingData,
+  followerData,
+  isModalOpen,
+  modalType,
+  openModal,
+  closeModal,
 }: ProfileUIProps) {
   return (
     <Wrapper>
@@ -51,9 +64,19 @@ export function ProfileUI({
           toggleEditor={toggleNameEditor}
         />
         <FollowContainer>
-          <FollowInformation>팔로잉 {followingCount}</FollowInformation>
-          <FollowInformation>팔로워 {followerCount}</FollowInformation>
+          <FollowInformation onClick={() => openModal("following")}>
+            팔로잉 {followingData.length}
+          </FollowInformation>
+          <FollowInformation onClick={() => openModal("follower")}>
+            팔로워 {followerData.length}
+          </FollowInformation>
         </FollowContainer>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title={modalType === "following" ? "팔로잉" : "팔로워"}
+          data={modalType === "following" ? followingData : followerData}
+        />
         <ProfileMenus
           selectedMenu={selectedMenu}
           setSelectedMenu={setSelectedMenu}
