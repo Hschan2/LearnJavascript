@@ -21,6 +21,7 @@ function useFollow() {
       await setDoc(
         doc(dataBase, `follow/${user.uid}/following/${tweet.userId}`),
         {
+          followingId: tweet.userId,
           followingName: tweet.username,
           followingPhoto: tweet.photo,
           isFollowing: true,
@@ -30,6 +31,7 @@ function useFollow() {
       await setDoc(
         doc(dataBase, `follow/${tweet.userId}/followers/${user.uid}`),
         {
+          followerId: user.uid,
           followerName: user.displayName,
           followerPhoto: user.photoURL,
           createdAt: new Date().toISOString(),
@@ -93,6 +95,7 @@ function useFollow() {
           const data = doc.data();
           return {
             id: doc.id,
+            followingId: data.followingId || "",
             followingName: data.followingName || "",
             followingPhoto: data.followingPhoto || "",
             isFollowing: data.isFollowing ?? false,
@@ -116,6 +119,7 @@ function useFollow() {
         const data = doc.data();
         return {
           id: doc.id,
+          followerId: data.followerId || "",
           followerName: data.followerName || "",
           followerPhoto: data.followerPhoto || "",
           createdAt: data.createdAt || Date.now(),

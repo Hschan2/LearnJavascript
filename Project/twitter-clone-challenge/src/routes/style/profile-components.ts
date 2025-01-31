@@ -183,7 +183,6 @@ export const Header = styled.div`
   align-items: center;
   border-bottom: 1px solid #ddd;
   padding-bottom: 10px;
-  margin-bottom: 10px;
 `;
 
 export const Title = styled.h2`
@@ -202,6 +201,7 @@ export const CloseButton = styled.button`
 export const FollowList = styled.ul`
   list-style: none;
   padding: 0;
+  height: 300px;
   max-height: 300px;
   overflow-y: auto;
 `;
@@ -211,17 +211,12 @@ export const FollowItem = styled.li`
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
 `;
 
 export const Avatar = styled.img`
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   margin-right: 10px;
-`;
-
-export const EmptyMessage = styled.p`
-  text-align: center;
-  color: #999;
-  padding: 20px;
 `;

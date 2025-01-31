@@ -33,6 +33,7 @@ export interface ITimeline {
 // Follow
 export interface FollowingProps {
   id: string;
+  followingId: string;
   followingName: string;
   followingPhoto: string;
   isFollowing: boolean;
@@ -41,6 +42,7 @@ export interface FollowingProps {
 
 export interface FollowerProps {
   id: string;
+  followerId: string;
   followerName: string;
   followerPhoto: string;
   createdAt: number;

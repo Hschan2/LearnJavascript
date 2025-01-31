@@ -25,6 +25,7 @@ import { Helmet } from "react-helmet-async";
 import ErrorBoundary from "./components/route/error-boundary";
 import NotFoundPage from "./components/route/not-found-page";
 import InputEmail from "./routes/input-email";
+import UserTweets from "./routes/user-tweets";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,14 @@ const router = createBrowserRouter([
         element: (
           <ErrorBoundary>
             <Update />
+          </ErrorBoundary>
+        ),
+      },
+      {
+        path: "user-tweets/:userId",
+        element: (
+          <ErrorBoundary>
+            <UserTweets />
           </ErrorBoundary>
         ),
       },

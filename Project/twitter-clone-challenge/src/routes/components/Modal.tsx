@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import {
   FollowingProps,
   FollowerProps,
@@ -21,6 +22,7 @@ interface FollowModalProps {
 }
 
 function Modal({ isOpen, onClose, title, data }: FollowModalProps) {
+  const navigate = useNavigate();
   if (!isOpen) return null;
   return (
     <Overlay onClick={onClose}>
@@ -32,7 +34,18 @@ function Modal({ isOpen, onClose, title, data }: FollowModalProps) {
         <FollowList>
           {data.length > 0 &&
             data.map((follow) => (
-              <FollowItem key={follow.id}>
+              <FollowItem
+                key={follow.id}
+                onClick={() =>
+                  navigate(
+                    `/user-tweets/${
+                      "followingId" in follow
+                        ? follow.followingId
+                        : follow.followerId
+                    }`
+                  )
+                }
+              >
                 <Avatar
                   src={
                     "followingPhoto" in follow
