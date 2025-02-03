@@ -66,6 +66,7 @@ export const AuthService = (() => {
         uid: credentials.user.uid,
         name,
         email,
+        avatar: initialImage,
       });
 
       return true;
