@@ -23,6 +23,8 @@ export interface ITweet {
   item: string;
   comments?: IComment[];
   location?: string;
+  followingId?: string;
+  followerId?: string;
 }
 
 export interface ITimeline {
