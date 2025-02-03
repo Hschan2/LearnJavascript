@@ -3,12 +3,12 @@ import { styled } from "styled-components";
 export const Wrapper = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  gap: 10px;
 `;
 
 export const ContentWrapper = styled.div`
-  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,11 +73,18 @@ export const Name = styled.span`
 `;
 
 export const Tweets = styled.div`
-  display: flex;
-  align-items: center;
   width: 100%;
-  flex-direction: column;
+  display: grid;
   gap: 10px;
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 425px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const EditButton = styled.button`
