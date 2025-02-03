@@ -10,10 +10,10 @@ function useInfiniteScroll(
 
   const handleObserver = useCallback((entries: IntersectionObserverEntry[]) => {
     const target = entries[0];
-    if (target.isIntersecting) {
+    if (target.isIntersecting && !isFetching) {
       setIsFetching(true);
     }
-  }, []);
+  }, [isFetching]);
 
   useEffect(() => {
     if (isFetching) {
