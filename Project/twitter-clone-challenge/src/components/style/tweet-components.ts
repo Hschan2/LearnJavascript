@@ -1,12 +1,13 @@
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   border: 1px solid grey;
   border-radius: 16px;
   position: relative;
   width: 100%;
+  height: auto;
 
   svg {
     color: ${(props) => props.theme.text};
