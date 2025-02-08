@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { User } from "firebase/auth";
-import { FollowerProps, FollowingProps, ITweet } from "../components/types/tweet-type";
+import {
+  FollowerProps,
+  FollowingProps,
+  ITweet,
+} from "../components/types/tweet-type";
 import {
   collection,
   deleteDoc,
@@ -10,6 +14,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { dataBase } from "../firebase";
+import { v4 as uuidv4 } from "uuid";
 
 function useFollow() {
   const [followDataUserById, setFollowDataUserById] = useState<boolean>(false);
@@ -37,9 +42,26 @@ function useFollow() {
           createdAt: new Date().toISOString(),
         }
       );
+
+      await createNotification(tweet, user);
     } catch (error) {
       console.error("팔로우 실패: ", error);
     }
+  };
+
+  const createNotification = async (tweet: ITweet, user: User) => {
+    const notificationRef = doc(dataBase, "notifications", uuidv4());
+    await setDoc(notificationRef, {
+      id: notificationRef.id,
+      recipientId: tweet.userId,
+      tweetTitle: tweet.tweet,
+      tweetId: tweet.id,
+      senderId: user.uid,
+      senderName: user.displayName || "익명",
+      createdAt: new Date().toISOString(),
+      type: "follow",
+      isRead: false,
+    });
   };
 
   const handleUnFollow = async (tweet: ITweet, user: User) => {
@@ -68,14 +90,17 @@ function useFollow() {
         followingUserId
       );
 
-      const unsubscribe: () => void = onSnapshot(followingDocRef, (docSnapshot) => {
-        if (docSnapshot.exists()) {
-          const { isFollowing } = docSnapshot.data();
-          setFollowDataUserById(!!isFollowing);
-        } else {
-          setFollowDataUserById(false);
+      const unsubscribe: () => void = onSnapshot(
+        followingDocRef,
+        (docSnapshot) => {
+          if (docSnapshot.exists()) {
+            const { isFollowing } = docSnapshot.data();
+            setFollowDataUserById(!!isFollowing);
+          } else {
+            setFollowDataUserById(false);
+          }
         }
-      });
+      );
 
       return unsubscribe;
     } catch (error) {

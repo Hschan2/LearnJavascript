@@ -7,7 +7,11 @@ export const useNotificationAction = () => {
   const navigate = useNavigate();
 
   const notificationClick = (notification: NotificationType) => {
-    navigate(`/detail/${notification.tweetId}`);
+    if (notification.type === "follow") {
+      navigate(`/user-tweets/${notification.senderId}`);
+    } else {
+      navigate(`/detail/${notification.tweetId}`);
+    }
   };
 
   const isMarkAllAsRead = () => {
