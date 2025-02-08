@@ -9,11 +9,8 @@ import { dataBase } from "../../firebase";
 import { ITweet } from "../types/tweet-type";
 import {
   Image,
-  Overlay,
   SlideContent,
   SlideWrapper,
-  TextContent,
-  Tweet,
 } from "../style/screen-components";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -94,10 +91,6 @@ function MainSlide() {
             {tweetObj.photo && (
               <Image src={tweetObj.photo} alt="Tweet Image" loading="lazy" />
             )}
-            <Overlay />
-            <TextContent>
-              <Tweet>{tweetObj?.tweet}</Tweet>
-            </TextContent>
           </SlideContent>
         ))}
       </Slider>
