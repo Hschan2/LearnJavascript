@@ -39,6 +39,10 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
     navigate(`/detail/${tweetIdValue}`);
   };
 
+  const moveUserTweetListPage = () => {
+    navigate(`/user-tweets/${tweetObj.userId}`);
+  };
+
   return (
     <Wrapper>
       <InfoContents>
@@ -52,7 +56,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
         )}
         <ContentContainer>
           <Payload onClick={moveDetailPage}>{tweetObj.tweet}</Payload>
-          <Username>
+          <Username onClick={moveUserTweetListPage}>
             {profileImage && (
               <ProfileImage src={profileImage} alt="Profile-Image" />
             )}

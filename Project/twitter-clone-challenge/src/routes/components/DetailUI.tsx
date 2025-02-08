@@ -21,6 +21,7 @@ import {
   DetailTitleButton,
   DetailEventButtonWrapper,
   FollowButton,
+  DetailUser,
 } from "../../components/style/tweet-components";
 import {
   Form,
@@ -54,6 +55,7 @@ export interface DetailUIProps {
     onURLCopy: () => void;
     onFollow: (tweet: ITweet, user: User) => void;
     onUnFollow: (tweet: ITweet, user: User) => void;
+    onMoveUserList: () => void;
   };
   commentsData: {
     comments: IComment[];
@@ -119,7 +121,9 @@ const DetailUI = ({
         {profileImage && (
           <ProfileImage src={profileImage} alt="Profile-Image" />
         )}{" "}
-        {tweet.tweet?.username}
+        <DetailUser onClick={actions.onMoveUserList}>
+          {tweet.tweet?.username}
+        </DetailUser>
         {user.uid !== tweet.tweet?.userId && (
           <FollowButton
             onClick={() => {

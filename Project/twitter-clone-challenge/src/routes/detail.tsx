@@ -90,6 +90,10 @@ function DetailTweet() {
     }
   };
 
+  const moveUserTweetListPage = () => {
+    navigate(`/user-tweets/${tweet?.userId}`);
+  };
+
   useEffect(() => {
     if (!tweet?.userId) return;
     tweetService.fetchProfileImage(tweet.userId).then(setProfileImage);
@@ -123,6 +127,7 @@ function DetailTweet() {
         onURLCopy: handleURLCopy,
         onFollow: handleFollow,
         onUnFollow: handleUnFollow,
+        onMoveUserList: moveUserTweetListPage,
       }}
       commentsData={{
         comments,
