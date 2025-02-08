@@ -181,6 +181,8 @@ export const SlideContent = styled.div`
   position: relative;
   width: 100%;
   height: 40vw;
+  border: 1px solid #F1F5F7;
+  border-radius: 12px;
   cursor: pointer;
 
   @media (max-width: 425px) {
@@ -195,39 +197,6 @@ export const Image = styled.img`
   height: 100%;
   object-fit: cover;
   z-index: -1;
-`;
-
-export const Overlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-`;
-
-export const TextContent = styled.div`
-  position: absolute;
-  bottom: 50%;
-  left: clamp(10px, 5vw, 40px);
-  color: #fff;
-  width: 50%;
-  transform: translateY(50%);
-
-  @media (max-width: 425px) {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    text-overflow: ellipsis;
-    height: calc(1em * 3);
-    bottom: 45%;
-  }
-`;
-
-export const Tweet = styled.h2`
-  font-size: clamp(14px, 4vw, 28px);
 `;
 
 // notification
