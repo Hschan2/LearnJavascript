@@ -11,7 +11,7 @@ import {
 } from "../../style/tweet-components";
 import { auth } from "../../../firebase";
 import { Avatar } from "../../style/screen-components";
-import formattedDate from "../../../hooks/formattedDate";
+import formattedDate from "../../../shared/hook/formattedDate";
 
 interface Props {
   comments: IComment[];

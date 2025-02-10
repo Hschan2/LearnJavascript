@@ -12,7 +12,7 @@ import { auth, dataBase } from "../../firebase";
 import Tweet from "../utils/tweet";
 import { Wrapper } from "../style/timeline-components";
 import { ITweet } from "../types/tweet-type";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import useInfiniteScroll from "../../shared/hook/useInfiniteScroll";
 
 const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
   const data = doc.data() as ITweet;

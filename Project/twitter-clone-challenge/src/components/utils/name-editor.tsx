@@ -7,7 +7,7 @@ import {
   Input,
   Name,
   NameContainer,
-} from "../../routes/style/profile-components";
+} from "../../features/user/style/profile-components";
 
 interface NameEditorProps {
   isEditing: boolean;

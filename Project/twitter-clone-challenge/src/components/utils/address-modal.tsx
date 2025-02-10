@@ -10,7 +10,7 @@ import {
   ModalTitle,
   ModalTopWrapper,
 } from "../style/modal-components";
-import { useAddressSearch } from "../../hooks/modal/useAddressSearch";
+import { useAddressSearch } from "../../features/tweet/hooks/useAddressSearch";
 import { AddressList } from "./address-list";
 
 function AddressModal({ isOpen, onClose, onSelect }: AddressModalProps) {

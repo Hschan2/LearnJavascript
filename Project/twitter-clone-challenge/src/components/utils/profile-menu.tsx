@@ -1,7 +1,7 @@
 import {
   ProfileMenuWrapper,
   ProfileMenu,
-} from "../../routes/style/profile-components";
+} from "../../features/user/style/profile-components";
 
 interface ProfileMenuProps {
   selectedMenu: string;

@@ -31,8 +31,8 @@ import { EditTweetFormProps, UpdateState } from "../types/form-type";
 import { SELECT_OPTION_VALUE } from "../../constants";
 import { useNavigate } from "react-router";
 import AddressModal from "../utils/address-modal";
-import { useFileUpload } from "../../hooks/form/useFileUpLoad";
-import { useFetchTweet } from "../../hooks/form/useFetchTweet";
+import { useFileUpload } from "../../features/tweet/hooks/useFileUpLoad";
+import { useFetchTweet } from "../../features/tweet/hooks/useFetchTweet";
 
 function UpdateTweetForm({ id }: EditTweetFormProps) {
   const [updateState, setUpdateState] = useState<UpdateState>({

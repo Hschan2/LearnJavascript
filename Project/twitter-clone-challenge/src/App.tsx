@@ -1,31 +1,31 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/screen/layout";
-import Home from "./routes/home";
-import Profile from "./routes/profile";
-import Login from "./routes/login";
-import CreateAccount from "./routes/create-account";
+import Home from "./features/home/home";
+import Profile from "./features/user/profile";
+import Login from "./features/auth/login";
+import CreateAccount from "./features/auth/create-account";
 import { createGlobalStyle, styled, ThemeProvider } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/screen/loading-screen";
 import { auth } from "./firebase";
 import ProtectedRoute from "./components/route/protected-route";
-import Settings from "./routes/settings";
+import Settings from "./features/setting/settings";
 import Footer from "./components/screen/footer";
-import Hot from "./routes/hot";
+import Hot from "./features/tweet/hot";
 import useDarkModeStore from "./components/store/useDarkModeStore";
-import Like from "./routes/like";
+import Like from "./features/tweet/like";
 import BottomMenu from "./components/utils/bottom-menu";
 import WriteTweet from "./components/screen/write-tweet";
-import DetailTweet from "./routes/detail";
-import Update from "./routes/update";
-import Notification from "./routes/notification";
-import Search from "./routes/search";
+import DetailTweet from "./features/tweet/detail";
+import Update from "./features/tweet/update";
+import Notification from "./features/notification/notification";
+import Search from "./features/search/search";
 import { Helmet } from "react-helmet-async";
 import ErrorBoundary from "./components/route/error-boundary";
 import NotFoundPage from "./components/route/not-found-page";
-import InputEmail from "./routes/input-email";
-import UserTweets from "./routes/user-tweets";
+import InputEmail from "./features/auth/input-email";
+import UserTweets from "./features/tweet/user-tweets";
 
 const router = createBrowserRouter([
   {

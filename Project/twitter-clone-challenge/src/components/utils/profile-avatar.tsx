@@ -2,7 +2,7 @@ import {
   AvatarImg,
   AvatarInput,
   AvatarUpload,
-} from "../../routes/style/profile-components";
+} from "../../features/user/style/profile-components";
 
 interface ProfileMenuProps {
   avatar: string | null | undefined;

@@ -1,6 +1,6 @@
 import { auth } from "../../firebase";
 import { useEffect, useState } from "react";
-import formattedDate from "../../hooks/formattedDate";
+import formattedDate from "../../shared/hook/formattedDate";
 import { ITweet } from "../types/tweet-type";
 import {
   ContentContainer,
@@ -18,7 +18,7 @@ import {
   Wrapper,
 } from "../style/tweet-components";
 import { useNavigate } from "react-router";
-import { tweetService } from "../../hooks/tweet/useTweet";
+import { tweetService } from "../../features/tweet/hooks/useTweet";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const tweetIdValue = tweetObj.id;

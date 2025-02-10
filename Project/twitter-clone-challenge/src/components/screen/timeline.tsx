@@ -11,7 +11,7 @@ import { dataBase } from "../../firebase";
 import Tweet from "../utils/tweet";
 import { Wrapper } from "../style/timeline-components";
 import { ITimeline, ITweet } from "../types/tweet-type";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import useInfiniteScroll from "../../shared/hook/useInfiniteScroll";
 
 const getTweetData = (doc: QueryDocumentSnapshot): ITweet => {
   const data = doc.data() as ITweet;
