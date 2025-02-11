@@ -9,7 +9,7 @@ import {
 } from "../styles/auth-components";
 import { FormInput } from "../../tweet/components/formInput";
 import { validationRules } from "../../../constants";
-import GoogleButton from "../google-button";
+import GoogleButton from "./google-button";
 import GithubButton from "./github-button";
 
 type LoginUIProps = {

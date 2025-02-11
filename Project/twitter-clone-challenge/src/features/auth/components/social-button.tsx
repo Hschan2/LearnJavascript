@@ -4,8 +4,9 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useNavigate } from "react-router";
-import { auth } from "../../firebase";
-import { Button } from "../../components/style/button-components";
+import { auth } from "../../../firebase";
+import { Button } from "../styles/auth-components";
+
 
 interface SocialButtonProps {
   provider: typeof GoogleAuthProvider | typeof GithubAuthProvider;

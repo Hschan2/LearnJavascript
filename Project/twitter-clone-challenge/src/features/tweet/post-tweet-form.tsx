@@ -1,7 +1,7 @@
 import { addDoc, collection } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { auth, dataBase } from "../../firebase";
-import EmojiPicker from "../utils/emoji-picker";
+import EmojiPicker from "./components/emoji-picker";
 import {
   AttachFileButton,
   AttachFileInput,
@@ -25,10 +25,10 @@ import {
   TagsInputWrapper,
   TagsList,
   TextArea,
-} from "../style/form-components";
+} from "./styles/form-components";
 import { useNavigate } from "react-router";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
-import AddressModal from "../utils/address-modal";
+import AddressModal from "./components/address-modal";
 import { useFileUpload } from "../../features/tweet/hooks/useFileUpLoad";
 
 const initialState = {
