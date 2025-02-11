@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ITweet } from "../../../components/types/tweet-type";
+import { ITweet } from "../../tweet/types/tweet-type";
 import { subscribeToTweet } from "./searchService";
 
 export const useSearch = () => {

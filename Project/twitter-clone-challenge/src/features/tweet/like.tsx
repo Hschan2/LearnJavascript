@@ -1,4 +1,4 @@
-import LikedTimeline from "../../components/screen/likedTimeline";
+import LikedTimeline from "./components/likedTimeline";
 import { Wrapper } from "../home/style/home-components";
 
 function Like() {

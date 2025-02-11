@@ -1,8 +1,8 @@
-import CommentList from "../../../components/screen/detail/comment-list";
-import EventBtn from "../../../components/screen/detail/event-button";
-import ExclamationBtn from "../../../components/screen/detail/exclamation-button";
-import LikeBtn from "../../../components/screen/detail/like-button";
-import { Avatar } from "../../../components/style/screen-components";
+import CommentList from "./comment-list";
+import EventBtn from "./event-button";
+import ExclamationBtn from "./exclamation-button";
+import LikeBtn from "./like-button";
+import { Avatar } from "../../../layout/styles/screen-components";
 import {
   DetailTweetText,
   DetailImage,
@@ -22,14 +22,14 @@ import {
   DetailEventButtonWrapper,
   FollowButton,
   DetailUser,
-} from "../../../components/style/tweet-components";
+} from "../styles/tweet-components";
 import {
   Form,
   SubmitButton,
   TextArea,
-} from "../../../components/style/form-components";
+} from "../styles/form-components";
 import formattedDate from "../../../shared/hook/formattedDate";
-import { IComment, ITweet } from "../../../components/types/tweet-type";
+import { IComment, ITweet } from "../types/tweet-type";
 import { User } from "firebase/auth";
 import { auth } from "../../../firebase";
 

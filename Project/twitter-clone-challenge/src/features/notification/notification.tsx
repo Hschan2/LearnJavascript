@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NotificationsWrapper } from "../../components/style/notifications-components";
+import { NotificationsWrapper } from "./styles/notifications-components";
 import { useNotification } from "./hooks/useNotification";
 import { useNotificationAction } from "./hooks/useNotificationAction";
 import { NotificationList } from "./components/NotificationList";

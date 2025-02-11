@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { tweetService } from "./useTweet";
-import { IComment, ITweet } from "../../../components/types/tweet-type";
+import { IComment, ITweet } from "../types/tweet-type";
 import { auth } from "../../../firebase";
 
 export const useDetail = (tweetId: string, setComments: Function) => {

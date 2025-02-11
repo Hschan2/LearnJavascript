@@ -1,4 +1,4 @@
-import { SearchWrapper } from "../../components/style/search-components";
+import { SearchWrapper } from "./styles/search-components";
 import { useSearch } from "./hooks/useSearch";
 import { SearchInput } from "./components/SearchInput";
 import { SearchResults } from "./components/SearchResults";

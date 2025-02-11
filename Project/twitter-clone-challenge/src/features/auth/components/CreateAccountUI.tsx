@@ -7,11 +7,11 @@ import {
   Switcher,
   Title,
   Wrapper,
-} from "../../../components/style/auth-components";
-import { FormInput } from "../../../components/utils/formInput";
+} from "../styles/auth-components";
+import { FormInput } from "../../tweet/components/formInput";
 import { validationRules } from "../../../constants";
-import GoogleButton from "../../../components/btn/google-button";
-import GithubButton from "../../../components/btn/github-button";
+import GoogleButton from "../google-button";
+import GithubButton from "./github-button";
 
 type LoginUIProps = {
   onCreateSubmit: () => void;

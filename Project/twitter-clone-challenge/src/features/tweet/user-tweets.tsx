@@ -1,13 +1,13 @@
 import { useParams } from "react-router";
 import useProfileFetchTweet from "../user/hooks/useProfileFetchTweet";
-import Tweet from "../../components/utils/tweet";
+import Tweet from "./components/tweet";
 import {
   FollowWrapper,
   UserAvatar,
   UserName,
   UserWrapper,
   Wrapper,
-} from "../../components/style/timeline-components";
+} from "./styles/timeline-components";
 
 function UserTweets() {
   const { userId } = useParams();

@@ -1,6 +1,6 @@
-import Tweet from "../../../components/utils/tweet";
-import { ITweet } from "../../../components/types/tweet-type";
-import { Wrapper } from "../../../components/style/timeline-components";
+import Tweet from "../../tweet/components/tweet";
+import { ITweet } from "../../tweet/types/tweet-type";
+import { Wrapper } from "../../tweet/styles/timeline-components";
 
 interface SearchResultsProps {
   tweets: ITweet[];

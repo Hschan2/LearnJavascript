@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import { auth } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
-import { IComment } from "../../components/types/tweet-type";
+import { IComment } from "./types/tweet-type";
 import { tweetService, useDetailTweet } from "./hooks/useTweet";
 import DetailUI from "./components/DetailUI";
 import useFollow from "../user/hooks/useFollow";

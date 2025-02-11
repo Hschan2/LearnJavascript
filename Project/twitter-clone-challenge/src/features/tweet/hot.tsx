@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Timeline from "../../components/screen/timeline";
+import Timeline from "./components/timeline";
 import { SELECT_OPTION_VALUE } from "../../constants";
 import {
   FilterSelector,

@@ -4,7 +4,7 @@ import {
   FollowerProps,
   FollowingProps,
   ITweet,
-} from "../../../components/types/tweet-type";
+} from "../../tweet/types/tweet-type";
 import {
   collection,
   deleteDoc,

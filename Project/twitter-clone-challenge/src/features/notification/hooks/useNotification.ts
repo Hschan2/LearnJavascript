@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { NotificationType } from "../../../components/types/notifications";
+import { NotificationType } from "../types/notifications";
 import { auth, dataBase } from "../../../firebase";
 import {
   collection,

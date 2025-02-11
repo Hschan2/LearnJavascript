@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import UpdateTweetForm from "../../components/form/update-tweet-form";
-import { FormWrapper } from "../../components/style/form-components";
+import UpdateTweetForm from "./update-tweet-form";
+import { FormWrapper } from "./styles/form-components";
 import { auth } from "../../firebase";
-import { WrongMessage } from "../../components/style/error-components";
+import { WrongMessage } from "../error/styles/error-components";
 import { useDetailTweet } from "./hooks/useTweet";
 
 function Update() {

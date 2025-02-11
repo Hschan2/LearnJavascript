@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AddressSearchResult } from "../../../components/types/util-type";
+import { AddressSearchResult } from "../types/util-type";
 
 export const useAddressSearch = (endpoint: string) => {
   const [results, setResults] = useState<AddressSearchResult[]>([]);

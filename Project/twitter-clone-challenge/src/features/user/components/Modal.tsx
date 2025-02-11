@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import {
   FollowingProps,
   FollowerProps,
-} from "../../../components/types/tweet-type";
+} from "../../tweet/types/tweet-type";
 import {
   Avatar,
   CloseButton,

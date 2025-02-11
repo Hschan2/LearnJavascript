@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { useNotification } from "./useNotification";
-import { NotificationType } from "../../../components/types/notifications";
+import { NotificationType } from "../types/notifications";
 
 export const useNotificationAction = () => {
   const { markAllAsRead, deleteNotification } = useNotification();

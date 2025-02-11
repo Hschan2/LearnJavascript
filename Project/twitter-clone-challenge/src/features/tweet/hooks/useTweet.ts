@@ -12,7 +12,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { auth, dataBase, storage } from "../../../firebase";
-import { IComment, ITweet } from "../../../components/types/tweet-type";
+import { IComment, ITweet } from "../types/tweet-type";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 

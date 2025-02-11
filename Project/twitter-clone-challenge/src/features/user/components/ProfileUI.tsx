@@ -3,11 +3,11 @@ import {
   FollowerProps,
   FollowingProps,
   ITweet,
-} from "../../../components/types/tweet-type";
-import NameEditor from "../../../components/utils/name-editor";
-import ProfileAvatar from "../../../components/utils/profile-avatar";
-import ProfileMenus from "../../../components/utils/profile-menu";
-import Tweet from "../../../components/utils/tweet";
+} from "../../tweet/types/tweet-type";
+import NameEditor from "./name-editor";
+import ProfileAvatar from "./profile-avatar";
+import ProfileMenus from "./profile-menu";
+import Tweet from "../../tweet/components/tweet";
 import Like from "../../tweet/like";
 import Settings from "../../setting/settings";
 import {

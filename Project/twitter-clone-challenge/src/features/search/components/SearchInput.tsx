@@ -2,7 +2,7 @@ import {
   InputIcon,
   InputSearch,
   InputWrapper,
-} from "../../../components/style/search-components";
+} from "../styles/search-components";
 
 interface SearchInputProps {
   searchWord: string;

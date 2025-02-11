@@ -3,9 +3,9 @@ import {
   NotificationContainer,
   NotificationMessage,
   NotificationTimeAgo,
-} from "../../../components/style/notifications-components";
-import { NotificationType } from "../../../components/types/notifications";
-import { formatNotificationMessage } from "../../../components/utils/format-notification-message";
+} from "../styles/notifications-components";
+import { NotificationType } from "../types/notifications";
+import { formatNotificationMessage } from "./format-notification-message";
 import { TimeAgo } from "../../../shared/hook/useTimeAgo";
 
 interface NotificationListProps {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import MainSlide from "../../components/screen/MainSlide";
-import Timeline from "../../components/screen/timeline";
+import MainSlide from "./components/MainSlide";
+import Timeline from "../tweet/components/timeline";
 import { SELECT_OPTION_VALUE } from "../../constants";
 import {
   FilterSelector,

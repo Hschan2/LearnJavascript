@@ -1,5 +1,5 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { ITweet } from "../../../components/types/tweet-type";
+import { ITweet } from "../../tweet/types/tweet-type";
 import { dataBase } from "../../../firebase";
 
 export const subscribeToTweet = (
