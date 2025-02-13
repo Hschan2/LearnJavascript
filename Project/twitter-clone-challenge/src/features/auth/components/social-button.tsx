@@ -5,8 +5,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { auth } from "../../../firebase";
-import { Button } from "../styles/auth-components";
-
+import { Button } from "../../../layout/styles/button-components";
 
 interface SocialButtonProps {
   provider: typeof GoogleAuthProvider | typeof GithubAuthProvider;
