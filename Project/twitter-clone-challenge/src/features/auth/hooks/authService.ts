@@ -6,10 +6,11 @@ import {
 } from "firebase/auth";
 import { auth, dataBase } from "../../../firebase";
 import {
-  addDoc,
   collection,
+  doc,
   getDocs,
   query,
+  setDoc,
   where,
 } from "firebase/firestore";
 
@@ -62,7 +63,7 @@ export const AuthService = (() => {
         displayName: name,
         photoURL: initialImage,
       });
-      await addDoc(usersRef, {
+      await setDoc(doc(usersRef, credentials.user.uid), {
         uid: credentials.user.uid,
         name,
         email,

@@ -19,8 +19,8 @@ const useAvatarUpload = (user: any) => {
     const avatarUrl = await getDownloadURL(result.ref);
     setAvatar(avatarUrl);
 
-    await updateDoc(usersRef, { avatar: avatarUrl });
     await updateProfile(user, { photoURL: avatarUrl });
+    await updateDoc(usersRef, { avatar: avatarUrl });
   };
 
   return { avatar, onAvatarChange };
