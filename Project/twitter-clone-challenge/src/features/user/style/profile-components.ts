@@ -22,24 +22,21 @@ export const ContentWrapper = styled.div`
 
 export const AvatarUpload = styled.label`
   width: 80px;
-  overflow: hidden;
   height: 80px;
+  overflow: hidden;
   border-radius: 50%;
-  background-color: #1d9bf0;
+  background-color: #000;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-
-  svg {
-    width: 50px;
-  }
 `;
 
 export const AvatarImg = styled.img`
   width: 100%;
   height: 100%;
-  border: 1px solid ${(props) => props.theme.light};
+  min-width: 90px;
+  min-height: 90px;
   object-fit: cover;
 `;
 
