@@ -4,15 +4,9 @@ import {
   NotificationMessage,
   NotificationTimeAgo,
 } from "../styles/notifications-components";
-import { NotificationType } from "../types/notifications";
+import { NotificationListProps } from "../types/notifications";
 import { formatNotificationMessage } from "./format-notification-message";
 import { TimeAgo } from "../../../shared/hook/useTimeAgo";
-
-interface NotificationListProps {
-  notifications: NotificationType[];
-  onClick: (notification: NotificationType) => void;
-  onDelete: (id: string) => void;
-}
 
 export const NotificationList = ({
   notifications,

@@ -29,7 +29,7 @@ import {
 import { useNavigate } from "react-router";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
 import AddressModal from "./components/address-modal";
-import { useFileUpload } from "../../features/tweet/hooks/useFileUpLoad";
+import { useFileUpload } from "./hooks/useFileUpLoad";
 
 const initialState = {
   isLoading: false,

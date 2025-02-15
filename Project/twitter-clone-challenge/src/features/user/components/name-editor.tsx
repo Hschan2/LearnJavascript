@@ -8,12 +8,7 @@ import {
   Name,
   NameContainer,
 } from "../style/profile-components";
-
-interface NameEditorProps {
-  isEditing: boolean;
-  user: any;
-  toggleEditor: () => void;
-}
+import { NameEditorProps } from "../types/profile-type";
 
 const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
   const [newName, setNewName] = useState(user?.displayName || "");

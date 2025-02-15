@@ -11,7 +11,7 @@ import {
   MobileTopMenuWrapper,
   WebMenuWrapper,
 } from "./styles/screen-components";
-import DarkModeButton from "./darkMode-button";
+import DarkModeButton from "./components/darkMode-button";
 import { auth, dataBase } from "../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 

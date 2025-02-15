@@ -1,17 +1,8 @@
-import {
-  GithubAuthProvider,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { auth } from "../../../firebase";
 import { Button } from "../../../layout/styles/button-components";
-
-interface SocialButtonProps {
-  provider: typeof GoogleAuthProvider | typeof GithubAuthProvider;
-  className: string;
-  children: React.ReactNode;
-}
+import { SocialButtonProps } from "../types/auth-type";
 
 function SocialButton({ provider, className, children }: SocialButtonProps) {
   const navigate = useNavigate();

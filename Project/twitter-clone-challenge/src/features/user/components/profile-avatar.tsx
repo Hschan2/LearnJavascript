@@ -3,13 +3,9 @@ import {
   AvatarInput,
   AvatarUpload,
 } from "../style/profile-components";
+import { ProfileAvatarProps } from "../types/profile-type";
 
-interface ProfileMenuProps {
-  avatar: string;
-  onAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const ProfileAvatar = ({ avatar, onAvatarChange }: ProfileMenuProps) => {
+const ProfileAvatar = ({ avatar, onAvatarChange }: ProfileAvatarProps) => {
   return (
     <>
       <AvatarUpload htmlFor="avatar">

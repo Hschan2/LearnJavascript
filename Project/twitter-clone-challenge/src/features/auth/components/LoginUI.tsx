@@ -7,18 +7,11 @@ import {
   Title,
   Wrapper,
 } from "../styles/auth-components";
-import { FormInput } from "../../tweet/components/formInput";
+import { FormInput } from "./formInput";
 import { validationRules } from "../../../constants";
 import GoogleButton from "./google-button";
 import GithubButton from "./github-button";
-
-type LoginUIProps = {
-  onLoginSubmit: () => void;
-  register: any;
-  errors: any;
-  isLoading: boolean;
-  error: string | null;
-};
+import { AccountProps } from "../types/auth-type";
 
 export const LoginUI = ({
   onLoginSubmit,
@@ -26,7 +19,7 @@ export const LoginUI = ({
   errors,
   isLoading,
   error,
-}: LoginUIProps) => {
+}: AccountProps) => {
   return (
     <Wrapper>
       <Title>로그인 𝕏</Title>

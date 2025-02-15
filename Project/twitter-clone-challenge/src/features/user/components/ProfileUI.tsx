@@ -1,9 +1,4 @@
-import { User } from "firebase/auth";
-import {
-  FollowerProps,
-  FollowingProps,
-  ITweet,
-} from "../../tweet/types/tweet-type";
+import { ITweet } from "../../tweet/types/tweet-type";
 import NameEditor from "./name-editor";
 import ProfileAvatar from "./profile-avatar";
 import ProfileMenus from "./profile-menu";
@@ -18,24 +13,7 @@ import {
   Wrapper,
 } from "../style/profile-components";
 import Modal from "./Modal";
-
-interface ProfileUIProps {
-  user: User | null;
-  avatar: string;
-  onAvatarChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  tweets: ITweet[];
-  triggerRef: ((node: HTMLDivElement | null) => void) | null;
-  isEditingName: boolean;
-  toggleNameEditor: () => void;
-  selectedMenu: string;
-  setSelectedMenu: (menu: string) => void;
-  followingData: FollowingProps[];
-  followerData: FollowerProps[];
-  isModalOpen: boolean;
-  modalType: "following" | "follower" | null;
-  openModal: (type: "following" | "follower") => void;
-  closeModal: () => void;
-}
+import { ProfileUIProps } from "../types/profile-type";
 
 export function ProfileUI({
   user,

@@ -4,7 +4,7 @@ import {
   FollowerProps,
   FollowingProps,
   ITweet,
-} from "../../tweet/types/tweet-type";
+} from "../../features/tweet/types/tweet-type";
 import {
   collection,
   deleteDoc,
@@ -13,7 +13,7 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { dataBase } from "../../../firebase";
+import { dataBase } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 
 function useFollow() {

@@ -9,3 +9,9 @@ export interface NotificationType {
   type: "like" | "follow" | "other";
   isRead: boolean;
 }
+
+export interface NotificationListProps {
+  notifications: NotificationType[];
+  onClick: (notification: NotificationType) => void;
+  onDelete: (id: string) => void;
+}

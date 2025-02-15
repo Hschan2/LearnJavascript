@@ -1,12 +1,5 @@
-import {
-  ProfileMenuWrapper,
-  ProfileMenu,
-} from "../style/profile-components";
-
-interface ProfileMenuProps {
-  selectedMenu: string;
-  setSelectedMenu: (menu: string) => void;
-}
+import { ProfileMenuWrapper, ProfileMenu } from "../style/profile-components";
+import { ProfileMenuProps } from "../types/profile-type";
 
 const ProfileMenus = ({ selectedMenu, setSelectedMenu }: ProfileMenuProps) => {
   return (

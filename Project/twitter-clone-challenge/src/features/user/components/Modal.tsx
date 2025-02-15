@@ -1,9 +1,5 @@
 import { useNavigate } from "react-router";
 import {
-  FollowingProps,
-  FollowerProps,
-} from "../../tweet/types/tweet-type";
-import {
   Avatar,
   CloseButton,
   FollowItem,
@@ -13,13 +9,7 @@ import {
   Overlay,
   Title,
 } from "../style/profile-components";
-
-interface FollowModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  data: FollowingProps[] | FollowerProps[];
-}
+import { FollowModalProps } from "../types/modal-type";
 
 function Modal({ isOpen, onClose, title, data }: FollowModalProps) {
   const navigate = useNavigate();

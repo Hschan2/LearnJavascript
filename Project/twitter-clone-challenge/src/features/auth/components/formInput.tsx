@@ -1,20 +1,6 @@
-import {
-  FieldError,
-  FieldValues,
-  Path,
-  RegisterOptions,
-  UseFormRegister,
-} from "react-hook-form";
-import { Error, Input, Label } from "../../auth/styles/auth-components";
-
-type FormInputProps<T extends FieldValues> = {
-  register: UseFormRegister<T>;
-  name: Path<T>;
-  placeholder: string;
-  type: string;
-  error?: FieldError;
-  rules?: RegisterOptions;
-};
+import { FieldValues } from "react-hook-form";
+import { Error, Input, Label } from "../styles/auth-components";
+import { FormInputProps } from "../types/auth-type";
 
 export const FormInput = <T extends FieldValues>({
   register,

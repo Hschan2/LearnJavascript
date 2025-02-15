@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { IComment } from "./types/tweet-type";
 import { tweetService, useDetailTweet } from "./hooks/useTweet";
 import DetailUI from "./components/DetailUI";
-import useFollow from "../user/hooks/useFollow";
+import useFollow from "../../shared/hook/useFollow";
 
 function DetailTweet() {
   const { tweetId } = useParams();

@@ -1,10 +1,6 @@
 import Tweet from "../../tweet/components/tweet";
-import { ITweet } from "../../tweet/types/tweet-type";
 import { Wrapper } from "../../tweet/styles/timeline-components";
-
-interface SearchResultsProps {
-  tweets: ITweet[];
-}
+import { SearchResultsProps } from "../types/search-type";
 
 export const SearchResults = ({ tweets }: SearchResultsProps) => (
   <>

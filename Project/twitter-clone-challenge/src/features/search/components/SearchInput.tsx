@@ -3,14 +3,7 @@ import {
   InputSearch,
   InputWrapper,
 } from "../styles/search-components";
-
-interface SearchInputProps {
-  searchWord: string;
-  inputRef: React.RefObject<HTMLInputElement>;
-  onChange: (value: string) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  onSearch: () => void;
-}
+import { SearchInputProps } from "../types/search-type";
 
 export const SearchInput = ({
   searchWord,

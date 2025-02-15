@@ -1,5 +1,5 @@
-import useDarkModeStore from "../shared/store/useDarkModeStore";
-import { ModeButton } from "./styles/button-components";
+import useDarkModeStore from "../../shared/store/useDarkModeStore";
+import { ModeButton } from "../styles/button-components";
 
 function DarkModeButton() {
   const { darkMode, setDarkMode } = useDarkModeStore();

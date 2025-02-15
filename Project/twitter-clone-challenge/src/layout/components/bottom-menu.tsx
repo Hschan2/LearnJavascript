@@ -1,6 +1,6 @@
 import { useLocation } from "react-router";
-import { Avatar, BottomMenuLink, BottomMenuWrapper } from "./styles/screen-components";
-import { auth } from "../firebase";
+import { Avatar, BottomMenuLink, BottomMenuWrapper } from "../styles/screen-components";
+import { auth } from "../../firebase";
 
 function BottomMenu() {
   const location = useLocation();

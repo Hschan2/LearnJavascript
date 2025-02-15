@@ -8,18 +8,11 @@ import {
   Title,
   Wrapper,
 } from "../styles/auth-components";
-import { FormInput } from "../../tweet/components/formInput";
+import { FormInput } from "./formInput";
 import { validationRules } from "../../../constants";
 import GoogleButton from "./google-button";
 import GithubButton from "./github-button";
-
-type LoginUIProps = {
-  onCreateSubmit: () => void;
-  register: any;
-  errors: any;
-  isLoading: boolean;
-  error: string | null;
-};
+import { AccountProps } from "../types/auth-type";
 
 export const CreateAccountUI = ({
   onCreateSubmit,
@@ -27,7 +20,7 @@ export const CreateAccountUI = ({
   errors,
   isLoading,
   error,
-}: LoginUIProps) => {
+}: AccountProps) => {
   return (
     <Wrapper>
       <Title>회원가입 𝕏</Title>
