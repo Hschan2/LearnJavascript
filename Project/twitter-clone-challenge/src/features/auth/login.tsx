@@ -1,5 +1,5 @@
-import { useAccount } from "./hooks/useAccount";
-import { LoginUI } from "./components/LoginUI";
+import { useAccount } from "./hooks/useAccountAction";
+import { LoginUI } from "./components/login-ui";
 
 function Login() {
   const { onLoginSubmit, register, handleSubmit, errors, isLoading, error } =

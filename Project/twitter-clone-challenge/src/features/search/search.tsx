@@ -1,5 +1,5 @@
 import { SearchWrapper } from "./styles/search-components";
-import { useSearch } from "./hooks/useSearch";
+import { useSearch } from "./hooks/useSearchAction";
 import { SearchInput } from "./components/search-input-bar";
 import { SearchResults } from "./components/search-result-list";
 import { useEffect } from "react";

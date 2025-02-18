@@ -18,7 +18,7 @@ import {
   Wrapper,
 } from "../styles/tweet-components";
 import { useNavigate } from "react-router";
-import { tweetService } from "../hooks/useTweet";
+import { tweetService } from "../hooks/useTweetAction";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   const tweetIdValue = tweetObj.id;

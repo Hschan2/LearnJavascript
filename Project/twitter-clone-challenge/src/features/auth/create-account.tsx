@@ -1,4 +1,4 @@
-import { useAccount } from "./hooks/useAccount";
+import { useAccount } from "./hooks/useAccountAction";
 import { CreateAccountUI } from "./components/create-account-ui";
 
 function CreateAccount() {

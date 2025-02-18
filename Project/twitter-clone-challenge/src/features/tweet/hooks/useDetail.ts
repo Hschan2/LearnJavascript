@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { tweetService } from "./useTweet";
+import { tweetService } from "./useTweetAction";
 import { IComment, ITweet } from "../types/tweet-type";
 import { auth } from "../../../firebase";
 

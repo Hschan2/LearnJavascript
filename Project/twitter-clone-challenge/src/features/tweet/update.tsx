@@ -4,7 +4,7 @@ import UpdateTweetForm from "./update-tweet-form";
 import { FormWrapper } from "./styles/form-components";
 import { auth } from "../../firebase";
 import { WrongMessage } from "../error/styles/error-components";
-import { useDetailTweet } from "./hooks/useTweet";
+import { useDetailTweet } from "./hooks/useTweetAction";
 
 function Update() {
   const { tweetId } = useParams();

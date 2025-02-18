@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useFollow from "../../shared/hook/useFollow";
+import useFollow from "../../shared/hook/useFollowAction";
 import { useProfileActions } from "./hooks/useProfileActions";
 import { ProfileUI } from "./components/profile-ui";
 import { auth } from "../../firebase";

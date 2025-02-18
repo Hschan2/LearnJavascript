@@ -3,9 +3,9 @@ import { useNavigate, useParams } from "react-router";
 import { auth } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { IComment } from "./types/tweet-type";
-import { tweetService, useDetailTweet } from "./hooks/useTweet";
+import { tweetService, useDetailTweet } from "./hooks/useTweetAction";
 import DetailUI from "./components/DetailUI";
-import useFollow from "../../shared/hook/useFollow";
+import useFollow from "../../shared/hook/useFollowAction";
 
 function DetailTweet() {
   const { tweetId } = useParams();
