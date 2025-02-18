@@ -1,7 +1,7 @@
 import { ITweet } from "../../tweet/types/tweet-type";
 import NameEditor from "./name-editor";
 import ProfileAvatar from "./profile-avatar";
-import ProfileMenus from "./profile-menu";
+import ProfileMenus from "./profile-mobile-menu";
 import Tweet from "../../tweet/components/tweet";
 import Like from "../../tweet/like";
 import Settings from "../../setting/settings";
@@ -12,7 +12,7 @@ import {
   Tweets,
   Wrapper,
 } from "../style/profile-components";
-import Modal from "./Modal";
+import Modal from "./follow-modal";
 import { ProfileUIProps } from "../types/profile-type";
 
 export function ProfileUI({

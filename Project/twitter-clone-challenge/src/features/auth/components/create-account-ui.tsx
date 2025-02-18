@@ -3,18 +3,19 @@ import {
   Button,
   Error,
   Form,
+  Hint,
   Switcher,
   Title,
   Wrapper,
 } from "../styles/auth-components";
-import { FormInput } from "./formInput";
+import { FormInput } from "./form-input";
 import { validationRules } from "../../../constants";
 import GoogleButton from "./google-button";
 import GithubButton from "./github-button";
 import { AccountProps } from "../types/auth-type";
 
-export const LoginUI = ({
-  onLoginSubmit,
+export const CreateAccountUI = ({
+  onCreateSubmit,
   register,
   errors,
   isLoading,
@@ -22,8 +23,16 @@ export const LoginUI = ({
 }: AccountProps) => {
   return (
     <Wrapper>
-      <Title>로그인 𝕏</Title>
-      <Form onSubmit={onLoginSubmit}>
+      <Title>회원가입 𝕏</Title>
+      <Form onSubmit={onCreateSubmit}>
+        <FormInput
+          register={register}
+          name="name"
+          placeholder="이름"
+          type="text"
+          error={errors.name}
+          rules={validationRules.name}
+        />
         <FormInput
           register={register}
           name="email"
@@ -40,15 +49,17 @@ export const LoginUI = ({
           error={errors.password}
           rules={validationRules.password}
         />
+        <Hint>
+          비밀번호는 8자 이상, 숫자, 소문자, 특수문자(!, @, #)를 포함해야
+          합니다.
+        </Hint>
         <Button type="submit" disabled={isLoading}>
-          {isLoading ? "로그인 중" : "로그인"}
+          {isLoading ? "회원가입 중" : "회원가입"}
         </Button>
       </Form>
       {error && <Error className="error">{error}</Error>}
       <Switcher>
-        계정이 없으신가요? <Link to="/create-account">계정 생성</Link>
-        {" | "}
-        <Link to="/input-email">비밀번호 찾기</Link>
+        계정이 이미 있으신가요? <Link to="/login">로그인</Link>
       </Switcher>
       <GoogleButton />
       <GithubButton />

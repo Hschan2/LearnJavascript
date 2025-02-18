@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { NotificationsWrapper } from "./styles/notifications-components";
 import { useNotification } from "./hooks/useNotification";
 import { useNotificationAction } from "./hooks/useNotificationAction";
-import { NotificationList } from "./components/NotificationList";
+import { NotificationList } from "./components/notification-contents";
 
 function Notification() {
   const { notifications } = useNotification();

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MainSlide from "./components/MainSlide";
+import MainSlide from "./components/main-slide";
 import Timeline from "../tweet/components/timeline";
 import { SELECT_OPTION_VALUE } from "../../constants";
 import {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useFollow from "../../shared/hook/useFollow";
 import { useProfileActions } from "./hooks/useProfileActions";
-import { ProfileUI } from "./components/ProfileUI";
+import { ProfileUI } from "./components/profile-ui";
 import { auth } from "../../firebase";
 
 function Profile() {

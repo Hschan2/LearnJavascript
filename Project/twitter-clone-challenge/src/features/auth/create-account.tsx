@@ -1,5 +1,5 @@
 import { useAccount } from "./hooks/useAccount";
-import { CreateAccountUI } from "./components/CreateAccountUI";
+import { CreateAccountUI } from "./components/create-account-ui";
 
 function CreateAccount() {
   const {
