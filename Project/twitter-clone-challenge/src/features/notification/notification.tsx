@@ -1,24 +1,17 @@
-import { useEffect } from "react";
 import { NotificationsWrapper } from "./styles/notifications-components";
-import { useNotification } from "./hooks/useNotification";
 import { useNotificationAction } from "./hooks/useNotificationAction";
 import { NotificationList } from "./components/notification-contents";
 
 function Notification() {
-  const { notifications } = useNotification();
-  const { notificationClick, isMarkAllAsRead, handleDeleteNotification } =
+  const { notifications, handleNotificationClick, deleteNotification } =
     useNotificationAction();
-
-  useEffect(() => {
-    isMarkAllAsRead();
-  }, [isMarkAllAsRead]);
 
   return (
     <NotificationsWrapper>
       <NotificationList
         notifications={notifications}
-        onClick={notificationClick}
-        onDelete={handleDeleteNotification}
+        onClick={handleNotificationClick}
+        onDelete={deleteNotification}
       />
     </NotificationsWrapper>
   );

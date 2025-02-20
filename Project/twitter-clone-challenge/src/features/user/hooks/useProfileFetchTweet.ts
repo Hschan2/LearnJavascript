@@ -25,11 +25,9 @@ const useProfileFetchTweet = (userId?: string) => {
 
   const fetchUserProfile = useCallback(async () => {
     if (!userId) return;
-
     try {
       const userDocRef = doc(dataBase, "signedUsers", userId);
       const userDocSnap = await getDoc(userDocRef);
-
       if (userDocSnap.exists()) {
         setUserProfile(userDocSnap.data() as { name: string; image: string });
       }
@@ -43,20 +41,14 @@ const useProfileFetchTweet = (userId?: string) => {
     setIsFetching(true);
 
     try {
-      const tweetQuery = lastDoc
-        ? query(
-            collection(dataBase, "tweets"),
-            where("userId", "==", userId),
-            orderBy("createdAt", "desc"),
-            startAfter(lastDoc)
-          )
-        : query(
-            collection(dataBase, "tweets"),
-            where("userId", "==", userId),
-            orderBy("createdAt", "desc")
-          );
-      const snapshot = await getDocs(tweetQuery);
+      const tweetQuery = query(
+        collection(dataBase, "tweets"),
+        where("userId", "==", userId),
+        orderBy("createdAt", "desc"),
+        ...(lastDoc ? [startAfter(lastDoc)] : [])
+      );
 
+      const snapshot = await getDocs(tweetQuery);
       if (snapshot.empty) {
         setHasMore(false);
         return;
@@ -66,12 +58,13 @@ const useProfileFetchTweet = (userId?: string) => {
         ...doc.data(),
         id: doc.id,
       })) as ITweet[];
+
       setTweets((prev) => {
         const existingIds = new Set(prev.map((tweet) => tweet.id));
-        const filteredTweets = newTweets.filter(
-          (tweet) => !existingIds.has(tweet.id)
-        );
-        return prev.concat(filteredTweets);
+        return [
+          ...prev,
+          ...newTweets.filter((tweet) => !existingIds.has(tweet.id)),
+        ];
       });
 
       setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
@@ -84,13 +77,10 @@ const useProfileFetchTweet = (userId?: string) => {
 
   useEffect(() => {
     fetchUserProfile();
+    fetchTweets();
+  }, []);
 
-    if (hasMore && !isFetching) {
-      fetchTweets();
-    }
-  }, [hasMore, isFetching]);
-
-  return { tweets, fetchTweets, triggerRef, hasMore, userProfile };
+  return { tweets, triggerRef, hasMore, userProfile };
 };
 
 export default useProfileFetchTweet;

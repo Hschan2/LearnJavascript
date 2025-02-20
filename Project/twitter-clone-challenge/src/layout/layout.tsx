@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Outlet, useLocation } from "react-router";
 import {
   Logo,
@@ -15,7 +15,12 @@ import DarkModeButton from "./components/darkMode-button";
 import { auth, dataBase } from "../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
-function useUnreadNotification(userId: string | undefined, db: any) {
+function useAuthUser() {
+  const user = auth.currentUser;
+  return { userId: user?.uid, avatar: user?.photoURL };
+}
+
+function useUnreadNotification(userId: string | undefined) {
   const [hasUnreadNotification, setHasUnreadNotification] =
     useState<boolean>(false);
 
@@ -33,43 +38,55 @@ function useUnreadNotification(userId: string | undefined, db: any) {
     });
 
     return () => unsubscribe();
-  }, [userId, db]);
+  }, [userId]);
 
   return hasUnreadNotification;
 }
 
+function useMenuList(
+  userId?: string,
+  avatar?: string | null | undefined,
+  hasUnreadNotification?: boolean
+) {
+  return useMemo(
+    () => [
+      { link: "/hot", icon: (active: boolean) => <HotIcon active={active} /> },
+      { link: "/search", icon: () => <SearchIcon /> },
+      {
+        link: "/like",
+        icon: (active: boolean) => <LikeIcon active={active} />,
+      },
+      {
+        link: "/write",
+        icon: (active: boolean) => <WriteIcon active={active} />,
+      },
+      {
+        link: "/profile",
+        icon: () => <ProfileIcon avatar={avatar} />,
+      },
+      {
+        link: "/notification",
+        icon: (active: boolean) => (
+          <>
+            <NotificationIcon active={active} />
+            {hasUnreadNotification && <NotificationBadge>●</NotificationBadge>}
+          </>
+        ),
+      },
+      {
+        link: "/settings",
+        icon: (active: boolean) => <SettingIcon active={active} />,
+      },
+    ],
+    [avatar, hasUnreadNotification]
+  );
+}
+
 function Layout() {
   const location = useLocation();
-  const avatar = auth.currentUser?.photoURL;
-  const userId = auth.currentUser?.uid;
-  const hasUnreadNotification = useUnreadNotification(userId, dataBase);
-
-  const MENU_LIST = [
-    { link: "/hot", icon: (active: boolean) => <HotIcon active={active} /> },
-    { link: "/search", icon: () => <SearchIcon /> },
-    { link: "/like", icon: (active: boolean) => <LikeIcon active={active} /> },
-    {
-      link: "/write",
-      icon: (active: boolean) => <WriteIcon active={active} />,
-    },
-    {
-      link: "/profile",
-      icon: () => <ProfileIcon avatar={avatar} />,
-    },
-    {
-      link: "/notification",
-      icon: (active: boolean) => (
-        <>
-          <NotificationIcon active={active} />
-          {hasUnreadNotification && <NotificationBadge>●</NotificationBadge>}
-        </>
-      ),
-    },
-    {
-      link: "/settings",
-      icon: (active: boolean) => <SettingIcon active={active} />,
-    },
-  ];
+  const { userId, avatar } = useAuthUser();
+  const hasUnreadNotification = useUnreadNotification(userId);
+  const MENU_LIST = useMenuList(userId, avatar, hasUnreadNotification);
 
   return (
     <Wrapper>
@@ -78,13 +95,9 @@ function Layout() {
           <LogoComponent />
         </NoneLineLink>
         <WebMenuWrapper>
-          {MENU_LIST.map((menu) => (
-            <MenuLink
-              key={menu.link}
-              to={menu.link}
-              active={location.pathname === menu.link}
-            >
-              {menu.icon(location.pathname === menu.link)}
+          {MENU_LIST.map(({ link, icon }) => (
+            <MenuLink key={link} to={link} active={location.pathname === link}>
+              {icon(location.pathname === link)}
             </MenuLink>
           ))}
           <DarkModeButton />

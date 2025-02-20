@@ -8,19 +8,18 @@ const useAvatarUpload = (user: any) => {
   const [avatar, setAvatar] = useState(user?.photoURL);
 
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target;
-    const usersRef = doc(dataBase, "signedUsers", user.uid);
+    if (!e.target.files?.length || !user) return;
 
-    if (!files || files.length !== 1 || !user) return;
-
-    const file = files[0];
+    const file = e.target.files[0];
     const locationRef = ref(storage, `avatars/${user.uid}`);
     const result = await uploadBytes(locationRef, file);
     const avatarUrl = await getDownloadURL(result.ref);
-    setAvatar(avatarUrl);
 
+    setAvatar(avatarUrl);
     await updateProfile(user, { photoURL: avatarUrl });
-    await updateDoc(usersRef, { avatar: avatarUrl });
+    await updateDoc(doc(dataBase, "signedUsers", user.uid), {
+      avatar: avatarUrl,
+    });
   };
 
   return { avatar, onAvatarChange };

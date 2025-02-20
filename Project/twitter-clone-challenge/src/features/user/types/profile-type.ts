@@ -30,7 +30,7 @@ export interface ProfileUIProps {
   isEditingName: boolean;
   toggleNameEditor: () => void;
   selectedMenu: string;
-  setSelectedMenu: (menu: string) => void;
+  setSelectedMenu: (menu: "tweet" | "like" | "setting") => void;
   followingData: FollowingProps[];
   followerData: FollowerProps[];
   isModalOpen: boolean;
