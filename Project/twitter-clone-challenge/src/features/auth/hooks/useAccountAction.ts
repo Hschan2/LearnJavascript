@@ -1,39 +1,26 @@
-import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useAuth } from "./useAuthAction";
-
-type FormType = {
-  name?: string;
-  email: string;
-  password: string;
-};
+import { useFormHook } from "./useFormHook";
 
 export const useAccount = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormType>();
+  const { register, handleSubmit, errors } = useFormHook();
   const { login, signUp, isLoading, error, clearError } = useAuth();
 
-  const onLoginSubmit: SubmitHandler<FormType> = async (data) => {
+  const handleAuth = async (authFn: () => Promise<boolean>) => {
     clearError();
-    if (await login(data.email, data.password)) {
-      navigate("/");
-    }
+    if (await authFn()) navigate("/");
   };
 
-  const onCreateSubmit: SubmitHandler<FormType> = async (data) => {
-    clearError();
-    if (
+  const onLoginSubmit = handleSubmit((data) =>
+    handleAuth(() => login(data.email, data.password))
+  );
+
+  const onCreateSubmit = handleSubmit(
+    (data) =>
       data.name &&
-      data.email &&
-      (await signUp(data.name, data.email, data.password))
-    ) {
-      navigate("/");
-    }
-  };
+      handleAuth(() => signUp(data.name, data.email, data.password))
+  );
 
   return {
     register,

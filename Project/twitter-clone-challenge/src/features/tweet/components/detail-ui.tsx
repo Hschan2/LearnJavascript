@@ -23,11 +23,7 @@ import {
   FollowButton,
   DetailUser,
 } from "../styles/tweet-components";
-import {
-  Form,
-  SubmitButton,
-  TextArea,
-} from "../styles/form-components";
+import { Form, SubmitButton, TextArea } from "../styles/form-components";
 import formattedDate from "../../../shared/hook/formattedDate";
 import { IComment, ITweet } from "../types/tweet-type";
 import { User } from "firebase/auth";
@@ -37,6 +33,7 @@ export interface DetailUIProps {
   tweet: {
     tweet: ITweet | null;
     likedByUser: boolean;
+    exclamationByUser: boolean;
   };
   user: {
     uid: string | null;
@@ -45,8 +42,8 @@ export interface DetailUIProps {
     isFollowing: boolean | null;
   };
   actions: {
-    onLike: () => void;
-    onExclamation: () => void;
+    onLike: (likedByUser: boolean, tweet: ITweet) => void;
+    onExclamation: (exclamationByUser: boolean) => void;
     onDeleteComment: (comment: IComment) => void;
     onNavigateUpdate: () => void;
     onDeleteTweet: () => void;
@@ -109,11 +106,13 @@ const DetailUI = ({
           <LikeBtn
             likes={tweet.tweet?.likes || 0}
             likedByUser={tweet.likedByUser}
-            onClick={actions.onLike}
+            onClick={() =>
+              tweet.tweet && actions.onLike(tweet.likedByUser, tweet.tweet)
+            }
           />
           <ExclamationBtn
             exclamation={tweet.tweet?.exclamation || 0}
-            onClick={actions.onExclamation}
+            onClick={() => actions.onExclamation(tweet.exclamationByUser)}
           />
         </DetailButtonWrapper>
       </DetailTweetWrapper>

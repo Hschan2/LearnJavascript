@@ -9,7 +9,6 @@ export const useDetail = (tweetId: string, setComments: Function) => {
 
   const addComment = async () => {
     if (!newComment.trim()) return;
-
     const comment = {
       commentId: uuidv4(),
       commentText: newComment,
@@ -18,7 +17,6 @@ export const useDetail = (tweetId: string, setComments: Function) => {
       commenterProfile: auth.currentUser?.photoURL || "",
       createdAt: Date.now(),
     };
-
     await tweetService.addComment(tweetId, comment);
     setNewComment("");
   };
@@ -32,7 +30,6 @@ export const useDetail = (tweetId: string, setComments: Function) => {
 
   const toggleLike = async (likedByUser: boolean, tweet: ITweet) => {
     if (!tweet) return;
-
     await tweetService.toggleLike(
       tweetId,
       auth.currentUser?.uid || "",

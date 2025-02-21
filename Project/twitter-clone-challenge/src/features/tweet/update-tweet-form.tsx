@@ -1,5 +1,5 @@
 import { deleteField, doc, updateDoc } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { auth, dataBase } from "../../firebase";
 import EmojiPicker from "./components/emoji-picker";
 import {
@@ -53,14 +53,29 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
   const navigate = useNavigate();
   const tweetDocRef = doc(dataBase, "tweets", id);
 
-  const updatePostState = <K extends keyof UpdateState>(
-    key: K,
-    value: UpdateState[K]
-  ) => {
-    setUpdateState((prev) => ({ ...prev, [key]: value }));
-  };
+  const updatePostState = useCallback(
+    <K extends keyof UpdateState>(key: K, value: UpdateState[K]) => {
+      setUpdateState((prev) => ({ ...prev, [key]: value }));
+    },
+    []
+  );
 
   const { handleFileUpload, handleRetouchUpload } = useFileUpload(user);
+
+  const { fetchTweetData } = useFetchTweet(id, (data) => {
+    setUpdateState({
+      ...updateState,
+      tweet: data.tweet,
+      file: data.photo || null,
+      tags: data.tags,
+      selectedOption: data.item,
+      selectedAddress: data.location,
+    });
+  });
+
+  useEffect(() => {
+    fetchTweetData();
+  }, [id]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -77,16 +92,15 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       alert("수정할 수 없습니다. 글자 수는 180으로 제한되어 있습니다.");
       return;
     }
-
     updatePostState("isLoading", true);
+
     try {
-      await updateDoc(doc(dataBase, "tweets", id), {
+      await updateDoc(tweetDocRef, {
         tweet: updateState.tweet,
         tags: updateState.tags,
         item: updateState.selectedOption,
         location: updateState.selectedAddress || null,
       });
-
       if (updateState.uploadedFile) {
         await handleFileUpload(updateState.uploadedFile, tweetDocRef);
       }
@@ -115,21 +129,6 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       updatePostState("tagInput", "");
     }
   };
-
-  const { fetchTweetData } = useFetchTweet(id, (data) => {
-    setUpdateState({
-      ...updateState,
-      tweet: data.tweet,
-      file: data.photo || null,
-      tags: data.tags,
-      selectedOption: data.item,
-      selectedAddress: data.location,
-    });
-  });
-
-  useEffect(() => {
-    fetchTweetData();
-  }, [id]);
 
   return (
     <Form onSubmit={onSubmit}>
