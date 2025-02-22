@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import { auth } from "../../firebase";
-import { v4 as uuidv4 } from "uuid";
-import { IComment } from "./types/tweet-type";
 import { tweetService, useDetailTweet } from "./hooks/useTweetAction";
 import DetailUI from "./components/detail-ui";
 import useFollow from "../../shared/hook/useFollowAction";

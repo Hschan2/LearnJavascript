@@ -7,23 +7,27 @@ import {
   Wrapper,
 } from "../home/style/home-components";
 
+const OPTIONS = ["전체", ...SELECT_OPTION_VALUE];
+
 function Hot() {
-  const [selectedOption, setSelectedOption] = useState("전체");
+  const [selectedOption, setSelectedOption] = useState(OPTIONS[0]);
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
 
+  const renderOptions = () =>
+    OPTIONS.map((item, index) => (
+      <option value={item} key={`${item}-${index}`}>
+        {item}
+      </option>
+    ));
+
   return (
     <Wrapper>
       <FilterWrapper>
         <FilterSelector onChange={handleOptionChange}>
-          <option value="전체">전체</option>
-          {SELECT_OPTION_VALUE.map((item, index) => (
-            <option value={item} key={`${item}-${index}`}>
-              {item}
-            </option>
-          ))}
+          {renderOptions()}
         </FilterSelector>
       </FilterWrapper>
       <Timeline isHot option={selectedOption} />
