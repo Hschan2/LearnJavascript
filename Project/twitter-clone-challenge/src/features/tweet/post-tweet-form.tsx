@@ -1,6 +1,3 @@
-import { addDoc, collection } from "firebase/firestore";
-import React, { useEffect, useRef, useState } from "react";
-import { auth, dataBase } from "../../firebase";
 import EmojiPicker from "./components/emoji-picker";
 import {
   AttachFileButton,
@@ -26,119 +23,23 @@ import {
   TagsList,
   TextArea,
 } from "./styles/form-components";
-import { useNavigate } from "react-router";
-import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../constants";
+import { SELECT_OPTION_VALUE } from "../../constants";
 import AddressModal from "./components/address-modal";
-import { useFileUpload } from "./hooks/useFileUpLoad";
-
-const initialState = {
-  isLoading: false,
-  tweet: "",
-  tags: [] as string[],
-  tagInput: "",
-  file: null as File | null,
-  retouch: null as File | null,
-  showEmojiPicker: false,
-  isSelectOpen: false,
-  selectedOption: SELECT_OPTION_VALUE[0],
-  isModalOpen: false,
-  selectedAddress: "",
-  likes: 0,
-  likedBy: [] as string[],
-  exclamation: 0,
-  exclamationBy: [] as string[],
-};
+import { useTweetForm } from "./hooks/useTweetForm";
+import { useTweet } from "./hooks/useTweet";
 
 function PostTweetForm() {
-  const [postState, setPostState] = useState(initialState);
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const { uploadRetouchFile, uploadTweetPhoto } = useFileUpload();
-  const user = auth.currentUser;
-  const navigate = useNavigate();
-
-  const updateState = (newState: Partial<typeof postState>) =>
-    setPostState((prev) => ({ ...prev, ...newState }));
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.rows = 1;
-      textareaRef.current.rows = textareaRef.current.scrollHeight / 20;
-    }
-  }, [postState.tweet]);
-
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: "file" | "retouch"
-  ) => {
-    const { files } = e.target;
-    if (files && files[0].size > MAX_IMAGE_FILE_SIZE) {
-      alert("파일 사이즈는 2MB 이하만 가능합니다.");
-      return;
-    }
-    updateState({ [type]: files ? files[0] : null });
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    key: keyof typeof postState
-  ) => updateState({ [key]: e.target.value });
-
-  const handleToggle = (key: keyof typeof postState) =>
-    updateState({ [key]: !postState[key] });
-
-  const handleTagAddition = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && postState.tagInput.trim() !== "") {
-      e.preventDefault();
-      updateState({
-        tags: [...postState.tags, postState.tagInput.trim()],
-        tagInput: "",
-      });
-    }
-  };
-
-  const removeTag = (index: number) => {
-    updateState({ tags: postState.tags.filter((_, i) => i !== index) });
-  };
-
-  const addTweetToData = (userId: string, docData: Record<string, any>) =>
-    addDoc(collection(dataBase, "tweets"), {
-      ...docData,
-      createdAt: Date.now(),
-      username: user?.displayName || "익명",
-      userId,
-      tags: postState.tags,
-      likes: postState.likes,
-      likedBy: postState.likedBy,
-      exclamation: postState.exclamation,
-      exclamationBy: postState.exclamationBy,
-    });
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!postState.file) {
-      alert("사진을 추가해 주세요!");
-      return;
-    }
-    if (!user || postState.isLoading || !postState.tweet.trim()) return;
-
-    try {
-      updateState({ isLoading: true });
-      const doc = await addTweetToData(user.uid, {
-        tweet: postState.tweet,
-        item: postState.selectedOption,
-        location: postState.selectedAddress,
-      });
-
-      if (postState.file) await uploadTweetPhoto(user.uid, doc, postState.file);
-      if (postState.retouch)
-        await uploadRetouchFile(user.uid, doc, postState.retouch);
-
-      navigate("/");
-      setPostState({ ...initialState, isLoading: false });
-    } catch (error) {
-      console.error("트윗 포스팅 에러:", error);
-    }
-  };
+  const {
+    postState,
+    updateState,
+    handleFileChange,
+    handleInputChange,
+    handleToggle,
+    handleTagAddition,
+    removeTag,
+    textareaRef,
+  } = useTweetForm();
+  const { handleSubmit } = useTweet(postState, updateState);
 
   return (
     <Form onSubmit={handleSubmit}>
