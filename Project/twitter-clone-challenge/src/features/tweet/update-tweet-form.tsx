@@ -1,6 +1,3 @@
-import { deleteField, doc, updateDoc } from "firebase/firestore";
-import { useState, useEffect, useCallback } from "react";
-import { auth, dataBase } from "../../firebase";
 import EmojiPicker from "./components/emoji-picker";
 import {
   AttachFileButton,
@@ -27,137 +24,47 @@ import {
   TagsList,
   TextArea,
 } from "./styles/form-components";
-import { EditTweetFormProps, UpdateState } from "./types/form-type";
 import { SELECT_OPTION_VALUE } from "../../constants";
-import { useNavigate } from "react-router";
 import AddressModal from "./components/address-modal";
-import { useFileUpload } from "./hooks/useFileUpLoad";
-import { useFetchTweet } from "./hooks/useFetchTweet";
+import { useUpdateFetchTweetData } from "./hooks/useUpdateFetchTweetData";
+import { useUpdateTweet } from "./hooks/useUpdateTweet";
 
-function UpdateTweetForm({ id }: EditTweetFormProps) {
-  const [updateState, setUpdateState] = useState<UpdateState>({
-    isLoading: false,
-    tweet: "",
-    tags: [] as string[],
-    tagInput: "",
-    file: null as File | string | null,
-    retouch: null as File | null,
-    uploadedFile: null as File | null,
-    showEmojiPicker: false,
-    isSelectOpen: false,
-    selectedOption: "",
-    isModalOpen: false,
-    selectedAddress: "",
-  });
-  const user = auth.currentUser;
-  const navigate = useNavigate();
-  const tweetDocRef = doc(dataBase, "tweets", id);
-
-  const updatePostState = useCallback(
-    <K extends keyof UpdateState>(key: K, value: UpdateState[K]) => {
-      setUpdateState((prev) => ({ ...prev, [key]: value }));
-    },
-    []
+function UpdateTweetForm({ id }: { id: string }) {
+  const { state, updateState } = useUpdateFetchTweetData(id);
+  const { onSubmit, onTagInputKeyPress } = useUpdateTweet(
+    id,
+    state,
+    updateState
   );
-
-  const { handleFileUpload, handleRetouchUpload } = useFileUpload(user);
-
-  const { fetchTweetData } = useFetchTweet(id, (data) => {
-    setUpdateState({
-      ...updateState,
-      tweet: data.tweet,
-      file: data.photo || null,
-      tags: data.tags,
-      selectedOption: data.item,
-      selectedAddress: data.location,
-    });
-  });
-
-  useEffect(() => {
-    fetchTweetData();
-  }, [id]);
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!updateState.uploadedFile && !updateState.file) {
-      alert("사진을 첨부해 주세요!");
-      return;
-    }
-    if (
-      !user ||
-      updateState.isLoading ||
-      updateState.tweet.trim() === "" ||
-      updateState.tweet.length > 180
-    ) {
-      alert("수정할 수 없습니다. 글자 수는 180으로 제한되어 있습니다.");
-      return;
-    }
-    updatePostState("isLoading", true);
-
-    try {
-      await updateDoc(tweetDocRef, {
-        tweet: updateState.tweet,
-        tags: updateState.tags,
-        item: updateState.selectedOption,
-        location: updateState.selectedAddress || null,
-      });
-      if (updateState.uploadedFile) {
-        await handleFileUpload(updateState.uploadedFile, tweetDocRef);
-      }
-      if (updateState.retouch) {
-        await handleRetouchUpload(updateState.retouch, tweetDocRef);
-      } else {
-        await updateDoc(doc(dataBase, "tweets", id), {
-          retouch: deleteField(),
-        });
-      }
-      navigate("/");
-    } catch (error) {
-      console.error("업데이트 실패: ", error);
-    } finally {
-      updatePostState("isLoading", false);
-    }
-  };
-
-  const onTagInputKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && updateState.tagInput.trim()) {
-      e.preventDefault();
-      updatePostState("tags", [
-        ...updateState.tags,
-        updateState.tagInput.trim(),
-      ]);
-      updatePostState("tagInput", "");
-    }
-  };
 
   return (
     <Form onSubmit={onSubmit}>
       <AttachFileButton htmlFor="file">
-        {updateState.uploadedFile ? (
+        {state.uploadedFile ? (
           <ImagePreview>
             <img
-              src={URL.createObjectURL(updateState.uploadedFile)}
+              src={URL.createObjectURL(state.uploadedFile)}
               alt="preview"
               loading="lazy"
             />
             <RemoveImageButton
-              onClick={() => updatePostState("uploadedFile", null)}
+              onClick={() => updateState("uploadedFile", null)}
             >
               x
             </RemoveImageButton>
           </ImagePreview>
-        ) : updateState.file ? (
+        ) : state.file ? (
           <ImagePreview>
             <img
               src={
-                typeof updateState.file === "string"
-                  ? updateState.file
-                  : URL.createObjectURL(updateState.file)
+                typeof state.file === "string"
+                  ? state.file
+                  : URL.createObjectURL(state.file)
               }
               alt="preview"
               loading="lazy"
             />
-            <RemoveImageButton onClick={() => updatePostState("file", null)}>
+            <RemoveImageButton onClick={() => updateState("file", null)}>
               x
             </RemoveImageButton>
           </ImagePreview>
@@ -180,10 +87,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       </AttachFileButton>
       <AttachFileInput
         onChange={(e) =>
-          updatePostState(
-            "uploadedFile",
-            e.target.files ? e.target.files[0] : null
-          )
+          updateState("uploadedFile", e.target.files?.[0] ?? null)
         }
         type="file"
         id="file"
@@ -193,7 +97,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       <MapWrapper
         onClick={(e) => {
           e.preventDefault();
-          updatePostState("isModalOpen", true);
+          updateState("isModalOpen", true);
         }}
       >
         <svg
@@ -208,18 +112,18 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
             clipRule="evenodd"
           />
         </svg>
-        <MapText>{updateState.selectedAddress || "위치 검색"}</MapText>
+        <MapText>{state.selectedAddress || "위치 검색"}</MapText>
       </MapWrapper>
       <AddressModal
-        isOpen={updateState.isModalOpen}
-        onClose={() => updatePostState("isModalOpen", false)}
-        onSelect={(address) => updatePostState("selectedAddress", address)}
+        isOpen={state.isModalOpen}
+        onClose={() => updateState("isModalOpen", false)}
+        onSelect={(address) => updateState("selectedAddress", address)}
       />
       <TextArea
         rows={3}
         maxLength={180}
-        onChange={(e) => updatePostState("tweet", e.target.value)}
-        value={updateState.tweet}
+        onChange={(e) => updateState("tweet", e.target.value)}
+        value={state.tweet}
         placeholder="당신의 이야기를 전달해 주세요."
         required
       />
@@ -227,20 +131,20 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         <TagsInput
           type="text"
           placeholder="태그 입력"
-          value={updateState.tagInput}
-          onChange={(e) => updatePostState("tagInput", e.target.value)}
+          value={state.tagInput}
+          onChange={(e) => updateState("tagInput", e.target.value)}
           onKeyDown={onTagInputKeyPress}
         />
         <TagsList>
-          {updateState.tags.map((tag, index) => (
+          {state.tags.map((tag, index) => (
             <Tag key={index}>
               {tag}
               <RemoveTagButton
                 onClick={(e) => {
                   e.preventDefault();
-                  updatePostState(
+                  updateState(
                     "tags",
-                    updateState.tags.filter((_, i) => i !== index)
+                    state.tags.filter((_, i) => i !== index)
                   );
                 }}
               >
@@ -252,7 +156,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
       </TagsInputWrapper>
       <RetouchWrapper>
         <RetouchLabel htmlFor="retouch">
-          {updateState.retouch ? (
+          {state.retouch ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -271,10 +175,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         </RetouchLabel>
         <AttachFileInput
           onChange={(e) =>
-            updatePostState(
-              "retouch",
-              e.target.files ? e.target.files[0] : null
-            )
+            updateState("retouch", e.target.files ? e.target.files[0] : null)
           }
           type="file"
           id="retouch"
@@ -284,7 +185,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         <RemoveRetouchButton
           onClick={(e) => {
             e.preventDefault();
-            updatePostState("retouch", null);
+            updateState("retouch", null);
           }}
         >
           x
@@ -294,7 +195,7 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         <EmojiButton
           onClick={(e) => {
             e.preventDefault();
-            updatePostState("showEmojiPicker", !updateState.showEmojiPicker);
+            updateState("showEmojiPicker", !state.showEmojiPicker);
           }}
         >
           <svg
@@ -315,21 +216,19 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         <SelectWrapper>
           <SelectToggleButton
             type="button"
-            onClick={() =>
-              updatePostState("isSelectOpen", !updateState.isSelectOpen)
-            }
+            onClick={() => updateState("isSelectOpen", !state.isSelectOpen)}
           >
-            {updateState.selectedOption || SELECT_OPTION_VALUE[0]}
+            {state.selectedOption || SELECT_OPTION_VALUE[0]}
           </SelectToggleButton>
-          {updateState.isSelectOpen && (
+          {state.isSelectOpen && (
             <SelectedOptionWrapper>
               {SELECT_OPTION_VALUE.map((option, index) => (
                 <OptionButton
                   key={index}
                   type="button"
                   onClick={() => {
-                    updatePostState("isSelectOpen", false);
-                    updatePostState("selectedOption", option);
+                    updateState("isSelectOpen", false);
+                    updateState("selectedOption", option);
                   }}
                 >
                   {option}
@@ -340,14 +239,15 @@ function UpdateTweetForm({ id }: EditTweetFormProps) {
         </SelectWrapper>
         <SubmitButton
           type="submit"
-          value={updateState.isLoading ? "수정 중..." : "수정"}
+          value={state.isLoading ? "수정 중..." : "수정"}
+          disabled={state.isLoading}
         />
       </ButtonLayout>
-      {updateState.showEmojiPicker && (
+      {state.showEmojiPicker && (
         <EmojiPicker
           onSelectEmoji={(emoji) => {
-            updatePostState("tweet", updateState.tweet + emoji);
-            updatePostState("showEmojiPicker", false);
+            updateState("tweet", state.tweet + emoji);
+            updateState("showEmojiPicker", false);
           }}
         />
       )}

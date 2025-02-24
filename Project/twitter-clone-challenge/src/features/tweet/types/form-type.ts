@@ -1,7 +1,3 @@
-export interface EditTweetFormProps {
-  id: string;
-}
-
 export type UpdateState = {
   isLoading: boolean;
   tweet: string;
