@@ -5,8 +5,10 @@ import { tweetService, useDetailTweet } from "./hooks/useTweetAction";
 import DetailUI from "./components/detail-ui";
 import useFollow from "../../shared/hook/useFollowAction";
 import { useDetail } from "./hooks/useDetail";
+import ShareModal from "./components/share-modal";
 
 function DetailTweet() {
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { tweetId } = useParams();
   const navigate = useNavigate();
   if (!tweetId) return <div>데이터를 불러올 수 없습니다.</div>;
@@ -73,39 +75,47 @@ function DetailTweet() {
   }, [tweet?.userId]);
 
   return (
-    <DetailUI
-      tweet={{
-        tweet: tweet,
-        likedByUser: likedByUser,
-        exclamationByUser: exclamationByUser,
-      }}
-      user={{
-        uid: auth.currentUser?.uid || null,
-        photoURL: auth.currentUser?.photoURL || null,
-        displayName: auth.currentUser?.displayName || null,
-        isFollowing: followDataUserById,
-      }}
-      actions={{
-        onLike: toggleLike,
-        onExclamation: toggleExclamation,
-        onDeleteComment: deleteComment,
-        onNavigateUpdate: () => navigate(`/update/${tweetId}`),
-        onDeleteTweet: handleDelete,
-        onAddComment: addComment,
-        onTagClick: handleTagClick,
-        onURLCopy: handleURLCopy,
-        onFollow: handleFollow,
-        onUnFollow: handleUnFollow,
-        onMoveUserList: moveUserTweetListPage,
-      }}
-      commentsData={{
-        comments,
-        newComment,
-        setNewComment,
-      }}
-      profileImage={profileImage}
-      textareaRef={textareaRef}
-    />
+    <>
+      <DetailUI
+        tweet={{
+          tweet: tweet,
+          likedByUser: likedByUser,
+          exclamationByUser: exclamationByUser,
+        }}
+        user={{
+          uid: auth.currentUser?.uid || null,
+          photoURL: auth.currentUser?.photoURL || null,
+          displayName: auth.currentUser?.displayName || null,
+          isFollowing: followDataUserById,
+        }}
+        actions={{
+          onLike: toggleLike,
+          onExclamation: toggleExclamation,
+          onDeleteComment: deleteComment,
+          onNavigateUpdate: () => navigate(`/update/${tweetId}`),
+          onDeleteTweet: handleDelete,
+          onAddComment: addComment,
+          onTagClick: handleTagClick,
+          onURLCopy: handleURLCopy,
+          onFollow: handleFollow,
+          onUnFollow: handleUnFollow,
+          onMoveUserList: moveUserTweetListPage,
+          onShareClick: () => setIsShareModalOpen(true),
+        }}
+        commentsData={{
+          comments,
+          newComment,
+          setNewComment,
+        }}
+        profileImage={profileImage}
+        textareaRef={textareaRef}
+      />
+      <ShareModal
+        open={isShareModalOpen}
+        setOpen={setIsShareModalOpen}
+        title={tweet?.tweet}
+      />
+    </>
   );
 }
 

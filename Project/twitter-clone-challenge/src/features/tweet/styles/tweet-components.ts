@@ -217,8 +217,8 @@ export const DetailTweetText = styled.h2`
   color: ${(props) => props.theme.text};
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     cursor: pointer;
   }
 `;
