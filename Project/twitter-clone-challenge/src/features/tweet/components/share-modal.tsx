@@ -1,3 +1,7 @@
+import { FaFacebook, FaLinkedinIn, FaLine } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa6";
+import { MdEmail } from "react-icons/md";
+import { SiGmail, SiNaver } from "react-icons/si";
 import { styled } from "styled-components";
 
 const ModalOverlay = styled.div`
@@ -36,11 +40,9 @@ const ShareButton = styled.a`
   width: 100%;
   margin-top: 10px;
   padding: 10px;
-  border: none;
   cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #fff;
+  border-radius: 50%;
+  font-size: 12px;
   text-decoration: none;
 
   &.facebook {
@@ -59,9 +61,32 @@ const ShareButton = styled.a`
     background: #03c75a;
   }
 
+  &.line {
+    background: #06c755;
+  }
+
+  &.gmail {
+    background: #d14836;
+  }
+
+  &.email {
+    background: #333;
+  }
+`;
+
+const CopyButton = styled.a`
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  padding: 10px;
+  border-radius: 50px;
+  color: #fff;
+  text-decoration: none;
+
   &.copy {
-    background: #767676;
+    background: #0d6efd;
     font-size: 14px;
+    cursor: pointer;
   }
 
   &.url {
@@ -75,8 +100,8 @@ const ShareButton = styled.a`
 const CloseButton = styled.button`
   margin-top: 16px;
   padding: 5px 10px;
-  background: #767676;
-  color: white;
+  background: #808080;
+  color: #fff;
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -97,6 +122,9 @@ const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
     x: `https://x.com/intent/post?text=${encodedText}&url=${encodedUrl}`,
     linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedText}`,
     naver: `https://share.naver.com/web/shareView?url=${encodedUrl}&title=${encodedText}`,
+    line: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`,
+    gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodedText}&body=${encodedUrl}`,
+    email: `mailto:?subject=${encodedText}&body=${encodedUrl}`,
   };
 
   const handleURLCopy = async () => {
@@ -121,7 +149,7 @@ const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
             rel="noopener noreferrer"
             className="facebook"
           >
-            Facebook
+            <FaFacebook size={24} color="#fff" />
           </ShareButton>
           <ShareButton
             href={shareLinks.x}
@@ -129,7 +157,7 @@ const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
             rel="noopener noreferrer"
             className="twitter"
           >
-            Twitter
+            <FaTwitter size={24} color="#fff" />
           </ShareButton>
           <ShareButton
             href={shareLinks.linkedin}
@@ -137,7 +165,7 @@ const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
             rel="noopener noreferrer"
             className="linkedin"
           >
-            LinkedIn
+            <FaLinkedinIn size={24} color="#fff" />
           </ShareButton>
           <ShareButton
             href={shareLinks.naver}
@@ -145,16 +173,40 @@ const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
             rel="noopener noreferrer"
             className="naver"
           >
-            Naver
+            <SiNaver size={24} color="#fff" />
+          </ShareButton>
+          <ShareButton
+            href={shareLinks.line}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="line"
+          >
+            <FaLine size={24} color="#fff" />
+          </ShareButton>
+          <ShareButton
+            href={shareLinks.gmail}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="gmail"
+          >
+            <SiGmail size={24} color="#fff" />
+          </ShareButton>
+          <ShareButton
+            href={shareLinks.email}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="email"
+          >
+            <MdEmail size={24} color="#fff" />
           </ShareButton>
         </ButtonWrapper>
         <ButtonWrapper>
-          <ShareButton className="url" aria-disabled="true">
+          <CopyButton className="url" aria-disabled="true">
             {currentURL}
-          </ShareButton>
-          <ShareButton onClick={handleURLCopy} className="copy">
+          </CopyButton>
+          <CopyButton onClick={handleURLCopy} className="copy">
             URL 복사
-          </ShareButton>
+          </CopyButton>
         </ButtonWrapper>
         <CloseButton onClick={() => setOpen(false)}>닫기</CloseButton>
       </ModalContent>
