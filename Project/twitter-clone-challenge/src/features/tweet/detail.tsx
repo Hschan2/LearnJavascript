@@ -114,6 +114,7 @@ function DetailTweet() {
         open={isShareModalOpen}
         setOpen={setIsShareModalOpen}
         title={tweet?.tweet}
+        image={tweet?.photo}
       />
     </>
   );

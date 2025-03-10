@@ -1,8 +1,9 @@
 import { FaFacebook, FaLinkedinIn, FaLine } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
-import { SiGmail, SiNaver } from "react-icons/si";
+import { SiGmail, SiKakaotalk, SiNaver } from "react-icons/si";
 import { styled } from "styled-components";
+import useKakaoInit from "../../../shared/hook/useKakaoInit";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -44,6 +45,10 @@ const ShareButton = styled.a`
   border-radius: 50%;
   font-size: 12px;
   text-decoration: none;
+
+  &.kakao {
+    background: #fee500;
+  }
 
   &.facebook {
     background: #1877f2;
@@ -111,9 +116,12 @@ interface ShareModalProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   title: string | undefined;
+  image: string | undefined;
 }
 
-const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
+const ShareModal = ({ open, setOpen, title, image }: ShareModalProps) => {
+  useKakaoInit();
+
   const currentURL = window.location.href;
   const encodedUrl = encodeURIComponent(currentURL);
   const encodedText = encodeURIComponent(title!);
@@ -125,6 +133,26 @@ const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
     line: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`,
     gmail: `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${encodedText}&body=${encodedUrl}`,
     email: `mailto:?subject=${encodedText}&body=${encodedUrl}`,
+  };
+
+  const handleKakaoShare = () => {
+    if (!window.Kakao) {
+      alert("Kakao SDK가 로드되지 않아 공유할 수 없습니다.");
+      return;
+    }
+
+    window.Kakao.Share.sendDefault({
+      objectType: "feed",
+      content: {
+        title: title || "카카오 공유",
+        description: `${title}을 확인해보세요!`,
+        imageUrl: image || "",
+        link: {
+          mobileWebUrl: currentURL,
+          webUrl: currentURL,
+        },
+      },
+    });
   };
 
   const handleURLCopy = async () => {
@@ -143,6 +171,12 @@ const ShareModal = ({ open, setOpen, title }: ShareModalProps) => {
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalTitle>공유하기</ModalTitle>
         <ButtonWrapper>
+          <ShareButton
+            onClick={handleKakaoShare}
+            className="kakao"
+          >
+            <SiKakaotalk size={24} color="#fff" />
+          </ShareButton>
           <ShareButton
             href={shareLinks.facebook}
             target="_blank"

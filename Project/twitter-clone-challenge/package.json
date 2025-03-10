@@ -19,6 +19,7 @@
     "@types/slick-carousel": "^1.6.40",
     "emoji-mart": "^5.5.2",
     "firebase": "^10.1.0",
+    "kakao-js-sdk": "^1.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
