@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import {
   ButtonGroup,
-  ErrorBoundaryButton,
+  ErrorHandleButton,
   ErrorWrapper,
 } from "./styles/error-components";
 import { useNavigate } from "react-router";
@@ -46,17 +46,17 @@ class ErrorBoundaryWWrapper extends React.Component<
           </h2>
           <p>페이지 에러가 발생하였습니다.</p>
           <ButtonGroup>
-            <ErrorBoundaryButton
+            <ErrorHandleButton
               onClick={() => this.setState({ hasError: false })}
             >
               새로고침
-            </ErrorBoundaryButton>
-            <ErrorBoundaryButton
+            </ErrorHandleButton>
+            <ErrorHandleButton
               className="secondary"
               onClick={() => this.props.navigate("/")}
             >
               홈으로 이동
-            </ErrorBoundaryButton>
+            </ErrorHandleButton>
           </ButtonGroup>
         </ErrorWrapper>
       );

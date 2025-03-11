@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import {
-  ErrorBoundaryButton,
+  ErrorHandleButton,
   ErrorWrapper,
   NotFoundDescription,
   NotFoundTitle,
@@ -26,9 +26,9 @@ const NotFoundPage = () => {
       </p>
       <NotFoundTitle>페이지 없음</NotFoundTitle>
       <NotFoundDescription>이 페이지는 없는 페이지입니다.</NotFoundDescription>
-      <ErrorBoundaryButton onClick={() => navigate("/")}>
+      <ErrorHandleButton onClick={() => navigate("/")}>
         홈으로 이동
-      </ErrorBoundaryButton>
+      </ErrorHandleButton>
     </ErrorWrapper>
   );
 };

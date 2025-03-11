@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 
+// common-tweet-wrapper
 export const Wrapper = styled.div`
   width: 100%;
   display: grid;
@@ -19,7 +20,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-// Follow Page
+// follow-style
 export const FollowWrapper = styled.div`
   display: flex;
   flex-direction: column;

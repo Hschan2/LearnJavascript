@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 
+// Common Wrapper
 export const ErrorWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,12 +17,7 @@ export const ErrorWrapper = styled.div`
   }
 `;
 
-export const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-export const ErrorBoundaryButton = styled.button`
+export const ErrorHandleButton = styled.button`
   padding: 0.5rem 1rem;
   font-size: 1rem;
   color: #fff;
@@ -49,6 +45,13 @@ export const ErrorBoundaryButton = styled.button`
   }
 `;
 
+// error-boundary component
+export const ButtonGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+
+// not-found component
 export const NotFoundTitle = styled.h2`
   font-weight: 600;
   font-size: 24px;
@@ -65,4 +68,4 @@ export const WrongMessage = styled.div`
   justify-content: center;
   width: 100%;
   height: 90vh;
-`
+`;
