@@ -8,5 +8,5 @@ export const Wrapper = styled.div`
 `;
 
 export const Text = styled.span`
-  font-size: 24px;
+  font-size: clamp(18px, 2vw, 24px);
 `;

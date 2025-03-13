@@ -5,15 +5,15 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: min(10px, 2%);
 `;
 
 export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  padding: 40px 0;
+  gap: min(20px, 4%);
+  padding: min(40px, 5%) 0;
 
   @media (max-width: 425px) {
     width: 100%;
@@ -35,9 +35,8 @@ export const AvatarUpload = styled.label`
 export const AvatarImg = styled.img`
   width: 100%;
   height: 100%;
-  min-width: 90px;
-  min-height: 90px;
   object-fit: cover;
+  aspect-ratio: 1 / 1;
 `;
 
 export const AvatarInput = styled.input`
@@ -54,41 +53,43 @@ export const NameContainer = styled.div`
 export const EditContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: min(8px, 2%);
 `;
 
 export const Input = styled.input`
-  padding: 5px 10px;
+  padding: min(5px, 1%) min(10px, 2%);
   border-radius: 50px;
   border: 1px solid #797979;
   width: 100%;
-  font-size: 14px;
+  font-size: clamp(12px, 2vw, 14px);
 `;
 
 export const Name = styled.span`
-  font-size: 22px;
+  font-size: clamp(18px, 2.5vw, 22px);
 `;
 
 export const Tweets = styled.div`
   width: 100%;
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(3, 1fr);
+  gap: min(10px, 2%);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  // grid-template-columns: repeat(3, 1fr);
 
-  @media (max-width: 425px) {
-    grid-template-columns: 1fr;
-  }
+  // @media (max-width: 768px) {
+  //   grid-template-columns: repeat(2, 1fr);
+  // }
+
+  // @media (max-width: 425px) {
+  //   grid-template-columns: 1fr;
+  // }
 `;
 
 export const EditButton = styled.button`
   width: 70px;
   height: 30px;
   margin-top: 10px;
-  font-size: 14px;
+  font-size: clamp(12px, 2vw, 14px);
   background-color: #1d9bf0;
   color: white;
   border: none;
@@ -100,7 +101,7 @@ export const ConfirmEditButton = styled.button`
   width: 50px;
   height: 25px;
   margin-top: 10px;
-  font-size: 14px;
+  font-size: clamp(12px, 2vw, 14px);
   background-color: #111111;
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -112,7 +113,7 @@ export const FollowContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 200px;
+  width: min(200px, 80%);
   height: 40px;
   border: 1px solid #767676;
   border-radius: 6px;
@@ -153,7 +154,7 @@ export const ProfileMenu = styled.button<{ $isSelected: boolean }>`
   border: ${({ $isSelected, theme }) =>
     $isSelected ? `1px solid ${theme.border}` : "none"};
   border-radius: 12px;
-  font-size: 18px;
+  font-size: clamp(16px, 2vw, 18px);
   color: ${({ $isSelected, theme }) =>
     $isSelected ? theme.text : theme.lightText};
 `;
@@ -174,7 +175,7 @@ export const Overlay = styled.div`
 
 export const ModalContainer = styled.div`
   background: white;
-  width: 320px;
+  width: min(320px, 80%);
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
@@ -190,14 +191,14 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: 18px;
+  font-size: clamp(16px, 2vw, 18px);
   font-weight: bold;
 `;
 
 export const CloseButton = styled.button`
   background: none;
   border: none;
-  font-size: 18px;
+  font-size: clamp(14px, 2vw, 18px);
   cursor: pointer;
   color: #555;
 `;
@@ -223,4 +224,6 @@ export const Avatar = styled.img`
   height: 30px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
 `;

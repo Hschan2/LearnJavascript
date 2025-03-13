@@ -3,10 +3,10 @@ import { styled } from "styled-components";
 export const NotificationsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: clamp(6px, 1vw, 8px);
   width: 100%;
-  margin: 20px 10px;
-  padding: 0 14px;
+  margin: clamp(10px, 3vw, 20px) clamp(5px, 2vw, 10px);
+  padding: 0 clamp(10px, 2vw, 14px);
 `;
 
 export const NotificationContainer = styled.div`
@@ -16,7 +16,7 @@ export const NotificationContainer = styled.div`
   align-items: center;
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 12px;
-  padding: 16px 12px;
+  padding: clamp(12px, 2vw, 16px) clamp(10px, 2vw, 12px);
 `;
 
 export const NotificationMessage = styled.span`
@@ -27,9 +27,9 @@ export const NotificationMessage = styled.span`
 `;
 
 export const NotificationTimeAgo = styled.span`
-  font-size: 12px;
+  font-size: clamp(10px, 1.5vw, 12px);
   color: ${(props) => props.theme.lightText};
-  margin-left: 12px;
+  margin-left: clamp(8px, 2vw, 12px);
 `;
 
 export const NotificationButton = styled.button`

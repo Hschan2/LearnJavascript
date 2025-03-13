@@ -23,6 +23,7 @@ export const InputSearch = styled.input`
   padding: 10px 12px;
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 12px;
+  font-size: clamp(14px, 2vw, 16px);
 `;
 
 export const InputIcon = styled.button`
@@ -34,8 +35,8 @@ export const InputIcon = styled.button`
   text-align: center;
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: clamp(18px, 2vw, 20px);
+    height: clamp(18px, 2vw, 20px);
     color: ${(props) => props.theme.text};
   }
 `;

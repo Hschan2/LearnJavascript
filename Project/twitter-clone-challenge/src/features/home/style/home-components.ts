@@ -1,14 +1,13 @@
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 90%;
+  width: min(90%, 1200px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
-  padding: 10px 0;
+  gap: clamp(20px, 5vw, 30px);
+  padding: min(20px, 5%);
   margin: 0 auto;
-  padding: 20px;
 
   @media (max-width: 425px) {
     width: 100%;
@@ -20,11 +19,11 @@ export const FilterWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  padding: 10px 0;
+  padding: min(10px, 2%) 0;
 `;
 
 export const FilterSelector = styled.select`
-  padding: 4px 8px;
+  padding: clamp(4px, 1vw, 6px) clamp(4px, 2vw, 10px);
   border-radius: 8px;
 `;
 

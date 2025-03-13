@@ -8,18 +8,18 @@ export const ErrorWrapper = styled.div`
   justify-content: center;
   width: 100%;
   height: 90vh;
-  gap: 16px;
+  gap: min(16px, 2vh);
 
   svg {
-    width: 50px;
-    height: 50px;
+    width: clamp(30px, 5vw, 50px);
+    height: clamp(30px, 5vw, 50px);
     color: red;
   }
 `;
 
 export const ErrorHandleButton = styled.button`
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+  padding: clamp(0.4rem, 1vw, 0.5rem) clamp(0.8rem, 2vw, 1rem);
+  font-size: clamp(0.9rem, 2vw, 1rem);
   color: #fff;
   background-color: #007bff;
   border: none;
@@ -48,17 +48,18 @@ export const ErrorHandleButton = styled.button`
 // error-boundary component
 export const ButtonGroup = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: clamp(0.8rem, 2vw, 1rem);
 `;
 
 // not-found component
 export const NotFoundTitle = styled.h2`
   font-weight: 600;
-  font-size: 24px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
 `;
 
 export const NotFoundDescription = styled.p`
   color: #797979;
+  font-size: clamp(0.9rem, 2vw, 1rem);
 `;
 
 // 잘못된 요청 및 경로 에러 레이아웃
