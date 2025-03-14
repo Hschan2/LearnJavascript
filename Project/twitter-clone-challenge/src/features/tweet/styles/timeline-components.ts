@@ -34,16 +34,17 @@ export const UserWrapper = styled.div`
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 28px 14px;
+  padding: min(28px, 5%);
 `;
 
 export const UserAvatar = styled.img`
-  width: 100px;
-  height: 100px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
   border: 1px solid #f1f5f5;
   border-radius: 50%;
 `;
 
 export const UserName = styled.span`
-  font-size: 36px;
-`
+  font-size: clamp(1.8rem, 4vw, 2.25rem);
+`;

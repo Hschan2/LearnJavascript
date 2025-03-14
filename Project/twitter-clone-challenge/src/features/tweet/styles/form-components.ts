@@ -6,14 +6,14 @@ export const FormWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: min(5em, 8%);
 `;
 
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 80%;
-  gap: 10px;
+  width: min(80%, 600px);
+  gap: clamp(8px, 2vw, 10px);
 
   &.comment {
     flex-direction: row;
@@ -21,16 +21,16 @@ export const Form = styled.form`
 `;
 
 export const TextArea = styled.textarea`
-  padding: 12px 10px;
-  border-radius: 10px;
+  padding: clamp(10px, 2vw, 12px) clamp(8px, 2vw, 10px);
+  border-radius: clamp(8px, 2vw, 10px);
   border: 1px solid ${(props) => props.theme.light};
-  font-size: 16px;
+  font-size: clamp(14px, 1.5vw, 16px);
   width: 100%;
   resize: none;
   overflow-y: hidden;
 
   &::placeholder {
-    font-size: 14px;
+    font-size: clamp(12px, 1vw, 14px);
   }
   &:focus {
     outline: none;
@@ -42,7 +42,7 @@ export const TextArea = styled.textarea`
 export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 12px 0;
+  padding: clamp(8px, 2vw, 12px) 0;
 `;
 
 export const AttachFileButton = styled.label`
@@ -52,12 +52,12 @@ export const AttachFileButton = styled.label`
   align-items: center;
   justify-content: center;
   color: #1d9bf0;
-  border-radius: 8px;
+  border-radius: clamp(6px, 2vw, 8px);
   border: 1px solid #1d9bf0;
   cursor: pointer;
   svg {
-    width: 25px;
-    height: 25px;
+    width: clamp(20px, 3vw, 25px);
+    height: clamp(20px, 3vw, 25px);
   }
 `;
 
@@ -95,13 +95,13 @@ export const RetouchLabel = styled.label`
 
 export const SubmitButton = styled.input`
   align-self: flex-start;
-  margin: 0 10px 0 auto;
+  margin: 0 clamp(8px, 2vw, 10px) 0 auto;
   background-color: #1d9bf0;
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 20px;
-  font-size: 14px;
+  padding: clamp(8px, 2vw, 10px);
+  border-radius: clamp(16px, 3vw, 20px);
+  font-size: clamp(12px, 1.5vw, 14px);
   cursor: pointer;
   &:hover,
   &:active {
@@ -138,9 +138,10 @@ export const ExistingPhoto = styled.img`
   width: 100%;
   max-width: 300px;
   height: auto;
+  aspect-ratio: 1 / 1;
   border: 1px solid grey;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  border-radius: clamp(8px, 2vw, 10px);
+  margin-bottom: clamp(8px, 2vw, 10px);
 `;
 
 export const DeletePhotoButton = styled.button`
@@ -228,9 +229,10 @@ export const ImagePreview = styled.div`
 
   img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: clamp(6px, 2vw, 8px);
   }
 `;
 
@@ -259,13 +261,13 @@ export const TagsInputWrapper = styled.div`
 
 export const TagsInput = styled.input`
   width: 100%;
-  padding: 6px 5px;
+  padding: clamp(4px, 1vw, 6px) clamp(4px, 1vw, 5px);
   border: 1px solid ${(props) => props.theme.light};
-  border-radius: 10px;
-  margin-bottom: 5px;
+  border-radius: clamp(8px, 2vw, 10px);
+  margin-bottom: clamp(4px, 1vw, 5px);
 
   &::placeholder {
-    font-size: 12px;
+    font-size: clamp(10px, 1vw, 12px);
   }
   &:focus {
     outline: none;
@@ -320,15 +322,15 @@ export const MapWrapper = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 4px;
-  padding: 8px 0;
+  gap: clamp(2px, 1vw, 4px);
+  padding: clamp(6px, 1vw, 10px) 0;
   background: none;
   border: none;
   cursor: pointer;
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: clamp(16px, 2vw, 20px);
+    height: clamp(16px, 2vw, 20px);
     color: ${(props) => props.theme.lightText};
   }
 `

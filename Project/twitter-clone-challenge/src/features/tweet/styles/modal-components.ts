@@ -14,18 +14,17 @@ export const ModalOverlay = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding: min(10px, 2%);
 `;
 
 export const ModalContent = styled.div`
   background-color: ${(props) => props.theme.background};
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 16px;
-  min-width: clamp(250px, 50vw, 600px);
-  mim-height: clamp(250px, 50vw, 300px);
-  max-width: clamp(250px, 50vw, 600px);
-  max-height: 80vh;
+  width: clamp(250px, 50vw, 600px);
+  height: clamp(250px, 50vh, 600px);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 12px 16px;
+  padding: min(12px, 3%);
   overflow: hidden;
 `;
 
@@ -38,19 +37,20 @@ export const ModalTopWrapper = styled.div`
 
 export const ModalTitle = styled.h2`
   font-weight: 600;
+  font-size: clamp(1.8rem, 2vw, 2rem);
 `;
 
 export const ModalInputBar = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 4px;
-  margin-top: 16px;
+  gap: min(4px, 1%);
+  margin-top: min(16px, 3%);
 `;
 
 export const ModalInput = styled.input`
   width: 80%;
-  padding: 6px 8px;
+  padding: min(6px, 1%) min(8px, 2%);
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
 `;
@@ -59,13 +59,13 @@ export const ModalButton = styled.button`
   background: none;
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 6px;
-  padding: 6px;
+  padding: min(6px, 2%);
   cursor: pointer;
   text-align: center;
 
   svg {
-    width: 14px;
-    height: 14px;
+    width: clamp(1.2rem, 2vw, 1.4rem);
+    height: clamp(1.2rem, 2vw, 1.4rem);
     color: ${(props) => props.theme.text};
   }
 `;
@@ -73,9 +73,9 @@ export const ModalButton = styled.button`
 export const ModalUl = styled.ul`
   list-style: none;
   padding: 0;
-  margin-top: 10px;
+  margin-top: min(10px, 2%);
   overflow-y: auto;
-  max-height: 50vh;
+  max-height: clamp(200px, 50vh, 50vh);
 
   @media (max-width: 425px) {
     max-height: 40vh;
@@ -83,7 +83,7 @@ export const ModalUl = styled.ul`
 `;
 
 export const ModalLi = styled.li`
-  padding: 10px;
+  padding: min(10px, 2%);
   cursor: pointer;
   border-bottom: 1px solid #ddd;
 
@@ -96,7 +96,7 @@ export const ModalCloseButton = styled.button`
   background: none;
   border: 1px solid ${(props) => props.theme.border};
   border-radius: 4px;
-  padding: 6px 8px;
+  padding: min(6px, 2%) min(8px, 3%);
   cursor: pointer;
   color: ${(props) => props.theme.text};
 `;
@@ -117,30 +117,32 @@ export const ShareModalOverlay = styled.div`
 
 export const ShareModalContent = styled.div`
   background: white;
-  padding: 20px;
+  padding: min(20px, 5%);
   border-radius: 10px;
-  min-width: 250px;
+  width: clamp(250px, 50vw, 400px);
   text-align: center;
 `;
 
 export const ShareModalTitle = styled.h2`
-  padding: 16px;
+  padding: min(16px, 4%);
+  font-size: clamp(1.8rem, 2vw, 2rem);
 `;
 
 export const ShareButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: min(8px, 2%);
+  flex-wrap: wrap;
 `;
 
 export const ShareShareButton = styled.a`
   display: block;
   width: 100%;
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: min(10px, 2%);
+  padding: min(10px, 2%);
   cursor: pointer;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   text-decoration: none;
 
   &.kakao {
@@ -179,8 +181,8 @@ export const ShareShareButton = styled.a`
 export const ShareCopyButton = styled.a`
   display: block;
   width: 100%;
-  margin-top: 24px;
-  padding: 10px;
+  margin-top: min(24px, 5%);
+  padding: min(10px, 2%);
   border-radius: 50px;
   color: #fff;
   text-decoration: none;
@@ -200,8 +202,8 @@ export const ShareCopyButton = styled.a`
 `;
 
 export const ShareCloseButton = styled.button`
-  margin-top: 16px;
-  padding: 5px 10px;
+  margin-top: min(16px, 4%);
+  padding: min(5px, 2%) min(10px, 3%);
   background: #808080;
   color: #fff;
   border: none;
