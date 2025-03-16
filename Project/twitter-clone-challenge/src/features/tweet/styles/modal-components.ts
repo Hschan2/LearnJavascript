@@ -133,6 +133,10 @@ export const ShareButtonWrapper = styled.div`
   flex-direction: row;
   gap: min(8px, 2%);
   flex-wrap: wrap;
+
+  &.UrlWrapper {
+    margin-top: min(24px, 5%);
+  }
 `;
 
 export const ShareShareButton = styled.a`
@@ -141,7 +145,7 @@ export const ShareShareButton = styled.a`
   margin-top: min(10px, 2%);
   padding: min(10px, 2%);
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: 12px;
   font-size: clamp(1rem, 2vw, 1.2rem);
   text-decoration: none;
 
@@ -181,28 +185,28 @@ export const ShareShareButton = styled.a`
 export const ShareCopyButton = styled.a`
   display: block;
   width: 100%;
-  margin-top: min(24px, 5%);
-  padding: min(10px, 2%);
+  margin-top: min(4px, 5%);
+  padding: min(10px, 5%);
   border-radius: 50px;
   color: #fff;
   text-decoration: none;
 
   &.copy {
     background: #0d6efd;
-    font-size: 14px;
+    font-size: clamp(0.5rem, 1.2vw, 1rem);
     cursor: pointer;
   }
 
   &.url {
     background: #767676;
     color: #d3d3d3;
-    font-size: 12px;
+    font-size: clamp(0.45rem, 1.2vw, 1rem);
     pointer-events: none;
   }
 `;
 
 export const ShareCloseButton = styled.button`
-  margin-top: min(16px, 4%);
+  margin-top: min(24px, 5%);
   padding: min(5px, 2%) min(10px, 3%);
   background: #808080;
   color: #fff;
