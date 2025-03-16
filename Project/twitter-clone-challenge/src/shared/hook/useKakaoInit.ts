@@ -1,13 +1,29 @@
 import { useEffect } from "react";
-import KakaoSdk from "kakao-js-sdk";
 import { KAKAO_JAVASCRIPT_KEY } from "../../api-key";
+
+declare global {
+  interface Window {
+    Kakao?: any;
+  }
+}
 
 const useKakaoInit = () => {
   useEffect(() => {
-    const Kakao = KakaoSdk as any;
+    if (typeof window === "undefined") return;
 
-    if (!Kakao.isInitialized()) {
-      Kakao.init(KAKAO_JAVASCRIPT_KEY);
+    if (!window.Kakao) {
+      const script = document.createElement("script");
+      script.src = "https://developers.kakao.com/sdk/js/kakao.min.js";
+      script.async = true;
+      script.onload = () => {
+        if (window.Kakao && !window.Kakao.isInitialized()) {
+          window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
+          console.log("✅ Kakao SDK initialized!");
+        }
+      };
+      document.head.appendChild(script);
+    } else if (!window.Kakao.isInitialized()) {
+      window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
       console.log("✅ Kakao SDK initialized!");
     }
   }, []);

@@ -126,7 +126,7 @@ const ShareModal = ({ open, setOpen, title, image }: ShareModalProps) => {
             <MdEmail size={24} color="#fff" />
           </ShareShareButton>
         </ShareButtonWrapper>
-        <ShareButtonWrapper>
+        <ShareButtonWrapper className="UrlWrapper">
           <ShareCopyButton className="url" aria-disabled="true">
             {currentURL}
           </ShareCopyButton>
