@@ -7,7 +7,13 @@ export const useSearchAction = () => {
   const { searchedTweets } = useSearchData(searchWord);
 
   const changeSearchWord = (value: string) => setSearchWord(value);
-  const onSearch = () => searchWord.trim() || alert("검색어를 입력하세요.");
+  const onSearch = () => {
+    if (!searchWord.trim()) {
+      alert("검색어를 입력하세요.");
+      return;
+    }
+    setSearchWord(searchWord.trim());
+  };
   const keyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") onSearch();
   };

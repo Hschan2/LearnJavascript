@@ -14,7 +14,9 @@ export const useSearchData = (searchWord: string) => {
     }
     const newUnsubscribe = subscribeToTweet(searchWord, setSearchedTweets);
     setUnsubscribe(() => newUnsubscribe);
-  }, []);
+
+    return () => newUnsubscribe();
+  }, [searchWord]);
 
   useEffect(() => () => unsubscribe?.(), [unsubscribe]);
 
