@@ -18,14 +18,14 @@ export const Wrapper = styled.div`
 export const InfoContents = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: clamp(8px, 1vw, 12px);
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 0 0 8px 12px;
+  gap: clamp(8px, 1vw, 10px);
+  padding: 0 0 8px clamp(8px, 1vw, 12px);
 `;
 
 export const Menu = styled.div`
@@ -50,7 +50,7 @@ export const MenuItem = styled.button`
 
 export const Photo = styled.img`
   width: 100%;
-  height: 20vw;
+  height: clamp(190px, 20vw, 250px);
   border-bottom: 1px solid #f1f1f7;
   border-radius: 14px;
   object-fit: cover;
@@ -82,13 +82,13 @@ export const ProfileImage = styled.img`
 `;
 
 export const Payload = styled.p`
-  font-size: 18px;
+  font-size: clamp(16px, 2vw, 18px);
   font-weight: 800;
   cursor: pointer;
 `;
 
 export const CreatedAt = styled.span`
-  font-size: 12px;
+  font-size: clamp(10px, 1vw, 12px);
   color: #767676;
 `;
 
@@ -96,7 +96,7 @@ export const TweetButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
+  gap: clamp(4px, 1vw, 6px);
   margin: 4px 0 0 -8px;
 `;
 
@@ -141,7 +141,7 @@ export const TagWrapper = styled.div`
 export const Tag = styled.span`
   border: 1px solid ${(props) => props.theme.light};
   border-radius: 8px;
-  font-size: 12px;
+  font-size: clamp(10px, 1vw, 12px);
   color: #767676;
   padding: 4px 8px;
 
@@ -154,9 +154,9 @@ export const Tag = styled.span`
 export const DetailWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: clamp(12px, 2vw, 16px);
   width: 100%;
-  padding: 20px 0;
+  padding: min(20px, 4vw) 0;
 `;
 
 export const DetailImage = styled.img`
@@ -328,7 +328,7 @@ export const CommentText = styled.p`
 `;
 
 export const CommentCreatedTime = styled.span`
-  font-size: 12px;
+  font-size: clamp(10px, 1vw, 12px);
   color: #757575;
 `;
 
@@ -338,7 +338,7 @@ export const FollowButton = styled.button`
   border-radius: 4px;
   padding: 3px 6px;
   margin-left: 6px;
-  font-size: 12px;
+  font-size: clamp(10px, 1vw, 12px);
   color: #fff;
   cursor: pointer;
 `;
