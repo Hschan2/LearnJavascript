@@ -13,6 +13,7 @@ import {
   ShareShareButton,
 } from "../styles/modal-components";
 import { ShareModalProps } from "../types/modal-type";
+import Modal from "../../../shared/modal";
 
 const ShareModal = ({ open, setOpen, title, image }: ShareModalProps) => {
   useKakaoInit();
@@ -35,7 +36,6 @@ const ShareModal = ({ open, setOpen, title, image }: ShareModalProps) => {
       alert("Kakao SDK가 로드되지 않아 공유할 수 없습니다.");
       return;
     }
-
     window.Kakao.Share.sendDefault({
       objectType: "feed",
       content: {
@@ -59,84 +59,78 @@ const ShareModal = ({ open, setOpen, title, image }: ShareModalProps) => {
     }
   };
 
-  if (!open) return null;
-
   return (
-    <ShareModalOverlay onClick={() => setOpen(false)}>
-      <ShareModalContent onClick={(e) => e.stopPropagation()}>
-        <ShareModalTitle>공유하기</ShareModalTitle>
-        <ShareButtonWrapper>
-          <ShareShareButton onClick={handleKakaoShare} className="kakao">
-            <SiKakaotalk size={24} color="#fff" />
-          </ShareShareButton>
-          <ShareShareButton
-            href={shareLinks.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="facebook"
-          >
-            <FaFacebook size={24} color="#fff" />
-          </ShareShareButton>
-          <ShareShareButton
-            href={shareLinks.x}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="twitter"
-          >
-            <FaTwitter size={24} color="#fff" />
-          </ShareShareButton>
-          <ShareShareButton
-            href={shareLinks.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="linkedin"
-          >
-            <FaLinkedinIn size={24} color="#fff" />
-          </ShareShareButton>
-          <ShareShareButton
-            href={shareLinks.naver}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="naver"
-          >
-            <SiNaver size={24} color="#fff" />
-          </ShareShareButton>
-          <ShareShareButton
-            href={shareLinks.line}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="line"
-          >
-            <FaLine size={24} color="#fff" />
-          </ShareShareButton>
-          <ShareShareButton
-            href={shareLinks.gmail}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="gmail"
-          >
-            <SiGmail size={24} color="#fff" />
-          </ShareShareButton>
-          <ShareShareButton
-            href={shareLinks.email}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="email"
-          >
-            <MdEmail size={24} color="#fff" />
-          </ShareShareButton>
-        </ShareButtonWrapper>
-        <ShareButtonWrapper className="UrlWrapper">
-          <ShareCopyButton className="url" aria-disabled="true">
-            {currentURL}
-          </ShareCopyButton>
-          <ShareCopyButton onClick={handleURLCopy} className="copy">
-            URL 복사
-          </ShareCopyButton>
-        </ShareButtonWrapper>
-        <ShareCloseButton onClick={() => setOpen(false)}>닫기</ShareCloseButton>
-      </ShareModalContent>
-    </ShareModalOverlay>
+    <Modal isOpen={open} onClose={() => setOpen(false)} title="공유하기">
+      <ShareButtonWrapper>
+        <ShareShareButton onClick={handleKakaoShare} className="kakao">
+          <SiKakaotalk size={24} color="#fff" />
+        </ShareShareButton>
+        <ShareShareButton
+          href={shareLinks.facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="facebook"
+        >
+          <FaFacebook size={24} color="#fff" />
+        </ShareShareButton>
+        <ShareShareButton
+          href={shareLinks.x}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="twitter"
+        >
+          <FaTwitter size={24} color="#fff" />
+        </ShareShareButton>
+        <ShareShareButton
+          href={shareLinks.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="linkedin"
+        >
+          <FaLinkedinIn size={24} color="#fff" />
+        </ShareShareButton>
+        <ShareShareButton
+          href={shareLinks.naver}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="naver"
+        >
+          <SiNaver size={24} color="#fff" />
+        </ShareShareButton>
+        <ShareShareButton
+          href={shareLinks.line}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="line"
+        >
+          <FaLine size={24} color="#fff" />
+        </ShareShareButton>
+        <ShareShareButton
+          href={shareLinks.gmail}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="gmail"
+        >
+          <SiGmail size={24} color="#fff" />
+        </ShareShareButton>
+        <ShareShareButton
+          href={shareLinks.email}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="email"
+        >
+          <MdEmail size={24} color="#fff" />
+        </ShareShareButton>
+      </ShareButtonWrapper>
+      <ShareButtonWrapper className="UrlWrapper">
+        <ShareCopyButton className="url" aria-disabled="true">
+          {currentURL}
+        </ShareCopyButton>
+        <ShareCopyButton onClick={handleURLCopy} className="copy">
+          URL 복사
+        </ShareCopyButton>
+      </ShareButtonWrapper>
+    </Modal>
   );
 };
 

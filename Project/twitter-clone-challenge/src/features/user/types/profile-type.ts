@@ -18,7 +18,7 @@ export interface ProfileAvatarProps {
 
 export interface ProfileMenuProps {
   selectedMenu: string;
-  setSelectedMenu: (menu: string) => void;
+  setSelectedMenu: (menu: "tweet" | "like" | "setting") => void;
 }
 
 export interface ProfileUIProps {

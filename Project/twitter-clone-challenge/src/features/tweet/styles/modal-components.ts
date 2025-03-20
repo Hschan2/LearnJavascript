@@ -50,9 +50,9 @@ export const ModalInputBar = styled.div`
 
 export const ModalInput = styled.input`
   width: 80%;
-  padding: min(6px, 1%) min(8px, 2%);
+  padding: min(10px, 2%);
   border: 1px solid ${(props) => props.theme.border};
-  border-radius: 4px;
+  border-radius: 6px;
 `;
 
 export const ModalButton = styled.button`
@@ -148,6 +148,7 @@ export const ShareShareButton = styled.a`
   border-radius: 12px;
   font-size: clamp(1rem, 2vw, 1.2rem);
   text-decoration: none;
+  text-align: center;
 
   &.kakao {
     background: #fee500;

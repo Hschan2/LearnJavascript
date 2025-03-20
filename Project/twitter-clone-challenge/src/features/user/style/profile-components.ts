@@ -22,7 +22,8 @@ export const ContentWrapper = styled.div`
 
 export const AvatarUpload = styled.label`
   width: 80px;
-  height: 80px;
+  height: auto;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 50%;
   background-color: #000;
@@ -72,17 +73,15 @@ export const Tweets = styled.div`
   width: 100%;
   display: grid;
   gap: min(10px, 2%);
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
 
-  // grid-template-columns: repeat(3, 1fr);
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-  // @media (max-width: 768px) {
-  //   grid-template-columns: repeat(2, 1fr);
-  // }
-
-  // @media (max-width: 425px) {
-  //   grid-template-columns: 1fr;
-  // }
+  @media (max-width: 425px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const EditButton = styled.button`
@@ -114,7 +113,7 @@ export const FollowContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: min(200px, 80%);
-  height: 40px;
+  height: 68px;
   border: 1px solid #767676;
   border-radius: 6px;
   overflow: hidden;

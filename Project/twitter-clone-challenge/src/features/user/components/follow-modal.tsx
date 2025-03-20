@@ -1,65 +1,51 @@
 import { useNavigate } from "react-router";
-import {
-  Avatar,
-  CloseButton,
-  FollowItem,
-  FollowList,
-  Header,
-  ModalContainer,
-  Overlay,
-  Title,
-} from "../style/profile-components";
+import { Avatar, FollowItem, FollowList } from "../style/profile-components";
 import { FollowModalProps } from "../types/modal-type";
+import Modal from "../../../shared/modal";
 
-function Modal({ isOpen, onClose, title, data }: FollowModalProps) {
+function FollowModal({ isOpen, onClose, title, data }: FollowModalProps) {
   const navigate = useNavigate();
-  if (!isOpen) return null;
+
   return (
-    <Overlay onClick={onClose}>
-      <ModalContainer onClick={(e) => e.stopPropagation()}>
-        <Header>
-          <Title>{title}</Title>
-          <CloseButton onClick={onClose}>X</CloseButton>
-        </Header>
-        <FollowList>
-          {data.length > 0 &&
-            data.map((follow) => (
-              <FollowItem
-                key={follow.id}
-                onClick={() =>
-                  navigate(
-                    `/user-tweets/${
-                      "followingId" in follow
-                        ? follow.followingId
-                        : follow.followerId
-                    }`
-                  )
+    <Modal isOpen={isOpen} onClose={onClose} title={title}>
+      <FollowList>
+        {data.length > 0 &&
+          data.map((follow) => (
+            <FollowItem
+              key={follow.id}
+              onClick={() =>
+                navigate(
+                  `/user-tweets/${
+                    "followingId" in follow
+                      ? follow.followingId
+                      : follow.followerId
+                  }`
+                )
+              }
+            >
+              <Avatar
+                src={
+                  "followingPhoto" in follow
+                    ? follow.followingPhoto
+                    : follow.followerPhoto
                 }
-              >
-                <Avatar
-                  src={
-                    "followingPhoto" in follow
-                      ? follow.followingPhoto
-                      : follow.followerPhoto
-                  }
-                  alt={
-                    "followingName" in follow
-                      ? follow.followingName
-                      : follow.followerName
-                  }
-                  loading="lazy"
-                />
-                <span>
-                  {"followingName" in follow
+                alt={
+                  "followingName" in follow
                     ? follow.followingName
-                    : follow.followerName}
-                </span>
-              </FollowItem>
-            ))}
-        </FollowList>
-      </ModalContainer>
-    </Overlay>
+                    : follow.followerName
+                }
+                loading="lazy"
+              />
+              <span>
+                {"followingName" in follow
+                  ? follow.followingName
+                  : follow.followerName}
+              </span>
+            </FollowItem>
+          ))}
+      </FollowList>
+    </Modal>
   );
 }
 
-export default Modal;
+export default FollowModal;
