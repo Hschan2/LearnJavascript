@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +13,7 @@ export const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: min(20px, 4%);
+  gap: clamp(14px, 1vw, 18px);
   padding: min(40px, 5%) 0;
 
   @media (max-width: 425px) {
@@ -22,7 +23,7 @@ export const ContentWrapper = styled.div`
 
 export const AvatarUpload = styled.label`
   width: 80px;
-  height: auto;
+  height: 80px;
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 50%;
@@ -37,7 +38,6 @@ export const AvatarImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  aspect-ratio: 1 / 1;
 `;
 
 export const AvatarInput = styled.input`
@@ -113,7 +113,7 @@ export const FollowContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: min(200px, 80%);
-  height: 68px;
+  height: 40px;
   border: 1px solid #767676;
   border-radius: 6px;
   overflow: hidden;
