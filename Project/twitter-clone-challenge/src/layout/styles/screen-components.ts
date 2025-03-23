@@ -105,11 +105,11 @@ export const Avatar = styled.img`
 `;
 
 export const FooterContainer = styled.footer`
-  padding: 16px 0 16px 0;
+  padding: min(12px, 2%) 0 min(12px, 2%) 0;
   text-align: center;
   width: 100%;
-  font-size: 12px;
-  border-top: 1px solid #D3D3D3;
+  font-size: clamp(10px, 1vw, 12px);
+  border-top: 1px solid ${(props) => props.theme.light};
   color: #767676;
 `;
 
