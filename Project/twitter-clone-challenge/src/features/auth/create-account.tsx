@@ -5,7 +5,6 @@ function CreateAccount() {
   const {
     onCreateSubmit,
     register,
-    handleSubmit,
     errors,
     isLoading,
     error,
@@ -13,7 +12,7 @@ function CreateAccount() {
 
   return (
     <CreateAccountUI
-      onCreateSubmit={handleSubmit(onCreateSubmit)}
+      onCreateSubmit={onCreateSubmit}
       register={register}
       errors={errors}
       isLoading={isLoading}

@@ -44,7 +44,6 @@ function useUnreadNotification(userId: string | undefined) {
 }
 
 function useMenuList(
-  userId?: string,
   avatar?: string | null | undefined,
   hasUnreadNotification?: boolean
 ) {
@@ -86,7 +85,7 @@ function Layout() {
   const location = useLocation();
   const { userId, avatar } = useAuthUser();
   const hasUnreadNotification = useUnreadNotification(userId);
-  const MENU_LIST = useMenuList(userId, avatar, hasUnreadNotification);
+  const MENU_LIST = useMenuList(avatar, hasUnreadNotification);
 
   return (
     <Wrapper>

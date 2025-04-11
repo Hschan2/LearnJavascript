@@ -5,11 +5,7 @@ import { SiGmail, SiKakaotalk, SiNaver } from "react-icons/si";
 import useKakaoInit from "../../../shared/hook/useKakaoInit";
 import {
   ShareButtonWrapper,
-  ShareCloseButton,
   ShareCopyButton,
-  ShareModalContent,
-  ShareModalOverlay,
-  ShareModalTitle,
   ShareShareButton,
 } from "../styles/modal-components";
 import { ShareModalProps } from "../types/modal-type";
