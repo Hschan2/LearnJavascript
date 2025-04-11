@@ -13,7 +13,7 @@
 <br/>
 
 ## 체험
-<p>2025년 1월 1일 기준 1차 재배포</p>
+<p>2025년 4월 11일 기준 2차 재배포</p>
 [Snap-Street](https://twitter-clone-challenge.web.app/)
 
 <br/>
