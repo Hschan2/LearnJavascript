@@ -1,6 +1,13 @@
 import React from "react";
-import CanvasContainer from "./CanvasContainer";
+import { Route, Routes } from "react-router";
+import Home from "./routes/Home";
+import Run from "./routes/Run";
 
 export default function App() {
-  return <CanvasContainer />;
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/run" element={<Run />} />
+    </Routes>
+  );
 }
