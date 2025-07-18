@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, RefObject } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { PerspectiveCamera, useGLTF } from "@react-three/drei";
+import { PerspectiveCamera } from "@react-three/drei";
 import {
   Group,
   SpotLight,
@@ -8,14 +8,17 @@ import {
   RepeatWrapping,
   Texture,
   Vector3,
-  Euler,
   Color,
   PointLight,
   Mesh,
-  MeshBasicMaterial,
-  ConeGeometry,
 } from "three";
 import * as THREE from "three";
+
+type LightConeProps = {
+  position: [number, number, number];
+  intensity: number;
+  angle: number;
+};
 
 function DefaultCharacter({
   characterRef,
@@ -26,9 +29,6 @@ function DefaultCharacter({
   const velocity = useRef(0);
   const isJumping = useRef(false);
   const time = useRef(0);
-
-  const jumpArmRotation = useRef(0);
-  const jumpLegRotation = useRef(0);
 
   const leftArm = useRef<Mesh>(null);
   const rightArm = useRef<Mesh>(null);
@@ -45,7 +45,6 @@ function DefaultCharacter({
       }
     };
     const handleKeyUp = () => (direction.current = 0);
-
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
     return () => {
@@ -58,6 +57,7 @@ function DefaultCharacter({
     if (!characterRef.current) return;
     const movement = direction.current * delta * 6;
     characterRef.current.position.z -= movement;
+    characterRef.current.rotation.y = Math.PI;
 
     if (isJumping.current) {
       characterRef.current.position.y += velocity.current;
@@ -71,183 +71,88 @@ function DefaultCharacter({
 
     time.current += delta;
     const swing = Math.sin(time.current * 10) * 0.6;
+    const armSwing = isJumping.current ? Math.PI / 2 : swing;
+    const legSwing = isJumping.current ? Math.PI / 6 : swing;
 
-    // 부드러운 회전 보간 처리 (GSAP 없이 수동 보간)
-    const targetArmRotation = isJumping.current ? -Math.PI / 2 : 0;
-    const targetLegRotation = isJumping.current ? Math.PI / 6 : 0;
-    jumpArmRotation.current +=
-      (targetArmRotation - jumpArmRotation.current) * 0.2;
-    jumpLegRotation.current +=
-      (targetLegRotation - jumpLegRotation.current) * 0.2;
-
-    if (leftArm.current)
-      leftArm.current.rotation.x = isJumping.current
-        ? jumpArmRotation.current
-        : -swing;
-    if (rightArm.current)
-      rightArm.current.rotation.x = isJumping.current
-        ? jumpArmRotation.current
-        : swing;
-
-    if (leftLeg.current)
-      leftLeg.current.rotation.x = isJumping.current
-        ? jumpLegRotation.current
-        : swing;
-    if (rightLeg.current)
-      rightLeg.current.rotation.x = isJumping.current
-        ? -jumpLegRotation.current
-        : -swing;
+    if (leftArm.current) leftArm.current.rotation.x = -armSwing;
+    if (rightArm.current) rightArm.current.rotation.x = armSwing;
+    if (leftLeg.current) leftLeg.current.rotation.x = legSwing;
+    if (rightLeg.current) rightLeg.current.rotation.x = -legSwing;
   });
 
   return (
     <group ref={characterRef} position={[0, 0.5, 5]} castShadow>
-      {/* Head */}
-      <mesh position={[0, 1.2, 0]} castShadow>
-        <boxGeometry args={[0.4, 0.4, 0.4]} />
-        <meshStandardMaterial color="#f0d9b5" />
-      </mesh>
-      {/* Eyes */}
-      <mesh position={[-0.1, 1.3, 0.21]}>
-        <boxGeometry args={[0.05, 0.05, 0.01]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
-      <mesh position={[0.1, 1.3, 0.21]}>
-        <boxGeometry args={[0.05, 0.05, 0.01]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
-      {/* Mouth */}
-      <mesh position={[0, 1.15, 0.21]}>
-        <boxGeometry args={[0.12, 0.04, 0.01]} />
-        <meshStandardMaterial color="black" />
-      </mesh>
+      {/* 얼굴을 전방으로 돌리기 */}
+      <group rotation={[0, Math.PI, 0]}>
+        {/* Head */}
+        <mesh position={[0, 1.15, 0]} castShadow>
+          <boxGeometry args={[0.5, 0.5, 0.4]} />
+          <meshStandardMaterial color="#f0d9b5" />
+        </mesh>
+        {/* Eyes */}
+        <mesh position={[-0.1, 1.3, -0.21]}>
+          <boxGeometry args={[0.05, 0.05, 0.01]} />
+          <meshStandardMaterial color="black" />
+        </mesh>
+        <mesh position={[0.1, 1.3, -0.21]}>
+          <boxGeometry args={[0.05, 0.05, 0.01]} />
+          <meshStandardMaterial color="black" />
+        </mesh>
+        {/* Mouth */}
+        <mesh position={[0, 1.15, -0.21]}>
+          <boxGeometry args={[0.12, 0.04, 0.01]} />
+          <meshStandardMaterial color="black" />
+        </mesh>
+      </group>
       {/* Body */}
       <mesh position={[0, 0.6, 0]} castShadow>
         <boxGeometry args={[0.6, 0.6, 0.3]} />
         <meshStandardMaterial color="yellow" />
       </mesh>
-      {/* Arms */}
-      <mesh ref={leftArm} position={[-0.45, 0.75, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.6, 0.15]} />
+      {/* Arms (어깨 라인 맞춰 Y를 0.9로 수정) */}
+      <mesh ref={leftArm} position={[-0.42, 0.65, 0]} castShadow>
+        <boxGeometry args={[0.24, 0.5, 0.2]} />
         <meshStandardMaterial color="yellow" />
       </mesh>
-      <mesh ref={rightArm} position={[0.45, 0.75, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.6, 0.15]} />
+      <mesh ref={rightArm} position={[0.42, 0.65, 0]} castShadow>
+        <boxGeometry args={[0.24, 0.5, 0.2]} />
         <meshStandardMaterial color="yellow" />
       </mesh>
-      {/* Legs */}
-      <mesh ref={leftLeg} position={[-0.15, 0.1, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.7, 0.15]} />
+      {/* Legs (몸체와 간섭 없도록 Z를 -0.12로 수정) */}
+      <mesh ref={leftLeg} position={[-0.15, 0.05, -0.12]} castShadow>
+        <boxGeometry args={[0.2, 0.5, 0.15]} />
         <meshStandardMaterial color="blue" />
       </mesh>
-      <mesh ref={rightLeg} position={[0.15, 0.1, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.7, 0.15]} />
+      <mesh ref={rightLeg} position={[0.15, 0.05, -0.12]} castShadow>
+        <boxGeometry args={[0.2, 0.5, 0.15]} />
         <meshStandardMaterial color="blue" />
       </mesh>
     </group>
   );
 }
 
-function Character({
-  characterRef,
-}: {
-  characterRef: RefObject<Group | null>;
-}) {
-  const direction = useRef(0);
-  const [limbRotation, setLimbRotation] = useState(0);
-  const velocity = useRef(0);
-  const isJumping = useRef(false);
+function LightCone({ position, intensity, angle = 0.6 }: LightConeProps) {
+  const coneRef = useRef<THREE.Mesh>(null);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowUp" || e.key === "w") direction.current = 1;
-      else if (e.key === "ArrowDown" || e.key === "s") direction.current = -1;
-      if (e.key === " " && characterRef.current && !isJumping.current) {
-        velocity.current = 0.12;
-        isJumping.current = true;
-      }
-    };
-    const handleKeyUp = () => (direction.current = 0);
+  const height = 6;
+  const radius = Math.tan(angle) * height;
 
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
-
-  useFrame((_, delta) => {
-    if (!characterRef.current) return;
-
-    const movement = direction.current * delta * 6;
-    characterRef.current.position.z -= movement;
-
-    if (direction.current !== 0) {
-      setLimbRotation((prev) => prev + delta * 12);
-    }
-
-    if (isJumping.current) {
-      characterRef.current.position.y += velocity.current;
-      velocity.current -= 0.01;
-      if (characterRef.current.position.y <= 0.5) {
-        characterRef.current.position.y = 0.5;
-        velocity.current = 0;
-        isJumping.current = false;
-      }
+  useFrame(() => {
+    if (coneRef.current) {
+      const mat = coneRef.current.material as THREE.MeshStandardMaterial;
+      mat.opacity = Math.min(intensity / 4, 0.8);
     }
   });
 
-  const limbAngle = Math.sin(limbRotation) * 0.6;
-
   return (
-    <group ref={characterRef} position={[0, 0.5, 5]} castShadow>
-      {/* 머리 */}
-      <mesh position={[0, 1.2, 0]} castShadow>
-        <boxGeometry args={[0.4, 0.4, 0.4]} />
-        <meshStandardMaterial color="#f0d9b5" />
-      </mesh>
-      {/* 몸통 */}
-      <mesh position={[0, 0.6, 0]} castShadow>
-        <boxGeometry args={[0.6, 0.6, 0.3]} />
-        <meshStandardMaterial color="yellow" />
-      </mesh>
-      {/* 팔 (몸통에 더 붙게 수정) */}
-      <mesh position={[-0.35, 0.75, 0]} rotation={[limbAngle, 0, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.4, 0.15]} />
-        <meshStandardMaterial color="yellow" />
-      </mesh>
-      <mesh position={[0.35, 0.75, 0]} rotation={[-limbAngle, 0, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.4, 0.15]} />
-        <meshStandardMaterial color="yellow" />
-      </mesh>
-      {/* 다리 */}
-      <mesh position={[-0.15, 0.1, 0]} rotation={[limbAngle, 0, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.5, 0.15]} />
-        <meshStandardMaterial color="blue" />
-      </mesh>
-      <mesh position={[0.15, 0.1, 0]} rotation={[-limbAngle, 0, 0]} castShadow>
-        <boxGeometry args={[0.15, 0.5, 0.15]} />
-        <meshStandardMaterial color="blue" />
-      </mesh>
-    </group>
-  );
-}
-
-function LightCone({
-  position,
-  intensity,
-}: {
-  position: [number, number, number];
-  intensity: number;
-}) {
-  return (
-    <mesh position={position} rotation={[-Math.PI / 2, 0, 0]}>
-      <coneGeometry args={[2, 5, 32, 1, true]} />
-      <meshBasicMaterial
-        color="#ffffcc"
-        opacity={intensity * 0.15}
+    <mesh ref={coneRef} position={position} rotation={[-Math.PI / 2, 0, 0]}>
+      <coneGeometry args={[radius, height, 32, 1, true]} />
+      <meshStandardMaterial
+        color="#ffffbb"
         transparent
-        depthWrite={false}
+        opacity={0.2}
+        emissive={"#ffffcc"}
+        emissiveIntensity={1}
       />
     </mesh>
   );
@@ -267,7 +172,6 @@ function LightPole({
   const poleHeight = 4;
   const lightRef = useRef<SpotLight>(null!);
   const emissiveRef = useRef<Mesh>(null);
-  const coneRef = useRef<Mesh>(null);
   const ambientLightRef = useRef<PointLight>(null);
   const [coneIntensity, setConeIntensity] = useState(0);
 
@@ -315,19 +219,20 @@ function LightPole({
           emissiveIntensity={1}
         />
       </mesh>
-      <LightCone
-        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight - 0.5, z - 0.5]}
-        intensity={coneIntensity}
-      />
       <spotLight
         ref={lightRef}
         position={[x + (x < 0 ? 0.5 : -0.5), poleHeight, z - 0.5]}
-        angle={0.4}
-        penumbra={0.5}
-        distance={15}
-        intensity={0}
+        angle={0.6} // 더 넓게 퍼짐
+        penumbra={0.8}
+        distance={20}
+        intensity={coneIntensity}
         castShadow
         color="#fffed9"
+      />
+      <LightCone
+        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight - 0.5, z - 0.5]}
+        intensity={coneIntensity}
+        angle={0.6}
       />
       <pointLight
         ref={ambientLightRef}
