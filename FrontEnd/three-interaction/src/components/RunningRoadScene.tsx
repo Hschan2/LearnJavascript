@@ -131,6 +131,42 @@ function DefaultCharacter({
   );
 }
 
+function LightConeCircle({
+  position,
+  intensity,
+}: {
+  position: [number, number, number];
+  intensity: number;
+}) {
+  const coneRef = useRef<Mesh>(null);
+
+  useFrame(() => {
+    if (coneRef.current) {
+      const mat = coneRef.current.material as THREE.MeshStandardMaterial;
+      mat.opacity = Math.min(intensity / 4, 0.4); // 최대 0.4까지
+    }
+  });
+
+  return (
+    <mesh
+      ref={coneRef}
+      position={position}
+      rotation={[-Math.PI / 2, 0, 0]} // 평면을 바닥에 눕힘
+      receiveShadow
+    >
+      <circleGeometry args={[3, 32]} />
+      <meshStandardMaterial
+        color={"#fffed9"}
+        transparent
+        opacity={0.2}
+        emissive={"#fffed9"}
+        emissiveIntensity={1}
+        depthWrite={false}
+      />
+    </mesh>
+  );
+}
+
 function LightCone({ position, intensity, angle = 0.6 }: LightConeProps) {
   const coneRef = useRef<THREE.Mesh>(null);
 
@@ -161,12 +197,10 @@ function LightCone({ position, intensity, angle = 0.6 }: LightConeProps) {
 function LightPole({
   x,
   z,
-  targetZ,
   characterRef,
 }: {
   x: number;
   z: number;
-  targetZ: number;
   characterRef: RefObject<Group | null>;
 }) {
   const poleHeight = 4;
@@ -187,9 +221,11 @@ function LightPole({
       intensity =
         4 * (1 - (distance - falloffStart) / (falloffEnd - falloffStart));
     setConeIntensity(intensity);
+
     if (lightRef.current) lightRef.current.intensity = intensity;
     if (ambientLightRef.current)
-      ambientLightRef.current.intensity = intensity * 0.8;
+      ambientLightRef.current.intensity = intensity * 0.6;
+
     if (emissiveRef.current) {
       const mat = emissiveRef.current.material as THREE.MeshStandardMaterial;
       mat.emissiveIntensity = intensity;
@@ -199,47 +235,58 @@ function LightPole({
     }
   });
 
+  const lightX = x + (x < 0 ? 0.5 : -0.5);
+  const lightZ = z - 0.5;
+
   return (
     <group>
+      {/* 가로등 기둥 */}
       <mesh position={[x, poleHeight / 2, z]}>
         <boxGeometry args={[0.1, poleHeight, 0.1]} />
         <meshStandardMaterial color="#cccccc" />
       </mesh>
+
+      {/* 수평 막대 */}
       <mesh position={[x, poleHeight, z - 0.5]}>
         <boxGeometry args={[1, 0.1, 0.1]} />
         <meshStandardMaterial color="#aaaaaa" />
       </mesh>
-      <mesh
-        ref={emissiveRef}
-        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight, z - 0.5]}
-      >
+
+      {/* 전등 구슬 */}
+      <mesh ref={emissiveRef} position={[lightX, poleHeight, lightZ]}>
         <sphereGeometry args={[0.2, 16, 16]} />
         <meshStandardMaterial
           emissive={new THREE.Color("#ffffaa")}
           emissiveIntensity={1}
         />
       </mesh>
+
+      {/* 가로등 아래 바닥 빛 퍼짐 효과 */}
+      <LightConeCircle
+        position={[x, 0.02, z]} // 바닥 바로 위에 살짝 띄움
+        intensity={coneIntensity}
+      />
+
+      {/* SpotLight: 그림자 포함 진짜 조명 */}
       <spotLight
         ref={lightRef}
-        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight, z - 0.5]}
-        angle={0.6} // 더 넓게 퍼짐
+        position={[lightX, poleHeight, lightZ]}
+        angle={0.5}
         penumbra={0.8}
-        distance={20}
+        distance={15}
         intensity={coneIntensity}
         castShadow
         color="#fffed9"
+        target-position={[x, 0, z]}
       />
-      <LightCone
-        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight - 0.5, z - 0.5]}
-        intensity={coneIntensity}
-        angle={0.6}
-      />
+
+      {/* 주변 부드러운 광 */}
       <pointLight
         ref={ambientLightRef}
         position={[x, 2, z]}
         color="#ffffcc"
         intensity={0}
-        distance={10}
+        distance={8}
         decay={2}
       />
     </group>
@@ -271,11 +318,12 @@ function Road() {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
       <planeGeometry args={[10, 500]} />
-      {map ? (
-        <meshStandardMaterial map={map} />
-      ) : (
-        <meshStandardMaterial color="#444" metalness={0.5} roughness={0.3} />
-      )}
+      <meshStandardMaterial
+        map={map || undefined}
+        color={map ? undefined : "#222"} // map 없을 경우 기본 회색
+        roughness={0.6} // 도로가 너무 반짝이지 않게
+        metalness={0.1} // 약간의 반사감
+      />
     </mesh>
   );
 }
@@ -332,8 +380,8 @@ export default function RunningRoadScene() {
         const z = -i * 20;
         return (
           <React.Fragment key={i}>
-            <LightPole x={-4.8} z={z} targetZ={z} characterRef={characterRef} />
-            <LightPole x={4.8} z={z} targetZ={z} characterRef={characterRef} />
+            <LightPole x={-4.8} z={z} characterRef={characterRef} />
+            <LightPole x={4.8} z={z} characterRef={characterRef} />
           </React.Fragment>
         );
       })}
