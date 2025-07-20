@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, RefObject } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import {
   Group,
@@ -9,16 +9,8 @@ import {
   Texture,
   Vector3,
   Color,
-  PointLight,
   Mesh,
 } from "three";
-import * as THREE from "three";
-
-type LightConeProps = {
-  position: [number, number, number];
-  intensity: number;
-  angle: number;
-};
 
 function DefaultCharacter({
   characterRef,
@@ -119,11 +111,11 @@ function DefaultCharacter({
         <meshStandardMaterial color="yellow" />
       </mesh>
       {/* Legs (몸체와 간섭 없도록 Z를 -0.12로 수정) */}
-      <mesh ref={leftLeg} position={[-0.15, 0.05, -0.12]} castShadow>
+      <mesh ref={leftLeg} position={[-0.15, 0.05, -0.05]} castShadow>
         <boxGeometry args={[0.2, 0.5, 0.15]} />
         <meshStandardMaterial color="blue" />
       </mesh>
-      <mesh ref={rightLeg} position={[0.15, 0.05, -0.12]} castShadow>
+      <mesh ref={rightLeg} position={[0.15, 0.05, -0.05]} castShadow>
         <boxGeometry args={[0.2, 0.5, 0.15]} />
         <meshStandardMaterial color="blue" />
       </mesh>
@@ -131,64 +123,50 @@ function DefaultCharacter({
   );
 }
 
-function LightConeCircle({
+function LightCone({
   position,
   intensity,
 }: {
   position: [number, number, number];
   intensity: number;
 }) {
-  const coneRef = useRef<Mesh>(null);
-
-  useFrame(() => {
-    if (coneRef.current) {
-      const mat = coneRef.current.material as THREE.MeshStandardMaterial;
-      mat.opacity = Math.min(intensity / 4, 0.4); // 최대 0.4까지
-    }
-  });
-
   return (
-    <mesh
-      ref={coneRef}
-      position={position}
-      rotation={[-Math.PI / 2, 0, 0]} // 평면을 바닥에 눕힘
-      receiveShadow
-    >
-      <circleGeometry args={[3, 32]} />
+    <mesh position={position} rotation={[-Math.PI / 2, 0, 0]}>
+      <coneGeometry args={[3, 6, 32, 1, true]} />
       <meshStandardMaterial
-        color={"#fffed9"}
+        color="#ffffbb"
         transparent
-        opacity={0.2}
-        emissive={"#fffed9"}
+        opacity={Math.min(intensity / 4, 0.8)}
+        emissive={"#ffffcc"}
         emissiveIntensity={1}
-        depthWrite={false}
       />
     </mesh>
   );
 }
 
-function LightCone({ position, intensity, angle = 0.6 }: LightConeProps) {
-  const coneRef = useRef<THREE.Mesh>(null);
-
-  const height = 6;
-  const radius = Math.tan(angle) * height;
-
-  useFrame(() => {
-    if (coneRef.current) {
-      const mat = coneRef.current.material as THREE.MeshStandardMaterial;
-      mat.opacity = Math.min(intensity / 4, 0.8);
-    }
-  });
+function LightFloorCircle({
+  x,
+  z,
+  intensity,
+}: {
+  x: number;
+  z: number;
+  intensity: number;
+}) {
+  const texture = useLoader(TextureLoader, "/light-circle.png");
 
   return (
-    <mesh ref={coneRef} position={position} rotation={[-Math.PI / 2, 0, 0]}>
-      <coneGeometry args={[radius, height, 32, 1, true]} />
-      <meshStandardMaterial
-        color="#ffffbb"
+    <mesh
+      position={[x + (x < 0 ? 3 : -4), 0.01, z - 0.5]}
+      rotation={[-Math.PI / 2, 0, 0]}
+      visible={intensity > 0}
+    >
+      <planeGeometry args={[20, 25]} />
+      <meshBasicMaterial
+        map={texture}
         transparent
-        opacity={0.2}
-        emissive={"#ffffcc"}
-        emissiveIntensity={1}
+        opacity={Math.min(intensity / 4, 0.5)}
+        depthWrite={false}
       />
     </mesh>
   );
@@ -206,7 +184,6 @@ function LightPole({
   const poleHeight = 4;
   const lightRef = useRef<SpotLight>(null!);
   const emissiveRef = useRef<Mesh>(null);
-  const ambientLightRef = useRef<PointLight>(null);
   const [coneIntensity, setConeIntensity] = useState(0);
 
   useFrame(() => {
@@ -221,13 +198,9 @@ function LightPole({
       intensity =
         4 * (1 - (distance - falloffStart) / (falloffEnd - falloffStart));
     setConeIntensity(intensity);
-
     if (lightRef.current) lightRef.current.intensity = intensity;
-    if (ambientLightRef.current)
-      ambientLightRef.current.intensity = intensity * 0.6;
-
     if (emissiveRef.current) {
-      const mat = emissiveRef.current.material as THREE.MeshStandardMaterial;
+      const mat = emissiveRef.current.material as any;
       mat.emissiveIntensity = intensity;
       mat.color = new Color(
         `hsl(50, 100%, ${Math.min(intensity * 20 + 10, 90)}%)`
@@ -235,60 +208,41 @@ function LightPole({
     }
   });
 
-  const lightX = x + (x < 0 ? 0.5 : -0.5);
-  const lightZ = z - 0.5;
-
   return (
     <group>
-      {/* 가로등 기둥 */}
       <mesh position={[x, poleHeight / 2, z]}>
         <boxGeometry args={[0.1, poleHeight, 0.1]} />
         <meshStandardMaterial color="#cccccc" />
       </mesh>
-
-      {/* 수평 막대 */}
       <mesh position={[x, poleHeight, z - 0.5]}>
         <boxGeometry args={[1, 0.1, 0.1]} />
         <meshStandardMaterial color="#aaaaaa" />
       </mesh>
-
-      {/* 전등 구슬 */}
-      <mesh ref={emissiveRef} position={[lightX, poleHeight, lightZ]}>
+      <mesh
+        ref={emissiveRef}
+        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight, z - 0.5]}
+      >
         <sphereGeometry args={[0.2, 16, 16]} />
         <meshStandardMaterial
-          emissive={new THREE.Color("#ffffaa")}
+          emissive={new Color("#ffffaa")}
           emissiveIntensity={1}
         />
       </mesh>
-
-      {/* 가로등 아래 바닥 빛 퍼짐 효과 */}
-      <LightConeCircle
-        position={[x, 0.02, z]} // 바닥 바로 위에 살짝 띄움
-        intensity={coneIntensity}
-      />
-
-      {/* SpotLight: 그림자 포함 진짜 조명 */}
       <spotLight
         ref={lightRef}
-        position={[lightX, poleHeight, lightZ]}
-        angle={0.5}
+        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight, z - 0.5]}
+        angle={0.6}
         penumbra={0.8}
-        distance={15}
+        distance={20}
         intensity={coneIntensity}
         castShadow
         color="#fffed9"
-        target-position={[x, 0, z]}
       />
-
-      {/* 주변 부드러운 광 */}
-      <pointLight
-        ref={ambientLightRef}
-        position={[x, 2, z]}
-        color="#ffffcc"
-        intensity={0}
-        distance={8}
-        decay={2}
+      <LightCone
+        position={[x + (x < 0 ? 0.5 : -0.5), poleHeight - 0.5, z - 0.5]}
+        intensity={coneIntensity}
       />
+      <LightFloorCircle x={x} z={z} intensity={coneIntensity} />
     </group>
   );
 }
@@ -331,7 +285,7 @@ function Road() {
 function Railing() {
   return (
     <>
-      {[-5, 5].map((x, i) => (
+      {[-4.7, 4.7].map((x, i) => (
         <mesh key={`rail-${x}`} position={[x, 0.3, -250]} receiveShadow>
           <boxGeometry args={[0.1, 0.6, 500]} />
           <meshStandardMaterial
