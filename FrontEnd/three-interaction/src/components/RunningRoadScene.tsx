@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, RefObject } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { PerspectiveCamera } from "@react-three/drei";
+import { Html, PerspectiveCamera } from "@react-three/drei";
 import {
   Group,
   SpotLight,
@@ -10,6 +10,8 @@ import {
   Vector3,
   Color,
   Mesh,
+  LinearFilter,
+  MeshStandardMaterial,
 } from "three";
 
 function DefaultCharacter({
@@ -20,23 +22,34 @@ function DefaultCharacter({
   const direction = useRef(0);
   const velocity = useRef(0);
   const isJumping = useRef(false);
+  const isMoving = useRef(false);
   const time = useRef(0);
+  const prevZ = useRef(0);
 
   const leftArm = useRef<Mesh>(null);
   const rightArm = useRef<Mesh>(null);
   const leftLeg = useRef<Mesh>(null);
   const rightLeg = useRef<Mesh>(null);
+  const headRef = useRef<Mesh>(null);
 
+  const [headTexture, setHeadTexture] = useState<Texture | null>(null);
+
+  // ✅ 키보드 입력 처리
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowUp" || e.key === "w") direction.current = 1;
       else if (e.key === "ArrowDown" || e.key === "s") direction.current = -1;
+
       if (e.key === " " && characterRef.current && !isJumping.current) {
         velocity.current = 0.12;
         isJumping.current = true;
       }
     };
-    const handleKeyUp = () => (direction.current = 0);
+
+    const handleKeyUp = () => {
+      direction.current = 0;
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
     return () => {
@@ -45,12 +58,38 @@ function DefaultCharacter({
     };
   }, []);
 
+  useEffect(() => {
+    if (headRef.current) {
+      const material = headRef.current.material as MeshStandardMaterial;
+
+      if (headTexture) {
+        material.map = headTexture;
+        material.color.set("#ffffff"); // 이미지 색상 그대로 표시
+        material.transparent = false;
+        material.needsUpdate = true;
+      } else {
+        material.map = null;
+        material.color.set("#f0d9b5"); // 기본 스킨톤 복원
+        material.transparent = false;
+        material.needsUpdate = true;
+      }
+    }
+  }, [headTexture]);
+
+  // ✅ 애니메이션 처리
   useFrame((_, delta) => {
     if (!characterRef.current) return;
+
     const movement = direction.current * delta * 6;
     characterRef.current.position.z -= movement;
     characterRef.current.rotation.y = Math.PI;
 
+    const z = characterRef.current.position.z;
+    const moved = Math.abs(z - prevZ.current) > 0.001;
+    isMoving.current = moved;
+    prevZ.current = z;
+
+    // 점프
     if (isJumping.current) {
       characterRef.current.position.y += velocity.current;
       velocity.current -= 0.01;
@@ -61,65 +100,150 @@ function DefaultCharacter({
       }
     }
 
-    time.current += delta;
-    const swing = Math.sin(time.current * 10) * 0.6;
-    const armSwing = isJumping.current ? Math.PI / 2 : swing;
-    const legSwing = isJumping.current ? Math.PI / 6 : swing;
+    // 시간 누적
+    if (isMoving.current && !isJumping.current) {
+      time.current += delta;
+    }
 
-    if (leftArm.current) leftArm.current.rotation.x = -armSwing;
-    if (rightArm.current) rightArm.current.rotation.x = armSwing;
-    if (leftLeg.current) leftLeg.current.rotation.x = legSwing;
-    if (rightLeg.current) rightLeg.current.rotation.x = -legSwing;
+    // ✅ 팔다리 애니메이션
+    const swing = Math.sin(time.current * 10) * 0.6;
+    const armSwingX = isJumping.current ? 0 : isMoving.current ? swing : 0;
+    const legSwingX = isJumping.current
+      ? Math.PI / 6
+      : isMoving.current
+      ? swing
+      : 0;
+
+    // jump 시 팔을 위로 드는 게 아닌, **정지 상태처럼 유지**
+    const armSwingZ = 0;
+
+    if (leftArm.current) {
+      leftArm.current.rotation.x = -armSwingX;
+      leftArm.current.rotation.z = armSwingZ;
+    }
+    if (rightArm.current) {
+      rightArm.current.rotation.x = armSwingX;
+      rightArm.current.rotation.z = -armSwingZ;
+    }
+    if (leftLeg.current) leftLeg.current.rotation.x = legSwingX;
+    if (rightLeg.current) rightLeg.current.rotation.x = -legSwingX;
   });
 
+  // ✅ 얼굴 클릭 → 이미지 업로드
+  const handleHeadClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.style.display = "none";
+
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+
+      // 🔒 확장자 제한 + 파일 크기 제한 (2MB)
+      if (!file.type.startsWith("image/")) {
+        alert("이미지 파일만 업로드 가능합니다.");
+        return;
+      }
+      if (file.size > 2 * 1024 * 1024) {
+        alert("2MB 이하의 이미지만 업로드 가능합니다.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageUrl = reader.result as string;
+        new TextureLoader().load(imageUrl, (loadedTexture) => {
+          loadedTexture.minFilter = LinearFilter;
+          setHeadTexture(loadedTexture);
+        });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    input.click();
+  };
+
+  // ✅ 헤드 텍스처 리셋
+  const handleResetTexture = () => {
+    setHeadTexture(null);
+  };
+
   return (
-    <group ref={characterRef} position={[0, 0.5, 5]} castShadow>
-      {/* 얼굴을 전방으로 돌리기 */}
-      <group rotation={[0, Math.PI, 0]}>
-        {/* Head */}
-        <mesh position={[0, 1.15, 0]} castShadow>
-          <boxGeometry args={[0.5, 0.5, 0.4]} />
-          <meshStandardMaterial color="#f0d9b5" />
+    <>
+      {/* UI 버튼 추가 */}
+      <Html position={[5, -5, 5]}>
+        <div
+          style={{
+            position: "fixed",
+            bottom: 20,
+            right: 20,
+            zIndex: 9999,
+          }}
+        >
+          <button onClick={handleResetTexture}>🧼 헤드 리셋</button>
+        </div>
+      </Html>
+
+      <group ref={characterRef} position={[0, 0.5, 5]} castShadow>
+        <group rotation={[0, Math.PI, 0]}>
+          {/* Head (클릭 시 이미지 업로드, 커서 설정 포함) */}
+          <mesh
+            ref={headRef}
+            position={[0, 1.15, 0]}
+            castShadow
+            onClick={handleHeadClick}
+            onPointerOver={(e) => (document.body.style.cursor = "pointer")}
+            onPointerOut={(e) => (document.body.style.cursor = "default")}
+          >
+            <boxGeometry args={[0.5, 0.5, 0.4]} />
+            <meshStandardMaterial color="#f0d9b5" />
+          </mesh>
+
+          {/* Eyes */}
+          <mesh position={[-0.1, 1.3, -0.21]}>
+            <boxGeometry args={[0.05, 0.05, 0.01]} />
+            <meshStandardMaterial color="black" />
+          </mesh>
+          <mesh position={[0.1, 1.3, -0.21]}>
+            <boxGeometry args={[0.05, 0.05, 0.01]} />
+            <meshStandardMaterial color="black" />
+          </mesh>
+
+          {/* Mouth */}
+          <mesh position={[0, 1.15, -0.21]}>
+            <boxGeometry args={[0.12, 0.04, 0.01]} />
+            <meshStandardMaterial color="black" />
+          </mesh>
+        </group>
+
+        {/* Body */}
+        <mesh position={[0, 0.6, 0]} castShadow>
+          <boxGeometry args={[0.6, 0.6, 0.3]} />
+          <meshStandardMaterial color="yellow" />
         </mesh>
-        {/* Eyes */}
-        <mesh position={[-0.1, 1.3, -0.21]}>
-          <boxGeometry args={[0.05, 0.05, 0.01]} />
-          <meshStandardMaterial color="black" />
+
+        {/* Arms */}
+        <mesh ref={leftArm} position={[-0.42, 0.65, 0]} castShadow>
+          <boxGeometry args={[0.24, 0.5, 0.2]} />
+          <meshStandardMaterial color="yellow" />
         </mesh>
-        <mesh position={[0.1, 1.3, -0.21]}>
-          <boxGeometry args={[0.05, 0.05, 0.01]} />
-          <meshStandardMaterial color="black" />
+        <mesh ref={rightArm} position={[0.42, 0.65, 0]} castShadow>
+          <boxGeometry args={[0.24, 0.5, 0.2]} />
+          <meshStandardMaterial color="yellow" />
         </mesh>
-        {/* Mouth */}
-        <mesh position={[0, 1.15, -0.21]}>
-          <boxGeometry args={[0.12, 0.04, 0.01]} />
-          <meshStandardMaterial color="black" />
+
+        {/* Legs */}
+        <mesh ref={leftLeg} position={[-0.15, 0.05, -0.05]} castShadow>
+          <boxGeometry args={[0.2, 0.5, 0.15]} />
+          <meshStandardMaterial color="blue" />
+        </mesh>
+        <mesh ref={rightLeg} position={[0.15, 0.05, -0.05]} castShadow>
+          <boxGeometry args={[0.2, 0.5, 0.15]} />
+          <meshStandardMaterial color="blue" />
         </mesh>
       </group>
-      {/* Body */}
-      <mesh position={[0, 0.6, 0]} castShadow>
-        <boxGeometry args={[0.6, 0.6, 0.3]} />
-        <meshStandardMaterial color="yellow" />
-      </mesh>
-      {/* Arms (어깨 라인 맞춰 Y를 0.9로 수정) */}
-      <mesh ref={leftArm} position={[-0.42, 0.65, 0]} castShadow>
-        <boxGeometry args={[0.24, 0.5, 0.2]} />
-        <meshStandardMaterial color="yellow" />
-      </mesh>
-      <mesh ref={rightArm} position={[0.42, 0.65, 0]} castShadow>
-        <boxGeometry args={[0.24, 0.5, 0.2]} />
-        <meshStandardMaterial color="yellow" />
-      </mesh>
-      {/* Legs (몸체와 간섭 없도록 Z를 -0.12로 수정) */}
-      <mesh ref={leftLeg} position={[-0.15, 0.05, -0.05]} castShadow>
-        <boxGeometry args={[0.2, 0.5, 0.15]} />
-        <meshStandardMaterial color="blue" />
-      </mesh>
-      <mesh ref={rightLeg} position={[0.15, 0.05, -0.05]} castShadow>
-        <boxGeometry args={[0.2, 0.5, 0.15]} />
-        <meshStandardMaterial color="blue" />
-      </mesh>
-    </group>
+    </>
   );
 }
 
@@ -330,7 +454,7 @@ export default function RunningRoadScene() {
       <ambientLight intensity={0.3} />
       <CameraFollow characterRef={characterRef} />
 
-      {[...Array(5)].map((_, i) => {
+      {[...Array(8)].map((_, i) => {
         const z = -i * 20;
         return (
           <React.Fragment key={i}>
