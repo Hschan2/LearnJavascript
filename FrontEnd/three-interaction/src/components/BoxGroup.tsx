@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from "react";
-import { ExtrudeGeometry, Group, Mesh, Shape } from "three";
+import { DoubleSide, ExtrudeGeometry, Group, Mesh, Shape } from "three";
 import { useFrame } from "@react-three/fiber";
 
 const BOX_COUNT = 8;
@@ -15,7 +15,7 @@ export default function BoxGroup() {
     // 개별 공의 y 위치를 애니메이션
     spheresRef.current.forEach((sphere, i) => {
       const offset = i * 0.5;
-      sphere.position.y = Math.sin(t * 4 + offset) * 0.8;
+      sphere.position.y = Math.sin(t * 4 + offset) * 1.2;
     });
   });
 
@@ -50,9 +50,9 @@ export default function BoxGroup() {
             geometry={hollowBoxGeometry}
             rotation={[Math.PI / 2, 0, 0]}
             castShadow={false}
-            receiveShadow={false}
+            receiveShadow
           >
-            <meshStandardMaterial color="#FFA500" />
+            <meshStandardMaterial color="#FF991C" side={DoubleSide} />
           </mesh>
 
           {/* 위아래로 움직이는 공 */}
@@ -64,7 +64,7 @@ export default function BoxGroup() {
             castShadow
           >
             <sphereGeometry args={[0.2, 32, 32]} />
-            <meshStandardMaterial color="#00BFFF" />
+            <meshStandardMaterial color="#FFFF00" />
           </mesh>
         </group>
       ))}
