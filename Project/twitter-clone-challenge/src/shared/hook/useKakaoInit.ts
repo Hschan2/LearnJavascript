@@ -1,11 +1,6 @@
 import { useEffect } from "react";
-import { KAKAO_JAVASCRIPT_KEY } from "../../api-key";
 
-declare global {
-  interface Window {
-    Kakao?: any;
-  }
-}
+const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
 
 const useKakaoInit = () => {
   useEffect(() => {
