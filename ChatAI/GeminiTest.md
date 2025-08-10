@@ -1,0 +1,1 @@
+GEMINI CLI 테스트 성공
