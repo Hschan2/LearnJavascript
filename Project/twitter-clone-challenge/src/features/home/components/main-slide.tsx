@@ -26,7 +26,7 @@ const sliderSettings = {
   prevArrow: <></>,
   nextArrow: <></>,
   autoplay: true,
-  autoplaySpeed: 5000,
+  autoplaySpeed: 3000,
 };
 
 const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
