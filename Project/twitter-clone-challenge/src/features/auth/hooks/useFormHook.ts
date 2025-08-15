@@ -5,7 +5,8 @@ export const useFormHook = () => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm();
 
-  return { register, handleSubmit, errors };
+  return { register, handleSubmit, errors, getValues };
 };

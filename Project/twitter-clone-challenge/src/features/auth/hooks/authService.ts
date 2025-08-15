@@ -13,8 +13,34 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import axios from "axios";
 
 export const AuthService = (() => {
+  const sendSignUpCode = async (email: string) => {
+    const res = await axios.post("/send-signup-code", { email });
+    if (!res.data.success)
+      throw new Error(res.data.error || "인증 코드 발송 실패");
+  };
+
+  const verifySignUpCode = async (
+    email: string,
+    code: string
+  ): Promise<string> => {
+    const res = await axios.post("/verify-signup-code", { email, code });
+    if (!res.data.success || !res.data.token)
+      throw new Error(res.data.error || "인증 실패");
+    return res.data.token;
+  };
+
+  const signUpWithToken = async (
+    name: string,
+    password: string,
+    token: string
+  ) => {
+    const res = await axios.post("/signup", { name, password, token });
+    if (!res.data.success) throw new Error(res.data.error || "회원가입 실패");
+  };
+
   const handleError = (error: FirebaseError | Error): string => {
     console.error("인증 오류:", error.message);
 
@@ -95,5 +121,5 @@ export const AuthService = (() => {
     }
   };
 
-  return { signUp, login };
+  return { sendSignUpCode, verifySignUpCode, signUpWithToken, signUp, login };
 })();
