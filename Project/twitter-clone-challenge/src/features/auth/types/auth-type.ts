@@ -1,5 +1,11 @@
 import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
-import { FieldError, FieldValues, Path, RegisterOptions, UseFormRegister } from "react-hook-form";
+import {
+  FieldError,
+  FieldValues,
+  Path,
+  RegisterOptions,
+  UseFormRegister,
+} from "react-hook-form";
 
 export type AccountProps = {
   onCreateSubmit?: () => void;
@@ -8,6 +14,10 @@ export type AccountProps = {
   errors: any;
   isLoading: boolean;
   error: string | null;
+  onSendEmailCode: () => void;
+  onVerifyEmailCode: () => void;
+  onSignUp: () => void;
+  isEmailVerified: boolean;
 };
 
 export type FormInputProps<T extends FieldValues> = {
