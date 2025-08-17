@@ -3,8 +3,10 @@ import {
   Button,
   Error,
   Hint,
+  InputRow,
   Switcher,
   Title,
+  VerifyButton,
   Wrapper,
 } from "../styles/auth-components";
 import { FormInput } from "./form-input";
@@ -26,46 +28,56 @@ export const CreateAccountUI = ({
   return (
     <Wrapper>
       <Title>회원가입 𝕏</Title>
-      <FormInput
-        register={register}
-        name="email"
-        placeholder="이메일"
-        type="email"
-        error={errors.email}
-        rules={validationRules.email}
-      />
-      <Button type="button" onClick={onSendEmailCode}>
-        이메일 확인
-      </Button>
+      <InputRow>
+        <FormInput
+          register={register}
+          name="email"
+          placeholder="이메일"
+          type="email"
+          error={errors.email}
+          rules={validationRules.email}
+        />
+        <VerifyButton type="button" onClick={onSendEmailCode}>
+          이메일 확인
+        </VerifyButton>
+      </InputRow>
 
-      <FormInput
-        register={register}
-        name="code"
-        placeholder="인증 코드"
-        type="text"
-        error={errors.code}
-      />
-      <Button type="button" onClick={onVerifyEmailCode}>
-        코드 확인
-      </Button>
+      <InputRow>
+        <FormInput
+          register={register}
+          name="code"
+          placeholder="인증 코드"
+          type="text"
+          error={errors.code}
+        />
+        <VerifyButton type="button" onClick={onVerifyEmailCode}>
+          코드 확인
+        </VerifyButton>
+      </InputRow>
       {isEmailVerified && <p style={{ color: "green" }}>인증 완료</p>}
 
-      <FormInput
-        register={register}
-        name="name"
-        placeholder="이름"
-        type="text"
-        error={errors.name}
-        rules={validationRules.name}
-      />
-      <FormInput
-        register={register}
-        name="password"
-        placeholder="비밀번호"
-        type="password"
-        error={errors.password}
-        rules={validationRules.password}
-      />
+      <InputRow>
+        <FormInput
+          register={register}
+          name="name"
+          placeholder="이름"
+          type="text"
+          error={errors.name}
+          rules={validationRules.name}
+        />
+      </InputRow>
+
+      <InputRow>
+        <FormInput
+          register={register}
+          name="password"
+          placeholder="비밀번호"
+          type="password"
+          error={errors.password}
+          rules={validationRules.password}
+        />
+      </InputRow>
+
       <Hint>
         비밀번호는 8자 이상, 숫자, 소문자, 특수문자(!, @, #)를 포함해야 합니다.
       </Hint>

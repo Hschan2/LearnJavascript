@@ -9,10 +9,12 @@ export const Wrapper = styled.div`
   width: min(420px, 90%);
   min-height: 90vh;
   padding: min(50px, 8%) 0px;
+  gap: 8px;
 `;
 
 export const Title = styled.h1`
   font-size: clamp(2rem, 5vw, 3rem);
+  padding: 48px;
 `;
 
 export const Form = styled.form`
@@ -84,4 +86,32 @@ export const Hint = styled.p`
   color: #888;
   margin-top: 5px;
   margin-bottom: min(15px, 2vh);
+`;
+
+// 이메일 인증 Wrapper
+export const InputRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+
+  & > div {
+    flex-grow: 1;
+  }
+`;
+
+export const VerifyButton = styled.button`
+  flex-shrink: 0;
+  width: clamp(80px, 20vw, 120px);
+  padding: clamp(8px, 2vw, 10px);
+  border-radius: 50px;
+  border: none;
+  font-size: clamp(14px, 2vw, 16px);
+  transition-duration: 0.5s;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.85;
+  }
 `;

@@ -14,9 +14,6 @@ export const Button = styled.span`
   justify-content: center;
   cursor: pointer;
 
-  &.githubBtn {
-    margin-top: 10px;
-  }
   &.googleBtn {
     margin-top: 50px;
   }
