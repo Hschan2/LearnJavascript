@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { AuthFormValues } from "../types/auth-type";
 
 export const useFormHook = () => {
   const {
@@ -6,7 +7,8 @@ export const useFormHook = () => {
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm();
+    setValue,
+  } = useForm<AuthFormValues>();
 
-  return { register, handleSubmit, errors, getValues };
+  return { register, handleSubmit, errors, getValues, setValue };
 };
