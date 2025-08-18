@@ -27,6 +27,9 @@ export const useAuth = () => {
 
   const sendSignUpCode = (email: string) =>
     handleAuthAsync(async () => {
+      if (!email || email.trim() === "") {
+        throw new Error("이메일을 입력해 주세요.");
+      }
       await AuthService.sendSignUpCode(email);
       alert("인증 코드가 이메일로 발송되었습니다.");
       return true;
@@ -34,6 +37,13 @@ export const useAuth = () => {
 
   const verifySignUpCode = (email: string, code: string) =>
     handleAuthAsync(async () => {
+      if (!email || email.trim() === "") {
+        throw new Error("이메일을 입력해 주세요.");
+      }
+      if (!code || code.trim() === "") {
+        throw new Error("인증 코드를 입력해 주세요.");
+      }
+
       const token = await AuthService.verifySignUpCode(email, code);
       setSignupToken(token);
       setIsEmailVerified(true);
