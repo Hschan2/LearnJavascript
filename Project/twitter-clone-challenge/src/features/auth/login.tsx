@@ -2,7 +2,8 @@ import { useAccount } from "./hooks/useAccountAction";
 import { LoginUI } from "./components/login-ui";
 
 function Login() {
-  const { onLoginSubmit, register, errors, isLoading, error } = useAccount();
+  const { onLoginSubmit, register, errors, isLoading, error, setValue } =
+    useAccount();
 
   return (
     <LoginUI
@@ -11,6 +12,7 @@ function Login() {
       errors={errors}
       isLoading={isLoading}
       error={error}
+      setValue={setValue}
     />
   );
 }

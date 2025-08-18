@@ -19,6 +19,7 @@ export const LoginUI = ({
   errors,
   isLoading,
   error,
+  setValue,
 }: AccountProps) => {
   return (
     <Wrapper>
@@ -31,6 +32,7 @@ export const LoginUI = ({
           type="email"
           error={errors.email}
           rules={validationRules.email}
+          setValue={setValue}
         />
         <FormInput
           register={register}

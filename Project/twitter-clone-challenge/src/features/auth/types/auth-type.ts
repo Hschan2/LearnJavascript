@@ -1,32 +1,41 @@
 import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import {
   FieldError,
-  FieldValues,
+  FieldErrors,
   Path,
   RegisterOptions,
   UseFormRegister,
+  UseFormSetValue,
 } from "react-hook-form";
+
+export interface AuthFormValues {
+  email: string;
+  name?: string;
+  password: string;
+}
 
 export type AccountProps = {
   onCreateSubmit?: () => void;
   onLoginSubmit?: () => void;
-  register: any;
-  errors: any;
+  register: UseFormRegister<AuthFormValues>;
+  errors: FieldErrors<AuthFormValues>;
   isLoading: boolean;
   error: string | null;
-  onSendEmailCode: () => void;
-  onVerifyEmailCode: () => void;
-  onSignUp: () => void;
-  isEmailVerified: boolean;
+  onSendEmailCode?: () => void;
+  onVerifyEmailCode?: () => void;
+  onSignUp?: () => void;
+  isEmailVerified?: boolean;
+  setValue?: UseFormSetValue<AuthFormValues>;
 };
 
-export type FormInputProps<T extends FieldValues> = {
-  register: UseFormRegister<T>;
-  name: Path<T>;
+export type FormInputProps = {
+  register: UseFormRegister<AuthFormValues>;
+  name: Path<AuthFormValues>;
   placeholder: string;
   type: string;
   error?: FieldError;
   rules?: RegisterOptions;
+  setValue?: UseFormSetValue<AuthFormValues>;
 };
 
 export interface SocialButtonProps {
