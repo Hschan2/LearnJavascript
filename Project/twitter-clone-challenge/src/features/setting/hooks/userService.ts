@@ -7,14 +7,17 @@ import {
 } from "firebase/firestore";
 import { auth, dataBase } from "../../../firebase";
 import { deleteUser, updateProfile } from "firebase/auth";
+import { clearAllFirestoreSubscriptions } from "../../../lib/firestoreSubscriptions";
 
 export const logoutUser = async () => {
+  clearAllFirestoreSubscriptions();
   if (!auth.currentUser) throw new Error("로그아웃 할 수 없습니다.");
   await auth.signOut();
 };
 
 export const deleteUserAccount = async (userId: string) => {
   if (!userId) throw new Error("삭제할 계정이 없습니다.");
+  if (!auth.currentUser) return;
 
   const tweetQuery = query(
     collection(dataBase, "tweets"),

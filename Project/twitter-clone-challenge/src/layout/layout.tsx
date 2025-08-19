@@ -14,6 +14,7 @@ import {
 import DarkModeButton from "./components/darkMode-button";
 import { auth, dataBase } from "../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { addFirestoreUnsubscribe } from "../lib/firestoreSubscriptions";
 
 function useAuthUser() {
   const user = auth.currentUser;
@@ -36,6 +37,8 @@ function useUnreadNotification(userId: string | undefined) {
     const unsubscribe = onSnapshot(notificationQuery, (snapshot) => {
       setHasUnreadNotification(!snapshot.empty);
     });
+
+    addFirestoreUnsubscribe(unsubscribe);
 
     return () => unsubscribe();
   }, [userId]);

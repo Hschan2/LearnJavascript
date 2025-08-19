@@ -1,6 +1,7 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { ITweet } from "../../tweet/types/tweet-type";
 import { dataBase } from "../../../firebase";
+import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 
 export const subscribeToTweet = (
   searchWord: string,
@@ -25,6 +26,8 @@ export const subscribeToTweet = (
 
     onUpdate(filteredTweets);
   });
+
+  addFirestoreUnsubscribe(unsubscribe);
 
   return unsubscribe;
 };

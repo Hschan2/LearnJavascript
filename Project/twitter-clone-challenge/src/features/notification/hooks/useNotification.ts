@@ -8,6 +8,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 
 export const useNotification = () => {
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
@@ -30,6 +31,8 @@ export const useNotification = () => {
 
       setNotifications(newNotifications);
     });
+
+    addFirestoreUnsubscribe(unsubscribe);
 
     return () => unsubscribe();
   }, [user]);

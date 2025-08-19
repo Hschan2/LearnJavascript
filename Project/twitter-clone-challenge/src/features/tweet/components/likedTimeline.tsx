@@ -13,6 +13,7 @@ import Tweet from "./tweet";
 import { Wrapper } from "../styles/timeline-components";
 import { ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
+import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 
 const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
   const data = doc.data() as ITweet;
@@ -37,7 +38,7 @@ const useLikedTweets = (userId: string | undefined) => {
       where("userId", "==", userId)
     );
 
-    return onSnapshot(likedTweetsQuery, async (snapshot) => {
+    const unsubscribe = onSnapshot(likedTweetsQuery, async (snapshot) => {
       const tweetIds = snapshot.docs.map((doc) => doc.data().tweetId);
       const fetchedTweets = await Promise.all(tweetIds.map(fetchTweetById));
 
@@ -53,6 +54,10 @@ const useLikedTweets = (userId: string | undefined) => {
         return uniqueTweets;
       });
     });
+
+    addFirestoreUnsubscribe(unsubscribe);
+
+    return unsubscribe;
   }, [userId]);
 
   return { tweets, fetchLikedTweets };

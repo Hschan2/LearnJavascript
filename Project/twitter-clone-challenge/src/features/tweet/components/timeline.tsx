@@ -12,6 +12,7 @@ import Tweet from "./tweet";
 import { Wrapper } from "../styles/timeline-components";
 import { ITimeline, ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
+import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 
 const getTweetData = (doc: QueryDocumentSnapshot): ITweet => {
   const data = doc.data() as ITweet;
@@ -38,11 +39,15 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
       ...getOrderBys(isHot)
     );
 
-    return onSnapshot(tweetsQuery, (snapshot) => {
+    const unsubscribe = onSnapshot(tweetsQuery, (snapshot) => {
       const fetchedTweets = fetchTweetData(snapshot);
       setTweets(fetchedTweets);
       setFilteredTweets(filterTweetsByOption(fetchedTweets, option));
     });
+
+    addFirestoreUnsubscribe(unsubscribe);
+
+    return unsubscribe;
   }, [isHot, option]);
 
   const getOrderBys = (isHot: boolean | undefined) => {
