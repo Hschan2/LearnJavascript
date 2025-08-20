@@ -2,6 +2,10 @@ import { ProfileMenuWrapper, ProfileMenu } from "../style/profile-components";
 import { ProfileMenuProps } from "../types/profile-type";
 
 const ProfileMenus = ({ selectedMenu, setSelectedMenu }: ProfileMenuProps) => {
+  const isMobile = window.innerWidth <= 425;
+
+  if (!isMobile) return null;
+
   return (
     <ProfileMenuWrapper>
       <ProfileMenu

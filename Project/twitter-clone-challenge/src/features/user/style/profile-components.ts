@@ -112,7 +112,7 @@ export const FollowContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(200px, 80%);
+  width: 200px;
   height: 40px;
   border: 1px solid #767676;
   border-radius: 6px;
@@ -138,7 +138,7 @@ export const NoTweetsMessage = styled.p`
   text-align: center;
   white-space: nowrap;
   font-size: 16px;
-  margin: 20px 0;
+  margin: 48px 0;
   color: #777;
 `;
 
@@ -147,13 +147,9 @@ export const ProfileMenuWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 100%;
+  width: min(200px, 80%);
   padding: 12px 0;
-  visibility: hidden;
-
-  @media (max-width: 425px) {
-    visibility: visible;
-  }
+  gap: 4px;
 `;
 
 export const ProfileMenu = styled.button<{ $isSelected: boolean }>`

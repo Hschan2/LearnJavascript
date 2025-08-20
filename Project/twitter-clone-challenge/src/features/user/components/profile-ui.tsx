@@ -67,9 +67,7 @@ export function ProfileUI({
             ))}
             {tweets.length > 0 && <div ref={triggerRef}></div>}
             {tweets.length === 0 && (
-              <NoTweetsMessage>
-                사진이 없어요 😥
-              </NoTweetsMessage>
+              <NoTweetsMessage>사진이 없어요 😥</NoTweetsMessage>
             )}
           </Tweets>
         )}
