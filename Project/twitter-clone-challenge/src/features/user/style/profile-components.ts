@@ -132,6 +132,16 @@ export const FollowInformation = styled.span`
   }
 `;
 
+export const NoTweetsMessage = styled.p`
+  grid-column: 1 / -1;
+  justify-self: center;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 16px;
+  margin: 20px 0;
+  color: #777;
+`;
+
 // 모바일 버전 프로필 메뉴
 export const ProfileMenuWrapper = styled.div`
   display: flex;

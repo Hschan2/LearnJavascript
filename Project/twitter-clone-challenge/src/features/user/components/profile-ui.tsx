@@ -9,6 +9,7 @@ import {
   ContentWrapper,
   FollowContainer,
   FollowInformation,
+  NoTweetsMessage,
   Tweets,
   Wrapper,
 } from "../style/profile-components";
@@ -65,7 +66,11 @@ export function ProfileUI({
               <Tweet key={`${tweet.id}-${index}`} tweetObj={tweet} />
             ))}
             {tweets.length > 0 && <div ref={triggerRef}></div>}
-            {tweets.length === 0 && <p>더 이상 가져올 Tweet이 없습니다.</p>}
+            {tweets.length === 0 && (
+              <NoTweetsMessage>
+                사진이 없어요 😥
+              </NoTweetsMessage>
+            )}
           </Tweets>
         )}
         {selectedMenu === "like" && <Like />}
