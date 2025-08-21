@@ -1,4 +1,4 @@
-import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import { AuthProvider } from "firebase/auth";
 import {
   FieldError,
   FieldErrors,
@@ -6,12 +6,14 @@ import {
   RegisterOptions,
   UseFormRegister,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 
 export interface AuthFormValues {
   email: string;
   name?: string;
   password: string;
+  code?: string;
 }
 
 export type AccountProps = {
@@ -26,6 +28,7 @@ export type AccountProps = {
   onSignUp?: () => void;
   isEmailVerified?: boolean;
   setValue?: UseFormSetValue<AuthFormValues>;
+  watch?: UseFormWatch<AuthFormValues>;
 };
 
 export type FormInputProps = {
@@ -36,10 +39,11 @@ export type FormInputProps = {
   error?: FieldError;
   rules?: RegisterOptions;
   setValue?: UseFormSetValue<AuthFormValues>;
+  watch?: UseFormWatch<AuthFormValues>;
 };
 
 export interface SocialButtonProps {
-  provider: typeof GoogleAuthProvider | typeof GithubAuthProvider;
+  provider: AuthProvider;
   className: string;
   children: React.ReactNode;
 }
