@@ -2,18 +2,12 @@ import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
 } from "firebase/auth";
 import { auth, dataBase } from "../../../firebase";
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import axios from "axios";
+import { saveUserToFirestore } from "./saveUserToFirestore";
+import { updateUserProfile } from "./updateUserProfile";
 
 export const AuthService = (() => {
   const sendSignUpCode = async (email: string) => {
@@ -88,23 +82,9 @@ export const AuthService = (() => {
         email,
         password
       );
-      const initialImage =
-        "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbxwsqs%2FbtsK1ACfsyI%2FyojjVvJwKpX4bdZ0CtZkJ0%2Fimg.png";
 
-      await updateProfile(credentials.user, {
-        displayName: name,
-        photoURL: initialImage,
-      });
-
-      await setDoc(
-        doc(collection(dataBase, "signedUsers"), credentials.user.uid),
-        {
-          uid: credentials.user.uid,
-          name,
-          email,
-          avatar: initialImage,
-        }
-      );
+      await updateUserProfile(credentials.user, name);
+      await saveUserToFirestore(credentials.user, name);
 
       return true;
     } catch (error) {
