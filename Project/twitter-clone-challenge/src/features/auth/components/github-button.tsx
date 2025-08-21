@@ -4,7 +4,7 @@ import SocialButton from "./social-button";
 
 function GithubButton() {
   return (
-    <SocialButton provider={GithubAuthProvider} className="githubBtn">
+    <SocialButton provider={new GithubAuthProvider()} className="githubBtn">
       <Logo src="github-logo.svg" />
       Github로 로그인
     </SocialButton>

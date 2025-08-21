@@ -4,7 +4,7 @@ import { Logo } from "../../../layout/styles/button-components";
 
 function GoogleButton() {
   return (
-    <SocialButton provider={GoogleAuthProvider} className="googleBtn">
+    <SocialButton provider={new GoogleAuthProvider()} className="googleBtn">
       <Logo src="google-logo.svg" />
       Google로 로그인
     </SocialButton>
