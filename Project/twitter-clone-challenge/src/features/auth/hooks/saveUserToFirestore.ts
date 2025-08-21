@@ -13,6 +13,7 @@ export const saveUserToFirestore = async (user: User, name?: string) => {
       name: name || user.displayName || "사용자",
       email: user.email,
       avatar: INITIAL_IMAGE,
+      createdAt: new Date(),
     });
   }
 };
