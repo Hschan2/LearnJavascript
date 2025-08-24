@@ -1,3 +1,4 @@
+import { INITIAL_IMAGE } from "../../../constants";
 import {
   AvatarImg,
   AvatarInput,
@@ -9,7 +10,7 @@ const ProfileAvatar = ({ avatar, onAvatarChange }: ProfileAvatarProps) => {
   return (
     <>
       <AvatarUpload htmlFor="avatar">
-        <AvatarImg src={avatar} alt="프로필 이미지" />
+        <AvatarImg src={avatar ?? INITIAL_IMAGE} alt="프로필 이미지" />
       </AvatarUpload>
       <AvatarInput
         onChange={onAvatarChange}
