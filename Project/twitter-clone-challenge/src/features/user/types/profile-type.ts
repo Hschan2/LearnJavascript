@@ -7,12 +7,12 @@ import {
 
 export interface NameEditorProps {
   isEditing: boolean;
-  user: any;
+  user: User | null;
   toggleEditor: () => void;
 }
 
 export interface ProfileAvatarProps {
-  avatar: string;
+  avatar: string | null | undefined;
   onAvatarChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -23,7 +23,7 @@ export interface ProfileMenuProps {
 
 export interface ProfileUIProps {
   user: User | null;
-  avatar: string;
+  avatar: string | null | undefined;
   onAvatarChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   tweets: ITweet[];
   triggerRef: ((node: HTMLDivElement | null) => void) | null;
