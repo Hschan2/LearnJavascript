@@ -20,10 +20,11 @@ export const LoginUI = ({
   isLoading,
   error,
   setValue,
+  watch,
 }: AccountProps) => {
   return (
     <Wrapper>
-      <Title>로그인 𝕏</Title>
+      <Title>로그인</Title>
       <Form onSubmit={onLoginSubmit}>
         <FormInput
           register={register}
@@ -33,6 +34,7 @@ export const LoginUI = ({
           error={errors.email}
           rules={validationRules.email}
           setValue={setValue}
+          watch={watch}
         />
         <FormInput
           register={register}

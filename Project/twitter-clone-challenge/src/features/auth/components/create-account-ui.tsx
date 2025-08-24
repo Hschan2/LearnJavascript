@@ -27,7 +27,7 @@ export const CreateAccountUI = ({
 }: AccountProps) => {
   return (
     <Wrapper>
-      <Title>회원가입 𝕏</Title>
+      <Title>회원가입</Title>
       <InputRow>
         <FormInput
           register={register}

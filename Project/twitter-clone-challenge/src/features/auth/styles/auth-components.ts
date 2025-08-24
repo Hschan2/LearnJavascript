@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 
 export const Title = styled.h1`
   font-size: clamp(2rem, 5vw, 3rem);
-  padding: 48px;
+  padding: 24px;
 `;
 
 export const Form = styled.form`
