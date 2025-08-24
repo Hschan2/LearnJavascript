@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "api/verifyCode.ts", "api/sendCode.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
