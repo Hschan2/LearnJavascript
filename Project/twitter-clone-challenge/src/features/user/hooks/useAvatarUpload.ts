@@ -2,20 +2,17 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { dataBase, storage } from "../../../firebase";
 import { updateProfile, User } from "firebase/auth";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { INITIAL_IMAGE } from "../../../constants";
+import { doc, updateDoc } from "firebase/firestore";
+import { fetchAvatarUrl } from "../../../shared/hook/fetchAvatarUrl";
 
 const useAvatarUpload = (user: User | null) => {
   const [avatar, setAvatar] = useState(user?.photoURL);
 
   useEffect(() => {
-    const fetchAvatar = async () => {
-      if (!user) return;
-      const userRef = doc(dataBase, "signedUsers", user.uid);
-      const userSnap = await getDoc(userRef);
-      setAvatar(userSnap.exists() ? userSnap.data().avatar : INITIAL_IMAGE);
+    const load = async () => {
+      setAvatar(await fetchAvatarUrl(user));
     };
-    fetchAvatar();
+    load();
   }, [user]);
 
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
