@@ -15,12 +15,16 @@ import DarkModeButton from "./components/darkMode-button";
 import { auth, dataBase } from "../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { addFirestoreUnsubscribe } from "../lib/firestoreSubscriptions";
-import { useRealtimeAvatar } from "../shared/hook/useRealtimeAvatar";
+import { useAvatar } from "../shared/hook/useAvatar";
 
 function useAuthUser() {
   const user = auth.currentUser;
-  const avatar = useRealtimeAvatar();
-  return { userId: user?.uid, avatar: avatar };
+  const { avatar } = useAvatar({
+    user,
+    enableUpload: false,
+  });
+
+  return { userId: user?.uid, avatar };
 }
 
 function useUnreadNotification(userId: string | undefined) {
