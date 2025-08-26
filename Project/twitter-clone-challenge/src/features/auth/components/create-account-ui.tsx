@@ -9,7 +9,7 @@ import {
   VerifyButton,
   Wrapper,
 } from "../styles/auth-components";
-import { FormInput } from "./form-input";
+import { FormInput } from "../../../shared/components/form-input";
 import { validationRules } from "../../../constants";
 import GoogleButton from "./google-button";
 import GithubButton from "./github-button";
