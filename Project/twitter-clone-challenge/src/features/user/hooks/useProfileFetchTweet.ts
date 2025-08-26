@@ -1,17 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { ITweet } from "../../tweet/types/tweet-type";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  orderBy,
-  query,
-  startAfter,
-  where,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { dataBase } from "../../../firebase";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
+import { createTweetsQuery, fetchTweetsOnce } from "../../../services/tweetService";
 
 const useProfileFetchTweet = (userId?: string) => {
   const [tweets, setTweets] = useState<ITweet[]>([]);
@@ -41,23 +33,13 @@ const useProfileFetchTweet = (userId?: string) => {
     setIsFetching(true);
 
     try {
-      const tweetQuery = query(
-        collection(dataBase, "tweets"),
-        where("userId", "==", userId),
-        orderBy("createdAt", "desc"),
-        ...(lastDoc ? [startAfter(lastDoc)] : [])
-      );
+      const tweetQuery = createTweetsQuery({ userId, lastDoc });
+      const { tweets: newTweets, lastDoc: newLastDoc } = await fetchTweetsOnce(tweetQuery);
 
-      const snapshot = await getDocs(tweetQuery);
-      if (snapshot.empty) {
+      if (newTweets.length === 0) {
         setHasMore(false);
         return;
       }
-
-      const newTweets = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as ITweet[];
 
       setTweets((prev) => {
         const existingIds = new Set(prev.map((tweet) => tweet.id));
@@ -67,7 +49,7 @@ const useProfileFetchTweet = (userId?: string) => {
         ];
       });
 
-      setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+      setLastDoc(newLastDoc);
     } finally {
       setIsFetching(false);
     }
