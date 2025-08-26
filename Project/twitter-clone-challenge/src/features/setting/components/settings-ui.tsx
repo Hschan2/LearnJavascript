@@ -1,4 +1,4 @@
-import { EventButton, Wrapper } from "../style/settings-components";
+import { EventButton, SettingsWrapper } from "../style/settings-components";
 
 export function SettingUI({
   onLogOut,
@@ -8,7 +8,7 @@ export function SettingUI({
   onDeleteUser: () => void;
 }) {
   return (
-    <Wrapper>
+    <SettingsWrapper>
       <EventButton onClick={onLogOut} title="로그아웃">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -39,6 +39,6 @@ export function SettingUI({
         </svg>
         <span>계정 삭제</span>
       </EventButton>
-    </Wrapper>
+    </SettingsWrapper>
   );
 }

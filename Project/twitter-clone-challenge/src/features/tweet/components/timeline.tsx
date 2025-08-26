@@ -9,7 +9,7 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { dataBase } from "../../../firebase";
 import Tweet from "./tweet";
-import { Wrapper } from "../styles/timeline-components";
+import { TimelineWrapper } from "../styles/timeline-components";
 import { ITimeline, ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
 import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
@@ -71,12 +71,12 @@ function Timeline({ isHot, option = "전체" }: ITimeline) {
   }, [option, tweets]);
 
   return (
-    <Wrapper>
+    <TimelineWrapper>
       {filteredTweets.map((tweet) => (
         <Tweet key={tweet.id} tweetObj={tweet} />
       ))}
       <div ref={triggerRef}></div>
-    </Wrapper>
+    </TimelineWrapper>
   );
 }
 

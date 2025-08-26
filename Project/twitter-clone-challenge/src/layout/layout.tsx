@@ -5,7 +5,7 @@ import {
   Menu,
   MenuItem,
   NoneLineLink,
-  Wrapper,
+  LayoutWrapper,
   Avatar,
   NotificationBadge,
   MobileTopMenuWrapper,
@@ -97,7 +97,7 @@ function Layout() {
   const MENU_LIST = useMenuList(avatar, hasUnreadNotification);
 
   return (
-    <Wrapper>
+    <LayoutWrapper>
       <Menu>
         <NoneLineLink to="/">
           <LogoComponent />
@@ -122,7 +122,7 @@ function Layout() {
         </MobileTopMenuWrapper>
       </Menu>
       <Outlet />
-    </Wrapper>
+    </LayoutWrapper>
   );
 }
 

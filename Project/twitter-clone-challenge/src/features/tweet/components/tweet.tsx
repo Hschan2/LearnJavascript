@@ -15,7 +15,7 @@ import {
   ProfileImage,
   TweetButtonWrapper,
   Username,
-  Wrapper,
+  TweetWrapper,
 } from "../styles/tweet-components";
 import { useNavigate } from "react-router";
 import { tweetService } from "../hooks/useTweetAction";
@@ -44,7 +44,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
   };
 
   return (
-    <Wrapper>
+    <TweetWrapper>
       <InfoContents>
         {tweetObj.photo && (
           <Photo
@@ -181,7 +181,7 @@ function Tweet({ tweetObj }: { tweetObj: ITweet }) {
           </MenuItem>
         </Menu>
       )}
-    </Wrapper>
+    </TweetWrapper>
   );
 }
 

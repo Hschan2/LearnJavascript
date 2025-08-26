@@ -5,7 +5,7 @@ interface MenuItemProps {
   active?: boolean;
 }
 
-export const Wrapper = styled.div`
+export const LayoutWrapper = styled.div`
   display: flex;
   flex-direction: row;
   height: 100%;

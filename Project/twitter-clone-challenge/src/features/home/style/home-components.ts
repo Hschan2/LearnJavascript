@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div`
+export const HomeWrapper = styled.div`
   width: min(90%, 1200px);
   display: flex;
   flex-direction: column;

@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 // common-tweet-wrapper
-export const Wrapper = styled.div`
+export const TimelineWrapper = styled.div`
   width: 100%;
   display: grid;
   gap: 10px;

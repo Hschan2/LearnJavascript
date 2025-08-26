@@ -1,10 +1,10 @@
-import { Text, Wrapper } from "./styles/loading-components";
+import { Text, LoadingWrapper } from "./styles/loading-components";
 
 function LoadingScreen() {
   return (
-    <Wrapper>
+    <LoadingWrapper>
       <Text>Loading...</Text>
-    </Wrapper>
+    </LoadingWrapper>
   );
 }
 

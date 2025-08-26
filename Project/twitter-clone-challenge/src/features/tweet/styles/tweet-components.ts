@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 // tweet-timeline style
-export const Wrapper = styled.div`
+export const TweetWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid grey;

@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div`
+export const AuthWrapper = styled.div`
   // height: 100%;
   display: flex;
   flex-direction: column;

@@ -5,7 +5,7 @@ import { SELECT_OPTION_VALUE } from "../../constants";
 import {
   FilterSelector,
   FilterWrapper,
-  Wrapper,
+  HomeWrapper,
 } from "./style/home-components";
 
 function Home() {
@@ -16,7 +16,7 @@ function Home() {
   };
 
   return (
-    <Wrapper>
+    <HomeWrapper>
       <MainSlide />
       <FilterWrapper>
         <FilterSelector onChange={handleOptionChange}>
@@ -27,7 +27,7 @@ function Home() {
         </FilterSelector>
       </FilterWrapper>
       <Timeline option={selectedOption} />
-    </Wrapper>
+    </HomeWrapper>
   );
 }
 

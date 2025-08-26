@@ -11,7 +11,7 @@ import {
   FollowInformation,
   NoTweetsMessage,
   Tweets,
-  Wrapper,
+  ProfileWrapper,
 } from "../style/profile-components";
 import Modal from "./follow-modal";
 import { ProfileUIProps } from "../types/profile-type";
@@ -34,7 +34,7 @@ export function ProfileUI({
   closeModal,
 }: ProfileUIProps) {
   return (
-    <Wrapper>
+    <ProfileWrapper>
       <ContentWrapper>
         <ProfileAvatar avatar={avatar} onAvatarChange={onAvatarChange} />
         <NameEditor
@@ -74,6 +74,6 @@ export function ProfileUI({
         {selectedMenu === "like" && <Like />}
         {selectedMenu === "setting" && <Settings />}
       </ContentWrapper>
-    </Wrapper>
+    </ProfileWrapper>
   );
 }

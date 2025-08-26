@@ -25,7 +25,7 @@ import ErrorBoundary from "./features/error/error-boundary";
 import NotFoundPage from "./features/error/not-found-page";
 import InputEmail from "./features/auth/input-email";
 import UserTweets from "./features/tweet/user-tweets";
-import { darkTheme, GlobalStyles, lightTheme, Wrapper } from "./app-style";
+import { darkTheme, GlobalStyles, lightTheme, AppWrapper } from "./app-style";
 
 const router = createBrowserRouter([
   {
@@ -159,11 +159,11 @@ function App() {
           href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@100..900&display=swap"
         />
       </Helmet>
-      <Wrapper>
+      <AppWrapper>
         <GlobalStyles />
         {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
         <Footer />
-      </Wrapper>
+      </AppWrapper>
     </ThemeProvider>
   );
 }

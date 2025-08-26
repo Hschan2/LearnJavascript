@@ -5,7 +5,7 @@ import {
   Form,
   Switcher,
   Title,
-  Wrapper,
+  AuthWrapper,
 } from "../styles/auth-components";
 import { FormInput } from "../../../shared/components/form-input";
 import { validationRules } from "../../../constants";
@@ -23,7 +23,7 @@ export const LoginUI = ({
   watch,
 }: AccountProps) => {
   return (
-    <Wrapper>
+    <AuthWrapper>
       <Title>로그인</Title>
       <Form onSubmit={onLoginSubmit}>
         <FormInput
@@ -56,6 +56,6 @@ export const LoginUI = ({
       </Switcher>
       <GoogleButton />
       <GithubButton />
-    </Wrapper>
+    </AuthWrapper>
   );
 };

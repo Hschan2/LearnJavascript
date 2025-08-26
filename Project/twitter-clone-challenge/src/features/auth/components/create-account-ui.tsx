@@ -7,7 +7,7 @@ import {
   Switcher,
   Title,
   VerifyButton,
-  Wrapper,
+  AuthWrapper,
 } from "../styles/auth-components";
 import { FormInput } from "../../../shared/components/form-input";
 import { validationRules } from "../../../constants";
@@ -26,7 +26,7 @@ export const CreateAccountUI = ({
   isEmailVerified,
 }: AccountProps) => {
   return (
-    <Wrapper>
+    <AuthWrapper>
       <Title>회원가입</Title>
       <InputRow>
         <FormInput
@@ -94,6 +94,6 @@ export const CreateAccountUI = ({
       </Switcher>
       <GoogleButton />
       <GithubButton />
-    </Wrapper>
+    </AuthWrapper>
   );
 };

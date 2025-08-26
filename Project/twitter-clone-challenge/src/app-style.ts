@@ -20,7 +20,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 `;
 
-export const Wrapper = styled.div`
+export const AppWrapper = styled.div`
   width: 100%;
   min-height: 100vh;
   display: flex;
