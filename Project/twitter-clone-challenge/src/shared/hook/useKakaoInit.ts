@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-
-const KAKAO_JAVASCRIPT_KEY = import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY;
+import { KAKAO_JAVASCRIPT_KEY } from "../../config";
 
 const useKakaoInit = () => {
   useEffect(() => {
