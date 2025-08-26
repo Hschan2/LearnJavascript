@@ -1,10 +1,11 @@
-import express from "express";
 import nodemailer from "nodemailer";
-import { adminDb, authAdmin } from "../firebase-admin";
+import { adminDb, authAdmin } from "../src/firebase-admin";
 
-const router = express.Router();
+export default async function handler(req: any, res: any) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-router.post("/send-code", async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: "이메일이 필요합니다" });
 
@@ -16,6 +17,7 @@ router.post("/send-code", async (req, res) => {
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expirationTime = Date.now() + 5 * 60 * 1000;
+
     await adminDb.collection("resetCodes").doc(email).set({
       code,
       expiresAt: expirationTime,
@@ -36,11 +38,9 @@ router.post("/send-code", async (req, res) => {
       text: `인증 코드: ${code}\n5분 내 입력하세요.`,
     });
 
-    res.json({ success: true });
+    return res.status(200).json({ success: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "코드 발송 실패" });
+    return res.status(500).json({ error: "코드 발송 실패" });
   }
-});
-
-export default router;
+}

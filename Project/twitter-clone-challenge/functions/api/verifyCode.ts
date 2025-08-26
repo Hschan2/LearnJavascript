@@ -1,13 +1,15 @@
-import express from "express";
-import { adminDb } from "../firebase-admin";
 import jwt from "jsonwebtoken";
+import { adminDb } from "../src/firebase-admin";
 
-const router = express.Router();
+export default async function handler(req: any, res: any) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-router.post("/verify-code", async (req, res) => {
   const { email, code } = req.body;
-  if (!email || !code)
+  if (!email || !code) {
     return res.status(400).json({ error: "이메일과 코드가 필요합니다" });
+  }
 
   try {
     const docRef = adminDb.collection("resetCodes").doc(email);
@@ -32,11 +34,9 @@ router.post("/verify-code", async (req, res) => {
       expiresIn: "10m",
     });
 
-    res.json({ success: true, token });
+    return res.status(200).json({ success: true, token });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "코드 검증 실패" });
+    return res.status(500).json({ error: "코드 검증 실패" });
   }
-});
-
-export default router;
+}
