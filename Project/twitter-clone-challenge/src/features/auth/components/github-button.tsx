@@ -1,6 +1,6 @@
 import { GithubAuthProvider } from "firebase/auth";
 import { Logo } from "../../../layout/styles/button-components";
-import SocialButton from "./social-button";
+import SocialButton from "../../../shared/components/social-button";
 
 function GithubButton() {
   return (

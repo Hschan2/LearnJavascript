@@ -1,5 +1,5 @@
 import { GoogleAuthProvider } from "firebase/auth";
-import SocialButton from "./social-button";
+import SocialButton from "../../../shared/components/social-button";
 import { Logo } from "../../../layout/styles/button-components";
 
 function GoogleButton() {
