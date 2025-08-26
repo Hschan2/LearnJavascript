@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { tweetService } from "./useTweetAction";
 import { IComment, ITweet } from "../types/tweet-type";
 import { auth } from "../../../firebase";
 
-export const useDetail = (tweetId: string, setComments: Function) => {
+export const useDetail = (
+  tweetId: string,
+  setComments: Dispatch<SetStateAction<IComment[]>>
+) => {
   const [newComment, setNewComment] = useState<string>("");
 
   const addComment = async () => {
