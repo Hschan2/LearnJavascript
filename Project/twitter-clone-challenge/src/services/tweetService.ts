@@ -1,8 +1,7 @@
-import { collection, query, orderBy, where, startAfter, getDocs, onSnapshot, QuerySnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
+import { collection, query, orderBy, where, startAfter, getDocs, onSnapshot, QuerySnapshot, QueryDocumentSnapshot, Query, DocumentData } from 'firebase/firestore';
 import { dataBase } from '../firebase';
 import { ITweet } from '../features/tweet/types/tweet-type';
 
-// Firestore에서 트윗 데이터를 가져와 ITweet 형식으로 변환합니다.
 const getTweetData = (doc: QueryDocumentSnapshot): ITweet => {
   const data = doc.data();
   return {
@@ -21,12 +20,10 @@ const getTweetData = (doc: QueryDocumentSnapshot): ITweet => {
   };
 };
 
-// QuerySnapshot을 ITweet 배열로 변환합니다.
-export const mapSnapshotToTweets = (snapshot: QuerySnapshot): ITweet[] => {
+export const mapSnapshotToTweets = (snapshot: QuerySnapshot<DocumentData>): ITweet[] => {
   return snapshot.docs.map(getTweetData);
 };
 
-// 옵션에 따라 트윗을 필터링합니다.
 export const filterTweetsByOption = (tweets: ITweet[], option: string) => {
   if (option === "전체") {
     return tweets;
@@ -34,10 +31,9 @@ export const filterTweetsByOption = (tweets: ITweet[], option: string) => {
   return tweets.filter((tweet) => tweet.item === option);
 };
 
-// 트윗 쿼리를 생성합니다.
-export const createTweetsQuery = (options: { isHot?: boolean; userId?: string; lastDoc?: any; }) => {
+export const createTweetsQuery = (options: { isHot?: boolean; userId?: string; lastDoc?: QueryDocumentSnapshot<DocumentData> | null; }) => {
   const { isHot, userId, lastDoc } = options;
-  let q = query(collection(dataBase, "tweets"));
+  let q: Query = query(collection(dataBase, "tweets"));
 
   if (userId) {
     q = query(q, where("userId", "==", userId));
@@ -55,19 +51,18 @@ export const createTweetsQuery = (options: { isHot?: boolean; userId?: string; l
   return q;
 };
 
-// 실시간으로 트윗을 가져옵니다.
-export const fetchTweetsRealtime = (query: any, callback: (tweets: ITweet[]) => void) => {
-  return onSnapshot(query, (snapshot) => {
+export const fetchTweetsRealtime = (query: Query, callback: (tweets: ITweet[]) => void) => {
+  return onSnapshot(query, (snapshot: QuerySnapshot<DocumentData>) => {
     const tweets = mapSnapshotToTweets(snapshot);
     callback(tweets);
   });
 };
 
-// 한 번만 트윗을 가져옵니다.
-export const fetchTweetsOnce = async (query: any) => {
-  const snapshot = await getDocs(query);
+export const fetchTweetsOnce = async (query: Query): Promise<{ tweets: ITweet[], lastDoc: QueryDocumentSnapshot<DocumentData> | null }> => {
+  const snapshot: QuerySnapshot<DocumentData> = await getDocs(query);
+  const lastDoc = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
   return {
     tweets: mapSnapshotToTweets(snapshot),
-    lastDoc: snapshot.docs[snapshot.docs.length - 1],
+    lastDoc,
   };
 };

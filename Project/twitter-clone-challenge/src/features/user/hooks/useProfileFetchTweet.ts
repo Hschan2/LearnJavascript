@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { ITweet } from "../../tweet/types/tweet-type";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import { dataBase } from "../../../firebase";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
 import { createTweetsQuery, fetchTweetsOnce } from "../../../services/tweetService";
 
 const useProfileFetchTweet = (userId?: string) => {
   const [tweets, setTweets] = useState<ITweet[]>([]);
-  const [lastDoc, setLastDoc] = useState<any>(null);
+  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<{
