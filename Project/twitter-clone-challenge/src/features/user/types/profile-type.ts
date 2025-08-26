@@ -5,6 +5,13 @@ import {
   ITweet,
 } from "../../tweet/types/tweet-type";
 
+export interface FollowModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  data: FollowingProps[] | FollowerProps[];
+}
+
 export interface NameEditorProps {
   isEditing: boolean;
   user: User | null;

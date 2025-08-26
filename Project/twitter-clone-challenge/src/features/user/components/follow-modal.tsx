@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import { Avatar, FollowItem, FollowList } from "../style/profile-components";
-import { FollowModalProps } from "../types/modal-type";
+import { FollowModalProps } from "../types/profile-type";
 import Modal from "../../../shared/modal";
 
 function FollowModal({ isOpen, onClose, title, data }: FollowModalProps) {
