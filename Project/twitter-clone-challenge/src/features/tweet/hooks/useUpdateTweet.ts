@@ -2,8 +2,18 @@ import { useNavigate } from "react-router";
 import { auth, dataBase } from "../../../firebase";
 import { useFileUpload } from "./useFileUpLoad";
 import { deleteField, doc, updateDoc } from "firebase/firestore";
+import { UpdateState } from "../types/form-type";
 
-export const useUpdateTweet = (id: string, state: any, updateState: any) => {
+type UpdateStateSetter = <K extends keyof UpdateState>(
+  key: K,
+  value: UpdateState[K]
+) => void;
+
+export const useUpdateTweet = (
+  id: string,
+  state: UpdateState,
+  updateState: UpdateStateSetter
+) => {
   const user = auth.currentUser;
   const navigate = useNavigate();
   const { handleFileUpload, handleRetouchUpload } = useFileUpload(user);

@@ -2,8 +2,9 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../../firebase";
 import { DocumentReference, updateDoc } from "firebase/firestore";
 import { useCallback } from "react";
+import type { User } from "firebase/auth";
 
-export const useFileUpload = (user?: any) => {
+export const useFileUpload = (user?: User | null) => {
   const uploadFile = async (path: string, file: File) => {
     const fileRef = ref(storage, path);
     const result = await uploadBytes(fileRef, file);
@@ -33,26 +34,20 @@ export const useFileUpload = (user?: any) => {
 
   const handleFileUpload = useCallback(
     async (file: File, doc: DocumentReference) => {
-      try {
-        await uploadTweetPhoto(user.uid, doc, file);
-        console.log("사진 업로드 성공");
-      } catch (error) {
-        console.error("사진 업로드 실패: ", error);
-      }
+      if (!user) throw new Error("로그인이 필요합니다.");
+      await uploadTweetPhoto(user.uid, doc, file);
+      console.log("사진 업로드 성공");
     },
-    [user]
+    [user?.uid]
   );
 
   const handleRetouchUpload = useCallback(
     async (retouch: File, doc: DocumentReference) => {
-      try {
-        await uploadRetouchFile(user.uid, doc, retouch);
-        console.log("리터치 사진 업로드 성공");
-      } catch (error) {
-        console.error("리터치 사진 업로드 실패: ", error);
-      }
+      if (!user) throw new Error("로그인이 필요합니다.");
+      await uploadRetouchFile(user.uid, doc, retouch);
+      console.log("리터치 사진 업로드 성공");
     },
-    [user]
+    [user?.uid]
   );
 
   return {

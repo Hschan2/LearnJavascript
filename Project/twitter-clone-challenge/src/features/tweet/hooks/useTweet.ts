@@ -2,17 +2,18 @@ import { useNavigate } from "react-router";
 import { useFileUpload } from "./useFileUpLoad";
 import { auth, dataBase } from "../../../firebase";
 import { addDoc, collection } from "firebase/firestore";
-import { initialState } from "./useTweetForm";
+import { initialState, TweetFormState } from "./useTweetForm";
+import { ITweet } from "../types/tweet-type";
 
 export const useTweet = (
-  postState: any,
-  updateState: (newState: Partial<typeof postState>) => void
+  postState: TweetFormState,
+  updateState: (patch: Partial<TweetFormState>) => void
 ) => {
   const { uploadRetouchFile, uploadTweetPhoto } = useFileUpload();
   const navigate = useNavigate();
   const user = auth.currentUser;
 
-  const addTweetToData = (userId: string, docData: Record<string, any>) =>
+  const addTweetToData = (userId: string, docData: Partial<Omit<ITweet, "id">>) =>
     addDoc(collection(dataBase, "tweets"), {
       ...docData,
       createdAt: Date.now(),

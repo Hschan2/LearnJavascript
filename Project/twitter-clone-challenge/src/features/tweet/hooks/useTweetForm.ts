@@ -1,7 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../../constants";
 
-export const initialState = {
+export type TweetFormState = {
+  isLoading: boolean;
+  tweet: string;
+  tags: string[];
+  tagInput: string;
+  file: File | null;
+  retouch: File | null;
+  showEmojiPicker: boolean;
+  isSelectOpen: boolean;
+  selectedOption: (typeof SELECT_OPTION_VALUE)[number];
+  isModalOpen: boolean;
+  selectedAddress: string;
+  likes: number;
+  likedBy: string[];
+  exclamation: number;
+  exclamationBy: string[];
+};
+
+export const initialState: TweetFormState = {
   isLoading: false,
   tweet: "",
   tags: [] as string[],
@@ -20,7 +38,7 @@ export const initialState = {
 };
 
 export const useTweetForm = () => {
-  const [postState, setPostState] = useState(initialState);
+  const [postState, setPostState] = useState<TweetFormState>(initialState);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const updateState = (newState: Partial<typeof postState>) =>
