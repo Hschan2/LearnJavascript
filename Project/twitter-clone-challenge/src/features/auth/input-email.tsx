@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function InputEmail({ onVerified }: { onVerified: () => void }) {
+function InputEmail() {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const sendCode = async () => {
     try {
@@ -33,7 +35,7 @@ function InputEmail({ onVerified }: { onVerified: () => void }) {
       });
       const data = await res.json();
       if (data.success) {
-        onVerified();
+        navigate("/reset-password");
       } else {
         setError(data.error);
       }
