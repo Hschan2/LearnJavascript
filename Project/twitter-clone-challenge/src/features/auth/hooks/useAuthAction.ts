@@ -35,7 +35,7 @@ export const useAuth = () => {
       return true;
     });
 
-  const verifySignUpCode = (email: string, code: string) =>
+  const verifySignUpCode = (email?: string, code?: string) =>
     handleAuthAsync(async () => {
       if (!email || email.trim() === "") {
         throw new Error("이메일을 입력해 주세요.");
@@ -51,10 +51,10 @@ export const useAuth = () => {
       return true;
     });
 
-  const signUp = (name: string, password: string) =>
+  const signUp = (name?: string, password?: string) =>
     handleAuthAsync(async () => {
       if (!signupToken) throw new Error("이메일 인증이 필요합니다.");
-      await AuthService.signUpWithToken(name, password, signupToken);
+      await AuthService.signUpWithToken(name!, password!, signupToken);
       return true;
     });
 
