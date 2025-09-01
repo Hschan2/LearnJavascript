@@ -10,7 +10,7 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { auth, dataBase } from "../../../firebase";
 import Tweet from "./tweet";
-import { Wrapper } from "../styles/timeline-components";
+import { TimelineWrapper } from "../styles/timeline-components";
 import { ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
 import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
@@ -87,12 +87,12 @@ function LikedTimeline() {
   }, [fetchLikedTweets]);
 
   return (
-    <Wrapper>
+    <TimelineWrapper>
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} tweetObj={tweet} />
       ))}
       <div ref={triggerRef}></div>
-    </Wrapper>
+    </TimelineWrapper>
   );
 }
 

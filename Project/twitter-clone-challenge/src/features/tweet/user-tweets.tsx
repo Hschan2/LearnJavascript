@@ -6,7 +6,7 @@ import {
   UserAvatar,
   UserName,
   UserWrapper,
-  Wrapper,
+  TimelineWrapper,
 } from "./styles/timeline-components";
 
 function UserTweets() {
@@ -20,12 +20,12 @@ function UserTweets() {
         <UserAvatar src={userProfile?.image} alt={userProfile?.name} />
         <UserName>{userProfile?.name}</UserName>
       </UserWrapper>
-      <Wrapper className="followUser-tweets">
+      <TimelineWrapper className="followUser-tweets">
         {tweets.map((tweet) => (
           <Tweet key={tweet.id} tweetObj={tweet} />
         ))}
         {hasMore && <div ref={triggerRef}></div>}
-      </Wrapper>
+      </TimelineWrapper>
     </FollowWrapper>
   );
 }

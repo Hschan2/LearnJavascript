@@ -1,11 +1,11 @@
 import LikedTimeline from "./components/likedTimeline";
-import { Wrapper } from "../home/style/home-components";
+import { HomeWrapper } from "../home/style/home-components";
 
 function Like() {
   return (
-    <Wrapper>
+    <HomeWrapper>
       <LikedTimeline />
-    </Wrapper>
+    </HomeWrapper>
   );
 }
 

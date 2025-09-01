@@ -4,7 +4,7 @@ import { SELECT_OPTION_VALUE } from "../../constants";
 import {
   FilterSelector,
   FilterWrapper,
-  Wrapper,
+  HomeWrapper,
 } from "../home/style/home-components";
 
 const OPTIONS = ["전체", ...SELECT_OPTION_VALUE];
@@ -24,14 +24,14 @@ function Hot() {
     ));
 
   return (
-    <Wrapper>
+    <HomeWrapper>
       <FilterWrapper>
         <FilterSelector onChange={handleOptionChange}>
           {renderOptions()}
         </FilterSelector>
       </FilterWrapper>
       <Timeline isHot option={selectedOption} />
-    </Wrapper>
+    </HomeWrapper>
   );
 }
 
