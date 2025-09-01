@@ -1,10 +1,10 @@
-import useDarkModeStore from "../../shared/store/useDarkModeStore";
+import useAppStore from "../../shared/store/useAppStore";
 import { ModeButton } from "../styles/button-components";
 
 function DarkModeButton() {
-  const { darkMode, setDarkMode } = useDarkModeStore();
+  const { darkMode, toggleDarkMode } = useAppStore();
   return (
-    <ModeButton onClick={() => setDarkMode()}>
+    <ModeButton onClick={() => toggleDarkMode()}>
       {darkMode ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
