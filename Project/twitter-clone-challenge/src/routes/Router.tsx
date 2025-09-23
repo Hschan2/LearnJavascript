@@ -4,20 +4,23 @@ import Home from "../features/home/home";
 import Profile from "../features/user/profile";
 import Login from "../features/auth/login";
 import CreateAccount from "../features/auth/create-account";
+import ResetPassword from "../features/auth/reset-password";
 import ProtectedRoute from "./protected-route";
+import { ErrorBoundary } from "../features/error/error-boundary";
+import BottomMenu from "../layout/components/bottom-menu";
 import Settings from "../features/setting/settings";
+import WriteTweet from "../features/tweet/write-tweet";
 import Hot from "../features/tweet/hot";
 import Like from "../features/tweet/like";
-import BottomMenu from "../layout/components/bottom-menu";
-import WriteTweet from "../features/tweet/components/write-tweet";
 import DetailTweet from "../features/tweet/detail";
 import Update from "../features/tweet/update";
+import UserTweets from "../features/tweet/user-tweets";
 import Notification from "../features/notification/notification";
 import Search from "../features/search/search";
-import ErrorBoundary from "../features/error/error-boundary";
 import NotFoundPage from "../features/error/not-found-page";
 import InputEmail from "../features/auth/input-email";
-import UserTweets from "../features/tweet/user-tweets";
+
+import ActionHandler from "../features/auth/action-handler";
 
 export const router = createBrowserRouter([
   {
@@ -87,10 +90,6 @@ export const router = createBrowserRouter([
         path: "search",
         element: <Search />,
       },
-      {
-        path: "*",
-        element: <NotFoundPage />,
-      },
     ],
   },
   {
@@ -121,7 +120,15 @@ export const router = createBrowserRouter([
     path: "/reset-password",
     element: (
       <ErrorBoundary>
-        <CreateAccount />
+        <ResetPassword />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/action",
+    element: (
+      <ErrorBoundary>
+        <ActionHandler />
       </ErrorBoundary>
     ),
   },
