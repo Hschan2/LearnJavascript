@@ -1,73 +1,76 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import {
+  AuthWrapper,
+  Title,
+  Form,
+  Error,
+  Switcher,
+  Button,
+} from "./styles/auth-components";
+import { FormInput } from "../../shared/components/form-input";
+import { validationRules } from "../../constants";
+import { AuthService } from "./hooks/authService";
+
+interface IForm {
+  email: string;
+}
 
 function InputEmail() {
-  const [step, setStep] = useState(1);
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<IForm>();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
-  const sendCode = async () => {
+  const onSubmit = async (data: IForm) => {
+    setError("");
+    setMessage("");
+    setIsLoading(true);
     try {
-      const res = await fetch("/api/send-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setStep(2);
-      } else {
-        setError(data.error);
+      await AuthService.sendPasswordResetEmail(data.email);
+      setMessage(
+        "입력하신 이메일로 비밀번호 재설정 링크가 발송되었습니다. 이메일을 확인해주세요."
+      );
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
       }
-    } catch {
-      setError("코드 발송 실패");
-    }
-  };
-
-  const verifyCode = async () => {
-    try {
-      const res = await fetch("/api/verify-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, code }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        navigate("/reset-password");
-      } else {
-        setError(data.error);
-      }
-    } catch {
-      setError("코드 검증 실패");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div>
-      {step === 1 && (
-        <>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="이메일"
-          />
-          <button onClick={sendCode}>코드 보내기</button>
-        </>
-      )}
-      {step === 2 && (
-        <>
-          <input
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="인증 코드"
-          />
-          <button onClick={verifyCode}>코드 확인</button>
-        </>
-      )}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+    <AuthWrapper>
+      <Title>비밀번호 찾기</Title>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormInput
+          register={register}
+          name="email"
+          placeholder="이메일"
+          type="email"
+          error={errors.email}
+          rules={validationRules.email}
+          setValue={setValue}
+          watch={watch}
+        />
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "전송 중..." : "재설정 링크 보내기"}
+        </Button>
+      </Form>
+      {error && <Error>{error}</Error>}
+      {message && <p style={{ color: "green" }}>{message}</p>}
+      <Switcher>
+        로그인 페이지로 돌아가기 <Link to="/login">로그인</Link>
+      </Switcher>
+    </AuthWrapper>
   );
 }
 
