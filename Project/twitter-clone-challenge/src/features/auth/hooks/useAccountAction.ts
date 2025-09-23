@@ -4,7 +4,7 @@ import { useFormHook } from "./useFormHook";
 
 export const useAccount = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, errors, setValue } = useFormHook();
+  const { register, handleSubmit, errors, setValue, watch } = useFormHook();
   const { login, signUp, isLoading, error, clearError } = useAuth();
 
   const handleAuth = async (authFn: () => Promise<boolean>) => {
@@ -13,7 +13,7 @@ export const useAccount = () => {
   };
 
   const onLoginSubmit = handleSubmit((data) =>
-    handleAuth(() => login(data.email, data.password))
+    handleAuth(() => login(data.email.trim(), data.password))
   );
 
   const onCreateSubmit = handleSubmit((data) => {
@@ -30,5 +30,6 @@ export const useAccount = () => {
     onLoginSubmit,
     onCreateSubmit,
     setValue,
+    watch,
   };
 };

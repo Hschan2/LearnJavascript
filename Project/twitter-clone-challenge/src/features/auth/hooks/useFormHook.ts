@@ -8,7 +8,8 @@ export const useFormHook = () => {
     formState: { errors },
     getValues,
     setValue,
+    watch,
   } = useForm<AuthFormValues>();
 
-  return { register, handleSubmit, errors, getValues, setValue };
+  return { register, handleSubmit, errors, getValues, setValue, watch };
 };
