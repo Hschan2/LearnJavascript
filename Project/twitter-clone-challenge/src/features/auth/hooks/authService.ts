@@ -2,6 +2,8 @@ import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail as fbSendPasswordResetEmail,
+  confirmPasswordReset as fbConfirmPasswordReset,
 } from "firebase/auth";
 import { auth, dataBase } from "../../../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -52,6 +54,14 @@ export const AuthService = (() => {
           return "이미 사용 중인 이메일입니다.";
         case "auth/network-request-failed":
           return "네트워크 오류가 발생했습니다. 인터넷 연결을 확인하세요.";
+        case "auth/invalid-action-code":
+          return "유효하지 않은 요청입니다. 다시 시도해주세요.";
+        case "auth/expired-action-code":
+          return "요청이 만료되었습니다. 다시 시도해주세요.";
+        case "auth/user-disabled":
+          return "사용이 중지된 계정입니다.";
+        case "auth/weak-password":
+          return "비밀번호는 6자리 이상이어야 합니다.";
         default:
           return "인증에 실패했습니다. 다시 시도해주세요.";
       }
@@ -101,5 +111,33 @@ export const AuthService = (() => {
     }
   };
 
-  return { sendSignUpCode, verifySignUpCode, signUpWithToken, signUp, login };
+  const sendPasswordResetEmail = async (email: string) => {
+    try {
+      await fbSendPasswordResetEmail(auth, email);
+    } catch (error) {
+      // To prevent user enumeration attacks, we don't throw an error to the UI.
+      // The user is just notified that an email will be sent if the account exists.
+      console.error("Password reset email error:", error);
+      throw new Error(handleError(error as FirebaseError | Error));
+    }
+  };
+
+  const confirmPasswordReset = async (oobCode: string, newPassword: string) => {
+    try {
+      await fbConfirmPasswordReset(auth, oobCode, newPassword);
+    } catch (error) {
+      throw new Error(handleError(error as FirebaseError | Error));
+    }
+  };
+
+  return {
+    sendSignUpCode,
+    verifySignUpCode,
+    signUpWithToken,
+    signUp,
+    login,
+    sendPasswordResetEmail,
+    confirmPasswordReset,
+  };
 })();
+
