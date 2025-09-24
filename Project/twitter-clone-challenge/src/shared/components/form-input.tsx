@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import { FieldValues } from "react-hook-form";
 import { FormInputProps } from "../../features/auth/types/auth-type";
 import { Error, Input, Label } from "../../features/auth/styles/auth-components";
 
-export const FormInput = ({
+export const FormInput = <T extends FieldValues>({
   register,
   name,
   placeholder,
@@ -11,7 +12,7 @@ export const FormInput = ({
   rules,
   setValue,
   watch,
-}: FormInputProps) => {
+}: FormInputProps<T>) => {
   const value = watch?.(name);
 
   useEffect(() => {

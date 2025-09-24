@@ -1,7 +1,8 @@
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { adminDb } from "../src/firebase-admin";
+import { adminDb } from "../../src/firebase-admin";
 
-export default async function handler(req: any, res: any) {
+export default async function handler(req: Request, res: Response) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method Not Allowed" });
   }

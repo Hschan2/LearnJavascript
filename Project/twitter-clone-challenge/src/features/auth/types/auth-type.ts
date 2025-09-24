@@ -2,6 +2,7 @@ import { AuthProvider } from "firebase/auth";
 import {
   FieldError,
   FieldErrors,
+  FieldValues,
   Path,
   RegisterOptions,
   UseFormRegister,
@@ -14,6 +15,12 @@ export interface AuthFormValues {
   name?: string;
   password: string;
   code?: string;
+  confirmPassword?: string;
+}
+
+export interface IPasswordForm {
+  password: string;
+  confirmPassword?: string;
 }
 
 export type AccountProps = {
@@ -31,15 +38,15 @@ export type AccountProps = {
   watch?: UseFormWatch<AuthFormValues>;
 };
 
-export type FormInputProps = {
-  register: UseFormRegister<AuthFormValues>;
-  name: Path<AuthFormValues>;
+export type FormInputProps<T extends FieldValues> = {
+  register: UseFormRegister<T>;
+  name: Path<T>;
   placeholder: string;
   type: string;
   error?: FieldError;
   rules?: RegisterOptions;
-  setValue?: UseFormSetValue<AuthFormValues>;
-  watch?: UseFormWatch<AuthFormValues>;
+  setValue?: UseFormSetValue<T>;
+  watch?: UseFormWatch<T>;
 };
 
 export interface SocialButtonProps {

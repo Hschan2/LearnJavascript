@@ -7,7 +7,9 @@ function EmojiPicker({ onSelectEmoji }: EmojiPickerProps) {
     <div>
       <Picker
         data={data}
-        onEmojiSelect={(emoji: any) => onSelectEmoji(emoji.native)}
+        onEmojiSelect={(emoji: { native: string }) =>
+          onSelectEmoji(emoji.native)
+        }
       />
     </div>
   );
