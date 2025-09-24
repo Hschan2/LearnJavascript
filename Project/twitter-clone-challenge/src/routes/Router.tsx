@@ -6,10 +6,8 @@ import Login from "../features/auth/login";
 import CreateAccount from "../features/auth/create-account";
 import ResetPassword from "../features/auth/reset-password";
 import ProtectedRoute from "./protected-route";
-import { ErrorBoundary } from "../features/error/error-boundary";
 import BottomMenu from "../layout/components/bottom-menu";
 import Settings from "../features/setting/settings";
-import WriteTweet from "../features/tweet/write-tweet";
 import Hot from "../features/tweet/hot";
 import Like from "../features/tweet/like";
 import DetailTweet from "../features/tweet/detail";
@@ -19,8 +17,11 @@ import Notification from "../features/notification/notification";
 import Search from "../features/search/search";
 import NotFoundPage from "../features/error/not-found-page";
 import InputEmail from "../features/auth/input-email";
+import WriteTweet from "../features/tweet/components/write-tweet";
+import ErrorBoundary from "../features/error/error-boundary";
 
 import ActionHandler from "../features/auth/action-handler";
+import ResetInputEmail from "../features/auth/reset-input-email";
 
 export const router = createBrowserRouter([
   {
@@ -113,6 +114,14 @@ export const router = createBrowserRouter([
     element: (
       <ErrorBoundary>
         <InputEmail />
+      </ErrorBoundary>
+    ),
+  },
+  {
+    path: "/reset-input-email",
+    element: (
+      <ErrorBoundary>
+        <ResetInputEmail />
       </ErrorBoundary>
     ),
   },
