@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import {
@@ -28,12 +28,6 @@ function ResetPassword() {
   const navigate = useNavigate();
   const oobCode = searchParams.get("oobCode");
 
-  useEffect(() => {
-    if (!oobCode) {
-      setError("유효하지 않은 접근입니다. 비밀번호 찾기를 다시 시도해주세요.");
-    }
-  }, [oobCode]);
-
   const onSubmit = async (data: IPasswordForm) => {
     if (!oobCode) {
       setError("유효하지 않은 요청입니다.");
@@ -48,13 +42,17 @@ function ResetPassword() {
     setIsLoading(true);
     try {
       await AuthService.confirmPasswordReset(oobCode, data.password);
-      setMessage("비밀번호가 성공적으로 변경되었습니다. 3초 후 로그인 페이지로 이동합니다.");
+      setMessage(
+        "비밀번호가 성공적으로 변경되었습니다. 3초 후 로그인 페이지로 이동합니다."
+      );
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
+      if (e && typeof e === 'object' && 'message' in e) {
+        setError(String(e.message));
+      } else {
+        setError("알 수 없는 에러가 발생했습니다.");
       }
     } finally {
       setIsLoading(false);
@@ -65,9 +63,9 @@ function ResetPassword() {
     return (
       <AuthWrapper>
         <Title>오류</Title>
-        <Error>{error}</Error>
+        <Error>유효하지 않은 접근입니다. 비밀번호 찾기를 다시 시도해주세요.</Error>
         <Switcher>
-          <Link to="/input-email">비밀번호 찾기</Link>
+          <Link to="/reset-input-email">비밀번호 찾기</Link>
         </Switcher>
       </AuthWrapper>
     );
@@ -77,7 +75,7 @@ function ResetPassword() {
     <AuthWrapper>
       <Title>비밀번호 재설정</Title>
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormInput
+        <FormInput<IPasswordForm>
           register={register}
           name="password"
           placeholder="새 비밀번호"
@@ -85,7 +83,7 @@ function ResetPassword() {
           error={errors.password}
           rules={validationRules.password}
         />
-        <FormInput
+        <FormInput<IPasswordForm>
           register={register}
           name="confirmPassword"
           placeholder="새 비밀번호 확인"
