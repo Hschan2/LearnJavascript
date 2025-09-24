@@ -38,6 +38,7 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/kakao-js-sdk": "^1.39.5",
     "@types/nodemailer": "^6.4.17",
