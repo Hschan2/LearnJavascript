@@ -52,7 +52,7 @@ export const LoginUI = ({
       <Switcher>
         계정이 없으신가요? <Link to="/create-account">계정 생성</Link>
         {" | "}
-        <Link to="/input-email">비밀번호 찾기</Link>
+        <Link to="/reset-input-email">비밀번호 찾기</Link>
       </Switcher>
       <GoogleButton />
       <GithubButton />
