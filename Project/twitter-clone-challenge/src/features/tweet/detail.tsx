@@ -7,9 +7,8 @@ import useFollow from "../../shared/hook/useFollowAction";
 import { useDetail } from "./hooks/useDetail";
 import ShareModal from "./components/share-modal";
 
-function DetailTweet() {
+function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const { tweetId } = useParams();
   const navigate = useNavigate();
   const { tweet, likedByUser, exclamationByUser, comments, setComments } =
     useDetailTweet(tweetId);
@@ -29,8 +28,6 @@ function DetailTweet() {
   } = useDetail(tweetId, setComments);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
-
-  if (!tweetId) return <div>데이터를 불러올 수 없습니다.</div>;
 
   const handleDelete = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
@@ -118,6 +115,16 @@ function DetailTweet() {
       />
     </>
   );
+}
+
+function DetailTweet() {
+  const { tweetId } = useParams();
+
+  if (!tweetId) {
+    return <div>데이터를 불러올 수 없습니다.</div>;
+  }
+
+  return <DetailTweetContent tweetId={tweetId} />;
 }
 
 export default DetailTweet;
