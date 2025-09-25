@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
-interface Window {
-  Kakao: any;
+declare global {
+  interface Window {
+    Kakao: typeof import("kakao-js-sdk");
+  }
 }
