@@ -11,8 +11,6 @@ function DetailTweet() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { tweetId } = useParams();
   const navigate = useNavigate();
-  if (!tweetId) return <div>데이터를 불러올 수 없습니다.</div>;
-
   const { tweet, likedByUser, exclamationByUser, comments, setComments } =
     useDetailTweet(tweetId);
   const {
@@ -31,6 +29,8 @@ function DetailTweet() {
   } = useDetail(tweetId, setComments);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
+
+  if (!tweetId) return <div>데이터를 불러올 수 없습니다.</div>;
 
   const handleDelete = async () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {

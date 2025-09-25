@@ -12,19 +12,19 @@ function Update() {
   const userId = auth.currentUser?.uid;
   const { tweet } = useDetailTweet(tweetId || "");
 
-  if (!tweetId) return <WrongMessage>잘못된 요청입니다.</WrongMessage>;
-
   const isOwner = useMemo(
     () => userId === tweet?.userId,
     [userId, tweet?.userId]
   );
 
   useEffect(() => {
-    if (!isOwner) {
+    if (tweet && !isOwner) {
       alert("접근할 수 없는 경로입니다.");
       navigate("/");
     }
-  }, [isOwner, navigate]);
+  }, [isOwner, navigate, tweet]);
+
+  if (!tweetId) return <WrongMessage>잘못된 요청입니다.</WrongMessage>;
 
   if (isOwner) return <WrongMessage>접근할 수 없습니다.</WrongMessage>;
 
