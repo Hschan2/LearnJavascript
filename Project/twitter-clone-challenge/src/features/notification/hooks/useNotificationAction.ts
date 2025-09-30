@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router";
-import { useNotification } from "./useNotification";
+import { useNotificationStore } from "../store/notificationStore";
 import { NotificationType } from "../types/notifications";
 import { useCallback, useEffect } from "react";
 import { auth, dataBase } from "../../../firebase";
 import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 
 export const useNotificationAction = () => {
-  const { notifications } = useNotification();
+  const { notifications } = useNotificationStore();
   const navigate = useNavigate();
   const user = auth.currentUser;
 
