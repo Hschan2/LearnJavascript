@@ -59,12 +59,15 @@ export function useDetailTweet(tweetId: string) {
 }
 
 export const tweetService = {
-  async addComment(tweetId: string, comment: IComment) {
-    const tweetRef = doc(dataBase, "tweets", tweetId);
+  async addComment(tweet: ITweet, comment: IComment) {
+    const tweetRef = doc(dataBase, "tweets", tweet.id);
     try {
       await updateDoc(tweetRef, {
         comments: arrayUnion(comment),
       });
+      if (comment.commenterId !== tweet.userId) {
+        await tweetService.createNotification(comment.commenterId, tweet, "comment");
+      }
     } catch (error) {
       console.error("댓글 작성 실패: ", error);
     }
@@ -166,7 +169,7 @@ export const tweetService = {
   async createNotification(
     senderId: string,
     tweetObj: ITweet,
-    type: "like" | "other"
+    type: "like" | "comment" | "other"
   ) {
     const notificationRef = doc(dataBase, "notifications", uuidv4());
     await setDoc(notificationRef, {
