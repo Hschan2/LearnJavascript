@@ -16,6 +16,9 @@ import { auth, dataBase } from "../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { addFirestoreUnsubscribe } from "../lib/firestoreSubscriptions";
 import { useAvatar } from "../shared/hook/useAvatar";
+import { useNotificationInitializer } from "../features/notification/hooks/useNotificationInitializer";
+import { NotificationToast } from "../features/notification/components/notification-toast";
+import { useNotificationStore } from "../features/notification/store/notificationStore";
 
 function useAuthUser() {
   const user = auth.currentUser;
@@ -27,29 +30,9 @@ function useAuthUser() {
   return { userId: user?.uid, avatar };
 }
 
-function useUnreadNotification(userId: string | undefined) {
-  const [hasUnreadNotification, setHasUnreadNotification] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    if (!userId) return;
-
-    const notificationQuery = query(
-      collection(dataBase, "notifications"),
-      where("recipientId", "==", userId),
-      where("isRead", "==", false)
-    );
-
-    const unsubscribe = onSnapshot(notificationQuery, (snapshot) => {
-      setHasUnreadNotification(!snapshot.empty);
-    });
-
-    addFirestoreUnsubscribe(unsubscribe);
-
-    return () => unsubscribe();
-  }, [userId]);
-
-  return hasUnreadNotification;
+function useUnreadNotification() {
+  const { notifications } = useNotificationStore();
+  return useMemo(() => notifications.some(n => !n.isRead), [notifications]);
 }
 
 function useMenuList(
@@ -91,13 +74,15 @@ function useMenuList(
 }
 
 function Layout() {
+  useNotificationInitializer();
   const location = useLocation();
   const { userId, avatar } = useAuthUser();
-  const hasUnreadNotification = useUnreadNotification(userId);
+  const hasUnreadNotification = useUnreadNotification();
   const MENU_LIST = useMenuList(avatar, hasUnreadNotification);
 
   return (
     <LayoutWrapper>
+      <NotificationToast />
       <Menu>
         <NoneLineLink to="/">
           <LogoComponent />
