@@ -62,13 +62,23 @@ const getRandomTweets = (tweets: ITweet[], number: number) => {
 
 function MainSlide() {
   const [tweets, setTweets] = useState<ITweet[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
   const navigate = useNavigate();
+
+  const handleBeforeChange = useCallback(() => {
+    setIsDragging(true);
+  }, []);
+
+  const handleAfterChange = useCallback(() => {
+    setIsDragging(false);
+  }, []);
 
   const handleTweetClick = useCallback(
     (tweetObj: ITweet) => {
+      if (isDragging) return;
       navigate(`/detail/${tweetObj.id}`);
     },
-    [navigate]
+    [navigate, isDragging]
   );
 
   useEffect(() => {
@@ -80,9 +90,15 @@ function MainSlide() {
     fetchAndSetTweets();
   }, []);
 
+  const newSliderSettings = {
+    ...sliderSettings,
+    beforeChange: handleBeforeChange,
+    afterChange: handleAfterChange,
+  };
+
   return (
     <SlideWrapper>
-      <Slider {...sliderSettings} infinite={tweets.length > 1}>
+      <Slider {...newSliderSettings} infinite={tweets.length > 1}>
         {tweets?.map((tweetObj) => (
           <SlideContent
             key={tweetObj.id}
