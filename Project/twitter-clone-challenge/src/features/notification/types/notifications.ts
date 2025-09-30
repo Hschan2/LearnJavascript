@@ -6,7 +6,7 @@ export interface NotificationType {
   senderId: string;
   senderName: string;
   createdAt: string;
-  type: "like" | "follow" | "other";
+  type: "like" | "follow" | "comment" | "other";
   isRead: boolean;
 }
 
