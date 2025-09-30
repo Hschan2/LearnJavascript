@@ -10,9 +10,9 @@ export const useDetail = (
 ) => {
   const [newComment, setNewComment] = useState<string>("");
 
-  const addComment = async () => {
+  const addComment = async (tweet: ITweet) => {
     if (!newComment.trim()) return;
-    const comment = {
+    const comment: IComment = {
       commentId: uuidv4(),
       commentText: newComment,
       commenterId: auth.currentUser?.uid || "unknown",
@@ -20,7 +20,7 @@ export const useDetail = (
       commenterProfile: auth.currentUser?.photoURL || "",
       createdAt: Date.now(),
     };
-    await tweetService.addComment(tweetId, comment);
+    await tweetService.addComment(tweet, comment);
     setNewComment("");
   };
 

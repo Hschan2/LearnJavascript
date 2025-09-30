@@ -58,6 +58,11 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
     navigate(`/user-tweets/${tweet?.userId}`);
   };
 
+  const handleAddComment = () => {
+    if (!tweet) return;
+    addComment(tweet);
+  };
+
   useEffect(() => {
     if (!tweet?.userId) return;
     tweetService.fetchProfileImage(tweet.userId).then(setProfileImage);
@@ -91,7 +96,7 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
           onDeleteComment: deleteComment,
           onNavigateUpdate: () => navigate(`/update/${tweetId}`),
           onDeleteTweet: handleDelete,
-          onAddComment: addComment,
+          onAddComment: handleAddComment,
           onTagClick: handleTagClick,
           onURLCopy: handleURLCopy,
           onFollow: handleFollow,
