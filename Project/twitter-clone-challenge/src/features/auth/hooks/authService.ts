@@ -112,8 +112,12 @@ export const AuthService = (() => {
   };
 
   const sendPasswordResetEmail = async (email: string) => {
+    const actionCodeSettings = {
+      url: `${window.location.origin}/reset-password`,
+      handleCodeInApp: true,
+    };
     try {
-      await fbSendPasswordResetEmail(auth, email);
+      await fbSendPasswordResetEmail(auth, email, actionCodeSettings);
     } catch (error) {
       // To prevent user enumeration attacks, we don't throw an error to the UI.
       // The user is just notified that an email will be sent if the account exists.
