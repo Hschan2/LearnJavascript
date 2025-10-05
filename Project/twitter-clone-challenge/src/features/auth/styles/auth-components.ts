@@ -65,6 +65,7 @@ export const Button = styled.button`
 `;
 
 export const Error = styled.p`
+  margin-top: 5px;
   font-weight: 600;
   color: tomato;
 `;
@@ -78,13 +79,13 @@ export const Switcher = styled.span`
 
 export const PasswordMessage = styled.span`
   font-size: clamp(10px, 1.5vw, 12px);
-  margin-top: 4px;
+  margin-top: 5px;
 `;
 
 export const Hint = styled.p`
   font-size: clamp(10px, 1.5vw, 12px);
   color: #888;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: min(15px, 2vh);
 `;
 

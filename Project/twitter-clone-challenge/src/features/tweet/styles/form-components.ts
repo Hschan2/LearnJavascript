@@ -181,7 +181,7 @@ export const CancelButton = styled.button`
 export const ButtonLayout = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 4px;
+  margin-top: 8px;
 `;
 
 // Select Bar
@@ -256,7 +256,7 @@ export const RemoveImageButton = styled.button`
 
 // Post-Tag
 export const TagsInputWrapper = styled.div`
-  margin-top: 4px;
+  margin-top: 8px;
 `;
 
 export const TagsInput = styled.input`
