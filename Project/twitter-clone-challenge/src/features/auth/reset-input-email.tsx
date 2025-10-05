@@ -70,7 +70,7 @@ function ResetInputEmail() {
       {error && <Error>{error}</Error>}
       {message && <p style={{ color: "green" }}>{message}</p>}
       <Switcher>
-        로그인 페이지로 돌아가기 <Link to="/login">로그인</Link>
+        <Link to="/login">로그인</Link>
       </Switcher>
     </AuthWrapper>
   );
