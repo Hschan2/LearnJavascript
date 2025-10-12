@@ -19,6 +19,8 @@ export const useDetail = (
       commenterName: auth.currentUser?.displayName || "익명",
       commenterProfile: auth.currentUser?.photoURL || "",
       createdAt: Date.now(),
+      likeCount: 0,
+      likedBy: [],
     };
     await tweetService.addComment(tweet, comment);
     setNewComment("");
@@ -49,6 +51,32 @@ export const useDetail = (
     );
   };
 
+  const toggleCommentLike = async (comment: IComment) => {
+    if (!auth.currentUser) return;
+    const userId = auth.currentUser.uid;
+    const isLiked = comment.likedBy?.includes(userId);
+
+    // Update local state immediately for better UX
+    setComments((prevComments) =>
+      prevComments.map((c) => {
+        if (c.commentId === comment.commentId) {
+          const likeCount = c.likeCount || 0;
+          const likedBy = c.likedBy || [];
+          return {
+            ...c,
+            likeCount: isLiked ? likeCount - 1 : likeCount + 1,
+            likedBy: isLiked
+              ? likedBy.filter((id) => id !== userId)
+              : [...likedBy, userId],
+          };
+        }
+        return c;
+      })
+    );
+
+    await tweetService.toggleCommentLike(tweetId, comment.commentId, userId);
+  };
+
   return {
     newComment,
     setNewComment,
@@ -56,5 +84,6 @@ export const useDetail = (
     deleteComment,
     toggleLike,
     toggleExclamation,
+    toggleCommentLike,
   };
 };

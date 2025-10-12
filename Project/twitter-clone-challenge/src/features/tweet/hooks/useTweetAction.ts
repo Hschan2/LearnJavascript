@@ -84,6 +84,50 @@ export const tweetService = {
     }
   },
 
+  async toggleCommentLike(tweetId: string, commentId: string, userId: string) {
+    const tweetRef = doc(dataBase, "tweets", tweetId);
+    try {
+      const tweetDoc = await getDoc(tweetRef);
+      if (!tweetDoc.exists()) {
+        throw new Error("해당 게시글을 찾지 못했습니다.");
+      }
+
+      const tweetData = tweetDoc.data() as ITweet;
+      const comments = tweetData.comments || [];
+      const commentIndex = comments.findIndex((c) => c.commentId === commentId);
+
+      if (commentIndex === -1) {
+        throw new Error("댓글이 없습니다.");
+      }
+
+      const comment = comments[commentIndex];
+      const likedBy = comment.likedBy || [];
+      const isLiked = likedBy.includes(userId);
+      const likeCount = comment.likeCount || 0;
+
+      if (isLiked) {
+        // 좋아요 취소
+        comments[commentIndex] = {
+          ...comment,
+          likeCount: likeCount - 1,
+          likedBy: likedBy.filter((id) => id !== userId),
+        };
+      } else {
+        // 좋아요
+        comments[commentIndex] = {
+          ...comment,
+          likeCount: likeCount + 1,
+          likedBy: [...likedBy, userId],
+        };
+      }
+
+      await updateDoc(tweetRef, { comments: comments });
+
+    } catch (error) {
+      console.error("댓글 좋아요 실패: ", error);
+    }
+  },
+
   async toggleLike(
     tweetId: string,
     userId: string,
