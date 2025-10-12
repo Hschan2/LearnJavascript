@@ -25,6 +25,7 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
     deleteComment,
     toggleLike,
     toggleExclamation,
+    toggleCommentLike,
   } = useDetail(tweetId, setComments);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [profileImage, setProfileImage] = useState<string>("");
@@ -93,6 +94,7 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
         actions={{
           onLike: toggleLike,
           onExclamation: toggleExclamation,
+          onCommentLike: toggleCommentLike,
           onDeleteComment: deleteComment,
           onNavigateUpdate: () => navigate(`/update/${tweetId}`),
           onDeleteTweet: handleDelete,

@@ -44,6 +44,7 @@ export interface DetailUIProps {
   actions: {
     onLike: (likedByUser: boolean, tweet: ITweet) => void;
     onExclamation: (exclamationByUser: boolean) => void;
+    onCommentLike: (comment: IComment) => void;
     onDeleteComment: (comment: IComment) => void;
     onNavigateUpdate: () => void;
     onDeleteTweet: () => void;
@@ -168,6 +169,7 @@ const DetailUI = ({
         <CommentList
           comments={commentsData.comments}
           onDelete={actions.onDeleteComment}
+          onCommentLike={actions.onCommentLike}
         />
       )}
     </CommentsWrapper>
