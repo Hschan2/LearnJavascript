@@ -5,6 +5,8 @@ export interface IComment {
   commenterName: string;
   commenterProfile: string;
   createdAt: number;
+  likeCount?: number;
+  likedBy?: string[];
 }
 
 export interface ITweet {
