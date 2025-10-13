@@ -7,6 +7,18 @@ export interface IComment {
   createdAt: number;
   likeCount?: number;
   likedBy?: string[];
+  replyCount?: number;
+}
+
+export interface IReply {
+  replyId: string;
+  replyText: string;
+  replierId: string;
+  replierName: string;
+  replierProfile: string;
+  createdAt: number;
+  likeCount?: number;
+  likedBy?: string[];
 }
 
 export interface ITweet {
