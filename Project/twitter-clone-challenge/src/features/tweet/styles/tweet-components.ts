@@ -342,3 +342,64 @@ export const FollowButton = styled.button`
   color: #fff;
   cursor: pointer;
 `;
+
+export const CommentReplyButton = styled.button`
+  background: none;
+  border: none;
+  color: #757575;
+  cursor: pointer;
+  font-size: clamp(10px, 1vw, 12px);
+  padding: 4px 0;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export const ReplyWrapper = styled.div`
+  padding: 10px 0 10px 15px;
+  margin: 10px 0 0 25px;
+  border-left: 2px solid ${(props) => props.theme.light};
+`;
+
+export const ReplyList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+export const ReplyItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+export const ReplyProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+
+  span {
+    font-weight: 600;
+  }
+`;
+
+export const ReplyText = styled.p`
+  font-size: 14px;
+  color: ${(props) => props.theme.text};
+  padding-left: 38px; /* Avatar width + gap */
+`;
+
+export const ReplyCreatedTime = styled.span`
+  font-size: 12px;
+  color: #757575;
+  padding-left: 38px; /* Avatar width + gap */
+`;
+
+export const ReplyForm = styled.form`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 15px;
+  width: 100%;
+`;
