@@ -167,6 +167,7 @@ const DetailUI = ({
     <CommentsWrapper>
       {commentsData.comments && (
         <CommentList
+          tweetId={tweet.tweet?.id || ""}
           comments={commentsData.comments}
           onDelete={actions.onDeleteComment}
           onCommentLike={actions.onCommentLike}
