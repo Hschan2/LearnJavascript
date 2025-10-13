@@ -12,7 +12,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { auth, dataBase, storage } from "../../../firebase";
-import { IComment, ITweet } from "../types/tweet-type";
+import { IComment, IReply, ITweet } from "../types/tweet-type";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
@@ -235,6 +235,64 @@ export const tweetService = {
       return await getDownloadURL(imageRef);
     } catch {
       return "";
+    }
+  },
+
+  getReplies(commentId: string, callback: (replies: IReply[]) => void) {
+    const repliesRef = doc(dataBase, "replies", commentId);
+    const unsubscribe = onSnapshot(repliesRef, (doc) => {
+      if (doc.exists()) {
+        const data = doc.data();
+        callback(data.replyList || []);
+      } else {
+        callback([]);
+      }
+    });
+    return unsubscribe;
+  },
+
+  async addReply(tweetId: string, commentId: string, replyText: string) {
+    if (!auth.currentUser) return;
+    const reply: IReply = {
+      replyId: uuidv4(),
+      replyText,
+      replierId: auth.currentUser.uid,
+      replierName: auth.currentUser.displayName || "Anonymous",
+      replierProfile: auth.currentUser.photoURL || "",
+      createdAt: Date.now(),
+    };
+
+    const repliesRef = doc(dataBase, "replies", commentId);
+    try {
+      const docSnap = await getDoc(repliesRef);
+      if (docSnap.exists()) {
+        await updateDoc(repliesRef, {
+          replyList: arrayUnion(reply),
+        });
+      } else {
+        await setDoc(repliesRef, { replyList: [reply] });
+      }
+    } catch (error) {
+      console.error("답변 추가 에러: ", error);
+      return;
+    }
+
+    const tweetRef = doc(dataBase, "tweets", tweetId);
+    try {
+      const tweetDoc = await getDoc(tweetRef);
+      if (!tweetDoc.exists()) return;
+
+      const tweetData = tweetDoc.data() as ITweet;
+      const comments = tweetData.comments || [];
+      const commentIndex = comments.findIndex((c) => c.commentId === commentId);
+
+      if (commentIndex > -1) {
+        const currentReplyCount = comments[commentIndex].replyCount || 0;
+        comments[commentIndex].replyCount = currentReplyCount + 1;
+        await updateDoc(tweetRef, { comments });
+      }
+    } catch (error) {
+      console.error("답변 개수 업데이트 에러: ", error);
     }
   },
 };
