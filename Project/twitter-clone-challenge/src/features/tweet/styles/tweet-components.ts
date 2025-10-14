@@ -376,11 +376,18 @@ export const ReplyItem = styled.div`
 export const ReplyProfile = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
   font-size: 14px;
 
   span {
     font-weight: 600;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 `;
 
@@ -402,4 +409,14 @@ export const ReplyForm = styled.form`
   align-items: center;
   margin-top: 15px;
   width: 100%;
+`;
+
+export const ReplyDeleteButton = styled.button`
+  background-color: transparent;
+  border: 1px solid red;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  color: red;
+  cursor: pointer;
 `;
