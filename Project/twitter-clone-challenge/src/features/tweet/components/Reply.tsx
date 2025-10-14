@@ -25,16 +25,20 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
   const [newReply, setNewReply] = useState("");
 
   useEffect(() => {
-    const unsubscribe = tweetService.getReplies(commentId, (fetchedReplies) => {
-      setReplies(fetchedReplies);
-    });
+    const unsubscribe = tweetService.getReplies(
+      tweetId,
+      commentId,
+      (fetchedReplies) => {
+        setReplies(fetchedReplies);
+      }
+    );
 
     return () => {
       if (unsubscribe) {
         unsubscribe();
       }
     };
-  }, [commentId]);
+  }, [tweetId, commentId]);
 
   const handleAddReply = async (e: React.FormEvent) => {
     e.preventDefault();
