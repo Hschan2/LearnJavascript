@@ -10,6 +10,9 @@ import {
   collection,
   setDoc,
   getDoc,
+  query,
+  where,
+  orderBy,
 } from "firebase/firestore";
 import { auth, dataBase, storage } from "../../../firebase";
 import { IComment, IReply, ITweet } from "../types/tweet-type";
@@ -238,23 +241,33 @@ export const tweetService = {
     }
   },
 
-  getReplies(commentId: string, callback: (replies: IReply[]) => void) {
-    const repliesRef = doc(dataBase, "replies", commentId);
-    const unsubscribe = onSnapshot(repliesRef, (doc) => {
-      if (doc.exists()) {
-        const data = doc.data();
-        callback(data.replyList || []);
-      } else {
-        callback([]);
-      }
+  getReplies(
+    tweetId: string,
+    commentId: string,
+    callback: (replies: IReply[]) => void
+  ) {
+    const repliesRef = collection(dataBase, "tweets", tweetId, "replies");
+    const q = query(
+      repliesRef,
+      where("commentId", "==", commentId),
+      orderBy("createdAt", "asc")
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const replies = snapshot.docs.map((doc) => doc.data() as IReply);
+      callback(replies);
     });
+
     return unsubscribe;
   },
 
   async addReply(tweetId: string, commentId: string, replyText: string) {
     if (!auth.currentUser) return;
+
+    const replyId = uuidv4();
     const reply: IReply = {
-      replyId: uuidv4(),
+      replyId,
+      commentId,
       replyText,
       replierId: auth.currentUser.uid,
       replierName: auth.currentUser.displayName || "Anonymous",
@@ -262,16 +275,9 @@ export const tweetService = {
       createdAt: Date.now(),
     };
 
-    const repliesRef = doc(dataBase, "replies", commentId);
+    const replyRef = doc(dataBase, "tweets", tweetId, "replies", replyId);
     try {
-      const docSnap = await getDoc(repliesRef);
-      if (docSnap.exists()) {
-        await updateDoc(repliesRef, {
-          replyList: arrayUnion(reply),
-        });
-      } else {
-        await setDoc(repliesRef, { replyList: [reply] });
-      }
+      await setDoc(replyRef, reply);
     } catch (error) {
       console.error("답변 추가 에러: ", error);
       return;
