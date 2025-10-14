@@ -301,4 +301,34 @@ export const tweetService = {
       console.error("답변 개수 업데이트 에러: ", error);
     }
   },
+
+  async deleteReply(tweetId: string, commentId: string, reply: IReply) {
+    if (auth.currentUser?.uid !== reply.replierId) return;
+
+    const replyRef = doc(dataBase, "tweets", tweetId, "replies", reply.replyId);
+    try {
+      await deleteDoc(replyRef);
+    } catch (error) {
+      console.error("답변 삭제 에러: ", error);
+      return;
+    }
+
+    const tweetRef = doc(dataBase, "tweets", tweetId);
+    try {
+      const tweetDoc = await getDoc(tweetRef);
+      if (!tweetDoc.exists()) return;
+
+      const tweetData = tweetDoc.data() as ITweet;
+      const comments = tweetData.comments || [];
+      const commentIndex = comments.findIndex((c) => c.commentId === commentId);
+
+      if (commentIndex > -1) {
+        const currentReplyCount = comments[commentIndex].replyCount || 1;
+        comments[commentIndex].replyCount = currentReplyCount - 1;
+        await updateDoc(tweetRef, { comments });
+      }
+    } catch (error) {
+      console.error("답변 개수 업데이트 에러: ", error);
+    }
+  },
 };
