@@ -12,6 +12,7 @@ export interface IComment {
 
 export interface IReply {
   replyId: string;
+  commentId: string;
   replyText: string;
   replierId: string;
   replierName: string;
