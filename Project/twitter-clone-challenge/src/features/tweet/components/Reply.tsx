@@ -9,6 +9,7 @@ import {
   ReplyText,
   ReplyCreatedTime,
   ReplyForm,
+  ReplyDeleteButton,
 } from "../styles/tweet-components";
 import { Avatar } from "../../../layout/styles/screen-components";
 import { Form, SubmitButton, TextArea } from "../styles/form-components";
@@ -51,17 +52,35 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
     }
   };
 
+  const handleDeleteReply = async (reply: IReply) => {
+    if (!confirm("정말로 이 답변을 삭제하시겠습니까?")) return;
+    try {
+      await tweetService.deleteReply(tweetId, commentId, reply);
+    } catch (error) {
+      console.error("답변 삭제 실패:", error);
+    }
+  };
+
   return (
     <ReplyWrapper>
       <ReplyList>
         {replies.map((reply) => (
           <ReplyItem key={reply.replyId}>
             <ReplyProfile>
-              <Avatar src={reply.replierProfile} alt="profile" />
-              <span>{reply.replierName}</span>
+              <div>
+                <Avatar src={reply.replierProfile} alt="profile" />
+                <span>{reply.replierName}</span>
+              </div>
+              {auth.currentUser?.uid === reply.replierId ? (
+                <ReplyDeleteButton onClick={() => handleDeleteReply(reply)}>
+                  삭제
+                </ReplyDeleteButton>
+              ) : null}
             </ReplyProfile>
             <ReplyText>{reply.replyText}</ReplyText>
-            <ReplyCreatedTime>{formattedDate(reply.createdAt)}</ReplyCreatedTime>
+            <ReplyCreatedTime>
+              {formattedDate(reply.createdAt)}
+            </ReplyCreatedTime>
           </ReplyItem>
         ))}
       </ReplyList>
