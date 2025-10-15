@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Outlet, useLocation } from "react-router";
 import {
   Logo,
@@ -12,9 +12,7 @@ import {
   WebMenuWrapper,
 } from "./styles/screen-components";
 import DarkModeButton from "./components/darkMode-button";
-import { auth, dataBase } from "../firebase";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { addFirestoreUnsubscribe } from "../lib/firestoreSubscriptions";
+import { auth } from "../firebase";
 import { useAvatar } from "../shared/hook/useAvatar";
 import { useNotificationInitializer } from "../features/notification/hooks/useNotificationInitializer";
 import { NotificationToast } from "../features/notification/components/notification-toast";
@@ -27,7 +25,7 @@ function useAuthUser() {
     enableUpload: false,
   });
 
-  return { userId: user?.uid, avatar };
+  return { avatar };
 }
 
 function useUnreadNotification() {
@@ -76,7 +74,7 @@ function useMenuList(
 function Layout() {
   useNotificationInitializer();
   const location = useLocation();
-  const { userId, avatar } = useAuthUser();
+  const { avatar } = useAuthUser();
   const hasUnreadNotification = useUnreadNotification();
   const MENU_LIST = useMenuList(avatar, hasUnreadNotification);
 
