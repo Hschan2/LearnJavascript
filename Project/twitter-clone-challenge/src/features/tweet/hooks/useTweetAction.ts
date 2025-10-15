@@ -331,4 +331,34 @@ export const tweetService = {
       console.error("답변 개수 업데이트 에러: ", error);
     }
   },
+
+  async toggleReplyLike(tweetId: string, replyId: string, userId: string) {
+    const replyRef = doc(dataBase, "tweets", tweetId, "replies", replyId);
+    try {
+      const replyDoc = await getDoc(replyRef);
+      if (!replyDoc.exists()) {
+        throw new Error("해당 답변을 찾지 못했습니다.");
+      }
+
+      const replyData = replyDoc.data() as IReply;
+      const likedBy = replyData.likedBy || [];
+      const isLiked = likedBy.includes(userId);
+
+      if (isLiked) {
+        // 좋아요 취소
+        await updateDoc(replyRef, {
+          likes: increment(-1),
+          likedBy: arrayRemove(userId),
+        });
+      } else {
+        // 좋아요
+        await updateDoc(replyRef, {
+          likes: increment(1),
+          likedBy: arrayUnion(userId),
+        });
+      }
+    } catch (error) {
+      console.error("답변 좋아요 처리 실패: ", error);
+    }
+  },
 };
