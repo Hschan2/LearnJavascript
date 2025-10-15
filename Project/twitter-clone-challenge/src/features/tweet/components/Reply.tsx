@@ -10,11 +10,13 @@ import {
   ReplyCreatedTime,
   ReplyForm,
   ReplyDeleteButton,
+  ButtonWrapper,
 } from "../styles/tweet-components";
 import { Avatar } from "../../../layout/styles/screen-components";
-import { Form, SubmitButton, TextArea } from "../styles/form-components";
+import { SubmitButton, TextArea } from "../styles/form-components";
 import formattedDate from "../../../shared/hook/formattedDate";
 import { auth } from "../../../firebase";
+import LikeBtn from "./like-button";
 
 interface ReplyProps {
   tweetId: string;
@@ -24,6 +26,7 @@ interface ReplyProps {
 const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
   const [replies, setReplies] = useState<IReply[]>([]);
   const [newReply, setNewReply] = useState("");
+  const currentUser = auth.currentUser;
 
   useEffect(() => {
     const unsubscribe = tweetService.getReplies(
@@ -61,6 +64,11 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
     }
   };
 
+  const handleLikeClick = (replyId: string) => {
+    if (!currentUser) return;
+    tweetService.toggleReplyLike(tweetId, replyId, currentUser.uid);
+  };
+
   return (
     <ReplyWrapper>
       <ReplyList>
@@ -71,7 +79,7 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
                 <Avatar src={reply.replierProfile} alt="profile" />
                 <span>{reply.replierName}</span>
               </div>
-              {auth.currentUser?.uid === reply.replierId ? (
+              {currentUser?.uid === reply.replierId ? (
                 <ReplyDeleteButton onClick={() => handleDeleteReply(reply)}>
                   삭제
                 </ReplyDeleteButton>
@@ -81,11 +89,18 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
             <ReplyCreatedTime>
               {formattedDate(reply.createdAt)}
             </ReplyCreatedTime>
+            <ButtonWrapper>
+              <LikeBtn
+                likes={reply.likes ?? 0}
+                likedByUser={reply.likedBy?.includes(currentUser?.uid ?? "") ?? false}
+                onClick={() => handleLikeClick(reply.replyId)}
+              />
+            </ButtonWrapper>
           </ReplyItem>
         ))}
       </ReplyList>
       <ReplyForm onSubmit={handleAddReply}>
-        <Avatar src={auth.currentUser?.photoURL} />
+        <Avatar src={currentUser?.photoURL ?? undefined} />
         <TextArea
           value={newReply}
           onChange={(e) => setNewReply(e.target.value)}
