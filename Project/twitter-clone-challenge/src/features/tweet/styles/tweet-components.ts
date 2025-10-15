@@ -100,12 +100,22 @@ export const TweetButtonWrapper = styled.div`
   margin: 4px 0 0 -8px;
 `;
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(4px, 1vw, 6px);
+  margin-top: 4px;
+  padding-left: 38px; /* Avatar width + gap */
+`;
+
 export const ButtonBase = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: transparent;
   border: none;
+  padding: 0;
   gap: 3px;
   cursor: pointer;
   color: ${(props) => props.theme.text};
