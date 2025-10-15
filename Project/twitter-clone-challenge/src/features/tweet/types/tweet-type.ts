@@ -18,7 +18,7 @@ export interface IReply {
   replierName: string;
   replierProfile: string;
   createdAt: number;
-  likeCount?: number;
+  likes?: number;
   likedBy?: string[];
 }
 
