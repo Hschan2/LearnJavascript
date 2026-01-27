@@ -27,6 +27,7 @@ export const useDetail = (
   };
 
   const deleteComment = async (comment: IComment) => {
+    if (!window.confirm("정말로 이 댓글을 삭제하시겠습니까?")) return;
     await tweetService.deleteComment(tweetId, comment);
     setComments((prev: IComment[]) =>
       prev.filter((c) => c.commentId !== comment.commentId)
