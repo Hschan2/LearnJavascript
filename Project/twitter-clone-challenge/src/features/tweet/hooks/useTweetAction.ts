@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   doc,
-  updateDoc,
   onSnapshot,
-  deleteDoc,
   arrayUnion,
   arrayRemove,
   increment,
@@ -19,6 +17,11 @@ import { IComment, IReply, ITweet } from "../types/tweet-type";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
+import {
+  deleteDocument,
+  getDocument,
+  updateDocument,
+} from "../../../services/databaseService";
 
 export function useDetailTweet(tweetId: string) {
   const [tweet, setTweet] = useState<ITweet | null>(null);
@@ -63,13 +66,17 @@ export function useDetailTweet(tweetId: string) {
 
 export const tweetService = {
   async addComment(tweet: ITweet, comment: IComment) {
-    const tweetRef = doc(dataBase, "tweets", tweet.id);
     try {
-      await updateDoc(tweetRef, {
+      await updateDocument(["tweets", tweet.id], {
         comments: arrayUnion(comment),
       });
+
       if (comment.commenterId !== tweet.userId) {
-        await tweetService.createNotification(comment.commenterId, tweet, "comment");
+        await tweetService.createNotification(
+          comment.commenterId,
+          tweet,
+          "comment"
+        );
       }
     } catch (error) {
       console.error("댓글 작성 실패: ", error);
@@ -79,7 +86,7 @@ export const tweetService = {
   async deleteComment(tweetId: string, comment: IComment) {
     const tweetRef = doc(dataBase, "tweets", tweetId);
     try {
-      await updateDoc(tweetRef, {
+      await updateDocument(["tweets", tweetId], {
         comments: arrayRemove(comment),
       });
     } catch (error) {
@@ -124,8 +131,7 @@ export const tweetService = {
         };
       }
 
-      await updateDoc(tweetRef, { comments: comments });
-
+      await updateDocument(["tweets", tweetId], { comments: comments });
     } catch (error) {
       console.error("댓글 좋아요 실패: ", error);
     }
@@ -137,11 +143,10 @@ export const tweetService = {
     liked: boolean,
     tweet?: ITweet
   ) {
-    const tweetRef = doc(dataBase, "tweets", tweetId);
     const updateData = liked
       ? { likes: increment(-1), likedBy: arrayRemove(userId) }
       : { likes: increment(1), likedBy: arrayUnion(userId) };
-    await updateDoc(tweetRef, updateData);
+    await updateDocument(["tweets", tweetId], updateData);
 
     if (liked) {
       await tweetService.deletedLikedTweet(userId, tweetId);
@@ -160,7 +165,7 @@ export const tweetService = {
     const updateData = reported
       ? { exclamation: increment(-1), exclamationBy: arrayRemove(userId) }
       : { exclamation: increment(1), exclamationBy: arrayUnion(userId) };
-    await updateDoc(tweetRef, updateData);
+    await updateDocument(["tweets", tweetId], updateData);
 
     const tweetDoc = await getDoc(tweetRef);
     if (tweetDoc.exists()) {
@@ -185,7 +190,7 @@ export const tweetService = {
     }
 
     try {
-      await deleteDoc(doc(dataBase, "tweets", tweetId));
+      await deleteDocument(["tweets", tweetId]);
       if (photo) {
         const photoRef = ref(storage, `tweets/${userId}/${tweetId}`);
         await deleteObject(photoRef);
@@ -210,7 +215,7 @@ export const tweetService = {
       "likedTweets",
       `${userId}_${tweetId}`
     );
-    await deleteDoc(likedTweetQuery);
+    await deleteDocument(["likedTweets", `${userId}_${tweetId}`]);
   },
 
   async createNotification(
@@ -295,7 +300,7 @@ export const tweetService = {
       if (commentIndex > -1) {
         const currentReplyCount = comments[commentIndex].replyCount || 0;
         comments[commentIndex].replyCount = currentReplyCount + 1;
-        await updateDoc(tweetRef, { comments });
+        await updateDocument(["tweets", tweetId], { comments });
       }
     } catch (error) {
       console.error("답변 개수 업데이트 에러: ", error);
@@ -305,9 +310,8 @@ export const tweetService = {
   async deleteReply(tweetId: string, commentId: string, reply: IReply) {
     if (auth.currentUser?.uid !== reply.replierId) return;
 
-    const replyRef = doc(dataBase, "tweets", tweetId, "replies", reply.replyId);
     try {
-      await deleteDoc(replyRef);
+      await deleteDocument(["tweets", tweetId, "replies", reply.replyId]);
     } catch (error) {
       console.error("답변 삭제 에러: ", error);
       return;
@@ -325,7 +329,7 @@ export const tweetService = {
       if (commentIndex > -1) {
         const currentReplyCount = comments[commentIndex].replyCount || 1;
         comments[commentIndex].replyCount = currentReplyCount - 1;
-        await updateDoc(tweetRef, { comments });
+        await updateDocument(["tweets", tweetId], { comments });
       }
     } catch (error) {
       console.error("답변 개수 업데이트 에러: ", error);
@@ -333,9 +337,13 @@ export const tweetService = {
   },
 
   async toggleReplyLike(tweetId: string, replyId: string, userId: string) {
-    const replyRef = doc(dataBase, "tweets", tweetId, "replies", replyId);
     try {
-      const replyDoc = await getDoc(replyRef);
+      const replyDoc = await getDocument([
+        "tweets",
+        tweetId,
+        "replies",
+        replyId,
+      ]);
       if (!replyDoc.exists()) {
         throw new Error("해당 답변을 찾지 못했습니다.");
       }
@@ -344,19 +352,14 @@ export const tweetService = {
       const likedBy = replyData.likedBy || [];
       const isLiked = likedBy.includes(userId);
 
-      if (isLiked) {
-        // 좋아요 취소
-        await updateDoc(replyRef, {
-          likes: increment(-1),
-          likedBy: arrayRemove(userId),
-        });
-      } else {
-        // 좋아요
-        await updateDoc(replyRef, {
-          likes: increment(1),
-          likedBy: arrayUnion(userId),
-        });
-      }
+      const updateData = isLiked
+        ? { likes: increment(-1), likedBy: arrayRemove(userId) }
+        : { likes: increment(1), likedBy: arrayUnion(userId) };
+
+      await updateDocument(
+        ["tweets", tweetId, "replies", replyId],
+        updateData
+      );
     } catch (error) {
       console.error("답변 좋아요 처리 실패: ", error);
     }
