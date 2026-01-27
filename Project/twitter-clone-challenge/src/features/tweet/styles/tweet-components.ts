@@ -97,7 +97,7 @@ export const TweetButtonWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: clamp(4px, 1vw, 6px);
-  margin: 4px 0 0 -8px;
+  margin: 4px 0 0 -4px;
 `;
 
 export const ButtonWrapper = styled.div`
