@@ -17,7 +17,7 @@ export const FormInput = <T extends FieldValues>({
 
   useEffect(() => {
     if (value != null && setValue) {
-      setValue(name, value.trim(), { shouldValidate: true });
+      setValue(name, value.trim());
     }
   }, [value, name, setValue]);
 
