@@ -7,6 +7,9 @@ import {
   setDoc,
   updateDoc,
   DocumentData,
+  query,
+  getDocs,
+  QueryConstraint,
 } from "firebase/firestore";
 import { dataBase } from "../firebase";
 
@@ -63,4 +66,22 @@ export const deleteDocument = async (docPath: string[]) => {
 export const getDocument = async (docPath: string[]) => {
   const docRef = doc(dataBase, docPath[0], ...docPath.slice(1));
   return await getDoc(docRef);
+};
+
+/**
+ * 여러 문서들을 쿼리로 가져오기
+ * @param collectionPath 컬렉션 경로 세그먼트 배열
+ * @param queryConstraints 쿼리 제약 조건 (예: where, orderBy, limit)
+ */
+export const getDocuments = async (
+  collectionPath: string[],
+  ...queryConstraints: QueryConstraint[]
+) => {
+  const collectionRef = collection(
+    dataBase,
+    collectionPath[0],
+    ...collectionPath.slice(1)
+  );
+  const q = query(collectionRef, ...queryConstraints);
+  return await getDocs(q);
 };
