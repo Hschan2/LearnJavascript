@@ -1,11 +1,7 @@
 import {
   QueryDocumentSnapshot,
-  collection,
-  getDocs,
-  query,
 } from "firebase/firestore";
 import { useState, useEffect, useCallback } from "react";
-import { dataBase } from "../../../firebase";
 import { ITweet } from "../../tweet/types/tweet-type";
 import {
   Image,
@@ -16,6 +12,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from "react-router";
+import { getDocuments } from "../../../services/databaseService";
 
 const sliderSettings = {
   dots: true,
@@ -50,8 +47,7 @@ const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
 };
 
 const fetchTweetsData = async (): Promise<ITweet[]> => {
-  const tweetsQuery = query(collection(dataBase, "tweets"));
-  const tweetsSnapshot = await getDocs(tweetsQuery);
+  const tweetsSnapshot = await getDocuments(["tweets"]);
   return tweetsSnapshot.docs.map(createTweetData);
 };
 

@@ -1,8 +1,9 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../../firebase";
-import { DocumentReference, updateDoc } from "firebase/firestore";
+import { DocumentReference } from "firebase/firestore";
 import { useCallback } from "react";
 import type { User } from "firebase/auth";
+import { updateDocument } from "../../../services/databaseService";
 
 export const useFileUpload = (user?: User | null) => {
   const uploadFile = async (path: string, file: File) => {
@@ -17,7 +18,7 @@ export const useFileUpload = (user?: User | null) => {
     file: File
   ) => {
     const url = await uploadFile(`tweets/${userId}/${doc.id}`, file);
-    await updateDoc(doc, { photo: url });
+    await updateDocument(doc.path.split("/"), { photo: url });
   };
 
   const uploadRetouchFile = async (
@@ -29,7 +30,7 @@ export const useFileUpload = (user?: User | null) => {
       `tweets/${userId}/${doc.id}/retouch/${retouch.name}`,
       retouch
     );
-    await updateDoc(doc, { retouch: url });
+    await updateDocument(doc.path.split("/"), { retouch: url });
   };
 
   const handleFileUpload = useCallback(

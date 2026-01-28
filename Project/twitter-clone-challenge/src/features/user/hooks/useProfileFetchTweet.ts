@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { ITweet } from "../../tweet/types/tweet-type";
-import { doc, getDoc, QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
-import { dataBase } from "../../../firebase";
+import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
 import { createTweetsQuery, fetchTweetsOnce } from "../../../services/tweetService";
+import { getDocument } from "../../../services/databaseService";
 
 const useProfileFetchTweet = (userId?: string) => {
   const [tweets, setTweets] = useState<ITweet[]>([]);
@@ -18,8 +18,7 @@ const useProfileFetchTweet = (userId?: string) => {
   const fetchUserProfile = useCallback(async () => {
     if (!userId) return;
     try {
-      const userDocRef = doc(dataBase, "signedUsers", userId);
-      const userDocSnap = await getDoc(userDocRef);
+      const userDocSnap = await getDocument(["signedUsers", userId]);
       if (userDocSnap.exists()) {
         setUserProfile(userDocSnap.data() as { name: string; image: string });
       }

@@ -6,16 +6,13 @@ import {
   ITweet,
 } from "../../features/tweet/types/tweet-type";
 import {
-  collection,
-  deleteDoc,
   doc,
-  getDocs,
   onSnapshot,
-  setDoc,
 } from "firebase/firestore";
 import { dataBase } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { addFirestoreUnsubscribe } from "../../lib/firestoreSubscriptions";
+import { deleteDocument, getDocuments, setDocument } from "../../services/databaseService";
 
 function useFollow() {
   const [followDataUserById, setFollowDataUserById] = useState<boolean>(false);
@@ -24,25 +21,19 @@ function useFollow() {
 
   const handleFollow = async (tweet: ITweet, user: User) => {
     try {
-      await setDoc(
-        doc(dataBase, `follow/${user.uid}/following/${tweet.userId}`),
-        {
-          followingId: tweet.userId,
-          followingName: tweet.username,
-          followingPhoto: tweet.photo,
-          isFollowing: true,
-          createdAt: new Date().toISOString(),
-        }
-      );
-      await setDoc(
-        doc(dataBase, `follow/${tweet.userId}/followers/${user.uid}`),
-        {
-          followerId: user.uid,
-          followerName: user.displayName,
-          followerPhoto: user.photoURL,
-          createdAt: new Date().toISOString(),
-        }
-      );
+      await setDocument(["follow", user.uid, "following", tweet.userId], {
+        followingId: tweet.userId,
+        followingName: tweet.username,
+        followingPhoto: tweet.photo,
+        isFollowing: true,
+        createdAt: new Date().toISOString(),
+      });
+      await setDocument(["follow", tweet.userId, "followers", user.uid], {
+        followerId: user.uid,
+        followerName: user.displayName,
+        followerPhoto: user.photoURL,
+        createdAt: new Date().toISOString(),
+      });
 
       await createNotification(tweet, user);
     } catch (error) {
@@ -51,9 +42,9 @@ function useFollow() {
   };
 
   const createNotification = async (tweet: ITweet, user: User) => {
-    const notificationRef = doc(dataBase, "notifications", uuidv4());
-    await setDoc(notificationRef, {
-      id: notificationRef.id,
+    const notificationId = uuidv4();
+    await setDocument(["notifications", notificationId], {
+      id: notificationId,
       recipientId: tweet.userId,
       tweetTitle: tweet.tweet,
       tweetId: tweet.id,
@@ -67,12 +58,8 @@ function useFollow() {
 
   const handleUnFollow = async (tweet: ITweet, user: User) => {
     try {
-      await deleteDoc(
-        doc(dataBase, `follow/${user.uid}/following/${tweet.userId}`)
-      );
-      await deleteDoc(
-        doc(dataBase, `follow/${tweet.userId}/followers/${user.uid}`)
-      );
+      await deleteDocument(["follow", user.uid, "following", tweet.userId]);
+      await deleteDocument(["follow", tweet.userId, "followers", user.uid]);
     } catch (error) {
       console.error("팔로워 저장 실패: ", error);
     }
@@ -115,9 +102,11 @@ function useFollow() {
   const fetchFollowingData = async (userId: string | undefined) => {
     if (!userId) return;
     try {
-      const followingSnapshot = await getDocs(
-        collection(dataBase, `follow/${userId}/following`)
-      );
+      const followingSnapshot = await getDocuments([
+        "follow",
+        userId,
+        "following",
+      ]);
       const followingList: FollowingProps[] = followingSnapshot.docs.map(
         (doc) => {
           const data = doc.data();
@@ -140,9 +129,11 @@ function useFollow() {
   const fetchFollowerData = async (userId: string | undefined) => {
     if (!userId) return;
     try {
-      const followerSnapshot = await getDocs(
-        collection(dataBase, `follow/${userId}/followers`)
-      );
+      const followerSnapshot = await getDocuments([
+        "follow",
+        userId,
+        "followers",
+      ]);
       const followerList: FollowerProps[] = followerSnapshot.docs.map((doc) => {
         const data = doc.data();
         return {

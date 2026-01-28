@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router";
 import { auth, dataBase } from "../../../firebase";
 import { useFileUpload } from "./useFileUpLoad";
-import { deleteField, doc, updateDoc } from "firebase/firestore";
+import { deleteField, doc } from "firebase/firestore";
 import { UpdateState } from "../types/form-type";
+import { updateDocument } from "../../../services/databaseService";
 
 type UpdateStateSetter = <K extends keyof UpdateState>(
   key: K,
@@ -38,7 +39,7 @@ export const useUpdateTweet = (
     updateState("isLoading", true);
 
     try {
-      await updateDoc(tweetDocRef, {
+      await updateDocument(["tweets", id], {
         tweet: state.tweet,
         tags: state.tags,
         item: state.selectedOption,
@@ -48,7 +49,7 @@ export const useUpdateTweet = (
       if (state.uploadedFile)
         await handleFileUpload(state.uploadedFile, tweetDocRef);
       if (state.retouch) await handleRetouchUpload(state.retouch, tweetDocRef);
-      else await updateDoc(tweetDocRef, { retouch: deleteField() });
+      else await updateDocument(tweetDocRef.path.split("/"), { retouch: deleteField() });
 
       navigate("/");
     } catch (error) {

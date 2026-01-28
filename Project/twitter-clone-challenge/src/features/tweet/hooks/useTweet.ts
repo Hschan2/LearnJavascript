@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router";
 import { useFileUpload } from "./useFileUpLoad";
-import { auth, dataBase } from "../../../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { auth } from "../../../firebase";
 import { initialState, TweetFormState } from "./useTweetForm";
 import { ITweet } from "../types/tweet-type";
+import { createDocument } from "../../../services/databaseService";
 
 export const useTweet = (
   postState: TweetFormState,
@@ -13,8 +13,11 @@ export const useTweet = (
   const navigate = useNavigate();
   const user = auth.currentUser;
 
-  const addTweetToData = (userId: string, docData: Partial<Omit<ITweet, "id">>) =>
-    addDoc(collection(dataBase, "tweets"), {
+  const addTweetToData = (
+    userId: string,
+    docData: Partial<Omit<ITweet, "id">>
+  ) =>
+    createDocument(["tweets"], {
       ...docData,
       createdAt: Date.now(),
       username: user?.displayName || "익명",

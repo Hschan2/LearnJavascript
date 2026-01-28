@@ -5,11 +5,12 @@ import {
   sendPasswordResetEmail as fbSendPasswordResetEmail,
   confirmPasswordReset as fbConfirmPasswordReset,
 } from "firebase/auth";
-import { auth, dataBase } from "../../../firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { auth } from "../../../firebase";
+import { where } from "firebase/firestore";
 import axios from "axios";
 import { saveUserToFirestore } from "./saveUserToFirestore";
 import { updateUserProfile } from "./updateUserProfile";
+import { getDocuments } from "../../../services/databaseService";
 
 export const AuthService = (() => {
   const sendSignUpCode = async (email: string) => {
@@ -71,12 +72,9 @@ export const AuthService = (() => {
   };
 
   const checkDuplicate = async (name: string, email: string) => {
-    const usersRef = collection(dataBase, "signedUsers");
-    const nameQuery = query(usersRef, where("name", "==", name));
-    const emailQuery = query(usersRef, where("email", "==", email));
     const [nameSnapshot, emailSnapshot] = await Promise.all([
-      getDocs(nameQuery),
-      getDocs(emailQuery),
+      getDocuments(["signedUsers"], where("name", "==", name)),
+      getDocuments(["signedUsers"], where("email", "==", email)),
     ]);
 
     if (!nameSnapshot.empty) throw new Error("이미 등록된 이름이 있습니다.");
@@ -119,9 +117,7 @@ export const AuthService = (() => {
     try {
       await fbSendPasswordResetEmail(auth, email, actionCodeSettings);
     } catch (error) {
-      // To prevent user enumeration attacks, we don't throw an error to the UI.
-      // The user is just notified that an email will be sent if the account exists.
-      console.error("Password reset email error:", error);
+      console.error("비밀번호 재설정 이메일 오류:", error);
       throw new Error(handleError(error as FirebaseError | Error));
     }
   };

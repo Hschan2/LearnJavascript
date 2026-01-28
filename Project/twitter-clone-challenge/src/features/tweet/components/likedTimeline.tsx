@@ -1,8 +1,6 @@
 import {
   QueryDocumentSnapshot,
   collection,
-  doc,
-  getDoc,
   onSnapshot,
   query,
   where,
@@ -14,6 +12,7 @@ import { TimelineWrapper } from "../styles/timeline-components";
 import { ITweet } from "../types/tweet-type";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
 import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
+import { getDocument } from "../../../services/databaseService";
 
 const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
   const data = doc.data() as ITweet;
@@ -24,7 +23,7 @@ const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
 };
 
 const fetchTweetById = async (tweetId: string): Promise<ITweet | null> => {
-  const tweetDoc = await getDoc(doc(dataBase, "tweets", tweetId));
+  const tweetDoc = await getDocument(["tweets", tweetId]);
   return tweetDoc.exists() ? createTweetData(tweetDoc) : null;
 };
 

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { auth, dataBase, storage } from "../../firebase";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import { fetchAvatarUrl } from "./fetchAvatarUrl";
 import { INITIAL_IMAGE } from "../../constants";
 import { UseAvatarOptions } from "../types/avatar";
+import { updateDocument } from "../../services/databaseService";
 
 export function useAvatar(options: UseAvatarOptions = {}) {
   const { user = auth.currentUser, enableUpload = false } = options;
@@ -47,7 +48,7 @@ export function useAvatar(options: UseAvatarOptions = {}) {
 
         await updateProfile(user, { photoURL: avatarUrl });
 
-        await updateDoc(doc(dataBase, "signedUsers", user.uid), {
+        await updateDocument(["signedUsers", user.uid], {
           avatar: avatarUrl,
         });
       }

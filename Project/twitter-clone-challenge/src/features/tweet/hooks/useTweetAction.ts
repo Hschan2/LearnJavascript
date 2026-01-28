@@ -7,7 +7,6 @@ import {
   increment,
   collection,
   setDoc,
-  getDoc,
   query,
   where,
   orderBy,
@@ -95,9 +94,8 @@ export const tweetService = {
   },
 
   async toggleCommentLike(tweetId: string, commentId: string, userId: string) {
-    const tweetRef = doc(dataBase, "tweets", tweetId);
     try {
-      const tweetDoc = await getDoc(tweetRef);
+      const tweetDoc = await getDocument(["tweets", tweetId]);
       if (!tweetDoc.exists()) {
         throw new Error("해당 게시글을 찾지 못했습니다.");
       }
@@ -161,13 +159,12 @@ export const tweetService = {
   },
 
   async toggleExclamation(tweetId: string, userId: string, reported: boolean) {
-    const tweetRef = doc(dataBase, "tweets", tweetId);
     const updateData = reported
       ? { exclamation: increment(-1), exclamationBy: arrayRemove(userId) }
       : { exclamation: increment(1), exclamationBy: arrayUnion(userId) };
     await updateDocument(["tweets", tweetId], updateData);
 
-    const tweetDoc = await getDoc(tweetRef);
+    const tweetDoc = await getDocument(["tweets", tweetId]);
     if (tweetDoc.exists()) {
       const { exclamation = 0, photo } = tweetDoc.data();
       if (exclamation >= 7)
@@ -288,9 +285,8 @@ export const tweetService = {
       return;
     }
 
-    const tweetRef = doc(dataBase, "tweets", tweetId);
     try {
-      const tweetDoc = await getDoc(tweetRef);
+      const tweetDoc = await getDocument(["tweets", tweetId]);
       if (!tweetDoc.exists()) return;
 
       const tweetData = tweetDoc.data() as ITweet;
@@ -317,9 +313,8 @@ export const tweetService = {
       return;
     }
 
-    const tweetRef = doc(dataBase, "tweets", tweetId);
     try {
-      const tweetDoc = await getDoc(tweetRef);
+      const tweetDoc = await getDocument(["tweets", tweetId]);
       if (!tweetDoc.exists()) return;
 
       const tweetData = tweetDoc.data() as ITweet;

@@ -2,12 +2,10 @@ import { useNavigate } from "react-router";
 import { deleteUserAccount, logoutUser } from "./userService";
 import { auth, dataBase } from "../../../firebase";
 import {
-  collection,
-  getDocs,
-  query,
   where,
   writeBatch,
 } from "firebase/firestore";
+import { getDocuments } from "../../../services/databaseService";
 
 export function useSettingActions() {
   const navigate = useNavigate();
@@ -32,9 +30,9 @@ export function useSettingActions() {
       const userId = auth.currentUser?.uid;
       if (!userId) throw new Error("유저 아이디가 없습니다.");
 
-      const usersRef = collection(dataBase, "signedUsers");
-      const querySnapshot = await getDocs(
-        query(usersRef, where("uid", "==", userId))
+      const querySnapshot = await getDocuments(
+        ["signedUsers"],
+        where("uid", "==", userId)
       );
       if (querySnapshot.empty)
         throw new Error("해당 유저 정보를 찾을 수 없습니다.");

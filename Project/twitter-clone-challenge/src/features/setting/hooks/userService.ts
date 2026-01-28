@@ -1,13 +1,8 @@
-import {
-  collection,
-  deleteDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import { auth, dataBase } from "../../../firebase";
 import { deleteUser, updateProfile } from "firebase/auth";
+import { auth } from "../../../firebase";
 import { clearAllFirestoreSubscriptions } from "../../../lib/firestoreSubscriptions";
+import { getDocuments, deleteDocument } from "../../../services/databaseService";
+import { where } from "firebase/firestore";
 
 export const logoutUser = async () => {
   clearAllFirestoreSubscriptions();
@@ -19,14 +14,14 @@ export const deleteUserAccount = async (userId: string) => {
   if (!userId) throw new Error("삭제할 계정이 없습니다.");
   if (!auth.currentUser) return;
 
-  const tweetQuery = query(
-    collection(dataBase, "tweets"),
+  const tweetDocsSnapshot = await getDocuments(
+    ["tweets"],
     where("userId", "==", userId)
   );
   try {
-    const tweetDocs = await getDocs(tweetQuery);
+    const tweetDocs = tweetDocsSnapshot;
     for (const tweetDoc of tweetDocs.docs) {
-      await deleteDoc(tweetDoc.ref);
+      await deleteDocument(tweetDoc.ref.path.split("/"));
     }
   } catch (error) {
     console.error("탈퇴회원 Tweet 삭제 에러", error);

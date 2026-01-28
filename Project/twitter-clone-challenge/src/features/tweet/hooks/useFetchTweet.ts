@@ -1,6 +1,5 @@
-import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { dataBase } from "../../../firebase";
+import { getDocument } from "../../../services/databaseService";
 
 interface TweetData {
   tweet: string;
@@ -21,7 +20,7 @@ export const useFetchTweet = (
     setLoading(true);
     setError(null);
     try {
-      const tweetDoc = await getDoc(doc(dataBase, "tweets", tweetId));
+      const tweetDoc = await getDocument(["tweets", tweetId]);
       if (tweetDoc.exists()) {
         const tweetData = tweetDoc.data() as TweetData;
         onFetched(tweetData);
