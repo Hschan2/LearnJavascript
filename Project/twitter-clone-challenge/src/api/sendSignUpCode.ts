@@ -1,19 +1,20 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import { adminDb, authAdmin } from "../firebase-admin";
+import { API_ERROR_MESSAGE } from "../message";
 
 const router = express.Router();
 
 router.post("/send-signup-code", async (req, res) => {
   const { email } = req.body;
-  if (!email) return res.status(400).json({ error: "이메일이 필요합니다" });
+  if (!email) return res.status(400).json({ error: API_ERROR_MESSAGE.NOT_HAVE_EMAIL });
 
   try {
     const existingUser = await authAdmin
       .getUserByEmail(email)
       .catch(() => null);
     if (existingUser) {
-      return res.status(400).json({ error: "이미 가입된 이메일입니다." });
+      return res.status(400).json({ error: API_ERROR_MESSAGE.ALREADY_SIGNED_EMAIL });
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -42,7 +43,7 @@ router.post("/send-signup-code", async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "인증 코드 발송 실패" });
+    res.status(500).json({ error: API_ERROR_MESSAGE.FAILED_CODE_EMAIL });
   }
 });
 
