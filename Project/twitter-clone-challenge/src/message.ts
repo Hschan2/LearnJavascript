@@ -12,4 +12,14 @@ export const API_ERROR_MESSAGE = Object.freeze({
     EXPIRED_CODE: "코드가 만료되었습니다.",
     FALSE_CODE: "코드가 틀립니다.",
     FAILED_CODE_CHECK: "코드 검증 실패"
+});
+
+export const API_SUCCESS_MESSAGE = Object.freeze({
+    INIT_KAKAO_SDK: "✅ Kakao SDK initialized!",
 })
+
+export const DATA_ERROR_MESSAGE = Object.freeze({
+    NOT_DATE_DATA: "날짜 없음",
+})
+
+export const FOOTER_MESSAGE = "ⓒYooP. ALL RIGHTS RESERVED BY 홍성찬";
