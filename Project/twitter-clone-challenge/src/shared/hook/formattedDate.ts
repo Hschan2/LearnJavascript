@@ -1,6 +1,8 @@
+import { DATA_ERROR_MESSAGE } from "../../message";
+
 function formattedDate(createdAt?: string | number | Date) {
   if (!createdAt) {
-    return "날짜 없음";
+    return DATA_ERROR_MESSAGE.NOT_DATE_DATA;
   }
 
   const createdDate = new Date(createdAt).toLocaleDateString("ko-KR", {
