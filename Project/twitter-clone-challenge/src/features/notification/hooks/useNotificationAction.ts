@@ -5,6 +5,7 @@ import { useCallback, useEffect } from "react";
 import { auth } from "../../../firebase";
 import { where } from "firebase/firestore";
 import { deleteDocument, getDocuments, updateDocument } from "../../../services/databaseService";
+import { SERVICE_SUCCESS_MESSAGE } from "../../../message";
 
 export const useNotificationAction = () => {
   const { notifications } = useNotificationStore();
@@ -32,7 +33,7 @@ export const useNotificationAction = () => {
   const deleteNotification = async (notificationId: string) => {
     try {
       await deleteDocument(["notifications", notificationId]);
-      console.log("알람 삭제 성공");
+      console.log(SERVICE_SUCCESS_MESSAGE.DELETE_ALARM);
     } catch (error) {
       console.error("알람 삭제 에러: ", error);
     }

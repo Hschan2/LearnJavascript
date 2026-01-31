@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SERVICE_ERROR_MESSAGE } from "../../message";
 
 function InputEmail() {
   const [step, setStep] = useState(1);
@@ -22,7 +23,7 @@ function InputEmail() {
         setError(data.error);
       }
     } catch {
-      setError("코드 발송 실패");
+      setError(SERVICE_ERROR_MESSAGE.FAILED_SEND_CODE);
     }
   };
 
@@ -40,7 +41,7 @@ function InputEmail() {
         setError(data.error);
       }
     } catch {
-      setError("코드 검증 실패");
+      setError(SERVICE_ERROR_MESSAGE.FAILED_VERIFY_CODE);
     }
   };
 

@@ -11,12 +11,17 @@ import axios from "axios";
 import { saveUserToFirestore } from "./saveUserToFirestore";
 import { updateUserProfile } from "./updateUserProfile";
 import { getDocuments } from "../../../services/databaseService";
+import {
+  API_ERROR_MESSAGE,
+  AUTH_SERVICE_ERROR_MESSAGE,
+  SERVICE_ERROR_MESSAGE,
+} from "../../../message";
 
 export const AuthService = (() => {
   const sendSignUpCode = async (email: string) => {
     const res = await axios.post("/send-signup-code", { email });
     if (!res.data.success)
-      throw new Error(res.data.error || "인증 코드 발송 실패");
+      throw new Error(res.data.error || API_ERROR_MESSAGE.FAILED_CODE_EMAIL);
   };
 
   const verifySignUpCode = async (
@@ -25,7 +30,7 @@ export const AuthService = (() => {
   ): Promise<string> => {
     const res = await axios.post("/verify-signup-code", { email, code });
     if (!res.data.success || !res.data.token)
-      throw new Error(res.data.error || "인증 실패");
+      throw new Error(res.data.error || API_ERROR_MESSAGE.FAILED_VERIFY);
     return res.data.token;
   };
 
@@ -35,7 +40,8 @@ export const AuthService = (() => {
     token: string
   ) => {
     const res = await axios.post("/signup", { name, password, token });
-    if (!res.data.success) throw new Error(res.data.error || "회원가입 실패");
+    if (!res.data.success)
+      throw new Error(res.data.error || API_ERROR_MESSAGE.FAILED_SIGN);
   };
 
   const handleError = (error: FirebaseError | Error): string => {
@@ -44,31 +50,31 @@ export const AuthService = (() => {
     if (error instanceof FirebaseError) {
       switch (error.code) {
         case "auth/user-not-found":
-          return "해당 이메일로 등록된 계정이 없습니다.";
+          return AUTH_SERVICE_ERROR_MESSAGE.USER_NOT_FOUNT;
         case "auth/wrong-password":
-          return "비밀번호가 잘못되었습니다.";
+          return AUTH_SERVICE_ERROR_MESSAGE.WRONG_PASSWORD;
         case "auth/invalid-email":
-          return "유효하지 않은 이메일 형식입니다.";
+          return AUTH_SERVICE_ERROR_MESSAGE.INVALID_EMAIL;
         case "auth/invalid-login-credentials":
-          return "이메일 또는 비밀번호가 올바르지 않습니다.";
+          return AUTH_SERVICE_ERROR_MESSAGE.INVALID_LOGIN_CREDENTIALS;
         case "auth/email-already-in-use":
-          return "이미 사용 중인 이메일입니다.";
+          return AUTH_SERVICE_ERROR_MESSAGE.ALREADY_USE_EMAIL;
         case "auth/network-request-failed":
-          return "네트워크 오류가 발생했습니다. 인터넷 연결을 확인하세요.";
+          return AUTH_SERVICE_ERROR_MESSAGE.NETWORK_REQUEST_FAILED;
         case "auth/invalid-action-code":
-          return "유효하지 않은 요청입니다. 다시 시도해주세요.";
+          return AUTH_SERVICE_ERROR_MESSAGE.INVALID_ACTION_CODE;
         case "auth/expired-action-code":
-          return "요청이 만료되었습니다. 다시 시도해주세요.";
+          return AUTH_SERVICE_ERROR_MESSAGE.EXPIRED_ACTION_CODE;
         case "auth/user-disabled":
-          return "사용이 중지된 계정입니다.";
+          return AUTH_SERVICE_ERROR_MESSAGE.USER_DISABLED;
         case "auth/weak-password":
-          return "비밀번호는 6자리 이상이어야 합니다.";
+          return AUTH_SERVICE_ERROR_MESSAGE.WEAK_PASSWORD;
         default:
-          return "인증에 실패했습니다. 다시 시도해주세요.";
+          return AUTH_SERVICE_ERROR_MESSAGE.FAILED_AUTH;
       }
     }
 
-    return error.message || "알 수 없는 오류가 발생했습니다.";
+    return error.message || SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR;
   };
 
   const checkDuplicate = async (name: string, email: string) => {
@@ -77,8 +83,10 @@ export const AuthService = (() => {
       getDocuments(["signedUsers"], where("email", "==", email)),
     ]);
 
-    if (!nameSnapshot.empty) throw new Error("이미 등록된 이름이 있습니다.");
-    if (!emailSnapshot.empty) throw new Error("이미 등록된 이메일이 있습니다.");
+    if (!nameSnapshot.empty)
+      throw new Error(API_ERROR_MESSAGE.ALREADY_SIGNED_NAME);
+    if (!emailSnapshot.empty)
+      throw new Error(API_ERROR_MESSAGE.ALREADY_SIGNED_EMAIL);
   };
 
   const signUp = async (name: string, email: string, password: string) => {
@@ -140,4 +148,3 @@ export const AuthService = (() => {
     confirmPasswordReset,
   };
 })();
-

@@ -6,6 +6,7 @@ import DetailUI from "./components/detail-ui";
 import useFollow from "../../shared/hook/useFollowAction";
 import { useDetail } from "./hooks/useDetail";
 import ShareModal from "./components/share-modal";
+import { SERVICE_ERROR_MESSAGE, SERVICE_MESSAGE } from "../../message";
 
 function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -31,7 +32,7 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const [profileImage, setProfileImage] = useState<string>("");
 
   const handleDelete = async () => {
-    if (window.confirm("정말로 삭제하시겠습니까?")) {
+    if (window.confirm(SERVICE_MESSAGE.CHECK_DELETE_TWEET)) {
       try {
         await tweetService.deleteTweet(tweetId, tweet?.userId, tweet?.photo);
         navigate("/");
@@ -49,9 +50,9 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
     try {
       const currentURL = window.location.href;
       await navigator.clipboard.writeText(currentURL);
-      alert("URL 복사가 완료되었습니다.");
+      alert(SERVICE_MESSAGE.SUCCESS_URL_COPY);
     } catch (error) {
-      console.error("URL 복사 실패");
+      console.error(SERVICE_ERROR_MESSAGE.FAILED_URL_COPY);
     }
   };
 

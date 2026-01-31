@@ -8,10 +8,11 @@ export const NotificationToast = () => {
 
   useEffect(() => {
     if (latestNotification) {
-      toast.custom((t) => (
-        <RealtimeNotification notification={latestNotification} t={t} />
-      ), { id: latestNotification.id });
-      
+      toast.custom(
+        (t) => <RealtimeNotification notification={latestNotification} t={t} />,
+        { id: latestNotification.id }
+      );
+
       setLatestNotification(null);
     }
   }, [latestNotification, setLatestNotification]);

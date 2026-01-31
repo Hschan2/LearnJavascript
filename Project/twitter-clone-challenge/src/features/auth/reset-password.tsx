@@ -13,6 +13,7 @@ import { FormInput } from "../../shared/components/form-input";
 import { validationRules } from "../../constants";
 import { AuthService } from "./hooks/authService";
 import { IPasswordForm } from "./types/auth-type";
+import { SERVICE_ERROR_MESSAGE, SERVICE_SUCCESS_MESSAGE } from "../../message";
 
 function ResetPassword() {
   const {
@@ -30,11 +31,11 @@ function ResetPassword() {
 
   const onSubmit = async (data: IPasswordForm) => {
     if (!oobCode) {
-      setError("유효하지 않은 요청입니다.");
+      setError(SERVICE_ERROR_MESSAGE.FAILED_OOBCODE);
       return;
     }
     if (data.password !== data.confirmPassword) {
-      setError("비밀번호가 일치하지 않습니다.");
+      setError(SERVICE_ERROR_MESSAGE.DIFFERENT_PASSWORD);
       return;
     }
     setError("");
@@ -42,17 +43,15 @@ function ResetPassword() {
     setIsLoading(true);
     try {
       await AuthService.confirmPasswordReset(oobCode, data.password);
-      setMessage(
-        "비밀번호가 성공적으로 변경되었습니다. 3초 후 로그인 페이지로 이동합니다."
-      );
+      setMessage(SERVICE_SUCCESS_MESSAGE.CHANGE_PASSWORD);
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } catch (e) {
-      if (e && typeof e === 'object' && 'message' in e) {
+      if (e && typeof e === "object" && "message" in e) {
         setError(String(e.message));
       } else {
-        setError("알 수 없는 에러가 발생했습니다.");
+        setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
       }
     } finally {
       setIsLoading(false);
@@ -63,7 +62,9 @@ function ResetPassword() {
     return (
       <AuthWrapper>
         <Title>오류</Title>
-        <Error>유효하지 않은 접근입니다. 비밀번호 찾기를 다시 시도해주세요.</Error>
+        <Error>
+          유효하지 않은 접근입니다. 비밀번호 찾기를 다시 시도해주세요.
+        </Error>
         <Switcher>
           <Link to="/reset-input-email">비밀번호 찾기</Link>
         </Switcher>

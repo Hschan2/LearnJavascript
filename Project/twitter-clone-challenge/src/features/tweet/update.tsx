@@ -5,6 +5,7 @@ import { FormWrapper } from "./styles/form-components";
 import { auth } from "../../firebase";
 import { WrongMessage } from "../error/styles/error-components";
 import { useDetailTweet } from "./hooks/useTweetAction";
+import { SERVICE_ERROR_MESSAGE } from "../../message";
 
 function Update() {
   const { tweetId } = useParams();
@@ -19,7 +20,7 @@ function Update() {
 
   useEffect(() => {
     if (tweet && !isOwner) {
-      alert("접근할 수 없는 경로입니다.");
+      alert(SERVICE_ERROR_MESSAGE.WRONG_PATH);
       navigate("/");
     }
   }, [isOwner, navigate, tweet]);

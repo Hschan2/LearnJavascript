@@ -10,6 +10,7 @@ import {
   AuthWrapper,
 } from "./styles/auth-components";
 import { FirebaseError } from "firebase/app";
+import { SERVICE_ERROR_MESSAGE, SERVICE_SUCCESS_MESSAGE } from "../../message";
 
 export default function ActionHandler() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function ActionHandler() {
   useEffect(() => {
     const verifyCode = async () => {
       if (!oobCode) {
-        setError("유효하지 않은 액션 코드입니다.");
+        setError(SERVICE_ERROR_MESSAGE.NOT_VERIFY_ACTION_CODE);
         setIsLoading(false);
         return;
       }
@@ -35,7 +36,7 @@ export default function ActionHandler() {
         if (e instanceof FirebaseError) {
           setError(e.message);
         } else {
-          setError("알 수 없는 오류가 발생했습니다.");
+          setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
         }
       } finally {
         setIsLoading(false);
@@ -55,13 +56,13 @@ export default function ActionHandler() {
     try {
       setIsLoading(true);
       await confirmPasswordReset(auth, oobCode, newPassword);
-      alert("비밀번호가 성공적으로 재설정되었습니다.");
+      alert(SERVICE_SUCCESS_MESSAGE.RESET_PASSWORD);
       navigate("/login");
     } catch (e) {
       if (e instanceof FirebaseError) {
         setError(e.message);
       } else {
-        setError("알 수 없는 오류가 발생했습니다.");
+        setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
       }
     } finally {
       setIsLoading(false);

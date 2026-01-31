@@ -12,6 +12,7 @@ import {
 import { FormInput } from "../../shared/components/form-input";
 import { validationRules } from "../../constants";
 import { AuthService } from "./hooks/authService";
+import { SERVICE_ERROR_MESSAGE, SERVICE_SUCCESS_MESSAGE } from "../../message";
 
 interface IForm {
   email: string;
@@ -35,14 +36,12 @@ function ResetInputEmail() {
     setIsLoading(true);
     try {
       await AuthService.sendPasswordResetEmail(data.email);
-      setMessage(
-        "입력하신 이메일로 비밀번호 재설정 링크가 발송되었습니다. 이메일을 확인해주세요."
-      );
+      setMessage(SERVICE_SUCCESS_MESSAGE.SEND_PASSWORD_RESET_LINK);
     } catch (e) {
-      if (e && typeof e === 'object' && 'message' in e) {
+      if (e && typeof e === "object" && "message" in e) {
         setError(String(e.message));
       } else {
-        setError("알 수 없는 에러가 발생했습니다.");
+        setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
       }
     } finally {
       setIsLoading(false);
