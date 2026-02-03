@@ -6,16 +6,16 @@ import {
   deleteDocument,
 } from "../../../services/databaseService";
 import { where } from "firebase/firestore";
-import { SERVICE_ERROR_MESSAGE } from "../../../message";
+import { messages } from "../../../message";
 
 export const logoutUser = async () => {
   clearAllFirestoreSubscriptions();
-  if (!auth.currentUser) throw new Error(SERVICE_ERROR_MESSAGE.FAILED_LOGOUT);
+  if (!auth.currentUser) throw new Error(messages.serviceError.failedLogout);
   await auth.signOut();
 };
 
 export const deleteUserAccount = async (userId: string) => {
-  if (!userId) throw new Error(SERVICE_ERROR_MESSAGE.NONE_DELETED_USER);
+  if (!userId) throw new Error(messages.serviceError.noneDeletedUser);
   if (!auth.currentUser) return;
 
   const tweetDocsSnapshot = await getDocuments(

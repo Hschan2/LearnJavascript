@@ -5,7 +5,7 @@ import { FormWrapper } from "./styles/form-components";
 import { auth } from "../../firebase";
 import { WrongMessage } from "../error/styles/error-components";
 import { useDetailTweet } from "./hooks/useTweetAction";
-import { SERVICE_ERROR_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 function Update() {
   const { tweetId } = useParams();
@@ -20,7 +20,7 @@ function Update() {
 
   useEffect(() => {
     if (tweet && !isOwner) {
-      alert(SERVICE_ERROR_MESSAGE.WRONG_PATH);
+      alert(messages.serviceError.wrongPath);
       navigate("/");
     }
   }, [isOwner, navigate, tweet]);

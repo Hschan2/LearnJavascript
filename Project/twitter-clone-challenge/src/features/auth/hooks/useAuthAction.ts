@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { AuthService } from "./authService";
-import { AUTH_MESSAGE, SERVICE_ERROR_MESSAGE } from "../../../message";
+import { messages } from "../../../message";
 
 export const useAuth = () => {
   const [isLoading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export const useAuth = () => {
         setError(
           err instanceof Error
             ? err.message
-            : SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR
+            : messages.serviceError.undefinedError
         );
         return false;
       } finally {
@@ -33,32 +33,32 @@ export const useAuth = () => {
   const sendSignUpCode = (email: string) =>
     handleAuthAsync(async () => {
       if (!email || email.trim() === "") {
-        throw new Error(AUTH_MESSAGE.INPUT_EMAIL);
+        throw new Error(messages.auth.inputEmail);
       }
       await AuthService.sendSignUpCode(email);
-      alert(AUTH_MESSAGE.SEND_VERIFY_CODE);
+      alert(messages.auth.sendVerifyCode);
       return true;
     });
 
   const verifySignUpCode = (email?: string, code?: string) =>
     handleAuthAsync(async () => {
       if (!email || email.trim() === "") {
-        throw new Error(AUTH_MESSAGE.INPUT_EMAIL);
+        throw new Error(messages.auth.inputEmail);
       }
       if (!code || code.trim() === "") {
-        throw new Error(AUTH_MESSAGE.INPUT_VERIFY_CODE);
+        throw new Error(messages.auth.inputVerifyCode);
       }
 
       const token = await AuthService.verifySignUpCode(email, code);
       setSignupToken(token);
       setIsEmailVerified(true);
-      alert(AUTH_MESSAGE.SUCCESS_VERIFY_EMAIL);
+      alert(messages.auth.successVerifyEmail);
       return true;
     });
 
   const signUp = (name?: string, password?: string) =>
     handleAuthAsync(async () => {
-      if (!signupToken) throw new Error(AUTH_MESSAGE.NEEDED_VERIFY_EMAIL);
+      if (!signupToken) throw new Error(messages.auth.neededVerifyEmail);
       await AuthService.signUpWithToken(name!, password!, signupToken);
       return true;
     });

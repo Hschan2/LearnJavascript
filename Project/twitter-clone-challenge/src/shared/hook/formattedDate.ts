@@ -1,8 +1,8 @@
-import { DATA_ERROR_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 function formattedDate(createdAt?: string | number | Date) {
-  if (!createdAt) {
-    return DATA_ERROR_MESSAGE.NOT_DATE_DATA;
+  if (!createdAt || isNaN(new Date(createdAt).getTime())) {
+    return messages.dataError.notDateData;
   }
 
   const createdDate = new Date(createdAt).toLocaleDateString("ko-KR", {

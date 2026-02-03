@@ -10,7 +10,7 @@ import {
   AuthWrapper,
 } from "./styles/auth-components";
 import { FirebaseError } from "firebase/app";
-import { SERVICE_ERROR_MESSAGE, SERVICE_SUCCESS_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 export default function ActionHandler() {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function ActionHandler() {
   useEffect(() => {
     const verifyCode = async () => {
       if (!oobCode) {
-        setError(SERVICE_ERROR_MESSAGE.NOT_VERIFY_ACTION_CODE);
+        setError(messages.serviceError.notVerifyActionCode);
         setIsLoading(false);
         return;
       }
@@ -36,7 +36,7 @@ export default function ActionHandler() {
         if (e instanceof FirebaseError) {
           setError(e.message);
         } else {
-          setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
+          setError(messages.serviceError.undefinedError);
         }
       } finally {
         setIsLoading(false);
@@ -56,13 +56,13 @@ export default function ActionHandler() {
     try {
       setIsLoading(true);
       await confirmPasswordReset(auth, oobCode, newPassword);
-      alert(SERVICE_SUCCESS_MESSAGE.RESET_PASSWORD);
+      alert(messages.serviceSuccess.resetPassword);
       navigate("/login");
     } catch (e) {
       if (e instanceof FirebaseError) {
         setError(e.message);
       } else {
-        setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
+        setError(messages.serviceError.undefinedError);
       }
     } finally {
       setIsLoading(false);

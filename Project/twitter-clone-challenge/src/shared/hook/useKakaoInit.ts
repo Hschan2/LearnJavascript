@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { KAKAO_JAVASCRIPT_KEY } from "../../config";
-import { API_SUCCESS_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 const useKakaoInit = () => {
   useEffect(() => {
@@ -13,13 +13,13 @@ const useKakaoInit = () => {
       script.onload = () => {
         if (window.Kakao && !window.Kakao.isInitialized()) {
           window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
-          console.log(API_SUCCESS_MESSAGE.INIT_KAKAO_SDK);
+          console.log(messages.apiSuccess.initKakaoSdk);
         }
       };
       document.head.appendChild(script);
     } else if (!window.Kakao.isInitialized()) {
       window.Kakao.init(KAKAO_JAVASCRIPT_KEY);
-      console.log(API_SUCCESS_MESSAGE.INIT_KAKAO_SDK);
+      console.log(messages.apiSuccess.initKakaoSdk);
     }
   }, []);
 };

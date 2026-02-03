@@ -12,7 +12,7 @@ import {
 import { FormInput } from "../../shared/components/form-input";
 import { validationRules } from "../../constants";
 import { AuthService } from "./hooks/authService";
-import { SERVICE_ERROR_MESSAGE, SERVICE_SUCCESS_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 interface IForm {
   email: string;
@@ -36,12 +36,12 @@ function ResetInputEmail() {
     setIsLoading(true);
     try {
       await AuthService.sendPasswordResetEmail(data.email);
-      setMessage(SERVICE_SUCCESS_MESSAGE.SEND_PASSWORD_RESET_LINK);
+      setMessage(messages.serviceSuccess.sendPasswordResetLink);
     } catch (e) {
       if (e && typeof e === "object" && "message" in e) {
         setError(String(e.message));
       } else {
-        setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
+        setError(messages.serviceError.undefinedError);
       }
     } finally {
       setIsLoading(false);

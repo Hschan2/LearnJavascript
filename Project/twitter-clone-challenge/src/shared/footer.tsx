@@ -1,8 +1,8 @@
 import { FooterContainer } from "../layout/styles/screen-components";
-import { FOOTER_MESSAGE } from "../message";
+import { messages } from "../message";
 
 function Footer() {
-  return <FooterContainer>{FOOTER_MESSAGE}</FooterContainer>;
+  return <FooterContainer>{messages.footer}</FooterContainer>;
 }
 
 export default Footer;

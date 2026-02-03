@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SERVICE_ERROR_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 function InputEmail() {
   const [step, setStep] = useState(1);
@@ -23,7 +23,7 @@ function InputEmail() {
         setError(data.error);
       }
     } catch {
-      setError(SERVICE_ERROR_MESSAGE.FAILED_SEND_CODE);
+      setError(messages.serviceError.failedSendCode);
     }
   };
 
@@ -41,7 +41,7 @@ function InputEmail() {
         setError(data.error);
       }
     } catch {
-      setError(SERVICE_ERROR_MESSAGE.FAILED_VERIFY_CODE);
+      setError(messages.serviceError.failedVerifyCode);
     }
   };
 

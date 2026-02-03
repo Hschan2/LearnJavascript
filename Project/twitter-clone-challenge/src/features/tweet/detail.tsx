@@ -6,7 +6,7 @@ import DetailUI from "./components/detail-ui";
 import useFollow from "../../shared/hook/useFollowAction";
 import { useDetail } from "./hooks/useDetail";
 import ShareModal from "./components/share-modal";
-import { SERVICE_ERROR_MESSAGE, SERVICE_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -32,7 +32,7 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const [profileImage, setProfileImage] = useState<string>("");
 
   const handleDelete = async () => {
-    if (window.confirm(SERVICE_MESSAGE.CHECK_DELETE_TWEET)) {
+    if (window.confirm(messages.serviceMessage.checkDeleteTweet)) {
       try {
         await tweetService.deleteTweet(tweetId, tweet?.userId, tweet?.photo);
         navigate("/");
@@ -50,9 +50,9 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
     try {
       const currentURL = window.location.href;
       await navigator.clipboard.writeText(currentURL);
-      alert(SERVICE_MESSAGE.SUCCESS_URL_COPY);
+      alert(messages.serviceMessage.successUrlCopy);
     } catch (error) {
-      console.error(SERVICE_ERROR_MESSAGE.FAILED_URL_COPY);
+      console.error(messages.serviceError.failedUrlCopy);
     }
   };
 

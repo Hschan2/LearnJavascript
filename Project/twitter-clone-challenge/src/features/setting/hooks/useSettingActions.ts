@@ -3,13 +3,13 @@ import { deleteUserAccount, logoutUser } from "./userService";
 import { auth, dataBase } from "../../../firebase";
 import { where, writeBatch } from "firebase/firestore";
 import { getDocuments } from "../../../services/databaseService";
-import { SERVICE_ERROR_MESSAGE, SERVICE_MESSAGE } from "../../../message";
+import { messages, formatMessage } from "../../../message";
 
 export function useSettingActions() {
   const navigate = useNavigate();
 
   const onLogOut = async () => {
-    const checkLogOut = confirm(SERVICE_MESSAGE.CHECK_LOGOUT);
+    const checkLogOut = confirm(messages.serviceMessage.checkLogout);
     if (!checkLogOut) return;
 
     try {
@@ -21,19 +21,19 @@ export function useSettingActions() {
   };
 
   const onDeleteUser = async () => {
-    const checkDelete = window.confirm(SERVICE_MESSAGE.CHECK_DELETE_USER);
+    const checkDelete = window.confirm(messages.serviceMessage.checkDeleteUser);
     if (!checkDelete) return;
 
     try {
       const userId = auth.currentUser?.uid;
-      if (!userId) throw new Error(SERVICE_ERROR_MESSAGE.NONE_USER_ID);
+      if (!userId) throw new Error(messages.serviceError.noneUserId);
 
       const querySnapshot = await getDocuments(
         ["signedUsers"],
         where("uid", "==", userId)
       );
       if (querySnapshot.empty)
-        throw new Error(SERVICE_ERROR_MESSAGE.NOT_FIND_USER);
+        throw new Error(messages.serviceError.notFindUser);
 
       const batch = writeBatch(dataBase);
       querySnapshot.forEach((doc) => {
@@ -51,13 +51,17 @@ export function useSettingActions() {
     } catch (error) {
       if (error instanceof Error) {
         console.error("계정 삭제 실패: ", error);
-        alert(SERVICE_ERROR_MESSAGE.FAILED_DELETE_USER(error.message));
+        alert(
+          formatMessage(messages.serviceError.failedDeleteUser, {
+            errorMessage: error.message,
+          })
+        );
       } else {
         console.error("알 수 없는 에러 발생: ", error);
         alert(
-          `${SERVICE_ERROR_MESSAGE.FAILED_DELETE_USER(
-            "알 수 없는 오류가 발생했습니다."
-          )}`
+          formatMessage(messages.serviceError.failedDeleteUser, {
+            errorMessage: "알 수 없는 오류가 발생했습니다.",
+          })
         );
       }
     }

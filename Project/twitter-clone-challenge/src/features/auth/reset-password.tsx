@@ -13,7 +13,7 @@ import { FormInput } from "../../shared/components/form-input";
 import { validationRules } from "../../constants";
 import { AuthService } from "./hooks/authService";
 import { IPasswordForm } from "./types/auth-type";
-import { SERVICE_ERROR_MESSAGE, SERVICE_SUCCESS_MESSAGE } from "../../message";
+import { messages } from "../../message";
 
 function ResetPassword() {
   const {
@@ -31,11 +31,11 @@ function ResetPassword() {
 
   const onSubmit = async (data: IPasswordForm) => {
     if (!oobCode) {
-      setError(SERVICE_ERROR_MESSAGE.FAILED_OOBCODE);
+      setError(messages.serviceError.failedOobcode);
       return;
     }
     if (data.password !== data.confirmPassword) {
-      setError(SERVICE_ERROR_MESSAGE.DIFFERENT_PASSWORD);
+      setError(messages.serviceError.differentPassword);
       return;
     }
     setError("");
@@ -43,7 +43,7 @@ function ResetPassword() {
     setIsLoading(true);
     try {
       await AuthService.confirmPasswordReset(oobCode, data.password);
-      setMessage(SERVICE_SUCCESS_MESSAGE.CHANGE_PASSWORD);
+      setMessage(messages.serviceSuccess.changePassword);
       setTimeout(() => {
         navigate("/login");
       }, 3000);
@@ -51,7 +51,7 @@ function ResetPassword() {
       if (e && typeof e === "object" && "message" in e) {
         setError(String(e.message));
       } else {
-        setError(SERVICE_ERROR_MESSAGE.UNDEFINED_ERROR);
+        setError(messages.serviceError.undefinedError);
       }
     } finally {
       setIsLoading(false);
