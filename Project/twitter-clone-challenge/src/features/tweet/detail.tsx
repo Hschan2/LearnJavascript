@@ -6,7 +6,7 @@ import DetailUI from "./components/detail-ui";
 import useFollow from "../../shared/hook/useFollowAction";
 import { useDetail } from "./hooks/useDetail";
 import ShareModal from "./components/share-modal";
-import { messages } from "../../message";
+import { messages, formatMessage } from "../../message";
 
 function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -37,7 +37,11 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
         await tweetService.deleteTweet(tweetId, tweet?.userId, tweet?.photo);
         navigate("/");
       } catch (error) {
-        console.error("삭제 중 오류 발생: ", error);
+        console.error(
+          formatMessage(messages.serviceError.failedDeleteTweetOperation, {
+            errorMessage: (error as Error).message,
+          })
+        );
       }
     }
   };

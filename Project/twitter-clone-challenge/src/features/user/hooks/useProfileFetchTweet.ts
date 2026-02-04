@@ -4,6 +4,7 @@ import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
 import { createTweetsQuery, fetchTweetsOnce } from "../../../services/tweetService";
 import { getDocument } from "../../../services/databaseService";
+import { messages, formatMessage } from "../../../message";
 
 const useProfileFetchTweet = (userId?: string) => {
   const [tweets, setTweets] = useState<ITweet[]>([]);
@@ -23,7 +24,11 @@ const useProfileFetchTweet = (userId?: string) => {
         setUserProfile(userDocSnap.data() as { name: string; image: string });
       }
     } catch (error) {
-      console.error("유저 데이터 가져오기 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedFetchUserData, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   }, [userId]);
 

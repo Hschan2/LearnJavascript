@@ -17,6 +17,7 @@ import { SubmitButton, TextArea } from "../styles/form-components";
 import formattedDate from "../../../shared/hook/formattedDate";
 import { auth } from "../../../firebase";
 import LikeBtn from "./like-button";
+import { messages, formatMessage } from "../../../message";
 
 interface ReplyProps {
   tweetId: string;
@@ -51,16 +52,24 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
       await tweetService.addReply(tweetId, commentId, newReply);
       setNewReply("");
     } catch (error) {
-      console.error("답변 추가 실패:", error);
+      console.error(
+        formatMessage(messages.serviceError.failedAddReply, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 
   const handleDeleteReply = async (reply: IReply) => {
-    if (!confirm("정말로 이 답변을 삭제하시겠습니까?")) return;
+    if (!confirm(messages.serviceMessage.checkDeleteReply)) return;
     try {
       await tweetService.deleteReply(tweetId, commentId, reply);
     } catch (error) {
-      console.error("답변 삭제 실패:", error);
+      console.error(
+        formatMessage(messages.serviceError.failedDeleteReply, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 

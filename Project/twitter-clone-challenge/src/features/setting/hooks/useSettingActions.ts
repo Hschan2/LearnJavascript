@@ -16,7 +16,11 @@ export function useSettingActions() {
       await logoutUser();
       navigate("/login");
     } catch (error) {
-      console.error("로그아웃 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedLogoutOperation, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 
@@ -43,21 +47,33 @@ export function useSettingActions() {
       try {
         await batch.commit();
       } catch (error) {
-        console.error("회원 데이터 삭제 에러 ", error);
+        console.error(
+          formatMessage(messages.serviceError.failedDeleteUserData, {
+            errorMessage: (error as Error).message,
+          })
+        );
       }
 
       await deleteUserAccount(userId);
       navigate("/login");
     } catch (error) {
       if (error instanceof Error) {
-        console.error("계정 삭제 실패: ", error);
+        console.error(
+          formatMessage(messages.serviceError.failedDeleteAccount, {
+            errorMessage: error.message,
+          })
+        );
         alert(
           formatMessage(messages.serviceError.failedDeleteUser, {
             errorMessage: error.message,
           })
         );
       } else {
-        console.error("알 수 없는 에러 발생: ", error);
+        console.error(
+          formatMessage(messages.serviceError.undefinedError, {
+            errorMessage: String(error),
+          })
+        );
         alert(
           formatMessage(messages.serviceError.failedDeleteUser, {
             errorMessage: "알 수 없는 오류가 발생했습니다.",

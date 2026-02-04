@@ -11,7 +11,7 @@ import axios from "axios";
 import { saveUserToFirestore } from "./saveUserToFirestore";
 import { updateUserProfile } from "./updateUserProfile";
 import { getDocuments } from "../../../services/databaseService";
-import { messages } from "../../../message";
+import { messages, formatMessage } from "../../../message";
 
 export const AuthService = (() => {
   const sendSignUpCode = async (email: string) => {
@@ -121,7 +121,11 @@ export const AuthService = (() => {
     try {
       await fbSendPasswordResetEmail(auth, email, actionCodeSettings);
     } catch (error) {
-      console.error("비밀번호 재설정 이메일 오류:", error);
+      console.error(
+        formatMessage(messages.serviceError.failedSendPasswordResetEmail, {
+          errorMessage: (error as Error).message,
+        })
+      );
       throw new Error(handleError(error as FirebaseError | Error));
     }
   };

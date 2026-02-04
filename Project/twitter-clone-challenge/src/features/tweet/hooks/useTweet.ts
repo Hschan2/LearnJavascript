@@ -4,6 +4,7 @@ import { auth } from "../../../firebase";
 import { initialState, TweetFormState } from "./useTweetForm";
 import { ITweet } from "../types/tweet-type";
 import { createDocument } from "../../../services/databaseService";
+import { messages, formatMessage } from "../../../message";
 
 export const useTweet = (
   postState: TweetFormState,
@@ -52,7 +53,11 @@ export const useTweet = (
       navigate("/");
       updateState({ ...initialState, isLoading: false });
     } catch (error) {
-      console.error("트윗 포스팅 에러:", error);
+      console.error(
+        formatMessage(messages.serviceError.failedPostTweet, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 

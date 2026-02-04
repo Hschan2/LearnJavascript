@@ -10,6 +10,7 @@ import {
 } from "../styles/modal-components";
 import { ShareModalProps } from "../types/modal-type";
 import Modal from "../../../shared/modal";
+import { messages, formatMessage } from "../../../message";
 
 const ShareModal = ({ open, setOpen, title, image }: ShareModalProps) => {
   useKakaoInit();
@@ -49,9 +50,13 @@ const ShareModal = ({ open, setOpen, title, image }: ShareModalProps) => {
   const handleURLCopy = async () => {
     try {
       await navigator.clipboard.writeText(currentURL);
-      alert("URL이 복사되었습니다!");
+      alert(messages.serviceMessage.successUrlCopy);
     } catch (error) {
-      console.error("URL 복사 실패", error);
+      console.error(
+        formatMessage(messages.serviceError.failedUrlCopy, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 

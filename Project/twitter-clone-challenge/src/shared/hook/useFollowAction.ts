@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { User } from "firebase/auth";
+import { messages, formatMessage } from "../../message";
 import {
   FollowerProps,
   FollowingProps,
@@ -37,7 +38,11 @@ function useFollow() {
 
       await createNotification(tweet, user);
     } catch (error) {
-      console.error("팔로우 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedFollow, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 
@@ -61,7 +66,11 @@ function useFollow() {
       await deleteDocument(["follow", user.uid, "following", tweet.userId]);
       await deleteDocument(["follow", tweet.userId, "followers", user.uid]);
     } catch (error) {
-      console.error("팔로워 저장 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedUnfollow, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 
@@ -94,7 +103,11 @@ function useFollow() {
 
       return unsubscribe;
     } catch (error) {
-      console.error("팔로잉 여부 확인 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedFetchFollowingStatus, {
+          errorMessage: (error as Error).message,
+        })
+      );
       setFollowDataUserById(false);
     }
   };
@@ -122,7 +135,11 @@ function useFollow() {
       );
       setFollowingData(followingList);
     } catch (error) {
-      console.error("팔로잉 수 가져오기 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedFetchFollowingCount, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 
@@ -146,7 +163,11 @@ function useFollow() {
       });
       setFollowerData(followerList);
     } catch (error) {
-      console.error("팔로잉 수 가져오기 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedFetchFollowerCount, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   };
 

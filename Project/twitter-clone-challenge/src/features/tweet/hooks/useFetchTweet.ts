@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getDocument } from "../../../services/databaseService";
+import { messages, formatMessage } from "../../../message";
 
 interface TweetData {
   tweet: string;
@@ -25,10 +26,14 @@ export const useFetchTweet = (
         const tweetData = tweetDoc.data() as TweetData;
         onFetched(tweetData);
       } else {
-        console.error("Tweet이 없습니다.");
+        console.error(messages.serviceError.tweetNotFound);
       }
     } catch (err) {
-      console.error("Tweet 수정 실패: ", err);
+      console.error(
+        formatMessage(messages.serviceError.failedUpdateTweetFetch, {
+          errorMessage: (err as Error).message,
+        })
+      );
       setError("Tweet 수정에 실패하였습니다.");
     } finally {
       setLoading(false);

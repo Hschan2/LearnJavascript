@@ -4,6 +4,7 @@ import { useFileUpload } from "./useFileUpLoad";
 import { deleteField, doc } from "firebase/firestore";
 import { UpdateState } from "../types/form-type";
 import { updateDocument } from "../../../services/databaseService";
+import { messages, formatMessage } from "../../../message";
 
 type UpdateStateSetter = <K extends keyof UpdateState>(
   key: K,
@@ -53,7 +54,11 @@ export const useUpdateTweet = (
 
       navigate("/");
     } catch (error) {
-      console.error("업데이트 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedUpdateTweet, {
+          errorMessage: (error as Error).message,
+        })
+      );
     } finally {
       updateState("isLoading", false);
     }

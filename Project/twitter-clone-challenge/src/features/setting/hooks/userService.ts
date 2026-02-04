@@ -6,7 +6,7 @@ import {
   deleteDocument,
 } from "../../../services/databaseService";
 import { where } from "firebase/firestore";
-import { messages } from "../../../message";
+import { messages, formatMessage } from "../../../message";
 
 export const logoutUser = async () => {
   clearAllFirestoreSubscriptions();
@@ -27,10 +27,13 @@ export const deleteUserAccount = async (userId: string) => {
     for (const tweetDoc of tweetDocs.docs) {
       await deleteDocument(tweetDoc.ref.path.split("/"));
     }
-  } catch (error) {
-    console.error("탈퇴회원 Tweet 삭제 에러", error);
-  }
-
+      } catch (error) {
+        console.error(
+          formatMessage(messages.serviceError.failedDeleteWithdrawnUserTweets, {
+            errorMessage: (error as Error).message,
+          })
+        );
+      }
   const user = auth.currentUser;
   if (user) {
     await updateProfile(user, { displayName: null, photoURL: null });

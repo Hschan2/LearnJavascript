@@ -21,6 +21,7 @@ import {
   getDocument,
   updateDocument,
 } from "../../../services/databaseService";
+import { messages, formatMessage } from "../../../message";
 
 export function useDetailTweet(tweetId: string) {
   const [tweet, setTweet] = useState<ITweet | null>(null);
@@ -78,7 +79,11 @@ export const tweetService = {
         );
       }
     } catch (error) {
-      console.error("댓글 작성 실패: ", error);
+      console.error(
+        formatMessage(messages.serviceError.failedAddComment, {
+          errorMessage: (error as Error).message,
+        })
+      );
     }
   },
 
