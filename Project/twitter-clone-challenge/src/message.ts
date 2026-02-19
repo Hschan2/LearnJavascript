@@ -15,6 +15,8 @@ export const messages = {
     expiredCode: "코드가 만료되었습니다.",
     falseCode: "코드가 틀립니다.",
     failedCodeCheck: "코드 검증 실패",
+    noJwtSecret: "JWT SECRET 없음",
+    shortPasswordLength: "비밀번호는 6자 이상이어야 합니다.",
   },
   apiSuccess: {
     initKakaoSdk: "✅ Kakao SDK initialized!",
