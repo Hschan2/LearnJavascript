@@ -4,7 +4,7 @@ import { adminDb } from "../../src/firebase-admin";
 
 export default async function handler(req: Request, res: Response) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return res.status(405).json({ error: "POST 실패" });
   }
 
   const { email, code } = req.body;
@@ -31,7 +31,10 @@ export default async function handler(req: Request, res: Response) {
 
     await docRef.delete();
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET || "secret", {
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET 없음");
+    }
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: "10m",
     });
 
