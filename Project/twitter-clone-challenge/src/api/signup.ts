@@ -1,24 +1,27 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import { AuthService } from "../features/auth/hooks/authService";
-import { API_ERROR_MESSAGE } from "../message";
+import { messages } from "../message";
 
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   const { name, password, token } = req.body;
   if (!name || !password || !token) {
-    return res.status(400).json({ error: API_ERROR_MESSAGE.NO_EMAIL_PASSWORD_TOKEN });
+    return res.status(400).json({ error: messages.apiError.noEmailPasswordToken });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret") as {
+    if (!process.env.JWT_SECRET) {
+      throw new Error(messages.apiError.noJwtSecret);
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
       email: string;
       type: string;
     };
 
     if (decoded.type !== "signup") {
-      return res.status(400).json({ error: API_ERROR_MESSAGE.FALSE_TOKEN });
+      return res.status(400).json({ error: messages.apiError.falseToken });
     }
 
     const email = decoded.email;
@@ -27,7 +30,7 @@ router.post("/signup", async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error(err);
-    res.status(400).json({ error: API_ERROR_MESSAGE.FAILED_SIGN });
+    res.status(400).json({ error: messages.apiError.failedSign });
   }
 });
 
