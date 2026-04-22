@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "twitter-clone-challenge"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }
