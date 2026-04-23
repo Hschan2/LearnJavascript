@@ -1,20 +1,20 @@
 import express from "express";
 import nodemailer from "nodemailer";
 import { adminDb, authAdmin } from "../firebase-admin";
-import { API_ERROR_MESSAGE } from "../message";
+import { messages } from "../message";
 
 const router = express.Router();
 
 router.post("/send-signup-code", async (req, res) => {
   const { email } = req.body;
-  if (!email) return res.status(400).json({ error: API_ERROR_MESSAGE.NOT_HAVE_EMAIL });
+  if (!email) return res.status(400).json({ error: messages.apiError.notHaveEmail });
 
   try {
     const existingUser = await authAdmin
       .getUserByEmail(email)
       .catch(() => null);
     if (existingUser) {
-      return res.status(400).json({ error: API_ERROR_MESSAGE.ALREADY_SIGNED_EMAIL });
+      return res.status(400).json({ error: messages.apiError.alreadySignedEmail });
     }
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
@@ -43,7 +43,7 @@ router.post("/send-signup-code", async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: API_ERROR_MESSAGE.FAILED_CODE_EMAIL });
+    res.status(500).json({ error: messages.apiError.failedCodeEmail });
   }
 });
 

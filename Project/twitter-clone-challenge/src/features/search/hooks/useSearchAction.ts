@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useSearchData } from "./useSearchData";
-import { SERVICE_MESSAGE } from "../../../message";
+import { messages } from "../../../message";
 
 export const useSearchAction = () => {
   const [searchWord, setSearchWord] = useState("");
@@ -10,7 +10,7 @@ export const useSearchAction = () => {
   const changeSearchWord = (value: string) => setSearchWord(value);
   const onSearch = () => {
     if (!searchWord.trim()) {
-      alert(SERVICE_MESSAGE.INPUT_SEARCHING_WORD);
+      alert(messages.serviceMessage.inputSearchingWord);
       return;
     }
     setSearchWord(searchWord.trim());

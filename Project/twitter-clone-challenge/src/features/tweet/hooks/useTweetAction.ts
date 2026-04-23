@@ -88,7 +88,6 @@ export const tweetService = {
   },
 
   async deleteComment(tweetId: string, comment: IComment) {
-    const tweetRef = doc(dataBase, "tweets", tweetId);
     try {
       await updateDocument(["tweets", tweetId], {
         comments: arrayRemove(comment),
@@ -212,11 +211,6 @@ export const tweetService = {
   },
 
   async deletedLikedTweet(userId: string, tweetId: string) {
-    const likedTweetQuery = doc(
-      dataBase,
-      "likedTweets",
-      `${userId}_${tweetId}`
-    );
     await deleteDocument(["likedTweets", `${userId}_${tweetId}`]);
   },
 

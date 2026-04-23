@@ -69,9 +69,9 @@ export const messages = {
     deleteAlarm: "알람 삭제 성공",
   },
   serviceMessage: {
-    followNotification: "{senderName}님이 팔로우하였습니다.",
-    likeNotification: "{senderName}님이 {tweetTitle}에 좋아요를 눌렀습니다.",
-    commentNotification: "{senderName}님이 {tweetTitle}에 댓글을 작성했습니다.",
+    followNotification: (senderName: string) => `${senderName}님이 팔로우하였습니다.`,
+    likeNotification: (senderName: string, tweetTitle: string) => `${senderName}님이 ${tweetTitle}에 좋아요를 눌렀습니다.`,
+    commentNotification: (senderName: string, tweetTitle: string) => `${senderName}님이 ${tweetTitle}에 댓글을 작성했습니다.`,
     newNotification: "새로운 알림이 있습니다.",
     inputSearchingWord: "검색어를 입력하세요.",
     checkLogout: "로그아웃을 하시겠습니까?",
