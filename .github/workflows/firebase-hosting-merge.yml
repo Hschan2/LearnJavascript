@@ -15,13 +15,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Git 히스토리 전체를 가져와서 128 에러 방지
+          fetch-depth: 0
 
-      - name: Install and Build
+      - name: Fix Git Safe Directory
+        run: git config --global --add safe.directory /github/workspace
+
+      - name: Install Dependencies
         working-directory: ./Project/twitter-clone-challenge
-        run: |
-          npm ci
-          npm run build
+        run: npm ci
+
+      - name: Build Project
+        working-directory: ./Project/twitter-clone-challenge
+        run: npm run build 
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
