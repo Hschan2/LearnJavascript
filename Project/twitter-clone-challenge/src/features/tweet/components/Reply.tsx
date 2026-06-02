@@ -43,14 +43,23 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
         unsubscribe();
       }
     };
-  }, [tweetId, commentId]);
+  import { checkBadWords } from "../../../shared/filter-bad-words";
 
-  const handleAddReply = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newReply.trim()) return;
-    try {
-      await tweetService.addReply(tweetId, commentId, newReply);
-      setNewReply("");
+  interface ReplyProps {
+  ...
+    const handleAddReply = async (e: React.FormEvent) => {
+      e.preventDefault();
+      if (!newReply.trim()) return;
+
+      if (checkBadWords(newReply)) {
+        alert(messages.serviceError.badWordDetected);
+        setNewReply("");
+        return;
+      }
+
+      try {
+        await tweetService.addReply(tweetId, commentId, newReply);
+        setNewReply("");
     } catch (error) {
       console.error(
         formatMessage(messages.serviceError.failedAddReply, {
