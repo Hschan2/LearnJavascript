@@ -4,6 +4,9 @@ import { tweetService } from "./useTweetAction";
 import { IComment, ITweet } from "../types/tweet-type";
 import { auth } from "../../../firebase";
 
+import { messages } from "../../../message";
+import { checkBadWords } from "../../../shared/filter-bad-words";
+
 export const useDetail = (
   tweetId: string,
   setComments: Dispatch<SetStateAction<IComment[]>>
@@ -12,6 +15,13 @@ export const useDetail = (
 
   const addComment = async (tweet: ITweet) => {
     if (!newComment.trim()) return;
+
+    if (checkBadWords(newComment)) {
+      alert(messages.serviceError.badWordDetected);
+      setNewComment("");
+      return;
+    }
+
     const comment: IComment = {
       commentId: uuidv4(),
       commentText: newComment,
