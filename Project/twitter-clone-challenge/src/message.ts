@@ -59,6 +59,7 @@ export const messages = {
     failedDeleteWithdrawnUserTweets: "탈퇴 회원 Tweet 삭제 실패: {errorMessage}",
     failedDeleteNotification: "알람 삭제 실패: {errorMessage}",
     failedSendPasswordResetEmail: "비밀번호 재설정 이메일 발송 실패: {errorMessage}",
+    badWordDetected: "비속어가 포함되어 있어 작성이 제한됩니다. 내용을 다시 확인해 주세요.",
   },
   serviceSuccess: {
     changePassword:
