@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 import { UpdateState } from "../types/form-type";
+import { filterBadWords } from "../../../shared/filter-bad-words";
 
 type Action<k extends keyof UpdateState> = { type: k; payload: UpdateState[k] };
 
@@ -28,7 +29,11 @@ export const useUpdateTweetState = () => {
     key: k,
     value: UpdateState[k]
   ) => {
-    dispatch({ type: key, payload: value });
+    let finalValue = value;
+    if ((key === "tweet" || key === "tagInput") && typeof value === "string") {
+      finalValue = filterBadWords(value) as UpdateState[k];
+    }
+    dispatch({ type: key, payload: finalValue });
   };
 
   return { state, updateState };
