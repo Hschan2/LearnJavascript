@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../../constants";
+import { filterBadWords } from "../../../shared/filter-bad-words";
 
 export type TweetFormState = {
   isLoading: boolean;
@@ -66,7 +67,11 @@ export const useTweetForm = () => {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     key: keyof typeof postState
-  ) => updateState({ [key]: e.target.value });
+  ) => {
+    const value = e.target.value;
+    const filteredValue = (key === "tweet" || key === "tagInput") ? filterBadWords(value) : value;
+    updateState({ [key]: filteredValue });
+  };
 
   const handleToggle = (key: keyof typeof postState) =>
     updateState({ [key]: !postState[key] });
