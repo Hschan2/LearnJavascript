@@ -5,22 +5,20 @@ import { IComment, ITweet } from "../types/tweet-type";
 import { auth } from "../../../firebase";
 
 import { messages } from "../../../message";
-import { checkBadWords } from "../../../shared/filter-bad-words";
+import { filterBadWords } from "../../../shared/filter-bad-words";
 
 export const useDetail = (
   tweetId: string,
   setComments: Dispatch<SetStateAction<IComment[]>>
 ) => {
-  const [newComment, setNewComment] = useState<string>("");
+  const [newComment, _setNewComment] = useState<string>("");
+
+  const setNewComment = (value: string) => {
+    _setNewComment(filterBadWords(value));
+  };
 
   const addComment = async (tweet: ITweet) => {
     if (!newComment.trim()) return;
-
-    if (checkBadWords(newComment)) {
-      alert(messages.serviceError.badWordDetected);
-      setNewComment("");
-      return;
-    }
 
     const comment: IComment = {
       commentId: uuidv4(),
