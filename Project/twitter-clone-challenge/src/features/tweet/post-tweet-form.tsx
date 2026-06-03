@@ -107,7 +107,7 @@ function PostTweetForm() {
         maxLength={50}
         onChange={(e) => handleInputChange(e, "tweet")}
         value={postState.tweet}
-        placeholder="사진에 담긴 이야기가 무엇인가요? (50자 제한)"
+        placeholder="사진에 담긴 이야기가 무엇인가요? 비속어는 피해주세요. (50자 제한)"
       />
       <TagsInputWrapper>
         <TagsInput
@@ -207,7 +207,7 @@ function PostTweetForm() {
         </SelectWrapper>
         <SubmitButton
           type="submit"
-          value={postState.isLoading ? "보내는 중" : "보내기"}
+          value={postState.isLoading ? "작성 중" : "작성"}
         />
       </ButtonContainer>
       {postState.showEmojiPicker && (

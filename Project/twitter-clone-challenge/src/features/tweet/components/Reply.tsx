@@ -18,6 +18,7 @@ import formattedDate from "../../../shared/hook/formattedDate";
 import { auth } from "../../../firebase";
 import LikeBtn from "./like-button";
 import { messages, formatMessage } from "../../../message";
+import { filterBadWords } from "../../../shared/filter-bad-words";
 
 interface ReplyProps {
   tweetId: string;
@@ -43,23 +44,15 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
         unsubscribe();
       }
     };
-  import { checkBadWords } from "../../../shared/filter-bad-words";
+  }, [tweetId, commentId]);
 
-  interface ReplyProps {
-  ...
-    const handleAddReply = async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!newReply.trim()) return;
+  const handleAddReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newReply.trim()) return;
 
-      if (checkBadWords(newReply)) {
-        alert(messages.serviceError.badWordDetected);
-        setNewReply("");
-        return;
-      }
-
-      try {
-        await tweetService.addReply(tweetId, commentId, newReply);
-        setNewReply("");
+    try {
+      await tweetService.addReply(tweetId, commentId, newReply);
+      setNewReply("");
     } catch (error) {
       console.error(
         formatMessage(messages.serviceError.failedAddReply, {
@@ -121,11 +114,11 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
         <Avatar src={currentUser?.photoURL ?? undefined} />
         <TextArea
           value={newReply}
-          onChange={(e) => setNewReply(e.target.value)}
-          placeholder="답변 내용"
+          onChange={(e) => setNewReply(filterBadWords(e.target.value))}
+          placeholder="댓글을 입력해 주세요. 비속어는 피해주세요."
           rows={2}
         />
-        <SubmitButton type="submit" value="답변" />
+        <SubmitButton type="submit" value="작성" />
       </ReplyForm>
     </ReplyWrapper>
   );
