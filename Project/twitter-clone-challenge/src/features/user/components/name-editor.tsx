@@ -9,6 +9,7 @@ import {
   NameContainer,
 } from "../style/profile-components";
 import { NameEditorProps } from "../types/profile-type";
+import { filterBadWords } from "../../../shared/filter-bad-words";
 
 const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
   const [newName, setNewName] = useState(user?.displayName || "");
@@ -27,7 +28,7 @@ const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
           <Input
             type="text"
             value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            onChange={(e) => setNewName(filterBadWords(e.target.value))}
             placeholder="이름을 입력하세요."
           />
           <EditContainer>
