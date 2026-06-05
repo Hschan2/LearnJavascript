@@ -14,15 +14,20 @@ export const useDetail = (
   const [newComment, _setNewComment] = useState<string>("");
 
   const setNewComment = (value: string) => {
-    _setNewComment(filterBadWords(value));
+    _setNewComment(value);
+  };
+
+  const applyFilter = () => {
+    _setNewComment(filterBadWords(newComment));
   };
 
   const addComment = async (tweet: ITweet) => {
-    if (!newComment.trim()) return;
+    const filteredComment = filterBadWords(newComment.trim());
+    if (!filteredComment) return;
 
     const comment: IComment = {
       commentId: uuidv4(),
-      commentText: newComment,
+      commentText: filteredComment,
       commenterId: auth.currentUser?.uid || "unknown",
       commenterName: auth.currentUser?.displayName || "익명",
       commenterProfile: auth.currentUser?.photoURL || "",
@@ -65,7 +70,6 @@ export const useDetail = (
     const userId = auth.currentUser.uid;
     const isLiked = comment.likedBy?.includes(userId);
 
-    // Update local state immediately for better UX
     setComments((prevComments) =>
       prevComments.map((c) => {
         if (c.commentId === comment.commentId) {
@@ -89,6 +93,7 @@ export const useDetail = (
   return {
     newComment,
     setNewComment,
+    applyFilter,
     addComment,
     deleteComment,
     toggleLike,
