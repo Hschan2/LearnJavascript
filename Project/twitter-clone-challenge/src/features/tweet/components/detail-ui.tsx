@@ -60,6 +60,7 @@ export interface DetailUIProps {
     comments: IComment[];
     newComment: string;
     setNewComment: (value: string) => void;
+    onApplyFilter: () => void;
   };
   profileImage: string | null;
   textareaRef: React.RefObject<HTMLTextAreaElement>;
@@ -205,6 +206,7 @@ const DetailUI = ({
             e.preventDefault();
             commentsData.setNewComment(e.target.value);
           }}
+          onBlur={commentsData.onApplyFilter}
           value={commentsData.newComment}
           placeholder="상대방을 고려하여 댓글을 작성해 주세요."
           required
