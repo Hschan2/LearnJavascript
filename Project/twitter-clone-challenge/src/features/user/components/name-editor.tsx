@@ -16,7 +16,9 @@ const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
 
   const handleSave = async () => {
     if (user) {
-      await updateProfile(user, { displayName: newName });
+      const filteredName = filterBadWords(newName.trim());
+      await updateProfile(user, { displayName: filteredName });
+      setNewName(filteredName);
       toggleEditor();
     }
   };
@@ -28,7 +30,8 @@ const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
           <Input
             type="text"
             value={newName}
-            onChange={(e) => setNewName(filterBadWords(e.target.value))}
+            onChange={(e) => setNewName(e.target.value)}
+            onBlur={() => setNewName(filterBadWords(newName))}
             placeholder="이름을 입력하세요."
           />
           <EditContainer>
