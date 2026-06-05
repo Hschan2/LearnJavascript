@@ -48,10 +48,11 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
 
   const handleAddReply = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newReply.trim()) return;
+    const filteredReply = filterBadWords(newReply.trim());
+    if (!filteredReply) return;
 
     try {
-      await tweetService.addReply(tweetId, commentId, newReply);
+      await tweetService.addReply(tweetId, commentId, filteredReply);
       setNewReply("");
     } catch (error) {
       console.error(
@@ -114,7 +115,8 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
         <Avatar src={currentUser?.photoURL ?? undefined} />
         <TextArea
           value={newReply}
-          onChange={(e) => setNewReply(filterBadWords(e.target.value))}
+          onChange={(e) => setNewReply(e.target.value)}
+          onBlur={() => setNewReply(filterBadWords(newReply))}
           placeholder="댓글을 입력해 주세요. 비속어는 피해주세요."
           rows={2}
         />
