@@ -11,4 +11,5 @@ export type UpdateState = {
   selectedOption: string;
   isModalOpen: boolean;
   selectedAddress: string;
+  hasBadWords: boolean;
 };
