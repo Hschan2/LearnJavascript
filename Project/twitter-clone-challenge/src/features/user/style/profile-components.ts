@@ -232,3 +232,12 @@ export const Avatar = styled.img`
   object-fit: cover;
   aspect-ratio: 1 / 1;
 `;
+
+export const WarningText = styled.p`
+  color: #ff4d4f;
+  font-size: clamp(10px, 1vw, 12px);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
