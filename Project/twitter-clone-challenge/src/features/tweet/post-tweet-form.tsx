@@ -22,6 +22,7 @@ import {
   TagsInputWrapper,
   TagsList,
   TextArea,
+  WarningText,
 } from "./styles/form-components";
 import { SELECT_OPTION_VALUE } from "../../constants";
 import AddressModal from "./components/address-modal";
@@ -109,6 +110,11 @@ function PostTweetForm() {
         value={postState.tweet}
         placeholder="사진에 담긴 이야기가 무엇인가요? 비속어는 피해주세요. (50자 제한)"
       />
+      {postState.hasBadWords && (
+        <WarningText>
+          ⚠️ 부적절한 표현이 감지되었습니다. 등록 시 '**'로 표시됩니다.
+        </WarningText>
+      )}
       <TagsInputWrapper>
         <TagsInput
           type="text"

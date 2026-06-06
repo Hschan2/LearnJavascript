@@ -23,6 +23,7 @@ import {
   TagsInputWrapper,
   TagsList,
   TextArea,
+  WarningText,
 } from "./styles/form-components";
 import { SELECT_OPTION_VALUE } from "../../constants";
 import AddressModal from "./components/address-modal";
@@ -127,6 +128,11 @@ function UpdateTweetForm({ id }: { id: string }) {
         placeholder="당신의 이야기를 전달해 주세요."
         required
       />
+      {state.hasBadWords && (
+        <WarningText>
+          ⚠️ 부적절한 표현이 감지되었습니다. 등록 시 '**'로 표시됩니다.
+        </WarningText>
+      )}
       <TagsInputWrapper>
         <TagsInput
           type="text"
