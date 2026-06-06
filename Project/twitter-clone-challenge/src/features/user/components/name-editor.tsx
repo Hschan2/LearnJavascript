@@ -7,18 +7,21 @@ import {
   Input,
   Name,
   NameContainer,
+  WarningText,
 } from "../style/profile-components";
 import { NameEditorProps } from "../types/profile-type";
-import { filterBadWords } from "../../../shared/filter-bad-words";
+import { filterBadWords, checkBadWords } from "../../../shared/filter-bad-words";
 
 const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
   const [newName, setNewName] = useState(user?.displayName || "");
+  const [hasBadWords, setHasBadWords] = useState(false);
 
   const handleSave = async () => {
     if (user) {
       const filteredName = filterBadWords(newName.trim());
       await updateProfile(user, { displayName: filteredName });
       setNewName(filteredName);
+      setHasBadWords(false);
       toggleEditor();
     }
   };
@@ -30,10 +33,22 @@ const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
           <Input
             type="text"
             value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            onBlur={() => setNewName(filterBadWords(newName))}
+            onChange={(e) => {
+              const val = e.target.value;
+              setNewName(filterBadWords(val));
+              setHasBadWords(checkBadWords(val));
+            }}
+            onBlur={() => {
+              setNewName(filterBadWords(newName));
+              setHasBadWords(checkBadWords(newName));
+            }}
             placeholder="이름을 입력하세요."
           />
+          {hasBadWords && (
+            <WarningText>
+              ⚠️ 부적절한 표현이 감지되었습니다.
+            </WarningText>
+          )}
           <EditContainer>
             <ConfirmEditButton onClick={handleSave} title="수정 완료">
               변경
