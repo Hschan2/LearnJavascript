@@ -13,12 +13,12 @@ import {
   ButtonWrapper,
 } from "../styles/tweet-components";
 import { Avatar } from "../../../layout/styles/screen-components";
-import { SubmitButton, TextArea } from "../styles/form-components";
+import { SubmitButton, TextArea, WarningText } from "../styles/form-components";
 import formattedDate from "../../../shared/hook/formattedDate";
 import { auth } from "../../../firebase";
 import LikeBtn from "./like-button";
 import { messages, formatMessage } from "../../../message";
-import { filterBadWords } from "../../../shared/filter-bad-words";
+import { filterBadWords, checkBadWords } from "../../../shared/filter-bad-words";
 
 interface ReplyProps {
   tweetId: string;
@@ -28,6 +28,7 @@ interface ReplyProps {
 const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
   const [replies, setReplies] = useState<IReply[]>([]);
   const [newReply, setNewReply] = useState("");
+  const [hasBadWords, setHasBadWords] = useState(false);
   const currentUser = auth.currentUser;
 
   useEffect(() => {
@@ -54,6 +55,7 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
     try {
       await tweetService.addReply(tweetId, commentId, filteredReply);
       setNewReply("");
+      setHasBadWords(false);
     } catch (error) {
       console.error(
         formatMessage(messages.serviceError.failedAddReply, {
@@ -113,13 +115,27 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
       </ReplyList>
       <ReplyForm onSubmit={handleAddReply}>
         <Avatar src={currentUser?.photoURL ?? undefined} />
-        <TextArea
-          value={newReply}
-          onChange={(e) => setNewReply(e.target.value)}
-          onBlur={() => setNewReply(filterBadWords(newReply))}
-          placeholder="댓글을 입력해 주세요. 비속어는 피해주세요."
-          rows={2}
-        />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          <TextArea
+            value={newReply}
+            onChange={(e) => {
+              const val = e.target.value;
+              setNewReply(filterBadWords(val));
+              setHasBadWords(checkBadWords(val));
+            }}
+            onBlur={() => {
+              setNewReply(filterBadWords(newReply));
+              setHasBadWords(checkBadWords(newReply));
+            }}
+            placeholder="댓글을 입력해 주세요. 비속어는 피해주세요."
+            rows={2}
+          />
+          {hasBadWords && (
+            <WarningText>
+              ⚠️ 부적절한 표현이 감지되었습니다.
+            </WarningText>
+          )}
+        </div>
         <SubmitButton type="submit" value="작성" />
       </ReplyForm>
     </ReplyWrapper>
