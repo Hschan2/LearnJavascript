@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../../constants";
-import { filterBadWords } from "../../../shared/filter-bad-words";
+import { filterBadWords, checkBadWords } from "../../../shared/filter-bad-words";
 
 export type TweetFormState = {
   isLoading: boolean;
@@ -18,6 +18,7 @@ export type TweetFormState = {
   likedBy: string[];
   exclamation: number;
   exclamationBy: string[];
+  hasBadWords: boolean;
 };
 
 export const initialState: TweetFormState = {
@@ -36,6 +37,7 @@ export const initialState: TweetFormState = {
   likedBy: [] as string[],
   exclamation: 0,
   exclamationBy: [] as string[],
+  hasBadWords: false,
 };
 
 export const useTweetForm = () => {
@@ -69,8 +71,15 @@ export const useTweetForm = () => {
     key: keyof typeof postState
   ) => {
     const value = e.target.value;
-    const filteredValue = (key === "tweet" || key === "tagInput") ? filterBadWords(value) : value;
-    updateState({ [key]: filteredValue });
+    const isTargetKey = key === "tweet" || key === "tagInput";
+
+    if (isTargetKey) {
+      const hasBadWords = checkBadWords(value);
+      const filteredValue = filterBadWords(value);
+      updateState({ [key]: filteredValue, hasBadWords });
+    } else {
+      updateState({ [key]: value });
+    }
   };
 
   const handleToggle = (key: keyof typeof postState) =>
