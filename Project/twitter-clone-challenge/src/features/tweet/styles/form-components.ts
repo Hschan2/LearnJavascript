@@ -338,3 +338,12 @@ export const MapWrapper = styled.button`
 export const MapText = styled.span`
   color: ${(props) => props.theme.lightText};
 `
+
+export const WarningText = styled.p`
+  color: #ff4d4f;
+  font-size: clamp(10px, 1vw, 12px);
+  margin: 4px 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
