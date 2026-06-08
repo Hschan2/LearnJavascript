@@ -326,6 +326,44 @@ export const CommentDeleteButton = styled.button`
   }
 `;
 
+export const CommentEditButton = styled(CommentDeleteButton)`
+  border: 1px solid #1d9bf0;
+  color: #1d9bf0;
+  font-size: 10px;
+
+  svg {
+    color: #1d9bf0;
+  }
+`;
+
+export const EditForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+`;
+
+export const EditTextArea = styled.textarea`
+  width: 100%;
+  background-color: transparent;
+  color: ${(props) => props.theme.text};
+  border: 1px solid ${(props) => props.theme.light};
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  resize: none;
+  &:focus {
+    outline: none;
+    border-color: #1d9bf0;
+  }
+`;
+
+export const EditButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+`;
+
 export const CommentContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -429,4 +467,9 @@ export const ReplyDeleteButton = styled.button`
   font-size: 12px;
   color: red;
   cursor: pointer;
+`;
+
+export const ReplyEditButton = styled(ReplyDeleteButton)`
+  border: 1px solid #1d9bf0;
+  color: #1d9bf0;
 `;
