@@ -4,7 +4,7 @@ import { tweetService } from "./useTweetAction";
 import { IComment, ITweet } from "../types/tweet-type";
 import { auth } from "../../../firebase";
 
-import { messages } from "../../../message";
+import { messages, formatMessage } from "../../../message";
 import { filterBadWords } from "../../../shared/filter-bad-words";
 
 export const useDetail = (
@@ -45,6 +45,26 @@ export const useDetail = (
     setComments((prev: IComment[]) =>
       prev.filter((c) => c.commentId !== comment.commentId)
     );
+  };
+
+  const updateComment = async (commentId: string, newText: string) => {
+    const filteredText = filterBadWords(newText.trim());
+    if (!filteredText) return;
+
+    try {
+      await tweetService.updateComment(tweetId, commentId, filteredText);
+      setComments((prev: IComment[]) =>
+        prev.map((c) =>
+          c.commentId === commentId ? { ...c, commentText: filteredText } : c
+        )
+      );
+    } catch (error) {
+      console.error(
+        formatMessage(messages.serviceError.failedUpdateComment, {
+          errorMessage: (error as Error).message,
+        })
+      );
+    }
   };
 
   const toggleLike = async (likedByUser: boolean, tweet: ITweet) => {
@@ -96,6 +116,7 @@ export const useDetail = (
     applyFilter,
     addComment,
     deleteComment,
+    updateComment,
     toggleLike,
     toggleExclamation,
     toggleCommentLike,
