@@ -97,6 +97,24 @@ export const tweetService = {
     }
   },
 
+  async updateComment(tweetId: string, commentId: string, newText: string) {
+    try {
+      const tweetDoc = await getDocument(["tweets", tweetId]);
+      if (!tweetDoc.exists()) throw new Error("해당 Tweet이 없습니다.");
+
+      const tweetData = tweetDoc.data() as ITweet;
+      const comments = tweetData.comments || [];
+      const updatedComments = comments.map((c) =>
+        c.commentId === commentId ? { ...c, commentText: newText } : c
+      );
+
+      await updateDocument(["tweets", tweetId], { comments: updatedComments });
+    } catch (error) {
+      console.error("댓글 수정 실패: ", error);
+      throw error;
+    }
+  },
+
   async toggleCommentLike(tweetId: string, commentId: string, userId: string) {
     try {
       const tweetDoc = await getDocument(["tweets", tweetId]);
@@ -356,6 +374,17 @@ export const tweetService = {
       );
     } catch (error) {
       console.error("답변 좋아요 처리 실패: ", error);
+    }
+  },
+
+  async updateReply(tweetId: string, replyId: string, newText: string) {
+    try {
+      await updateDocument(["tweets", tweetId, "replies", replyId], {
+        replyText: newText,
+      });
+    } catch (error) {
+      console.error("답변 수정 실패: ", error);
+      throw error;
     }
   },
 };
