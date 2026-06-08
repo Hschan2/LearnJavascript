@@ -1,6 +1,5 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { IReply } from "../types/tweet-type";
-import { tweetService } from "../hooks/useTweetAction";
 import {
   ReplyWrapper,
   ReplyList,
@@ -10,15 +9,19 @@ import {
   ReplyCreatedTime,
   ReplyForm,
   ReplyDeleteButton,
-  ButtonWrapper,
+  ReplyEditButton,
+  EditForm,
+  EditTextArea,
+  EditButtonContainer,
 } from "../styles/tweet-components";
-import { Avatar } from "../../../layout/styles/screen-components";
-import { SubmitButton, TextArea, WarningText } from "../styles/form-components";
-import formattedDate from "../../../shared/hook/formattedDate";
+import { tweetService } from "../hooks/useTweetAction";
 import { auth } from "../../../firebase";
-import LikeBtn from "./like-button";
+import { Avatar } from "../../../layout/styles/screen-components";
+import formattedDate from "../../../shared/hook/formattedDate";
+import { SubmitButton, TextArea } from "../styles/form-components";
 import { messages, formatMessage } from "../../../message";
-import { filterBadWords, checkBadWords } from "../../../shared/filter-bad-words";
+import LikeBtn from "./like-button";
+import { checkBadWords, filterBadWords } from "../../../shared/filter-bad-words";
 
 interface ReplyProps {
   tweetId: string;
@@ -29,21 +32,22 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
   const [replies, setReplies] = useState<IReply[]>([]);
   const [newReply, setNewReply] = useState("");
   const [hasBadWords, setHasBadWords] = useState(false);
+  const [editingReplyId, setEditingReplyId] = useState<string | null>(null);
+  const [editText, setEditText] = useState("");
+
   const currentUser = auth.currentUser;
 
   useEffect(() => {
     const unsubscribe = tweetService.getReplies(
       tweetId,
       commentId,
-      (fetchedReplies) => {
-        setReplies(fetchedReplies);
+      (updatedReplies) => {
+        setReplies(updatedReplies);
       }
     );
 
     return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
+      if (unsubscribe) unsubscribe();
     };
   }, [tweetId, commentId]);
 
@@ -78,6 +82,34 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
     }
   };
 
+  const handleEditStart = (reply: IReply) => {
+    setEditingReplyId(reply.replyId);
+    setEditText(reply.replyText);
+  };
+
+  const handleEditCancel = () => {
+    setEditingReplyId(null);
+    setEditText("");
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent, replyId: string) => {
+    e.preventDefault();
+    const filteredReply = filterBadWords(editText.trim());
+    if (!filteredReply) return;
+
+    try {
+      await tweetService.updateReply(tweetId, replyId, filteredReply);
+      setEditingReplyId(null);
+      setEditText("");
+    } catch (error) {
+      console.error(
+        formatMessage(messages.serviceError.failedUpdateReply, {
+          errorMessage: (error as Error).message,
+        })
+      );
+    }
+  };
+
   const handleLikeClick = (replyId: string) => {
     if (!currentUser) return;
     tweetService.toggleReplyLike(tweetId, replyId, currentUser.uid);
@@ -93,49 +125,68 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
                 <Avatar src={reply.replierProfile} alt="profile" />
                 <span>{reply.replierName}</span>
               </div>
-              {currentUser?.uid === reply.replierId ? (
-                <ReplyDeleteButton onClick={() => handleDeleteReply(reply)}>
-                  삭제
-                </ReplyDeleteButton>
-              ) : null}
+              {currentUser?.uid === reply.replierId && (
+                <div style={{ gap: "4px" }}>
+                  <ReplyEditButton onClick={() => handleEditStart(reply)}>
+                    수정
+                  </ReplyEditButton>
+                  <ReplyDeleteButton onClick={() => handleDeleteReply(reply)}>
+                    삭제
+                  </ReplyDeleteButton>
+                </div>
+              )}
             </ReplyProfile>
-            <ReplyText>{reply.replyText}</ReplyText>
-            <ReplyCreatedTime>
-              {formattedDate(reply.createdAt)}
-            </ReplyCreatedTime>
-            <ButtonWrapper>
+            {editingReplyId === reply.replyId ? (
+              <EditForm onSubmit={(e) => handleEditSubmit(e, reply.replyId)}>
+                <EditTextArea
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  autoFocus
+                />
+                <EditButtonContainer>
+                  <SubmitButton
+                    type="button"
+                    onClick={handleEditCancel}
+                    value="취소"
+                    style={{ backgroundColor: "grey" }}
+                  />
+                  <SubmitButton type="submit" value="수정" />
+                </EditButtonContainer>
+              </EditForm>
+            ) : (
+              <>
+                <ReplyText>{reply.replyText}</ReplyText>
+                <ReplyCreatedTime>
+                  {formattedDate(reply.createdAt)}
+                </ReplyCreatedTime>
+              </>
+            )}
+            <div style={{ paddingLeft: "38px", marginTop: "4px" }}>
               <LikeBtn
                 likes={reply.likes ?? 0}
                 likedByUser={reply.likedBy?.includes(currentUser?.uid ?? "") ?? false}
                 onClick={() => handleLikeClick(reply.replyId)}
               />
-            </ButtonWrapper>
+            </div>
           </ReplyItem>
         ))}
       </ReplyList>
       <ReplyForm onSubmit={handleAddReply}>
-        <Avatar src={currentUser?.photoURL ?? undefined} />
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <TextArea
-            value={newReply}
-            onChange={(e) => {
-              const val = e.target.value;
-              setNewReply(filterBadWords(val));
-              setHasBadWords(checkBadWords(val));
-            }}
-            onBlur={() => {
-              setNewReply(filterBadWords(newReply));
-              setHasBadWords(checkBadWords(newReply));
-            }}
-            placeholder="댓글을 입력해 주세요. 비속어는 피해주세요."
-            rows={2}
-          />
-          {hasBadWords && (
-            <WarningText>
-              ⚠️ 부적절한 표현이 감지되었습니다.
-            </WarningText>
-          )}
-        </div>
+        <TextArea
+          placeholder={
+            hasBadWords ? "비속어가 포함되어 있습니다." : "답변을 입력하세요."
+          }
+          value={newReply}
+          onChange={(e) => {
+            const val = e.target.value;
+            setNewReply(filterBadWords(val));
+          }}
+          onBlur={() => {
+            setNewReply(filterBadWords(newReply));
+            setHasBadWords(checkBadWords(newReply));
+          }}
+          required
+        />
         <SubmitButton type="submit" value="작성" />
       </ReplyForm>
     </ReplyWrapper>
