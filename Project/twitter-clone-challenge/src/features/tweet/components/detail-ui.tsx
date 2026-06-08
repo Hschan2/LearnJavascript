@@ -46,6 +46,7 @@ export interface DetailUIProps {
     onExclamation: (exclamationByUser: boolean) => void;
     onCommentLike: (comment: IComment) => void;
     onDeleteComment: (comment: IComment) => void;
+    onUpdateComment: (commentId: string, newText: string) => void;
     onNavigateUpdate: () => void;
     onDeleteTweet: () => void;
     onAddComment: () => void;
@@ -171,6 +172,7 @@ const DetailUI = ({
           tweetId={tweet.tweet?.id || ""}
           comments={commentsData.comments}
           onDelete={actions.onDeleteComment}
+          onUpdate={actions.onUpdateComment}
           onCommentLike={actions.onCommentLike}
         />
       )}
