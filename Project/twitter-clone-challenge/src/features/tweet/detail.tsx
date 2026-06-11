@@ -22,7 +22,6 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const {
     newComment,
     setNewComment,
-    applyFilter,
     addComment,
     deleteComment,
     updateComment,
@@ -118,7 +117,6 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
           comments,
           newComment,
           setNewComment,
-          onApplyFilter: applyFilter,
         }}
         profileImage={profileImage}
         textareaRef={textareaRef}
