@@ -5,6 +5,7 @@ import { deleteField, doc } from "firebase/firestore";
 import { UpdateState } from "../types/form-type";
 import { updateDocument } from "../../../services/databaseService";
 import { messages, formatMessage } from "../../../message";
+import { filterBadWords } from "../../../shared/filter-bad-words";
 
 type UpdateStateSetter = <K extends keyof UpdateState>(
   key: K,
@@ -40,9 +41,12 @@ export const useUpdateTweet = (
     updateState("isLoading", true);
 
     try {
+      const filteredTweet = filterBadWords(state.tweet);
+      const filteredTags = state.tags.map((tag) => filterBadWords(tag));
+
       await updateDocument(["tweets", id], {
-        tweet: state.tweet,
-        tags: state.tags,
+        tweet: filteredTweet,
+        tags: filteredTags,
         item: state.selectedOption,
         location: state.selectedAddress || null,
       });
