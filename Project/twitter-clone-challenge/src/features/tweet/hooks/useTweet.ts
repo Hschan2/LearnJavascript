@@ -5,6 +5,7 @@ import { initialState, TweetFormState } from "./useTweetForm";
 import { ITweet } from "../types/tweet-type";
 import { createDocument } from "../../../services/databaseService";
 import { messages, formatMessage } from "../../../message";
+import { filterBadWords } from "../../../shared/filter-bad-words";
 
 export const useTweet = (
   postState: TweetFormState,
@@ -17,18 +18,20 @@ export const useTweet = (
   const addTweetToData = (
     userId: string,
     docData: Partial<Omit<ITweet, "id">>
-  ) =>
-    createDocument(["tweets"], {
+  ) => {
+    const filteredTags = postState.tags.map((tag) => filterBadWords(tag));
+    return createDocument(["tweets"], {
       ...docData,
       createdAt: Date.now(),
       username: user?.displayName || "익명",
       userId,
-      tags: postState.tags,
+      tags: filteredTags,
       likes: postState.likes,
       likedBy: postState.likedBy,
       exclamation: postState.exclamation,
       exclamationBy: postState.exclamationBy,
     });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,8 +43,9 @@ export const useTweet = (
 
     try {
       updateState({ isLoading: true });
+      const filteredTweet = filterBadWords(postState.tweet);
       const doc = await addTweetToData(user.uid, {
-        tweet: postState.tweet,
+        tweet: filteredTweet,
         item: postState.selectedOption,
         location: postState.selectedAddress,
       });
