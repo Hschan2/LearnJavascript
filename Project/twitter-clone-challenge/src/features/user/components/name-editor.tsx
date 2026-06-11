@@ -35,12 +35,8 @@ const NameEditor = ({ isEditing, user, toggleEditor }: NameEditorProps) => {
             value={newName}
             onChange={(e) => {
               const val = e.target.value;
-              setNewName(filterBadWords(val));
+              setNewName(val);
               setHasBadWords(checkBadWords(val));
-            }}
-            onBlur={() => {
-              setNewName(filterBadWords(newName));
-              setHasBadWords(checkBadWords(newName));
             }}
             placeholder="이름을 입력하세요."
           />
