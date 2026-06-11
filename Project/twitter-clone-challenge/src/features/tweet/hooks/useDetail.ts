@@ -17,10 +17,6 @@ export const useDetail = (
     _setNewComment(value);
   };
 
-  const applyFilter = () => {
-    _setNewComment(filterBadWords(newComment));
-  };
-
   const addComment = async (tweet: ITweet) => {
     const filteredComment = filterBadWords(newComment.trim());
     if (!filteredComment) return;
@@ -113,7 +109,6 @@ export const useDetail = (
   return {
     newComment,
     setNewComment,
-    applyFilter,
     addComment,
     deleteComment,
     updateComment,
