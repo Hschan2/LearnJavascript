@@ -179,11 +179,8 @@ const Reply: FC<ReplyProps> = ({ tweetId, commentId }) => {
           value={newReply}
           onChange={(e) => {
             const val = e.target.value;
-            setNewReply(filterBadWords(val));
-          }}
-          onBlur={() => {
-            setNewReply(filterBadWords(newReply));
-            setHasBadWords(checkBadWords(newReply));
+            setNewReply(val);
+            setHasBadWords(checkBadWords(val));
           }}
           required
         />
