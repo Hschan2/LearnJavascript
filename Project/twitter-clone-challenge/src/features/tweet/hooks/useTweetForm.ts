@@ -75,8 +75,7 @@ export const useTweetForm = () => {
 
     if (isTargetKey) {
       const hasBadWords = checkBadWords(value);
-      const filteredValue = filterBadWords(value);
-      updateState({ [key]: filteredValue, hasBadWords });
+      updateState({ [key]: value, hasBadWords });
     } else {
       updateState({ [key]: value });
     }
