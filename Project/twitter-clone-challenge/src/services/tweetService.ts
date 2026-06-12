@@ -1,28 +1,7 @@
-import { collection, query, orderBy, where, startAfter, getDocs, onSnapshot, QuerySnapshot, QueryDocumentSnapshot, Query, DocumentData } from 'firebase/firestore';
+import { collection, query, orderBy, where, startAfter, getDocs, onSnapshot, QuerySnapshot, QueryDocumentSnapshot, Query } from 'firebase/firestore';
 import { dataBase } from '../firebase';
 import { ITweet } from '../features/tweet/types/tweet-type';
-
-const getTweetData = (doc: QueryDocumentSnapshot): ITweet => {
-  const data = doc.data();
-  return {
-    tweet: data.tweet,
-    createdAt: data.createdAt,
-    userId: data.userId,
-    username: data.username,
-    photo: data.photo,
-    id: doc.id,
-    likes: data.likes,
-    likedBy: data.likedBy,
-    comments: data.comments,
-    item: data.item,
-    exclamation: data.exclamation,
-    exclamationBy: data.exclamationBy,
-  };
-};
-
-export const mapSnapshotToTweets = (snapshot: QuerySnapshot<DocumentData>): ITweet[] => {
-  return snapshot.docs.map(getTweetData);
-};
+import { tweetConverter } from '../lib/converters';
 
 export const filterTweetsByOption = (tweets: ITweet[], option: string) => {
   if (option === "전체") {
@@ -31,9 +10,9 @@ export const filterTweetsByOption = (tweets: ITweet[], option: string) => {
   return tweets.filter((tweet) => tweet.item === option);
 };
 
-export const createTweetsQuery = (options: { isHot?: boolean; userId?: string; lastDoc?: QueryDocumentSnapshot<DocumentData> | null; }) => {
+export const createTweetsQuery = (options: { isHot?: boolean; userId?: string; lastDoc?: QueryDocumentSnapshot<ITweet> | null; }) => {
   const { isHot, userId, lastDoc } = options;
-  let q: Query = query(collection(dataBase, "tweets"));
+  let q = query(collection(dataBase, "tweets").withConverter(tweetConverter));
 
   if (userId) {
     q = query(q, where("userId", "==", userId));
@@ -51,18 +30,18 @@ export const createTweetsQuery = (options: { isHot?: boolean; userId?: string; l
   return q;
 };
 
-export const fetchTweetsRealtime = (query: Query, callback: (tweets: ITweet[]) => void) => {
-  return onSnapshot(query, (snapshot: QuerySnapshot<DocumentData>) => {
-    const tweets = mapSnapshotToTweets(snapshot);
+export const fetchTweetsRealtime = (query: Query<ITweet>, callback: (tweets: ITweet[]) => void) => {
+  return onSnapshot(query, (snapshot: QuerySnapshot<ITweet>) => {
+    const tweets = snapshot.docs.map(doc => doc.data());
     callback(tweets);
   });
 };
 
-export const fetchTweetsOnce = async (query: Query): Promise<{ tweets: ITweet[], lastDoc: QueryDocumentSnapshot<DocumentData> | null }> => {
-  const snapshot: QuerySnapshot<DocumentData> = await getDocs(query);
+export const fetchTweetsOnce = async (query: Query<ITweet>): Promise<{ tweets: ITweet[], lastDoc: QueryDocumentSnapshot<ITweet> | null }> => {
+  const snapshot: QuerySnapshot<ITweet> = await getDocs(query);
   const lastDoc = snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1] : null;
   return {
-    tweets: mapSnapshotToTweets(snapshot),
+    tweets: snapshot.docs.map(doc => doc.data()),
     lastDoc,
   };
 };

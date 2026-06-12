@@ -4,6 +4,8 @@ import { DocumentReference } from "firebase/firestore";
 import { useCallback } from "react";
 import type { User } from "firebase/auth";
 import { updateDocument } from "../../../services/databaseService";
+import { tweetConverter } from "../../../lib/converters";
+import { ITweet } from "../types/tweet-type";
 
 export const useFileUpload = (user?: User | null) => {
   const uploadFile = async (path: string, file: File) => {
@@ -18,7 +20,7 @@ export const useFileUpload = (user?: User | null) => {
     file: File
   ) => {
     const url = await uploadFile(`tweets/${userId}/${doc.id}`, file);
-    await updateDocument(doc.path.split("/"), { photo: url });
+    await updateDocument<ITweet>(doc.path.split("/"), { photo: url }, tweetConverter);
   };
 
   const uploadRetouchFile = async (
@@ -30,7 +32,7 @@ export const useFileUpload = (user?: User | null) => {
       `tweets/${userId}/${doc.id}/retouch/${retouch.name}`,
       retouch
     );
-    await updateDocument(doc.path.split("/"), { retouch: url });
+    await updateDocument<ITweet>(doc.path.split("/"), { retouch: url }, tweetConverter);
   };
 
   const handleFileUpload = useCallback(

@@ -14,6 +14,8 @@ import { dataBase } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { addFirestoreUnsubscribe } from "../../lib/firestoreSubscriptions";
 import { deleteDocument, getDocuments, setDocument } from "../../services/databaseService";
+import { followingConverter, followerConverter, notificationConverter } from "../../lib/converters";
+import { NotificationType } from "../../features/notification/types/notifications";
 
 function useFollow() {
   const [followDataUserById, setFollowDataUserById] = useState<boolean>(false);
@@ -22,19 +24,29 @@ function useFollow() {
 
   const handleFollow = async (tweet: ITweet, user: User) => {
     try {
-      await setDocument(["follow", user.uid, "following", tweet.userId], {
-        followingId: tweet.userId,
-        followingName: tweet.username,
-        followingPhoto: tweet.photo,
-        isFollowing: true,
-        createdAt: new Date().toISOString(),
-      });
-      await setDocument(["follow", tweet.userId, "followers", user.uid], {
-        followerId: user.uid,
-        followerName: user.displayName,
-        followerPhoto: user.photoURL,
-        createdAt: new Date().toISOString(),
-      });
+      await setDocument<FollowingProps>(
+        ["follow", user.uid, "following", tweet.userId],
+        {
+          id: tweet.userId,
+          followingId: tweet.userId,
+          followingName: tweet.username,
+          followingPhoto: tweet.photo || "",
+          isFollowing: true,
+          createdAt: Date.now(),
+        },
+        followingConverter
+      );
+      await setDocument<FollowerProps>(
+        ["follow", tweet.userId, "followers", user.uid],
+        {
+          id: user.uid,
+          followerId: user.uid,
+          followerName: user.displayName || "익명",
+          followerPhoto: user.photoURL || "",
+          createdAt: Date.now(),
+        },
+        followerConverter
+      );
 
       await createNotification(tweet, user);
     } catch (error) {
@@ -48,17 +60,21 @@ function useFollow() {
 
   const createNotification = async (tweet: ITweet, user: User) => {
     const notificationId = uuidv4();
-    await setDocument(["notifications", notificationId], {
-      id: notificationId,
-      recipientId: tweet.userId,
-      tweetTitle: tweet.tweet,
-      tweetId: tweet.id,
-      senderId: user.uid,
-      senderName: user.displayName || "익명",
-      createdAt: new Date().toISOString(),
-      type: "follow",
-      isRead: false,
-    });
+    await setDocument<NotificationType>(
+      ["notifications", notificationId],
+      {
+        id: notificationId,
+        recipientId: tweet.userId,
+        tweetTitle: tweet.tweet,
+        tweetId: tweet.id,
+        senderId: user.uid,
+        senderName: user.displayName || "익명",
+        createdAt: new Date().toISOString(),
+        type: "follow",
+        isRead: false,
+      },
+      notificationConverter
+    );
   };
 
   const handleUnFollow = async (tweet: ITweet, user: User) => {
@@ -115,23 +131,12 @@ function useFollow() {
   const fetchFollowingData = async (userId: string | undefined) => {
     if (!userId) return;
     try {
-      const followingSnapshot = await getDocuments([
-        "follow",
-        userId,
-        "following",
-      ]);
+      const followingSnapshot = await getDocuments<FollowingProps>(
+        ["follow", userId, "following"],
+        followingConverter
+      );
       const followingList: FollowingProps[] = followingSnapshot.docs.map(
-        (doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            followingId: data.followingId || "",
-            followingName: data.followingName || "",
-            followingPhoto: data.followingPhoto || "",
-            isFollowing: data.isFollowing ?? false,
-            createdAt: data.createdAt || Date.now(),
-          };
-        }
+        (doc) => doc.data()
       );
       setFollowingData(followingList);
     } catch (error) {
@@ -146,21 +151,11 @@ function useFollow() {
   const fetchFollowerData = async (userId: string | undefined) => {
     if (!userId) return;
     try {
-      const followerSnapshot = await getDocuments([
-        "follow",
-        userId,
-        "followers",
-      ]);
-      const followerList: FollowerProps[] = followerSnapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          followerId: data.followerId || "",
-          followerName: data.followerName || "",
-          followerPhoto: data.followerPhoto || "",
-          createdAt: data.createdAt || Date.now(),
-        };
-      });
+      const followerSnapshot = await getDocuments<FollowerProps>(
+        ["follow", userId, "followers"],
+        followerConverter
+      );
+      const followerList: FollowerProps[] = followerSnapshot.docs.map((doc) => doc.data());
       setFollowerData(followerList);
     } catch (error) {
       console.error(

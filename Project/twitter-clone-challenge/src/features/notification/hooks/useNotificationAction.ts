@@ -6,6 +6,7 @@ import { auth } from "../../../firebase";
 import { where } from "firebase/firestore";
 import { deleteDocument, getDocuments, updateDocument } from "../../../services/databaseService";
 import { messages, formatMessage } from "../../../message";
+import { notificationConverter } from "../../../lib/converters";
 
 export const useNotificationAction = () => {
   const { notifications } = useNotificationStore();
@@ -15,16 +16,17 @@ export const useNotificationAction = () => {
   const markAllAsRead = useCallback(async () => {
     if (!user) return;
 
-    const unreadDocs = await getDocuments(
+    const unreadDocs = await getDocuments<NotificationType>(
       ["notifications"],
+      notificationConverter,
       where("recipientId", "==", user.uid),
       where("isRead", "==", false)
     );
 
     const updatePromises = unreadDocs.docs.map((docSnapshot) =>
-      updateDocument(["notifications", docSnapshot.id], {
+      updateDocument<NotificationType>(["notifications", docSnapshot.id], {
         isRead: true,
-      })
+      }, notificationConverter)
     );
 
     await Promise.all(updatePromises);

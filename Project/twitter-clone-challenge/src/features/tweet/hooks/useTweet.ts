@@ -6,6 +6,7 @@ import { ITweet } from "../types/tweet-type";
 import { createDocument } from "../../../services/databaseService";
 import { messages, formatMessage } from "../../../message";
 import { filterBadWords } from "../../../shared/filter-bad-words";
+import { tweetConverter } from "../../../lib/converters";
 
 export const useTweet = (
   postState: TweetFormState,
@@ -20,17 +21,23 @@ export const useTweet = (
     docData: Partial<Omit<ITweet, "id">>
   ) => {
     const filteredTags = postState.tags.map((tag) => filterBadWords(tag));
-    return createDocument(["tweets"], {
-      ...docData,
-      createdAt: Date.now(),
-      username: user?.displayName || "익명",
-      userId,
-      tags: filteredTags,
-      likes: postState.likes,
-      likedBy: postState.likedBy,
-      exclamation: postState.exclamation,
-      exclamationBy: postState.exclamationBy,
-    });
+    return createDocument<ITweet>(
+      ["tweets"],
+      {
+        ...docData,
+        createdAt: Date.now(),
+        username: user?.displayName || "익명",
+        userId,
+        tags: filteredTags,
+        likes: postState.likes,
+        likedBy: postState.likedBy,
+        exclamation: postState.exclamation,
+        exclamationBy: postState.exclamationBy,
+        tweet: docData.tweet || "",
+        item: docData.item || "",
+      } as ITweet,
+      tweetConverter
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

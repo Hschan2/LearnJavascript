@@ -6,7 +6,6 @@ import {
   arrayRemove,
   increment,
   collection,
-  setDoc,
   query,
   where,
   orderBy,
@@ -19,9 +18,12 @@ import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 import {
   deleteDocument,
   getDocument,
+  setDocument,
   updateDocument,
 } from "../../../services/databaseService";
 import { messages, formatMessage } from "../../../message";
+import { tweetConverter, replyConverter, notificationConverter } from "../../../lib/converters";
+import { NotificationType } from "../../notification/types/notifications";
 
 export function useDetailTweet(tweetId: string) {
   const [tweet, setTweet] = useState<ITweet | null>(null);
@@ -31,9 +33,9 @@ export function useDetailTweet(tweetId: string) {
 
   useEffect(() => {
     if (!tweetId) return;
-    const tweetRef = doc(dataBase, "tweets", tweetId);
+    const tweetRef = doc(dataBase, "tweets", tweetId).withConverter(tweetConverter);
     const unsubscribe = onSnapshot(tweetRef, (doc) => {
-      const tweetData = { ...doc.data(), id: doc.id } as ITweet | undefined;
+      const tweetData = doc.data();
       if (tweetData) {
         setTweet(tweetData);
         setLikedByUser(
@@ -67,9 +69,9 @@ export function useDetailTweet(tweetId: string) {
 export const tweetService = {
   async addComment(tweet: ITweet, comment: IComment) {
     try {
-      await updateDocument(["tweets", tweet.id], {
+      await updateDocument<ITweet>(["tweets", tweet.id], {
         comments: arrayUnion(comment),
-      });
+      }, tweetConverter);
 
       if (comment.commenterId !== tweet.userId) {
         await tweetService.createNotification(
@@ -89,9 +91,9 @@ export const tweetService = {
 
   async deleteComment(tweetId: string, comment: IComment) {
     try {
-      await updateDocument(["tweets", tweetId], {
+      await updateDocument<ITweet>(["tweets", tweetId], {
         comments: arrayRemove(comment),
-      });
+      }, tweetConverter);
     } catch (error) {
       console.error("댓글 삭제 실패: ", error);
     }
@@ -99,16 +101,16 @@ export const tweetService = {
 
   async updateComment(tweetId: string, commentId: string, newText: string) {
     try {
-      const tweetDoc = await getDocument(["tweets", tweetId]);
+      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
       if (!tweetDoc.exists()) throw new Error("해당 Tweet이 없습니다.");
 
-      const tweetData = tweetDoc.data() as ITweet;
+      const tweetData = tweetDoc.data();
       const comments = tweetData.comments || [];
       const updatedComments = comments.map((c) =>
         c.commentId === commentId ? { ...c, commentText: newText } : c
       );
 
-      await updateDocument(["tweets", tweetId], { comments: updatedComments });
+      await updateDocument<ITweet>(["tweets", tweetId], { comments: updatedComments }, tweetConverter);
     } catch (error) {
       console.error("댓글 수정 실패: ", error);
       throw error;
@@ -117,12 +119,12 @@ export const tweetService = {
 
   async toggleCommentLike(tweetId: string, commentId: string, userId: string) {
     try {
-      const tweetDoc = await getDocument(["tweets", tweetId]);
+      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
       if (!tweetDoc.exists()) {
         throw new Error("해당 게시글을 찾지 못했습니다.");
       }
 
-      const tweetData = tweetDoc.data() as ITweet;
+      const tweetData = tweetDoc.data();
       const comments = tweetData.comments || [];
       const commentIndex = comments.findIndex((c) => c.commentId === commentId);
 
@@ -151,7 +153,7 @@ export const tweetService = {
         };
       }
 
-      await updateDocument(["tweets", tweetId], { comments: comments });
+      await updateDocument<ITweet>(["tweets", tweetId], { comments: comments }, tweetConverter);
     } catch (error) {
       console.error("댓글 좋아요 실패: ", error);
     }
@@ -166,7 +168,7 @@ export const tweetService = {
     const updateData = liked
       ? { likes: increment(-1), likedBy: arrayRemove(userId) }
       : { likes: increment(1), likedBy: arrayUnion(userId) };
-    await updateDocument(["tweets", tweetId], updateData);
+    await updateDocument<ITweet>(["tweets", tweetId], updateData, tweetConverter);
 
     if (liked) {
       await tweetService.deletedLikedTweet(userId, tweetId);
@@ -184,9 +186,9 @@ export const tweetService = {
     const updateData = reported
       ? { exclamation: increment(-1), exclamationBy: arrayRemove(userId) }
       : { exclamation: increment(1), exclamationBy: arrayUnion(userId) };
-    await updateDocument(["tweets", tweetId], updateData);
+    await updateDocument<ITweet>(["tweets", tweetId], updateData, tweetConverter);
 
-    const tweetDoc = await getDocument(["tweets", tweetId]);
+    const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
     if (tweetDoc.exists()) {
       const { exclamation = 0, photo } = tweetDoc.data();
       if (exclamation >= 7)
@@ -220,8 +222,7 @@ export const tweetService = {
   },
 
   async storeLikedTweet(userId: string, tweetObj: ITweet) {
-    const likedTweetRef = doc(collection(dataBase, "likedTweets"));
-    await setDoc(likedTweetRef, {
+    await setDocument(["likedTweets", `${userId}_${tweetObj.id}`], {
       userId,
       tweetId: tweetObj.id,
       likedAt: new Date().toISOString(),
@@ -237,18 +238,22 @@ export const tweetService = {
     tweetObj: ITweet,
     type: "like" | "comment" | "other"
   ) {
-    const notificationRef = doc(dataBase, "notifications", uuidv4());
-    await setDoc(notificationRef, {
-      id: notificationRef.id,
-      recipientId: tweetObj.userId,
-      tweetTitle: tweetObj.tweet,
-      tweetId: tweetObj.id,
-      senderId,
-      senderName: auth.currentUser?.displayName || "익명",
-      createdAt: new Date().toISOString(),
-      type,
-      isRead: false,
-    });
+    const notificationId = uuidv4();
+    await setDocument<NotificationType>(
+      ["notifications", notificationId],
+      {
+        id: notificationId,
+        recipientId: tweetObj.userId,
+        tweetTitle: tweetObj.tweet,
+        tweetId: tweetObj.id,
+        senderId,
+        senderName: auth.currentUser?.displayName || "익명",
+        createdAt: new Date().toISOString(),
+        type,
+        isRead: false,
+      },
+      notificationConverter
+    );
   },
 
   async fetchProfileImage(userId: string): Promise<string> {
@@ -265,7 +270,7 @@ export const tweetService = {
     commentId: string,
     callback: (replies: IReply[]) => void
   ) {
-    const repliesRef = collection(dataBase, "tweets", tweetId, "replies");
+    const repliesRef = collection(dataBase, "tweets", tweetId, "replies").withConverter(replyConverter);
     const q = query(
       repliesRef,
       where("commentId", "==", commentId),
@@ -273,7 +278,7 @@ export const tweetService = {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const replies = snapshot.docs.map((doc) => doc.data() as IReply);
+      const replies = snapshot.docs.map((doc) => doc.data());
       callback(replies);
     });
 
@@ -294,26 +299,25 @@ export const tweetService = {
       createdAt: Date.now(),
     };
 
-    const replyRef = doc(dataBase, "tweets", tweetId, "replies", replyId);
     try {
-      await setDoc(replyRef, reply);
+      await setDocument<IReply>(["tweets", tweetId, "replies", replyId], reply, replyConverter);
     } catch (error) {
       console.error("답변 추가 에러: ", error);
       return;
     }
 
     try {
-      const tweetDoc = await getDocument(["tweets", tweetId]);
+      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
       if (!tweetDoc.exists()) return;
 
-      const tweetData = tweetDoc.data() as ITweet;
+      const tweetData = tweetDoc.data();
       const comments = tweetData.comments || [];
       const commentIndex = comments.findIndex((c) => c.commentId === commentId);
 
       if (commentIndex > -1) {
         const currentReplyCount = comments[commentIndex].replyCount || 0;
         comments[commentIndex].replyCount = currentReplyCount + 1;
-        await updateDocument(["tweets", tweetId], { comments });
+        await updateDocument<ITweet>(["tweets", tweetId], { comments }, tweetConverter);
       }
     } catch (error) {
       console.error("답변 개수 업데이트 에러: ", error);
@@ -331,17 +335,17 @@ export const tweetService = {
     }
 
     try {
-      const tweetDoc = await getDocument(["tweets", tweetId]);
+      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
       if (!tweetDoc.exists()) return;
 
-      const tweetData = tweetDoc.data() as ITweet;
+      const tweetData = tweetDoc.data();
       const comments = tweetData.comments || [];
       const commentIndex = comments.findIndex((c) => c.commentId === commentId);
 
       if (commentIndex > -1) {
         const currentReplyCount = comments[commentIndex].replyCount || 1;
         comments[commentIndex].replyCount = currentReplyCount - 1;
-        await updateDocument(["tweets", tweetId], { comments });
+        await updateDocument<ITweet>(["tweets", tweetId], { comments }, tweetConverter);
       }
     } catch (error) {
       console.error("답변 개수 업데이트 에러: ", error);
@@ -350,17 +354,17 @@ export const tweetService = {
 
   async toggleReplyLike(tweetId: string, replyId: string, userId: string) {
     try {
-      const replyDoc = await getDocument([
+      const replyDoc = await getDocument<IReply>([
         "tweets",
         tweetId,
         "replies",
         replyId,
-      ]);
+      ], replyConverter);
       if (!replyDoc.exists()) {
         throw new Error("해당 답변을 찾지 못했습니다.");
       }
 
-      const replyData = replyDoc.data() as IReply;
+      const replyData = replyDoc.data();
       const likedBy = replyData.likedBy || [];
       const isLiked = likedBy.includes(userId);
 
@@ -368,9 +372,10 @@ export const tweetService = {
         ? { likes: increment(-1), likedBy: arrayRemove(userId) }
         : { likes: increment(1), likedBy: arrayUnion(userId) };
 
-      await updateDocument(
+      await updateDocument<IReply>(
         ["tweets", tweetId, "replies", replyId],
-        updateData
+        updateData,
+        replyConverter
       );
     } catch (error) {
       console.error("답변 좋아요 처리 실패: ", error);
@@ -379,9 +384,9 @@ export const tweetService = {
 
   async updateReply(tweetId: string, replyId: string, newText: string) {
     try {
-      await updateDocument(["tweets", tweetId, "replies", replyId], {
+      await updateDocument<IReply>(["tweets", tweetId, "replies", replyId], {
         replyText: newText,
-      });
+      }, replyConverter);
     } catch (error) {
       console.error("답변 수정 실패: ", error);
       throw error;
