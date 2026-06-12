@@ -69,7 +69,7 @@ function useFollow() {
         tweetId: tweet.id,
         senderId: user.uid,
         senderName: user.displayName || "익명",
-        createdAt: new Date().toISOString(),
+        createdAt: Date.now(),
         type: "follow",
         isRead: false,
       },

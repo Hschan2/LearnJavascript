@@ -225,7 +225,7 @@ export const tweetService = {
     await setDocument(["likedTweets", `${userId}_${tweetObj.id}`], {
       userId,
       tweetId: tweetObj.id,
-      likedAt: new Date().toISOString(),
+      likedAt: Date.now(),
     });
   },
 
@@ -248,7 +248,7 @@ export const tweetService = {
         tweetId: tweetObj.id,
         senderId,
         senderName: auth.currentUser?.displayName || "익명",
-        createdAt: new Date().toISOString(),
+        createdAt: Date.now(),
         type,
         isRead: false,
       },
