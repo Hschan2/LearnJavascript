@@ -5,7 +5,7 @@ export interface NotificationType {
   tweetId: string;
   senderId: string;
   senderName: string;
-  createdAt: string;
+  createdAt: number;
   type: "like" | "follow" | "comment" | "other";
   isRead: boolean;
 }
