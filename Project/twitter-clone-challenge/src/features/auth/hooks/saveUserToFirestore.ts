@@ -1,9 +1,10 @@
 import { User } from "firebase/auth";
 import { getDocument, setDocument } from "../../../services/databaseService";
 import { INITIAL_IMAGE } from "../../../constants";
+import { userConverter } from "../../../lib/converters";
 
 export const saveUserToFirestore = async (user: User, name?: string) => {
-  const userSnap = await getDocument(["signedUsers", user.uid]);
+  const userSnap = await getDocument(["signedUsers", user.uid], userConverter);
 
   if (!userSnap.exists()) {
     const newUser = {
@@ -13,6 +14,6 @@ export const saveUserToFirestore = async (user: User, name?: string) => {
       avatar: INITIAL_IMAGE,
       createdAt: new Date(),
     };
-    await setDocument(["signedUsers", user.uid], newUser);
+    await setDocument(["signedUsers", user.uid], newUser, userConverter);
   }
 };
