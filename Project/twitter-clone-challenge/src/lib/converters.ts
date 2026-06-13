@@ -4,15 +4,17 @@ import {
   SnapshotOptions,
   DocumentData,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 import { ITweet, IReply, FollowingProps, FollowerProps } from "../features/tweet/types/tweet-type";
 import { NotificationType } from "../features/notification/types/notifications";
+import { IUser } from "../features/user/types/user-type";
 
-const convertTimestamp = (timestamp: any): number => {
-  if (timestamp && typeof timestamp.toMillis === "function") {
+const convertTimestamp = (timestamp: Timestamp | number | undefined): number => {
+  if (timestamp instanceof Timestamp) {
     return timestamp.toMillis();
   }
-  return timestamp;
+  return typeof timestamp === "number" ? timestamp : Date.now();
 };
 
 export const tweetConverter: FirestoreDataConverter<ITweet> = {
@@ -27,7 +29,7 @@ export const tweetConverter: FirestoreDataConverter<ITweet> = {
     snapshot: QueryDocumentSnapshot,
     options: SnapshotOptions
   ): ITweet {
-    const data = snapshot.data(options)!;
+    const data = snapshot.data(options);
     return {
       ...data,
       id: snapshot.id,
@@ -48,7 +50,7 @@ export const replyConverter: FirestoreDataConverter<IReply> = {
     snapshot: QueryDocumentSnapshot,
     options: SnapshotOptions
   ): IReply {
-    const data = snapshot.data(options)!;
+    const data = snapshot.data(options);
     return {
       ...data,
       replyId: snapshot.id,
@@ -57,19 +59,20 @@ export const replyConverter: FirestoreDataConverter<IReply> = {
   },
 };
 
-export const userConverter: FirestoreDataConverter<any> = {
-  toFirestore(user: any): DocumentData {
+export const userConverter: FirestoreDataConverter<IUser> = {
+  toFirestore(user: IUser): DocumentData {
     return { ...user };
   },
   fromFirestore(
     snapshot: QueryDocumentSnapshot,
     options: SnapshotOptions
-  ): any {
-    const data = snapshot.data(options)!;
+  ): IUser {
+    const data = snapshot.data(options);
     return {
       ...data,
       uid: snapshot.id,
-    };
+      createdAt: convertTimestamp(data.createdAt),
+    } as IUser;
   },
 };
 
