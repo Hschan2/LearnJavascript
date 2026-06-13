@@ -15,8 +15,19 @@ import {
   UpdateData,
   CollectionReference,
   DocumentReference,
+  runTransaction,
+  Transaction,
 } from "firebase/firestore";
 import { dataBase } from "../firebase";
+
+/**
+ * 트랜잭션 실행
+ */
+export const runDbTransaction = async <T>(
+  updateFunction: (transaction: Transaction) => Promise<T>
+): Promise<T> => {
+  return await runTransaction(dataBase, updateFunction);
+};
 
 /**
  * 컬렉션에 새로운 문서 추가 (ID 자동 생성)
