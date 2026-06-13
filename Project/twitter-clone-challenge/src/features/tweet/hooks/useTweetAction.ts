@@ -18,6 +18,7 @@ import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 import {
   deleteDocument,
   getDocument,
+  runDbTransaction,
   setDocument,
   updateDocument,
 } from "../../../services/databaseService";
@@ -101,16 +102,19 @@ export const tweetService = {
 
   async updateComment(tweetId: string, commentId: string, newText: string) {
     try {
-      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
-      if (!tweetDoc.exists()) throw new Error("해당 Tweet이 없습니다.");
+      await runDbTransaction(async (transaction) => {
+        const tweetRef = doc(dataBase, "tweets", tweetId).withConverter(tweetConverter);
+        const tweetDoc = await transaction.get(tweetRef);
+        if (!tweetDoc.exists()) throw new Error("해당 Tweet이 없습니다.");
 
-      const tweetData = tweetDoc.data();
-      const comments = tweetData.comments || [];
-      const updatedComments = comments.map((c) =>
-        c.commentId === commentId ? { ...c, commentText: newText } : c
-      );
+        const tweetData = tweetDoc.data();
+        const comments = tweetData.comments || [];
+        const updatedComments = comments.map((c) =>
+          c.commentId === commentId ? { ...c, commentText: newText } : c
+        );
 
-      await updateDocument<ITweet>(["tweets", tweetId], { comments: updatedComments }, tweetConverter);
+        transaction.update(tweetRef, { comments: updatedComments });
+      });
     } catch (error) {
       console.error("댓글 수정 실패: ", error);
       throw error;
@@ -119,41 +123,44 @@ export const tweetService = {
 
   async toggleCommentLike(tweetId: string, commentId: string, userId: string) {
     try {
-      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
-      if (!tweetDoc.exists()) {
-        throw new Error("해당 게시글을 찾지 못했습니다.");
-      }
+      await runDbTransaction(async (transaction) => {
+        const tweetRef = doc(dataBase, "tweets", tweetId).withConverter(tweetConverter);
+        const tweetDoc = await transaction.get(tweetRef);
+        if (!tweetDoc.exists()) {
+          throw new Error("해당 게시글을 찾지 못했습니다.");
+        }
 
-      const tweetData = tweetDoc.data();
-      const comments = tweetData.comments || [];
-      const commentIndex = comments.findIndex((c) => c.commentId === commentId);
+        const tweetData = tweetDoc.data();
+        const comments = tweetData.comments || [];
+        const commentIndex = comments.findIndex((c) => c.commentId === commentId);
 
-      if (commentIndex === -1) {
-        throw new Error("댓글이 없습니다.");
-      }
+        if (commentIndex === -1) {
+          throw new Error("댓글이 없습니다.");
+        }
 
-      const comment = comments[commentIndex];
-      const likedBy = comment.likedBy || [];
-      const isLiked = likedBy.includes(userId);
-      const likeCount = comment.likeCount || 0;
+        const comment = comments[commentIndex];
+        const likedBy = comment.likedBy || [];
+        const isLiked = likedBy.includes(userId);
+        const likeCount = comment.likeCount || 0;
 
-      if (isLiked) {
-        // 좋아요 취소
-        comments[commentIndex] = {
-          ...comment,
-          likeCount: likeCount - 1,
-          likedBy: likedBy.filter((id) => id !== userId),
-        };
-      } else {
-        // 좋아요
-        comments[commentIndex] = {
-          ...comment,
-          likeCount: likeCount + 1,
-          likedBy: [...likedBy, userId],
-        };
-      }
+        if (isLiked) {
+          // 좋아요 취소
+          comments[commentIndex] = {
+            ...comment,
+            likeCount: likeCount - 1,
+            likedBy: likedBy.filter((id) => id !== userId),
+          };
+        } else {
+          // 좋아요
+          comments[commentIndex] = {
+            ...comment,
+            likeCount: likeCount + 1,
+            likedBy: [...likedBy, userId],
+          };
+        }
 
-      await updateDocument<ITweet>(["tweets", tweetId], { comments: comments }, tweetConverter);
+        transaction.update(tweetRef, { comments: comments });
+      });
     } catch (error) {
       console.error("댓글 좋아요 실패: ", error);
     }
@@ -307,18 +314,25 @@ export const tweetService = {
     }
 
     try {
-      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
-      if (!tweetDoc.exists()) return;
+      await runDbTransaction(async (transaction) => {
+        const tweetRef = doc(dataBase, "tweets", tweetId).withConverter(tweetConverter);
+        const tweetDoc = await transaction.get(tweetRef);
+        if (!tweetDoc.exists()) return;
 
-      const tweetData = tweetDoc.data();
-      const comments = tweetData.comments || [];
-      const commentIndex = comments.findIndex((c) => c.commentId === commentId);
+        const tweetData = tweetDoc.data();
+        const comments = tweetData.comments || [];
+        const commentIndex = comments.findIndex((c) => c.commentId === commentId);
 
-      if (commentIndex > -1) {
-        const currentReplyCount = comments[commentIndex].replyCount || 0;
-        comments[commentIndex].replyCount = currentReplyCount + 1;
-        await updateDocument<ITweet>(["tweets", tweetId], { comments }, tweetConverter);
-      }
+        if (commentIndex > -1) {
+          const updatedComments = [...comments];
+          const currentReplyCount = updatedComments[commentIndex].replyCount || 0;
+          updatedComments[commentIndex] = {
+            ...updatedComments[commentIndex],
+            replyCount: currentReplyCount + 1,
+          };
+          transaction.update(tweetRef, { comments: updatedComments });
+        }
+      });
     } catch (error) {
       console.error("답변 개수 업데이트 에러: ", error);
     }
@@ -335,18 +349,25 @@ export const tweetService = {
     }
 
     try {
-      const tweetDoc = await getDocument<ITweet>(["tweets", tweetId], tweetConverter);
-      if (!tweetDoc.exists()) return;
+      await runDbTransaction(async (transaction) => {
+        const tweetRef = doc(dataBase, "tweets", tweetId).withConverter(tweetConverter);
+        const tweetDoc = await transaction.get(tweetRef);
+        if (!tweetDoc.exists()) return;
 
-      const tweetData = tweetDoc.data();
-      const comments = tweetData.comments || [];
-      const commentIndex = comments.findIndex((c) => c.commentId === commentId);
+        const tweetData = tweetDoc.data();
+        const comments = tweetData.comments || [];
+        const commentIndex = comments.findIndex((c) => c.commentId === commentId);
 
-      if (commentIndex > -1) {
-        const currentReplyCount = comments[commentIndex].replyCount || 1;
-        comments[commentIndex].replyCount = currentReplyCount - 1;
-        await updateDocument<ITweet>(["tweets", tweetId], { comments }, tweetConverter);
-      }
+        if (commentIndex > -1) {
+          const updatedComments = [...comments];
+          const currentReplyCount = updatedComments[commentIndex].replyCount || 1;
+          updatedComments[commentIndex] = {
+            ...updatedComments[commentIndex],
+            replyCount: Math.max(0, currentReplyCount - 1),
+          };
+          transaction.update(tweetRef, { comments: updatedComments });
+        }
+      });
     } catch (error) {
       console.error("답변 개수 업데이트 에러: ", error);
     }
