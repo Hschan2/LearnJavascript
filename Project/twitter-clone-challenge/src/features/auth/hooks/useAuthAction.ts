@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { AuthService } from "./authService";
+import { AuthService } from "../../../services/authService";
 import { messages } from "../../../message";
 
 export const useAuth = () => {

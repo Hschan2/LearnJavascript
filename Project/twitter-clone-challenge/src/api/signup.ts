@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { AuthService } from "../features/auth/hooks/authService";
+import { AuthService } from "../services/authService";
 import { messages } from "../message";
 
 const router = express.Router();

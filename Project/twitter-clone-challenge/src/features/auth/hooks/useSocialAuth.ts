@@ -1,6 +1,5 @@
 import { AuthProvider, signInWithPopup } from "firebase/auth";
-import { saveUserToFirestore } from "./saveUserToFirestore";
-import { updateUserProfile } from "./updateUserProfile";
+import { UserService } from "../../../services/userService";
 import { useNavigate } from "react-router";
 import { auth } from "../../../firebase";
 
@@ -10,8 +9,8 @@ export const useSocialAuth = () => {
   const socialWithProvider = async (provider: AuthProvider) => {
     const result = await signInWithPopup(auth, provider);
 
-    await updateUserProfile(result.user);
-    await saveUserToFirestore(result.user);
+    await UserService.updateUserProfile(result.user);
+    await UserService.saveUserToFirestore(result.user);
     navigate("/");
   };
 
