@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { auth, dataBase, storage } from "../../firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { auth, storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { updateProfile } from "firebase/auth";
-import { fetchAvatarUrl } from "./fetchAvatarUrl";
 import { INITIAL_IMAGE } from "../../constants";
 import { UseAvatarOptions } from "../types/avatar";
-import { updateDocument } from "../../services/databaseService";
+import { UserService } from "../../services/userService";
 
 export function useAvatar(options: UseAvatarOptions = {}) {
   const { user = auth.currentUser, enableUpload = false } = options;
@@ -20,15 +17,18 @@ export function useAvatar(options: UseAvatarOptions = {}) {
       return;
     }
 
-    fetchAvatarUrl(user).then((url) => {
-      setAvatar(url);
+    // 초기 데이터 로드
+    UserService.getUserData(user.uid).then((data) => {
+      if (data && data.avatar) {
+        setAvatar(data.avatar);
+      }
       setLoading(false);
     });
 
-    const userRef = doc(dataBase, "signedUsers", user.uid);
-    const unsubscribe = onSnapshot(userRef, (snap) => {
-      if (snap.exists() && snap.data().avatar) {
-        setAvatar(snap.data().avatar);
+    // 실시간 구독
+    const unsubscribe = UserService.subscribeToUser(user.uid, (data) => {
+      if (data && data.avatar) {
+        setAvatar(data.avatar);
       }
     });
 
@@ -45,12 +45,7 @@ export function useAvatar(options: UseAvatarOptions = {}) {
         const avatarUrl = await getDownloadURL(result.ref);
 
         setAvatar(avatarUrl);
-
-        await updateProfile(user, { photoURL: avatarUrl });
-
-        await updateDocument(["signedUsers", user.uid], {
-          avatar: avatarUrl,
-        });
+        await UserService.updateUserAvatar(user, avatarUrl);
       }
     : () => {};
 
