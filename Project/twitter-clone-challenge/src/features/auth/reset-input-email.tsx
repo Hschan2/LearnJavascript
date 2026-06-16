@@ -11,7 +11,7 @@ import {
 } from "./styles/auth-components";
 import { FormInput } from "../../shared/components/form-input";
 import { validationRules } from "../../constants";
-import { AuthService } from "./hooks/authService";
+import { AuthService } from "../../services/authService";
 import { messages } from "../../message";
 
 interface IForm {
