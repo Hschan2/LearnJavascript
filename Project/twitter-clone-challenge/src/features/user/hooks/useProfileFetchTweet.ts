@@ -1,15 +1,20 @@
 import { useCallback, useEffect, useState } from "react";
 import { ITweet } from "../../tweet/types/tweet-type";
-import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
+import { QueryDocumentSnapshot } from "firebase/firestore";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
-import { createTweetsQuery, fetchTweetsOnce } from "../../../services/tweetService";
+import {
+  createTweetsQuery,
+  fetchTweetsOnce,
+} from "../../../services/tweetService";
 import { UserService } from "../../../services/userService";
 import { IUser } from "../types/user-type";
 import { messages, formatMessage } from "../../../message";
 
 const useProfileFetchTweet = (userId?: string) => {
   const [tweets, setTweets] = useState<ITweet[]>([]);
-  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<ITweet> | null>(
+    null
+  );
   const [hasMore, setHasMore] = useState(true);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [userProfile, setUserProfile] = useState<IUser | null>(null);
@@ -36,7 +41,9 @@ const useProfileFetchTweet = (userId?: string) => {
 
     try {
       const tweetQuery = createTweetsQuery({ userId, lastDoc });
-      const { tweets: newTweets, lastDoc: newLastDoc } = await fetchTweetsOnce(tweetQuery);
+      const { tweets: newTweets, lastDoc: newLastDoc } = await fetchTweetsOnce(
+        tweetQuery
+      );
 
       if (newTweets.length === 0) {
         setHasMore(false);
