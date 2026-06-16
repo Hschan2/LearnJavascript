@@ -8,6 +8,7 @@ import {
   updateDoc,
   query,
   getDocs,
+  onSnapshot,
   QuerySnapshot,
   QueryConstraint,
   FirestoreDataConverter,
@@ -17,6 +18,7 @@ import {
   DocumentReference,
   runTransaction,
   Transaction,
+  Query,
 } from "firebase/firestore";
 import { dataBase } from "../firebase";
 
@@ -129,4 +131,23 @@ export const getDocuments = async <T extends object>(
 
   const q = query(collectionRef as CollectionReference<T>, ...queryConstraints);
   return await getDocs(q);
+};
+
+/**
+ * 특정 쿼리에 대한 문서들을 한 번 가져오기
+ */
+export const getDocumentsByQuery = async <T extends object>(
+  q: Query<T>
+): Promise<QuerySnapshot<T>> => {
+  return await getDocs(q);
+};
+
+/**
+ * 특정 쿼리에 대한 실시간 리스너 설정
+ */
+export const subscribeToQuery = <T extends object>(
+  q: Query<T>,
+  callback: (snapshot: QuerySnapshot<T>) => void
+) => {
+  return onSnapshot(q, callback);
 };
