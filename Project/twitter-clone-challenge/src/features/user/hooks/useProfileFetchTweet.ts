@@ -3,7 +3,8 @@ import { ITweet } from "../../tweet/types/tweet-type";
 import { QueryDocumentSnapshot, DocumentData } from "firebase/firestore";
 import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
 import { createTweetsQuery, fetchTweetsOnce } from "../../../services/tweetService";
-import { getDocument } from "../../../services/databaseService";
+import { UserService } from "../../../services/userService";
+import { IUser } from "../types/user-type";
 import { messages, formatMessage } from "../../../message";
 
 const useProfileFetchTweet = (userId?: string) => {
@@ -11,17 +12,14 @@ const useProfileFetchTweet = (userId?: string) => {
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [isFetching, setIsFetching] = useState<boolean>(false);
-  const [userProfile, setUserProfile] = useState<{
-    name: string;
-    image: string;
-  } | null>(null);
+  const [userProfile, setUserProfile] = useState<IUser | null>(null);
 
   const fetchUserProfile = useCallback(async () => {
     if (!userId) return;
     try {
-      const userDocSnap = await getDocument(["signedUsers", userId]);
-      if (userDocSnap.exists()) {
-        setUserProfile(userDocSnap.data() as { name: string; image: string });
+      const userData = await UserService.getUserData(userId);
+      if (userData) {
+        setUserProfile(userData);
       }
     } catch (error) {
       console.error(
@@ -64,7 +62,7 @@ const useProfileFetchTweet = (userId?: string) => {
   useEffect(() => {
     fetchUserProfile();
     fetchTweets();
-  }, []);
+  }, [userId]);
 
   return { tweets, triggerRef, hasMore, userProfile };
 };
