@@ -1,5 +1,5 @@
 import { auth } from "../../../firebase";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import formattedDate from "../../../shared/hook/formattedDate";
 import { ITweet } from "../types/tweet-type";
 import {
@@ -19,21 +19,26 @@ import {
 } from "../styles/tweet-components";
 import { useNavigate } from "react-router";
 import { tweetService } from "../hooks/useTweetAction";
+import useAppStore from "../../../shared/store/useAppStore";
 
 function Tweet({ tweetObj }: { tweetObj: ITweet }) {
+  const profileImage = useAppStore((state) => state.profileCache[tweetObj.userId]);
+  const setProfileCache = useAppStore((state) => state.setProfileCache);
   const tweetIdValue = tweetObj.id;
   const user = auth.currentUser;
-  const [profileImage, setProfileImage] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const getProfileImage = async () => {
-      const image = await tweetService.fetchProfileImage(tweetObj.userId);
-      setProfileImage(image);
+      // 해당 유저의 이미지가 아직 캐시에 없을 때만 실행
+      if (profileImage === undefined) {
+        const image = await tweetService.fetchProfileImage(tweetObj.userId);
+        setProfileCache(tweetObj.userId, image);
+      }
     };
 
     getProfileImage();
-  }, [tweetObj.userId]);
+  }, [tweetObj.userId, profileImage, setProfileCache]);
 
   const moveDetailPage = () => {
     navigate(`/detail/${tweetIdValue}`);
