@@ -7,12 +7,17 @@ import useFollow from "../../shared/hook/useFollowAction";
 import { useDetail } from "./hooks/useDetail";
 import ShareModal from "./components/share-modal";
 import { messages, formatMessage } from "../../message";
+import useAppStore from "../../shared/store/useAppStore";
 
 function DetailTweetContent({ tweetId }: { tweetId: string }) {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const navigate = useNavigate();
   const { tweet, likedByUser, exclamationByUser, comments, setComments } =
     useDetailTweet(tweetId);
+  const profileImage = useAppStore((state) => 
+    tweet?.userId ? state.profileCache[tweet.userId] : ""
+  );
+  const setProfileCache = useAppStore((state) => state.setProfileCache);
   const {
     followDataUserById,
     handleFollow,
@@ -30,7 +35,6 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
     toggleCommentLike,
   } = useDetail(tweetId, setComments);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [profileImage, setProfileImage] = useState<string>("");
 
   const handleDelete = async () => {
     if (window.confirm(messages.serviceMessage.checkDeleteTweet)) {
@@ -72,7 +76,17 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
 
   useEffect(() => {
     if (!tweet?.userId) return;
-    tweetService.fetchProfileImage(tweet.userId).then(setProfileImage);
+
+    const getProfileImage = async () => {
+      // 해당 유저의 이미지가 아직 캐시에 없을 때만(undefined) 실행
+      if (profileImage === undefined) {
+        const image = await tweetService.fetchProfileImage(tweet.userId);
+        setProfileCache(tweet.userId, image);
+      }
+    };
+
+    getProfileImage();
+
     const unsubscribe = fetchFollowingUserById(
       auth.currentUser?.uid,
       tweet.userId
@@ -81,7 +95,7 @@ function DetailTweetContent({ tweetId }: { tweetId: string }) {
     return () => {
       if (unsubscribe) unsubscribe();
     };
-  }, [tweet?.userId]);
+  }, [tweet?.userId, profileImage, setProfileCache, fetchFollowingUserById]);
 
   return (
     <>
