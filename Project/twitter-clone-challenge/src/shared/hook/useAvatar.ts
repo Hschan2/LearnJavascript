@@ -4,9 +4,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { INITIAL_IMAGE } from "../../constants";
 import { UseAvatarOptions } from "../types/avatar";
 import { UserService } from "../../services/userService";
+import useAppStore from "../store/useAppStore";
 
 export function useAvatar(options: UseAvatarOptions = {}) {
   const { user = auth.currentUser, enableUpload = false } = options;
+  const setProfileCache = useAppStore((state) => state.setProfileCache);
   const [avatar, setAvatar] = useState<string>(user?.photoURL ?? INITIAL_IMAGE);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -21,6 +23,7 @@ export function useAvatar(options: UseAvatarOptions = {}) {
     UserService.getUserData(user.uid).then((data) => {
       if (data && data.avatar) {
         setAvatar(data.avatar);
+        setProfileCache(user.uid, data.avatar);
       }
       setLoading(false);
     });
@@ -29,11 +32,12 @@ export function useAvatar(options: UseAvatarOptions = {}) {
     const unsubscribe = UserService.subscribeToUser(user.uid, (data) => {
       if (data && data.avatar) {
         setAvatar(data.avatar);
+        setProfileCache(user.uid, data.avatar);
       }
     });
 
     return () => unsubscribe();
-  }, [user]);
+  }, [user, setProfileCache]);
 
   const onAvatarChange = enableUpload
     ? async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +49,7 @@ export function useAvatar(options: UseAvatarOptions = {}) {
         const avatarUrl = await getDownloadURL(result.ref);
 
         setAvatar(avatarUrl);
+        setProfileCache(user.uid, avatarUrl);
         await UserService.updateUserAvatar(user, avatarUrl);
       }
     : () => {};
