@@ -10,8 +10,6 @@ import { auth, dataBase } from "../../../firebase";
 import Tweet from "./tweet";
 import { TimelineWrapper } from "../styles/timeline-components";
 import { ITweet } from "../types/tweet-type";
-import useInfiniteScroll from "../../../shared/hook/useInfiniteScroll";
-import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 import { getDocument } from "../../../services/databaseService";
 
 const createTweetData = (doc: QueryDocumentSnapshot): ITweet => {
@@ -54,8 +52,6 @@ const useLikedTweets = (userId: string | undefined) => {
       });
     });
 
-    addFirestoreUnsubscribe(unsubscribe);
-
     return unsubscribe;
   }, [userId]);
 
@@ -67,22 +63,9 @@ function LikedTimeline() {
   const userId = user?.uid;
   const { tweets, fetchLikedTweets } = useLikedTweets(userId);
 
-  const fetchMoreData = useCallback(async () => {
-    await fetchLikedTweets();
-  }, [fetchLikedTweets]);
-
-  const [_, triggerRef] = useInfiniteScroll(fetchMoreData);
-
   useEffect(() => {
-    const initFetch = async () => {
-      const unsubscribe = await fetchLikedTweets();
-      return () => unsubscribe && unsubscribe();
-    };
-
-    const unsubscribeEffect = initFetch();
-    return () => {
-      unsubscribeEffect.then((cleanUp) => cleanUp && cleanUp());
-    };
+    const unsubscribe = fetchLikedTweets();
+    return () => unsubscribe?.();
   }, [fetchLikedTweets]);
 
   return (
@@ -90,7 +73,6 @@ function LikedTimeline() {
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} tweetObj={tweet} />
       ))}
-      <div ref={triggerRef}></div>
     </TimelineWrapper>
   );
 }
