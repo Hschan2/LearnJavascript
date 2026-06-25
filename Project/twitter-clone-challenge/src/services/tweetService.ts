@@ -3,6 +3,7 @@ import {
   orderBy,
   where,
   startAfter,
+  limit,
   QueryDocumentSnapshot,
   Query,
   collection,
@@ -30,8 +31,9 @@ export const createTweetsQuery = (options: {
   isHot?: boolean;
   userId?: string;
   lastDoc?: QueryDocumentSnapshot<ITweet> | null;
+  limitCount?: number;
 }) => {
-  const { isHot, userId, lastDoc } = options;
+  const { isHot, userId, lastDoc, limitCount } = options;
   const constraints: QueryConstraint[] = [];
 
   if (userId) {
@@ -48,6 +50,10 @@ export const createTweetsQuery = (options: {
     constraints.push(startAfter(lastDoc));
   }
 
+  if (limitCount) {
+    constraints.push(limit(limitCount));
+  }
+
   return query(
     collection(dataBase, "tweets").withConverter(tweetConverter),
     ...constraints
@@ -59,11 +65,18 @@ export const createTweetsQuery = (options: {
  */
 export const fetchTweetsRealtime = (
   q: Query<ITweet>,
-  callback: (tweets: ITweet[]) => void
+  callback: (
+    tweets: ITweet[],
+    lastDoc: QueryDocumentSnapshot<ITweet> | null
+  ) => void
 ) => {
   return subscribeToQuery(q, (snapshot) => {
     const tweets = snapshot.docs.map((doc) => doc.data());
-    callback(tweets);
+    const lastDoc =
+      snapshot.docs.length > 0
+        ? snapshot.docs[snapshot.docs.length - 1]
+        : null;
+    callback(tweets, lastDoc);
   });
 };
 
