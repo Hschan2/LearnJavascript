@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { MAX_IMAGE_FILE_SIZE, SELECT_OPTION_VALUE } from "../../../constants";
-import { filterBadWords, checkBadWords } from "../../../shared/filter-bad-words";
+import { checkBadWords } from "../../../shared/filter-bad-words";
 
 export type TweetFormState = {
   isLoading: boolean;
