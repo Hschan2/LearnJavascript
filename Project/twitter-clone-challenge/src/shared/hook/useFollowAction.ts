@@ -12,7 +12,6 @@ import {
 } from "firebase/firestore";
 import { dataBase } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
-import { addFirestoreUnsubscribe } from "../../lib/firestoreSubscriptions";
 import { deleteDocument, getDocuments, setDocument } from "../../services/databaseService";
 import { followingConverter, followerConverter, notificationConverter } from "../../lib/converters";
 import { NotificationType } from "../../features/notification/types/notifications";
@@ -114,8 +113,6 @@ function useFollow() {
           }
         }
       );
-
-      addFirestoreUnsubscribe(unsubscribe);
 
       return unsubscribe;
     } catch (error) {

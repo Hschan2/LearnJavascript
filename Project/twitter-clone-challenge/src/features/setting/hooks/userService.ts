@@ -1,6 +1,5 @@
 import { deleteUser, updateProfile } from "firebase/auth";
 import { auth } from "../../../firebase";
-import { clearAllFirestoreSubscriptions } from "../../../lib/firestoreSubscriptions";
 import {
   getDocuments,
   deleteDocument,
@@ -9,7 +8,6 @@ import { where } from "firebase/firestore";
 import { messages, formatMessage } from "../../../message";
 
 export const logoutUser = async () => {
-  clearAllFirestoreSubscriptions();
   if (!auth.currentUser) throw new Error(messages.serviceError.failedLogout);
   await auth.signOut();
 };

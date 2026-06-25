@@ -14,7 +14,6 @@ import { auth, dataBase, storage } from "../../../firebase";
 import { IComment, IReply, ITweet } from "../types/tweet-type";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
-import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 import {
   deleteDocument,
   getDocument,
@@ -52,8 +51,6 @@ export function useDetailTweet(tweetId: string) {
         setComments(tweetData.comments || []);
       }
     });
-
-    addFirestoreUnsubscribe(unsubscribe);
 
     return () => unsubscribe();
   }, [tweetId]);

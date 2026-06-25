@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { auth, dataBase } from "../../../firebase";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { addFirestoreUnsubscribe } from "../../../lib/firestoreSubscriptions";
 import { useNotificationStore } from "../store/notificationStore";
 import { NotificationType } from "../types/notifications";
 
@@ -41,8 +40,6 @@ export const useNotificationInitializer = () => {
         }
       }
     });
-
-    addFirestoreUnsubscribe(unsubscribe);
 
     return () => {
       unsubscribe();
