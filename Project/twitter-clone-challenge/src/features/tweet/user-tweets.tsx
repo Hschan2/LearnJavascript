@@ -17,7 +17,7 @@ function UserTweets() {
   return (
     <FollowWrapper>
       <UserWrapper>
-        <UserAvatar src={userProfile?.image} alt={userProfile?.name} />
+        <UserAvatar src={userProfile?.avatar} alt={userProfile?.name} />
         <UserName>{userProfile?.name}</UserName>
       </UserWrapper>
       <TimelineWrapper className="followUser-tweets">
