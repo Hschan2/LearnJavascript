@@ -34,6 +34,7 @@ export function useSettingActions() {
 
       const querySnapshot = await getDocuments(
         ["signedUsers"],
+        undefined,
         where("uid", "==", userId)
       );
       if (querySnapshot.empty)

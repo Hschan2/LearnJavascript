@@ -18,6 +18,7 @@ export const deleteUserAccount = async (userId: string) => {
 
   const tweetDocsSnapshot = await getDocuments(
     ["tweets"],
+    undefined,
     where("userId", "==", userId)
   );
   try {
