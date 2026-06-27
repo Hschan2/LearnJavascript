@@ -9,6 +9,7 @@ import {
 import { UserService } from "../../../services/userService";
 import { IUser } from "../types/user-type";
 import { messages, formatMessage } from "../../../message";
+import { PAGE_SIZE } from "../../../constants";
 
 const useProfileFetchTweet = (userId?: string) => {
   const [tweets, setTweets] = useState<ITweet[]>([]);
@@ -35,19 +36,46 @@ const useProfileFetchTweet = (userId?: string) => {
     }
   }, [userId]);
 
-  const fetchTweets = useCallback(async () => {
-    if (!userId || !hasMore || isFetching) return;
+  const fetchInitialTweets = useCallback(async () => {
+    if (!userId) return;
+
+    setIsFetching(true);
+    setTweets([]);
+    setLastDoc(null);
+    setHasMore(true);
+
+    try {
+      const tweetQuery = createTweetsQuery({
+        userId,
+        limitCount: PAGE_SIZE,
+      });
+      const { tweets: initialTweets, lastDoc: newLastDoc } =
+        await fetchTweetsOnce(tweetQuery);
+
+      setTweets(initialTweets);
+      setLastDoc(newLastDoc);
+      setHasMore(initialTweets.length === PAGE_SIZE);
+    } finally {
+      setIsFetching(false);
+    }
+  }, [userId]);
+
+  const fetchMoreTweets = useCallback(async () => {
+    if (!userId || !hasMore || isFetching || !lastDoc) return;
     setIsFetching(true);
 
     try {
-      const tweetQuery = createTweetsQuery({ userId, lastDoc });
+      const tweetQuery = createTweetsQuery({
+        userId,
+        lastDoc,
+        limitCount: PAGE_SIZE,
+      });
       const { tweets: newTweets, lastDoc: newLastDoc } = await fetchTweetsOnce(
         tweetQuery
       );
 
-      if (newTweets.length === 0) {
+      if (newTweets.length < PAGE_SIZE) {
         setHasMore(false);
-        return;
       }
 
       setTweets((prev) => {
@@ -64,12 +92,12 @@ const useProfileFetchTweet = (userId?: string) => {
     }
   }, [userId, hasMore, isFetching, lastDoc]);
 
-  const [_, triggerRef] = useInfiniteScroll(fetchTweets);
+  const [_, triggerRef] = useInfiniteScroll(fetchMoreTweets);
 
   useEffect(() => {
     fetchUserProfile();
-    fetchTweets();
-  }, [userId]);
+    fetchInitialTweets();
+  }, [fetchUserProfile, fetchInitialTweets]);
 
   return { tweets, triggerRef, hasMore, userProfile };
 };
