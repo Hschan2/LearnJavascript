@@ -136,3 +136,6 @@ export const BAD_WORDS = [
 // 프로필 기본 이미지
 export const INITIAL_IMAGE =
   "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbxwsqs%2FbtsK1ACfsyI%2FyojjVvJwKpX4bdZ0CtZkJ0%2Fimg.png";
+
+// 페이지 사이즈 로드 값
+export const PAGE_SIZE = 20;
