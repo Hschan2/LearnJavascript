@@ -9,8 +9,6 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -36,3 +34,4 @@ jobs:
           channelId: live
           projectId: twitter-clone-challenge
           entryPoint: ./Project/twitter-clone-challenge
+          firebaseToolsVersion: 15.21.0
