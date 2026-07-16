@@ -6,7 +6,6 @@ import {
   InputRow,
   Switcher,
   Title,
-  VerifyButton,
   AuthWrapper,
 } from "../styles/auth-components";
 import { FormInput } from "../../../shared/components/form-input";
@@ -20,10 +19,7 @@ export const CreateAccountUI = ({
   errors,
   isLoading,
   error,
-  onSendEmailCode,
-  onVerifyEmailCode,
   onSignUp,
-  isEmailVerified,
 }: AccountProps) => {
   return (
     <AuthWrapper>
@@ -37,24 +33,7 @@ export const CreateAccountUI = ({
           error={errors.email}
           rules={validationRules.email}
         />
-        <VerifyButton type="button" onClick={onSendEmailCode}>
-          이메일 확인
-        </VerifyButton>
       </InputRow>
-
-      <InputRow>
-        <FormInput
-          register={register}
-          name="code"
-          placeholder="인증 코드"
-          type="text"
-          error={errors.code}
-        />
-        <VerifyButton type="button" onClick={onVerifyEmailCode}>
-          코드 확인
-        </VerifyButton>
-      </InputRow>
-      {isEmailVerified && <p style={{ color: "green" }}>인증 완료</p>}
 
       <InputRow>
         <FormInput
@@ -84,7 +63,7 @@ export const CreateAccountUI = ({
       <Button
         type="button"
         onClick={onSignUp}
-        disabled={!isEmailVerified || isLoading}
+        disabled={isLoading}
       >
         {isLoading ? "회원가입 중" : "회원가입"}
       </Button>
