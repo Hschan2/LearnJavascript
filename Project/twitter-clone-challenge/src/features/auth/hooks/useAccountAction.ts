@@ -17,8 +17,8 @@ export const useAccount = () => {
   );
 
   const onCreateSubmit = handleSubmit((data) => {
-    if (!data.name) return;
-    handleAuth(() => signUp(data.name!, data.password));
+    if (!data.name || !data.email) return;
+    handleAuth(() => signUp(data.name!, data.email!, data.password));
   });
 
   return {
