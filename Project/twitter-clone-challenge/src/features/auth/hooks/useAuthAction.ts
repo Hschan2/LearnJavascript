@@ -5,8 +5,6 @@ import { messages } from "../../../message";
 export const useAuth = () => {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const [signupToken, setSignupToken] = useState<string | null>(null);
 
   const clearError = () => setError(null);
 
@@ -30,53 +28,29 @@ export const useAuth = () => {
     []
   );
 
-  const sendSignUpCode = (email: string) =>
+  const signUp = (name: string, email: string, password: string) =>
     handleAuthAsync(async () => {
+      if (!name || name.trim() === "") {
+        throw new Error("이름을 입력해 주세요.");
+      }
       if (!email || email.trim() === "") {
         throw new Error(messages.auth.inputEmail);
       }
-      await AuthService.sendSignUpCode(email);
-      alert(messages.auth.sendVerifyCode);
-      return true;
-    });
-
-  const verifySignUpCode = (email?: string, code?: string) =>
-    handleAuthAsync(async () => {
-      if (!email || email.trim() === "") {
-        throw new Error(messages.auth.inputEmail);
+      if (!password || password.trim() === "") {
+        throw new Error("비밀번호를 입력해 주세요.");
       }
-      if (!code || code.trim() === "") {
-        throw new Error(messages.auth.inputVerifyCode);
-      }
-
-      const token = await AuthService.verifySignUpCode(email, code);
-      setSignupToken(token);
-      setIsEmailVerified(true);
-      alert(messages.auth.successVerifyEmail);
+      await AuthService.signUp(name, email, password);
       return true;
     });
-
-  const signUp = (name?: string, password?: string) =>
-    handleAuthAsync(async () => {
-      if (!signupToken) throw new Error(messages.auth.neededVerifyEmail);
-      await AuthService.signUpWithToken(name!, password!, signupToken);
-      return true;
-    });
-
-  // const signUp = (name: string, email: string, password: string) =>
-  //   handleAuthAsync(() => AuthService.signUp(name, email, password));
 
   const login = (email: string, password: string) =>
     handleAuthAsync(() => AuthService.login(email, password));
 
   return {
-    sendSignUpCode,
-    verifySignUpCode,
     signUp,
     login,
     isLoading,
     error,
     clearError,
-    isEmailVerified,
   };
 };
