@@ -4,41 +4,15 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail as fbSendPasswordResetEmail,
   confirmPasswordReset as fbConfirmPasswordReset,
+  sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { where } from "firebase/firestore";
-import axios from "axios";
 import { getDocuments } from "./databaseService";
 import { UserService } from "./userService";
 import { messages, formatMessage } from "../message";
 
 export const AuthService = (() => {
-  const sendSignUpCode = async (email: string) => {
-    const res = await axios.post("/send-signup-code", { email });
-    if (!res.data.success)
-      throw new Error(res.data.error || messages.apiError.failedCodeEmail);
-  };
-
-  const verifySignUpCode = async (
-    email: string,
-    code: string
-  ): Promise<string> => {
-    const res = await axios.post("/verify-signup-code", { email, code });
-    if (!res.data.success || !res.data.token)
-      throw new Error(res.data.error || messages.apiError.failedVerify);
-    return res.data.token;
-  };
-
-  const signUpWithToken = async (
-    name: string,
-    password: string,
-    token: string
-  ) => {
-    const res = await axios.post("/signup", { name, password, token });
-    if (!res.data.success)
-      throw new Error(res.data.error || messages.apiError.failedSign);
-  };
-
   const handleError = (error: FirebaseError | Error): string => {
     console.error("인증 오류:", error.message);
 
@@ -96,6 +70,7 @@ export const AuthService = (() => {
 
       await UserService.updateUserProfile(credentials.user, name);
       await UserService.saveUserToFirestore(credentials.user, name);
+      await sendEmailVerification(credentials.user);
 
       return true;
     } catch (error) {
@@ -138,9 +113,6 @@ export const AuthService = (() => {
   };
 
   return {
-    sendSignUpCode,
-    verifySignUpCode,
-    signUpWithToken,
     signUp,
     login,
     sendPasswordResetEmail,
