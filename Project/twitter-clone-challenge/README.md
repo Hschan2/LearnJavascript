@@ -214,96 +214,26 @@ src
 ![Dark Mode](https://blog.kakaocdn.net/dn/dQKloa/btsIXmZbuZw/k0RuDCdxXsZqktVkF522K0/img.gif)
 
 ## 기술 선택
+#### 이 프로젝트에 사용한 기술을 선택한 이유
+`React`, `TypeScript`를 주요 기술로 선택한 이유는 현업에서 가장 많이 사용되고 있는 기술이자, 저에게 가장 익숙하고 편한 기술이기 때문입니다. 이를 활용해서 조금 더 확장되고 심화된 프로젝트를 만드는 것을 목표로 진행하였습니다. 여기에 더해 자주 사용하던 `MySQL` 데이터베이스에서 새롭게 `Firebase`를 선택하여 단 한 번의 연동으로 쉽고 빠르게 단 몇 줄의 코드로 데이터를 처리할 수 있는 경험을 겪었습니다. 다만, 조금 더 안정적이고 보안을 위해 서버를 활용하는 것을 고려할 필요가 있다고 생각됩니다.   
+
 #### 파이어베이스 선택
 - 프론트엔드 프로젝트로 구체적인 백엔드 구현없이 쉽게 회원 서비스를 포함해 데이터 베이스를 이용할 수 있기 때문에 파이어베이스를 선택하였습니다.
 - 파이어베이스에서 데이터 저장 시, 파일 크기 등 제한을 설정할 수 있었습니다.
 - 데이터를 가져오는 방법으로 onSnapShot으로 처리하여 데이터 실시간 업데이트가 가능하여 선택했습니다.   
 
-## 개발 과정 중 겪은 문제
+#### 개발 과정 중 겪은 문제
 - 좋아요 버튼 중복 증가 문제
   - 글 작성 시, 좋아요 버튼을 클릭한 회원 ID를 저장할 수 있는 공간을 생성해 좋아요 버튼을 누른 사용자의 경우, 좋아요 버튼을 누른 회원을 저장하는 공간에 저장하여 중복 증가가 되지 않도록 방지하였습니다.   
 
-- 주기적인 배포 필요
-  - Tweet 작성 시, 필수적으로 포함되어야 할 입력 요소들의 포함 여부를 검사하는 코드를 포함하는 배포를 하지 않은 상태에서 한 명의 회원이 서비스를 이용하면서 이미지 파일이 포함되지 않은 채 Tweet이 작성된 적이 있었습니다. 이를 뒤늦게 확인하여 수정된 버전으로 배포하였습니다. 이러한 경험으로, 새로운 기능을 도입하거나, 문제를 개선하는 등 업데이트가 이루어졌을 때, 바로 배포도 진행해야 한다는 것을 배웠습니다.   
-
-### Github Action 도입
-수동 배포 방식을 유지하면서 코드 업데이트 후 여러 사정으로 인해 즉시 배포하지 않아 발생하는 문제를 `Github`의 `Action` 기능을 활용해 코드 업데이트가 이루어졌을 시, 자동으로 배포(파이어베이스)가 진행되도록 개선하였습니다.   
-
-이 때, 프로젝트가 한 폴더의 하위 폴더에 존재하여 직접 'Github Action'을 설정하기 보다 상위 폴더에 적용하여 처리할 필요가 있었습니다. 대신, 코드가 바뀔 때마다 모든 프로젝트에 영향을 주기 보다 '.github/workflows/firebase-hosting-merge(firebase-hosting-pull-request)' 파일에서 규칙 설정에 지금 프로젝트의 경로를 적용해서 지금 이 프로젝트에만 동작하도록 하였습니다.
-```
-- name: Fix Git Safe Directory
-        run: git config --global --add safe.directory /github/workspace
-
-      - name: Install Dependencies
-        working-directory: ./Project/twitter-clone-challenge
-        run: npm ci
-
-      - name: Build Project
-        working-directory: ./Project/twitter-clone-challenge
-        run: npm run build 
-
-      - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TWITTER_CLONE_CHALLENGE }}
-          channelId: live
-          projectId: twitter-clone-challenge
-          entryPoint: ./Project/twitter-clone-challenge
-```
-
-Github Action을 위해서 생성한 두 개의 파일과 그 파일 내 설정들을 적용한 뒤, 제대로 동작하는지 확인한 결과, 아래처럼 에러가 해결되어 제대로 동작하고 있음을 확인하였습니다.
-
-![Github Action(CI/CD)](./public/action.png)
-
-### 리팩토링
-댓글 수, 좋아요 수, 신고 수 등 횟수 데이터 업데이트에서 원자성을 보장하는 방식을 적용했습니다. 기존 방식은 '읽기(가져오기) → 로컬에서 수정하기 → 데이터 덮어쓰기' 방식으로 여러 사용자가 접근할 때 데이터가 유실되는 위험성을 가지고 있었습니다.   
-
-이를 방지하기 위해서 `Transaction` 방식을 도입해 현재 데이터 상태를 정확히 읽은 뒤 안전하게 업데이트될 수 있도록 원자성 보장을 개선했습니다.
-
-```
---수정 전--
-
-// 문서 가져오기(읽기)
-const doc = await getDocument(...);
-const data = doc.data();
-...
-
-// 로컬에서 데이터 업데이트
-const curCount = array[index].count || 0;
-array[index].count = curCount + 1;
-
-// 데이터 덮어쓰기
-await updateDocument(...)
-```
-
-```
---수정 후--
-
-// 문서 가져오기(읽기)
-const ref = doc(dataBase, ...);
-const doc = await transaction.get(ref);
-const data = doc.data();
-...
-
-// 로컬에서 데이터 업데이트
-const updatedValue = [...value]; // 불변성 유지
-const curCount = updatedValue[index].count || 0;
-updatedValue[index] = {
-  ...updatedValue[index],
-  count: curCount + 1,
-};
-
-// 데이터 덮어쓰기
-transaction.update(ref, { value: updatedValue });
-```
-
-이를 통해서 다수의 사용자가 거의 비슷한 시기에 동작할 경우, 데이터가 유실되는 경우를 방지하고, 데이터를 읽었을 때 이상한 점을 발견할 경우, 읽기를 중단하고 다시 업데이트된 값을 다시 읽어 업데이트를 진행하도록 하여 원자성 보장을 개선했습니다.
-
-### Firebase 배포 시, Firebase Functions로 API Key 가리지 않은 이유
+#### Firebase 배포 시, Firebase Functions로 API Key 가리지 않은 이유
 Firebase에 배포하면서 API Key 등 중요한 정보를 `env`가 아니라 Firebase Functions에서 처리해서 안전하게 숨겨야 하지만, 이를 이용하기 위해서는 유료 요금제를 이용해야 하는 것을 확인했습니다.   
 
 저의 목표 중 하나는 완전 무료 기능(서비스)만으로 프로젝트를 만드는 것이기 때문에, 이번에 Firebase Functions 기능을 활용하지 못했습니다. 다만, 이와 같은 내용은 파악한 상황이며, 실제 서비스 운영하는 등 이런 상황에서 보안 강화를 위해서 Firebase Functions를 이용해서 중요 정보를 안전하게 숨겨 노출되지 않도록 보안 강화할 계획입니다.   
+
+## 리팩토링
+리팩토링을 하며 겪은 경험과 배움을 블로그에 정리하였습니다.   
+[YooP 리팩토링](https://velog.io/@seongchan/YooP-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EB%A5%BC-%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-%ED%95%98%EB%A9%B4%EC%84%9C)   
 
 ## 이 프로젝트를 개발한 이유
 노마드코더에서 자기주도적 학습 역량 발전을 위해 진행한 클론코딩 챌린지에 참여하여, 자기주도적 학습 자세를 갖추고, 하나의 서비스를 구현하기 위해 이 프로젝트를 개발하였습니다. 개발은 현재진행중이며, 추가적으로 기능을 추가해나갈 계획입니다.   
