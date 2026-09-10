@@ -10,8 +10,29 @@ const VideoButton = dynamic(() => import("../components/utils/video-button"), {
   ssr: false,
 });
 
-function Videos({ categories, title }: ICategoriesProps) {
+function Videos({ category, title }: ICategoriesProps) {
+  const [videos, setVideos] = useState<IVideo[]>([]);
   const [visibleItems, setVisibleItems] = useState<number>(10);
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const response = await fetch(`/api/youtube?category=${category}`);
+
+        if (!response.ok) {
+          throw new Error("영상을 가져오지 못했습니다.");
+        }
+
+        const data = await response.json();
+
+        setVideos(data.videos ?? []);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchVideos();
+  }, [category]);
 
   const loadMoreItems = () => {
     setVisibleItems((prevVisibleItems) => prevVisibleItems + 10);
@@ -22,10 +43,18 @@ function Videos({ categories, title }: ICategoriesProps) {
   return (
     <div>
       <VideosTitle>{title}</VideosTitle>
+
       <div className="grid grid-cols-3 gap-3">
-        {categories.slice(0, visibleItems).map((category: IVideo, index) => (
-          <VideoButton key={index} size="w-32 h-28" data={category} />
-        ))}
+        {videos
+          .slice(0, visibleItems)
+          .map((video: IVideo, index) => (
+            <VideoButton
+              key={index}
+              size="w-32 h-28"
+              data={video}
+            />
+          ))}
+
         <div ref={target}></div>
       </div>
     </div>
