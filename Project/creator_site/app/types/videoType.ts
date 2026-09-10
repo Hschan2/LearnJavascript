@@ -7,7 +7,7 @@ export interface IVideo {
 }
 
 export interface ICategoriesProps {
-  categories: IVideo[];
+  category: "travel" | "short" | "motion";
   title: string;
 }
 
