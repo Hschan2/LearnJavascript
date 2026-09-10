@@ -1,17 +1,43 @@
-import React from "react";
-import { CATEGORIES_TITLE, PORTFOLIO_VIDEO } from "../common/utils/constants";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { CATEGORIES_TITLE } from "../common/utils/constants";
 import VideosTitle from "../components/utils/videos-title";
 import dynamic from "next/dynamic";
+import { IVideo } from "../types/videoType";
 
 const VideoButton = dynamic(() => import("../components/utils/video-button"), {
   ssr: false,
 });
 
 function Portfolio() {
+  const [portfolioVideo, setPortfolioVideo] = useState<IVideo | null>(null);
+
+  useEffect(() => {
+    const fetchPortfolioVideo = async () => {
+      try {
+        const response = await fetch("/api/youtube?category=portfolio");
+
+        if (!response.ok) {
+          throw new Error("Portfolio 영상을 가져오지 못했습니다.");
+        }
+
+        const data = await response.json();
+
+        setPortfolioVideo(data.videos[0] ?? null);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchPortfolioVideo();
+  }, []);
+
   return (
     <div>
       <VideosTitle>{CATEGORIES_TITLE.portfolio}</VideosTitle>
-      <VideoButton size="w-96 h-80" data={PORTFOLIO_VIDEO} />
+
+      {portfolioVideo && <VideoButton size="w-96 h-80" data={portfolioVideo} />}
     </div>
   );
 }
