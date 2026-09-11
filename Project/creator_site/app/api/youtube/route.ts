@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 const PLAYLISTS = {
   portfolio: "PLSIL5GEUInys",
@@ -7,9 +7,10 @@ const PLAYLISTS = {
   short: "PLA4HEW0z2fao",
 } as const;
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category") as keyof typeof PLAYLISTS;
+  const pageToken = searchParams.get("pageToken");
 
   if (!category || !PLAYLISTS[category]) {
     return NextResponse.json(
@@ -20,7 +21,6 @@ export async function GET(request: Request) {
     );
   }
 
-  const playlistId = PLAYLISTS[category];
   const apiKey = process.env.YOUTUBE_API_KEY;
 
   if (!apiKey) {
@@ -32,15 +32,26 @@ export async function GET(request: Request) {
     );
   }
 
-  const url = new URL("https://www.googleapis.com/youtube/v3/playlistItems");
+  const params = new URLSearchParams({
+    part: "snippet",
+    playlistId: PLAYLISTS[category],
+    maxResults: "50",
+    key: apiKey,
+  });
 
-  url.searchParams.set("part", "snippet");
-  url.searchParams.set("playlistId", playlistId);
-  url.searchParams.set("maxResults", "50");
-  url.searchParams.set("key", apiKey);
+  if (pageToken) {
+    params.set("pageToken", pageToken);
+  }
 
   try {
-    const response = await fetch(url.toString());
+    const response = await fetch(
+      `https://www.googleapis.com/youtube/v3/playlistItems?${params.toString()}`,
+      {
+        next: {
+          revalidate: 3600,
+        },
+      }
+    );
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -85,7 +96,9 @@ export async function GET(request: Request) {
       videos,
       nextPageToken: data.nextPageToken ?? null,
     });
-  } catch {
+  } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       {
         error: "YouTube API를 호출하는 중 오류가 발생했습니다.",
