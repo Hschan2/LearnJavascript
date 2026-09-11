@@ -27,10 +27,11 @@ function VideoButton({ size, data }: IButtonProps) {
       >
         <Image
           src={image}
-          alt="Image Button"
+          alt={title || "YouTube 영상 썸네일"}
           loading="lazy"
           quality={75}
           fill
+          sizes="(max-width: 640px) 30vw, 128px"
         />
         <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl">
           ▶
