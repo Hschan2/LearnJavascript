@@ -1,18 +1,18 @@
+import {
+  YOUTUBE_API_MAX_RESULTS,
+  YOUTUBE_CACHE_TIME,
+  YOUTUBE_PLAYLISTS,
+} from "@/app/common/utils/youtube";
 import { NextRequest, NextResponse } from "next/server";
-
-const PLAYLISTS = {
-  portfolio: "PLSIL5GEUInys",
-  motion: "PLYqkGJr-KzGY",
-  travel: "PLXcJqArXkF4s",
-  short: "PLA4HEW0z2fao",
-} as const;
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
-  const category = searchParams.get("category") as keyof typeof PLAYLISTS;
+  const category = searchParams.get(
+    "category"
+  ) as keyof typeof YOUTUBE_PLAYLISTS;
   const pageToken = searchParams.get("pageToken");
 
-  if (!category || !PLAYLISTS[category]) {
+  if (!category || !YOUTUBE_PLAYLISTS[category]) {
     return NextResponse.json(
       {
         error: "올바른 category를 입력해주세요.",
@@ -34,8 +34,8 @@ export async function GET(request: NextRequest) {
 
   const params = new URLSearchParams({
     part: "snippet",
-    playlistId: PLAYLISTS[category],
-    maxResults: "50",
+    playlistId: YOUTUBE_PLAYLISTS[category],
+    maxResults: String(YOUTUBE_API_MAX_RESULTS),
     key: apiKey,
   });
 
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       `https://www.googleapis.com/youtube/v3/playlistItems?${params.toString()}`,
       {
         next: {
-          revalidate: 3600,
+          revalidate: YOUTUBE_CACHE_TIME,
         },
       }
     );
@@ -84,7 +84,7 @@ export async function GET(request: NextRequest) {
         const videoId = item.snippet.resourceId.videoId;
 
         return {
-          title: item.snippet.title,
+          title: item.snippet.title.replace(/#[^\s#]+/g, "").trim(),
           url: `https://www.youtube.com/watch?v=${videoId}`,
           image: item.snippet.thumbnails?.high?.url ?? "",
         };
