@@ -2,10 +2,10 @@ import { IVideo } from "@/app/types/videoType";
 import { COVER_MESSAGE } from "./messages";
 
 export const CATEGORIES_TITLE = {
-  portfolio: "포트폴리오",
-  motionGraphic: "모션그래픽",
-  travel: "여행",
-  shortForm: "숏폼",
+  portfolio: "Portfolio",
+  travel: "Travel",
+  shortForm: "Short Form",
+  motionGraphic: "Motion Graphic",
 };
 
 export const PORTFOLIO_VIDEO = {
