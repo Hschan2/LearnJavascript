@@ -37,7 +37,11 @@ function Portfolio() {
     <div>
       <VideosTitle>{CATEGORIES_TITLE.portfolio}</VideosTitle>
 
-      {portfolioVideo && <VideoButton size="w-96 h-80" data={portfolioVideo} />}
+      {portfolioVideo && (
+        <div className="w-full max-w-96">
+          <VideoButton size="w-full aspect-[6/5]" data={portfolioVideo} />
+        </div>
+      )}
     </div>
   );
 }
