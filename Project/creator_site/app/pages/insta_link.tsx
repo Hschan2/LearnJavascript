@@ -64,10 +64,7 @@ function InstagramLink() {
           </div>
 
           <div>
-            <p className="text-sm font-medium text-gray-900">여행 인스타그램</p>
-            <p className="mt-0.5 text-xs text-gray-400">
-              여행 기록과 새로운 이야기를 만나보세요
-            </p>
+            <p className="text-sm font-medium text-gray-900">여행 인스타그램 (여행 기록 더 보기 ↗)</p>
           </div>
         </div>
 
