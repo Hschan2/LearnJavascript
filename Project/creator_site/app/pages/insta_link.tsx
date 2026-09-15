@@ -17,8 +17,8 @@ function InstagramLink() {
           rounded-2xl
           border
           border-gray-200
-          px-5
-          py-4
+          px-4
+          py-3
           transition-all
           duration-300
           hover:-translate-y-0.5
@@ -64,7 +64,7 @@ function InstagramLink() {
           </div>
 
           <div>
-            <p className="text-sm font-medium text-gray-900">여행 인스타그램 (여행 기록 더 보기 ↗)</p>
+            <p className="text-sm font-medium text-gray-900">여행 인스타그램 (여행 기록 더 보기)</p>
           </div>
         </div>
 
