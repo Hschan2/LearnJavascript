@@ -7,7 +7,7 @@ function Footer() {
   return (
     <div className="flex flex-col gap-3 items-center">
       <p className="text-xs text-gray-400 border-t-slate-400">
-        Copyrightⓒ 2026 All rights reserved by 홍성찬
+        Copyrightⓒ {new Date().getFullYear()} All rights reserved by 홍성찬
       </p>
       <div className="flex flex-row gap-2">
         {SOCIAL_LINKS.social.map((content, index) => (
